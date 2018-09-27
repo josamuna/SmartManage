@@ -1,0 +1,5 @@
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Tools\bin\Debug\smartManage.Tools.dll
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Tools\bin\Debug\smartManage.Tools.pdb
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Tools\obj\Debug\smartManage.Tools.dll
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Tools\obj\Debug\smartManage.Tools.pdb
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Tools\obj\Debug\smartManage.Tools.csprojResolveAssemblyReference.cache

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{646DE8B7-EBFB-4B29-A7AE-6BE2945BA5E7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>smartManage.Model</RootNamespace>
+    <AssemblyName>smartManage.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ManageUtilities">
+      <HintPath>..\smartManage.Desktop\Libraries\ManageUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="clsAC.cs" />
+    <Compile Include="clsaffectation_materiel.cs" />
+    <Compile Include="clsarchitecture_OS.cs" />
+    <Compile Include="clscategorie_materiel.cs" />
+    <Compile Include="clscompte.cs" />
+    <Compile Include="clsConnexion.cs" />
+    <Compile Include="clscouleur.cs" />
+    <Compile Include="clsdetail_retrait_materiel.cs" />
+    <Compile Include="clsetat_materiel.cs" />
+    <Compile Include="clsfonction.cs" />
+    <Compile Include="clsgrade.cs" />
+    <Compile Include="clsgroupe.cs" />
+    <Compile Include="clslieu_affectation.cs" />
+    <Compile Include="clsmarque.cs" />
+    <Compile Include="clsmateriel.cs" />
+    <Compile Include="clsMetier.cs" />
+    <Compile Include="clsmodele.cs" />
+    <Compile Include="clsnetette.cs" />
+    <Compile Include="clsoptio.cs" />
+    <Compile Include="clsOS.cs" />
+    <Compile Include="clspersonne.cs" />
+    <Compile Include="clspoids.cs" />
+    <Compile Include="clspromotion.cs" />
+    <Compile Include="clsretrait_materiel.cs" />
+    <Compile Include="clssalle.cs" />
+    <Compile Include="clssection.cs" />
+    <Compile Include="clssignataire.cs" />
+    <Compile Include="clstype_amplificateur.cs" />
+    <Compile Include="clstype_AP.cs" />
+    <Compile Include="clstype_clavier.cs" />
+    <Compile Include="clstype_imprimante.cs" />
+    <Compile Include="clstype_lieu_affectation.cs" />
+    <Compile Include="clstype_ordinateur.cs" />
+    <Compile Include="clstype_OS.cs" />
+    <Compile Include="clstype_routeur_AP.cs" />
+    <Compile Include="clstype_switch.cs" />
+    <Compile Include="clsutilisateur.cs" />
+    <Compile Include="clsversion_ios.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\smartManage.Tools\smartManage.Tools.csproj">
+      <Project>{789999be-c16c-459f-9bc7-91d88e0ba275}</Project>
+      <Name>smartManage.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

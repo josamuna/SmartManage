@@ -1,0 +1,6 @@
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\bin\Debug\ManageQRCode.dll
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\bin\Debug\ManageQRCode.pdb
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\bin\Debug\ManageUtilities.dll
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\obj\Debug\ManageQRCode.csprojResolveAssemblyReference.cache
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\obj\Debug\ManageQRCode.dll
+D:\DOC\CODES\GestionLaboratoire\GestionMateriels\ManageQRCode\obj\Debug\ManageQRCode.pdb

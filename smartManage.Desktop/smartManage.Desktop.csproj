@@ -1,0 +1,368 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B3FF3FFE-3996-4A67-9024-C962CFC844D5}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>smartManage.Desktop</RootNamespace>
+    <AssemblyName>smartManage.Desktop</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>\\Josam\shared_doc\TestProject\SmartManage\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Unc</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <SupportUrl>\\Josam\shared_doc\TestProject\SmartManage\Support\aide.html</SupportUrl>
+    <TargetCulture>fr</TargetCulture>
+    <ProductName>SmartManage Application</ProductName>
+    <PublisherName>Josamuna Soft</PublisherName>
+    <SuiteName>SmartManage Application</SuiteName>
+    <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>SmartManage.html</WebPage>
+    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>DF42A48E509B9891138AC274C93A8DCC5F27A308</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>smartManage.Desktop_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>smartManage.Desktop.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>LogoSmartManage.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.Controllers, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportAppServer.XmlSerialize, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="ManageUtilities, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\ManageUtilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Microsoft.VisualBasic.Compatibility" />
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="frmAccessPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAccessPoint.Designer.cs">
+      <DependentUpon>frmAccessPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAffectationMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAffectationMateriel.Designer.cs">
+      <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAffectationPersonne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAffectationPersonne.Designer.cs">
+      <DependentUpon>frmAffectationPersonne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAmplificateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAmplificateur.Designer.cs">
+      <DependentUpon>frmAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCategorieMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCategorieMateriel.Designer.cs">
+      <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmetteur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmetteur.Designer.cs">
+      <DependentUpon>frmEmetteur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmImprimante.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImprimante.Designer.cs">
+      <DependentUpon>frmImprimante.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAdminRadiusDataView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAdminRadiusDataView.Designer.cs">
+      <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOrdinateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOrdinateur.Designer.cs">
+      <DependentUpon>frmOrdinateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPersonne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPersonne.Designer.cs">
+      <DependentUpon>frmPersonne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrincipal.Designer.cs">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReport.Designer.cs">
+      <DependentUpon>frmReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRetroprojecteur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRetroprojecteur.Designer.cs">
+      <DependentUpon>frmRetroprojecteur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRouteurAP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRouteurAP.Designer.cs">
+      <DependentUpon>frmRouteurAP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptAffectationMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRptAffectationMateriel.Designer.cs">
+      <DependentUpon>frmRptAffectationMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptAffectationPersonne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRptAffectationPersonne.Designer.cs">
+      <DependentUpon>frmRptAffectationPersonne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRptMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRptMateriel.Designer.cs">
+      <DependentUpon>frmRptMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSignataire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSignataire.Designer.cs">
+      <DependentUpon>frmSignataire.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmStudentRadiusDataView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmStudentRadiusDataView.Designer.cs">
+      <DependentUpon>frmStudentRadiusDataView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSwitch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSwitch.Designer.cs">
+      <DependentUpon>frmSwitch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUtilisateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUtilisateur.designer.cs">
+      <DependentUpon>frmUtilisateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmConnection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConnection.designer.cs">
+      <DependentUpon>frmConnection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ICallMainForm.cs" />
+    <Compile Include="ICUDGeneral.cs" />
+    <Compile Include="ModifieDataForm.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="TestQRCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestQRCode.Designer.cs">
+      <DependentUpon>TestQRCode.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="frmAdminRadiusDataView.resx">
+      <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCategorieMateriel.resx">
+      <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImprimante.resx">
+      <DependentUpon>frmImprimante.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOrdinateur.resx">
+      <DependentUpon>frmOrdinateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrincipal.resx">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReport.resx">
+      <DependentUpon>frmReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUtilisateur.resx">
+      <DependentUpon>frmUtilisateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConnection.resx">
+      <DependentUpon>frmConnection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestQRCode.resx">
+      <DependentUpon>TestQRCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <None Include="smartManage.Desktop_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ManageQRCode\ManageQRCode.csproj">
+      <Project>{e76178cc-759b-4932-9b7b-61df8302395a}</Project>
+      <Name>ManageQRCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\smartManage.Model\smartManage.Model.csproj">
+      <Project>{646de8b7-ebfb-4b29-a7ae-6be2945ba5e7}</Project>
+      <Name>smartManage.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\smartManage.Tools\smartManage.Tools.csproj">
+      <Project>{789999be-c16c-459f-9bc7-91d88e0ba275}</Project>
+      <Name>smartManage.Tools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\img_home_player_background.png" />
+    <Content Include="Libraries\ManageConnexion.dll" />
+    <Content Include="Libraries\ManageUtilities.dll" />
+    <Content Include="LogoSmartManage.ico" />
+    <Content Include="LogoSmartManage_setup.ico" />
+    <None Include="Resources\LogoSmartManage_setup1.ico" />
+    <None Include="Resources\LogoSmartManage1.ico" />
+    <None Include="Resources\LogoSmartManage_setup.ico" />
+    <None Include="Resources\LogoSmartManage.ico" />
+    <None Include="Images\default_QRCode.png" />
+    <Content Include="Images\Preview.png" />
+    <Content Include="Images\Save.png" />
+    <Content Include="Images\Refresh.png" />
+    <Content Include="Images\Search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Reports\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
