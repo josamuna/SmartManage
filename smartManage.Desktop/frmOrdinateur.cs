@@ -11,7 +11,7 @@ namespace smartManage.Desktop
         BindingSource bdsrc = new BindingSource();
         bool blnModifie = false;
         private clsmateriel materiel = new clsmateriel();
-        private List<clsmateriel> lstItemSearch = new List<clsmateriel>();
+        int? newID = null;
 
         public frmPrincipal Principal
         {
@@ -174,7 +174,7 @@ namespace smartManage.Desktop
             SetBindingControls(txtMAC2, "Text", materiel, "Mac_adresse2");
             SetBindingControls(txtCommentaire, "Text", materiel, "Commentaire");
             SetBindingControls(txtCreateBy, "Text", materiel, "User_created");
-            SetBindingControls(txtDateModifie, "Text", materiel, "Date_created");
+            SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
             SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
             SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");
             
@@ -222,7 +222,7 @@ namespace smartManage.Desktop
             SetBindingControls(txtMAC2, "Text", bdsrc, "Mac_adresse2");
             SetBindingControls(txtCommentaire, "Text", bdsrc, "Commentaire");
             SetBindingControls(txtCreateBy, "Text", bdsrc, "User_created");
-            SetBindingControls(txtDateModifie, "Text", bdsrc, "Date_created");
+            SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
             SetBindingControls(txtModifieBy, "Text", bdsrc, "User_modified");
             SetBindingControls(txtDateModifie, "Text", bdsrc, "Date_modified");
 
@@ -255,7 +255,6 @@ namespace smartManage.Desktop
             try
             {
                 RefreshData();
-                dgv.DataSource = bdsrc;
 
                 List<ComboBox> lstCombo = new List<ComboBox>();
                 lstCombo.Add(cboCatMateriel);
@@ -298,6 +297,11 @@ namespace smartManage.Desktop
 
         private void RefreshData()
         {
+            bdsrc.DataSource = clsMetier.GetInstance().getAllClsmateriel();
+            Principal.SetDataSource(bdsrc);
+
+            dgv.DataSource = bdsrc;
+
             cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
             this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
             cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
@@ -417,6 +421,68 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
             Principal.SetCurrentICRUDChildForm(this);
             frmOrdinateur_Load(sender, e);
+
+            //Actualisation des combobox si modification
+            try
+            {
+                if(smartManage.Desktop.Properties.Settings.Default.LstModifieSousForm.Count > 0)
+                {
+                    foreach (string str in smartManage.Desktop.Properties.Settings.Default.LstModifieSousForm)
+                    {
+                        if (str.Equals(FormActualisation.frmCategorieMateriel.ToString()))
+                        {
+                            cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
+                            this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmNumeroCompte.ToString()))
+                        {
+                            cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
+                            this.setMembersallcbo(cboNumCompte, "Numero", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmMarque.ToString()))
+                        {
+                            cboMarque.DataSource = clsMetier.GetInstance().getAllClsmarque();
+                            this.setMembersallcbo(cboMarque, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmModele.ToString()))
+                        {
+                            cboModele.DataSource = clsMetier.GetInstance().getAllClsmodele();
+                            this.setMembersallcbo(cboModele, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmCouleur.ToString()))
+                        {
+                            cboCouleur.DataSource = clsMetier.GetInstance().getAllClscouleur();
+                            this.setMembersallcbo(cboCouleur, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmPoids.ToString()))
+                        {
+                            cboPoids.DataSource = clsMetier.GetInstance().getAllClspoids();
+                            this.setMembersallcbo(cboPoids, "Valeur", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmEtat.ToString()))
+                        {
+                            cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
+                            this.setMembersallcbo(cboEtat, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmTypeOrdinateur.ToString()))
+                        {
+                            cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
+                            this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmTypeClavier.ToString()))
+                        {
+                            cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
+                            this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
+                        }
+                        else if (str.Equals(FormActualisation.frmTypeOS.ToString()))
+                        {
+                            cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
+                            this.setMembersallcbo(cboTypeOS, "Designation", "Id");
+                        }
+                    }
+                }
+            }
+            catch (Exception) { }
         }
 
         private void frmOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
@@ -436,7 +502,12 @@ namespace smartManage.Desktop
 
                 BindingCls();
 
-                //txtIdentifiant.Focus();
+                //Set the new ID
+                if (newID == null)
+                    newID = clsMetier.GetInstance().GenerateLastID("materiel");
+                txtId.Text = newID.ToString();
+                txtCreateBy.Text = smartManage.Desktop.Properties.Settings.Default.UserConnected;
+                txtDateCreate.Text = DateTime.Now.ToString();
             }
             catch (Exception)
             {
@@ -449,16 +520,16 @@ namespace smartManage.Desktop
             try
             {
                 if (string.IsNullOrEmpty(criteria))
+                {
+                    this.RefreshRec();
                     return;
+                }
                 else
                 {
-                    if (lstItemSearch == null)
-                        lstItemSearch = clsMetier.GetInstance().getAllClsmateriel();
-                    List<clsmateriel> lstData = lstItemSearch.FindAll(x => x.Code_str.Equals(criteria) 
-                    || x.Label.Equals(criteria) || x.Alimentation.Equals(criteria) || x.Mac_adresse1.Equals(criteria) 
-                    || x.Mac_adresse2.Equals(criteria) || x.User_created.Equals(criteria));
+                    List<clsmateriel> lstItemSearch = new List<clsmateriel>();
+                    lstItemSearch = clsMetier.GetInstance().getAllClsmateriel(criteria);
 
-                    dgv.DataSource = lstData;
+                    dgv.DataSource = lstItemSearch;
                 }
             }
             catch (Exception ex)
@@ -481,6 +552,7 @@ namespace smartManage.Desktop
                     UpdateRec();
                 }
 
+                newID = null;
                 RefreshData();
             }
             catch (Exception ex)
@@ -491,7 +563,10 @@ namespace smartManage.Desktop
 
         public void UpdateRec()
         {
-            int record = materiel.update(materiel);
+            ((clsmateriel)bdsrc.Current).User_modified = smartManage.Desktop.Properties.Settings.Default.UserConnected;
+            ((clsmateriel)bdsrc.Current).Date_modified = DateTime.Now;
+
+            int record = materiel.update(((clsmateriel)bdsrc.Current));
             MessageBox.Show("Modification éffectuée : " + record + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -507,8 +582,9 @@ namespace smartManage.Desktop
 
                     if (dr == DialogResult.Yes)
                     {
-                        record = materiel.delete(materiel);
+                        record = materiel.delete(((clsmateriel)bdsrc.Current));
                         MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        newID = null;
                     }
                     else
                         MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -569,6 +645,13 @@ namespace smartManage.Desktop
         private void lblAddCategorieMat_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             frmCategorieMateriel frm = new frmCategorieMateriel();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddNumCompte_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNumeroCompte frm = new frmNumeroCompte();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }

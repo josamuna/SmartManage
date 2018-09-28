@@ -5,14 +5,14 @@ using System.Windows.Forms;
 
 namespace smartManage.Desktop
 {
-    public partial class frmCategorieMateriel : Form
+    public partial class frmNumeroCompte : Form
     {
         BindingSource bdsrc = new BindingSource();
         bool blnModifie = false;
-        private clscategorie_materiel materiel = new clscategorie_materiel();
+        private clscompte materiel = new clscompte();
         int? newID = null;
 
-        public frmCategorieMateriel()
+        public frmNumeroCompte()
         {
             InitializeComponent();
         }
@@ -33,7 +33,7 @@ namespace smartManage.Desktop
         private void BindingCls()
         {
             SetBindingControls(txtId, "Text", materiel, "Id");
-            SetBindingControls(txtDesignation, "Text", materiel, "Designation");
+            SetBindingControls(txtNumero, "Text", materiel, "Numero");
             SetBindingControls(txtCreateBy, "Text", materiel, "User_created");
             SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
             SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
@@ -43,7 +43,7 @@ namespace smartManage.Desktop
         private void BindingList()
         {
             SetBindingControls(txtId, "Text", bdsrc, "Id");
-            SetBindingControls(txtDesignation, "Text", bdsrc, "Designation");
+            SetBindingControls(txtNumero, "Text", bdsrc, "Numero");
             SetBindingControls(txtCreateBy, "Text", bdsrc, "User_created");
             SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
             SetBindingControls(txtModifieBy, "Text", bdsrc, "User_modified");
@@ -70,7 +70,7 @@ namespace smartManage.Desktop
 
         private void RefreshData()
         {
-            bdsrc.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
+            bdsrc.DataSource = clsMetier.GetInstance().getAllClscompte();
             this.SetDataSource(bdsrc);
             dgv.DataSource = bdsrc;
 
@@ -87,7 +87,7 @@ namespace smartManage.Desktop
         private void New()
         {
             //Initialise object class
-            materiel = new clscategorie_materiel();
+            materiel = new clscompte();
 
             bdSave.Enabled = true;
             blnModifie = false;
@@ -96,7 +96,7 @@ namespace smartManage.Desktop
 
             //Set the new ID
             if (newID == null)
-                newID = clsMetier.GetInstance().GenerateLastID("categorie_materiel");
+                newID = clsMetier.GetInstance().GenerateLastID("compte");
             txtId.Text = newID.ToString();
             txtCreateBy.Text = smartManage.Desktop.Properties.Settings.Default.UserConnected;
             txtDateCreate.Text = DateTime.Now.ToString();
@@ -111,8 +111,8 @@ namespace smartManage.Desktop
             }                
             else
             {
-                List<clscategorie_materiel> lstItemSearch = new List<clscategorie_materiel>();
-                lstItemSearch = clsMetier.GetInstance().getAllClscategorie_materiel(criteria);
+                List<clscompte> lstItemSearch = new List<clscompte>();
+                lstItemSearch = clsMetier.GetInstance().getAllClscompte(criteria);
 
                 dgv.DataSource = lstItemSearch;
             }
@@ -136,10 +136,10 @@ namespace smartManage.Desktop
 
         private void UpdateRec()
         {
-            ((clscategorie_materiel)bdsrc.Current).User_modified = smartManage.Desktop.Properties.Settings.Default.UserConnected;
-            ((clscategorie_materiel)bdsrc.Current).Date_modified = DateTime.Now;
+            ((clscompte)bdsrc.Current).User_modified = smartManage.Desktop.Properties.Settings.Default.UserConnected;
+            ((clscompte)bdsrc.Current).Date_modified = DateTime.Now;
 
-            int record = materiel.update(((clscategorie_materiel)bdsrc.Current));
+            int record = materiel.update(((clscompte)bdsrc.Current));
             MessageBox.Show("Modification éffectuée : " + record + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -153,7 +153,7 @@ namespace smartManage.Desktop
 
                 if (dr == DialogResult.Yes)
                 {
-                    record = materiel.delete(((clscategorie_materiel)bdsrc.Current));
+                    record = materiel.delete(((clscompte)bdsrc.Current));
                     MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     newID = null;
                 }
@@ -271,12 +271,6 @@ namespace smartManage.Desktop
             {
                 MessageBox.Show("Echec de la suppression, " + ex.Message, "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
-        }
-
-        private void frmCategorieMateriel_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            if (newID != null)
-                smartManage.Desktop.Properties.Settings.Default.LstModifieSousForm.Add(this.Name);
         }
     }
 }

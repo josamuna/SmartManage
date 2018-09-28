@@ -124,6 +124,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormActualisation.cs" />
     <Compile Include="frmAccessPoint.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -147,6 +148,12 @@
     </Compile>
     <Compile Include="frmAmplificateur.Designer.cs">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNumeroCompte.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNumeroCompte.Designer.cs">
+      <DependentUpon>frmNumeroCompte.cs</DependentUpon>
     </Compile>
     <Compile Include="frmCategorieMateriel.cs">
       <SubType>Form</SubType>
@@ -276,6 +283,9 @@
       <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmNumeroCompte.resx">
+      <DependentUpon>frmNumeroCompte.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmCategorieMateriel.resx">
       <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
     </EmbeddedResource>
@@ -332,6 +342,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\delete.png" />
     <Content Include="Images\img_home_player_background.png" />
     <Content Include="Libraries\ManageConnexion.dll" />
     <Content Include="Libraries\ManageUtilities.dll" />

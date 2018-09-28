@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtDateModifie = new System.Windows.Forms.TextBox();
             this.txtQRCode = new System.Windows.Forms.RichTextBox();
-            this.txtDateModifie = new System.Windows.Forms.DateTimePicker();
             this.label17 = new System.Windows.Forms.Label();
             this.txtModifieBy = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -151,20 +151,22 @@
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgv.Location = new System.Drawing.Point(3, 19);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
+            this.dgv.RowHeadersVisible = false;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1157, 204);
             this.dgv.TabIndex = 200;
@@ -184,8 +186,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.txtQRCode);
             this.groupBox2.Controls.Add(this.txtDateModifie);
+            this.groupBox2.Controls.Add(this.txtQRCode);
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.txtModifieBy);
             this.groupBox2.Controls.Add(this.label18);
@@ -236,6 +238,14 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
+            // txtDateModifie
+            // 
+            this.txtDateModifie.Location = new System.Drawing.Point(548, 84);
+            this.txtDateModifie.Name = "txtDateModifie";
+            this.txtDateModifie.ReadOnly = true;
+            this.txtDateModifie.Size = new System.Drawing.Size(109, 20);
+            this.txtDateModifie.TabIndex = 51;
+            // 
             // txtQRCode
             // 
             this.txtQRCode.Location = new System.Drawing.Point(101, 112);
@@ -244,14 +254,6 @@
             this.txtQRCode.Size = new System.Drawing.Size(109, 22);
             this.txtQRCode.TabIndex = 50;
             this.txtQRCode.Text = "";
-            // 
-            // txtDateModifie
-            // 
-            this.txtDateModifie.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.txtDateModifie.Location = new System.Drawing.Point(548, 84);
-            this.txtDateModifie.Name = "txtDateModifie";
-            this.txtDateModifie.Size = new System.Drawing.Size(109, 20);
-            this.txtDateModifie.TabIndex = 19;
             // 
             // label17
             // 
@@ -607,6 +609,7 @@
             this.lblAddNumCompte.TabStop = true;
             this.lblAddNumCompte.Text = "New";
             this.lblAddNumCompte.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddNumCompte.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddNumCompte_LinkClicked);
             // 
             // cboNumCompte
             // 
@@ -1308,7 +1311,6 @@
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.TextBox txtCreateBy;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.DateTimePicker txtDateModifie;
         private System.Windows.Forms.LinkLabel lblPhoto3;
         private System.Windows.Forms.LinkLabel lblPhoto2;
         private System.Windows.Forms.PictureBox pbPhoto3;
@@ -1362,5 +1364,6 @@
         private System.Windows.Forms.ComboBox cboTensionAdap;
         private System.Windows.Forms.ComboBox cboPuissanceAdap;
         private System.Windows.Forms.TextBox txtNumeroCle;
+        private System.Windows.Forms.TextBox txtDateModifie;
     }
 }

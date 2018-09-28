@@ -235,8 +235,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM compte  WHERE 1=1";
-                    sql += "  OR   numero LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM compte  WHERE";
+                    sql += "  numero LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -443,8 +443,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM groupe  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM groupe  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -634,8 +634,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM marque  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM marque  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -845,8 +845,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM modele  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM modele  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -1056,8 +1056,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM couleur  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM couleur  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -1267,8 +1267,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM poids  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM poids  WHERE";
+                    sql += "  user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -1475,8 +1475,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_ordinateur  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_ordinateur  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -1686,8 +1686,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_imprimante  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_imprimante  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -1897,8 +1897,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_amplificateur  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_amplificateur  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -2108,8 +2108,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_routeur_AP  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_routeur_AP  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -2319,8 +2319,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_AP  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_AP  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -2530,8 +2530,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_switch  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_switch  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -2741,8 +2741,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_clavier  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_clavier  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -2952,8 +2952,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM etat_materiel  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM etat_materiel  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -3163,8 +3163,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_OS  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_OS  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -3374,8 +3374,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM architecture_OS  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM architecture_OS  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -3587,8 +3587,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM OS  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM OS  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -3806,8 +3806,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM version_ios  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM version_ios  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -4017,8 +4017,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM netette  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM netette  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -4293,8 +4293,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM materiel  WHERE 1=1";
-                    sql += "  OR   code_str LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM materiel  WHERE";
+                    sql += "  code_str LIKE '%" + criteria + "%'";
                     sql += "  OR   qrcode LIKE '%" + criteria + "%'";
                     sql += "  OR   photo1 LIKE '%" + criteria + "%'";
                     sql += "  OR   photo2 LIKE '%" + criteria + "%'";
@@ -4891,8 +4891,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM grade  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM grade  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -5108,8 +5108,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM personne  WHERE 1=1";
-                    sql += "  OR   nom LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM personne  WHERE";
+                    sql += "   nom LIKE '%" + criteria + "%'";
                     sql += "  OR   postnom LIKE '%" + criteria + "%'";
                     sql += "  OR   prenom LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
@@ -5353,8 +5353,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_lieu_affectation  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM type_lieu_affectation  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -5565,8 +5565,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM AC  WHERE 1=1";
-                    sql += "  OR   code_str LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM AC  WHERE";
+                    sql += "  code_str LIKE '%" + criteria + "%'";
                     sql += "  OR   designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
@@ -5783,8 +5783,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM optio  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM optio  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -5994,8 +5994,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM promotion  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM promotion  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -6206,8 +6206,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM section  WHERE 1=1";
-                    sql += "  OR   designation1 LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM section  WHERE";
+                    sql += "  designation1 LIKE '%" + criteria + "%'";
                     sql += "  OR   designation2 LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
@@ -6431,8 +6431,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM retrait_materiel  WHERE 1=1";
-                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM retrait_materiel  WHERE";
+                    sql += "  code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -6679,8 +6679,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM detail_retrait_materiel  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM detail_retrait_materiel  WHERE";
+                    sql += "  user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -6893,8 +6893,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM signataire  WHERE 1=1";
-                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM signataire  WHERE";
+                    sql += "  code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   signature_specimen LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
@@ -7115,8 +7115,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM salle  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM salle  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -7326,8 +7326,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM fonction  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM fonction  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -7542,8 +7542,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM lieu_affectation  WHERE 1=1";
-                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM lieu_affectation  WHERE";
+                    sql += "  code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
@@ -7784,8 +7784,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM affectation_materiel  WHERE 1=1";
-                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM affectation_materiel  WHERE";
+                    sql += "  code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -8014,8 +8014,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM utilisateur  WHERE 1=1";
-                    sql += "  OR   nomuser LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM utilisateur  WHERE";
+                    sql += "  nomuser LIKE '%" + criteria + "%'";
                     sql += "  OR   motpass LIKE '%" + criteria + "%'";
                     sql += "  OR   schema_user LIKE '%" + criteria + "%'";
                     sql += "  OR   droits LIKE '%" + criteria + "%'";
@@ -9199,8 +9199,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM categorie_materiel  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM categorie_materiel  WHERE";
+                    sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
