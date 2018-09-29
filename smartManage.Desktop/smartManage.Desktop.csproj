@@ -149,6 +149,54 @@
     <Compile Include="frmAmplificateur.Designer.cs">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmTypeOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeOS.Designer.cs">
+      <DependentUpon>frmTypeOS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeClavier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeClavier.Designer.cs">
+      <DependentUpon>frmTypeClavier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeOrdinateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeOrdinateur.Designer.cs">
+      <DependentUpon>frmTypeOrdinateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEtatMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEtatMateriel.Designer.cs">
+      <DependentUpon>frmEtatMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPoids.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPoids.Designer.cs">
+      <DependentUpon>frmPoids.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCouleur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCouleur.Designer.cs">
+      <DependentUpon>frmCouleur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmModele.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmModele.Designer.cs">
+      <DependentUpon>frmModele.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmMarque.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMarque.Designer.cs">
+      <DependentUpon>frmMarque.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmNumeroCompte.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -282,6 +330,30 @@
     <EmbeddedResource Include="frmAdminRadiusDataView.resx">
       <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeOS.resx">
+      <DependentUpon>frmTypeOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeClavier.resx">
+      <DependentUpon>frmTypeClavier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeOrdinateur.resx">
+      <DependentUpon>frmTypeOrdinateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEtatMateriel.resx">
+      <DependentUpon>frmEtatMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPoids.resx">
+      <DependentUpon>frmPoids.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCouleur.resx">
+      <DependentUpon>frmCouleur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmModele.resx">
+      <DependentUpon>frmModele.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMarque.resx">
+      <DependentUpon>frmMarque.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmNumeroCompte.resx">
       <DependentUpon>frmNumeroCompte.cs</DependentUpon>

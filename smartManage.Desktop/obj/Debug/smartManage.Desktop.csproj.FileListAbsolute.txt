@@ -50,8 +50,6 @@ D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Desktop\obj\Debug\s
 D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Desktop\bin\Debug\ManageQRCode.pdb
 D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Desktop\bin\Debug\smartManage.Model.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.exe.config
-D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.exe
-D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.exe.manifest
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.application
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.exe
@@ -88,6 +86,9 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\zh-Hans\Microsoft.S
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\zh-Hant\Microsoft.SqlServer.Types.resources.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.csprojResolveAssemblyReference.cache
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmAdminRadiusDataView.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmModele.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmMarque.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmNumeroCompte.resources
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmCategorieMateriel.resources
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmImprimante.resources
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmOrdinateur.resources
@@ -100,4 +101,11 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.csproj.GenerateResource.Cache
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.exe.manifest
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.application
-D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmNumeroCompte.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.exe
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmTypeOS.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmTypeClavier.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmTypeOrdinateur.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmEtatMateriel.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmPoids.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmCouleur.resources

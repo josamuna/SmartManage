@@ -5,7 +5,7 @@
     <Setting Name="UserConnected" Type="System.String" Scope="User">
       <Value Profile="(Default)">Aucun utilisateur n'est encore connecté</Value>
     </Setting>
-    <Setting Name="LstModifieSousForm" Type="System.Collections.Specialized.StringCollection" Scope="User">
+    <Setting Name="strFormModifie" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

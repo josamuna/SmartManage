@@ -37,12 +37,13 @@ namespace smartManage.Desktop.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::System.Collections.Specialized.StringCollection LstModifieSousForm {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string strFormModifie {
             get {
-                return ((global::System.Collections.Specialized.StringCollection)(this["LstModifieSousForm"]));
+                return ((string)(this["strFormModifie"]));
             }
             set {
-                this["LstModifieSousForm"] = value;
+                this["strFormModifie"] = value;
             }
         }
     }

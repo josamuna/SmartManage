@@ -278,7 +278,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM compte ");
+                    cmd.CommandText = string.Format("SELECT *  FROM compte ORDER BY numero ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -677,7 +677,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM marque ");
+                    cmd.CommandText = string.Format("SELECT *  FROM marque ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -888,7 +888,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM modele ");
+                    cmd.CommandText = string.Format("SELECT *  FROM modele ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1099,7 +1099,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM couleur ");
+                    cmd.CommandText = string.Format("SELECT *  FROM couleur ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1309,7 +1309,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM poids ");
+                    cmd.CommandText = string.Format("SELECT *  FROM poids ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1518,7 +1518,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_ordinateur ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_ordinateur ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1729,7 +1729,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_imprimante ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_imprimante ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1940,7 +1940,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_amplificateur ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_amplificateur ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -2151,7 +2151,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_routeur_AP ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_routeur_AP ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -2362,7 +2362,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_AP ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_AP ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -2573,7 +2573,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_switch ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_switch ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -2784,7 +2784,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_clavier ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_clavier ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -2995,7 +2995,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM etat_materiel ");
+                    cmd.CommandText = string.Format("SELECT *  FROM etat_materiel ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -3206,7 +3206,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_OS ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_OS ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -3417,7 +3417,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM architecture_OS ");
+                    cmd.CommandText = string.Format("SELECT *  FROM architecture_OS ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -3632,7 +3632,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM OS ");
+                    cmd.CommandText = string.Format("SELECT *  FROM OS ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -3849,7 +3849,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM version_ios ");
+                    cmd.CommandText = string.Format("SELECT *  FROM version_ios ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -4060,7 +4060,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM netette ");
+                    cmd.CommandText = string.Format("SELECT *  FROM netette ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -4412,7 +4412,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM materiel ");
+                    cmd.CommandText = string.Format("SELECT *  FROM materiel ORDER BY code_str ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -4934,7 +4934,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM grade ");
+                    cmd.CommandText = string.Format("SELECT *  FROM grade ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -5159,7 +5159,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM personne ");
+                    cmd.CommandText = string.Format("SELECT *  FROM personne ORDER BY nom ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clspersonne varclspersonne = null;
@@ -5396,7 +5396,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_lieu_affectation ");
+                    cmd.CommandText = string.Format("SELECT *  FROM type_lieu_affectation ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -5610,7 +5610,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM AC ");
+                    cmd.CommandText = string.Format("SELECT *  FROM AC ORDER BY designation DESC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -5826,7 +5826,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM optio ");
+                    cmd.CommandText = string.Format("SELECT *  FROM optio ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -6037,7 +6037,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM promotion ");
+                    cmd.CommandText = string.Format("SELECT *  FROM promotion ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -7158,7 +7158,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM salle ");
+                    cmd.CommandText = string.Format("SELECT *  FROM salle ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -7369,7 +7369,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM fonction ");
+                    cmd.CommandText = string.Format("SELECT *  FROM fonction ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -7591,7 +7591,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM lieu_affectation ");
+                    cmd.CommandText = string.Format("SELECT *  FROM lieu_affectation ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -9242,7 +9242,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM categorie_materiel ");
+                    cmd.CommandText = string.Format("SELECT *  FROM categorie_materiel ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 

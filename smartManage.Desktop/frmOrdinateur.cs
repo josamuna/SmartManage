@@ -421,68 +421,67 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
             Principal.SetCurrentICRUDChildForm(this);
             frmOrdinateur_Load(sender, e);
+        }
 
+        private void ActualiseComboBoxModification()
+        {
             //Actualisation des combobox si modification
-            try
+            
+            if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifie))
             {
-                if(smartManage.Desktop.Properties.Settings.Default.LstModifieSousForm.Count > 0)
+                if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCategorieMateriel.ToString()))
                 {
-                    foreach (string str in smartManage.Desktop.Properties.Settings.Default.LstModifieSousForm)
-                    {
-                        if (str.Equals(FormActualisation.frmCategorieMateriel.ToString()))
-                        {
-                            cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
-                            this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmNumeroCompte.ToString()))
-                        {
-                            cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
-                            this.setMembersallcbo(cboNumCompte, "Numero", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmMarque.ToString()))
-                        {
-                            cboMarque.DataSource = clsMetier.GetInstance().getAllClsmarque();
-                            this.setMembersallcbo(cboMarque, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmModele.ToString()))
-                        {
-                            cboModele.DataSource = clsMetier.GetInstance().getAllClsmodele();
-                            this.setMembersallcbo(cboModele, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmCouleur.ToString()))
-                        {
-                            cboCouleur.DataSource = clsMetier.GetInstance().getAllClscouleur();
-                            this.setMembersallcbo(cboCouleur, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmPoids.ToString()))
-                        {
-                            cboPoids.DataSource = clsMetier.GetInstance().getAllClspoids();
-                            this.setMembersallcbo(cboPoids, "Valeur", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmEtat.ToString()))
-                        {
-                            cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
-                            this.setMembersallcbo(cboEtat, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmTypeOrdinateur.ToString()))
-                        {
-                            cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
-                            this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmTypeClavier.ToString()))
-                        {
-                            cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
-                            this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
-                        }
-                        else if (str.Equals(FormActualisation.frmTypeOS.ToString()))
-                        {
-                            cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
-                            this.setMembersallcbo(cboTypeOS, "Designation", "Id");
-                        }
-                    }
+                    cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
+                    this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNumeroCompte.ToString()))
+                {
+                    cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
+                    this.setMembersallcbo(cboNumCompte, "Numero", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmMarque.ToString()))
+                {
+                    cboMarque.DataSource = clsMetier.GetInstance().getAllClsmarque();
+                    this.setMembersallcbo(cboMarque, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmModele.ToString()))
+                {
+                    cboModele.DataSource = clsMetier.GetInstance().getAllClsmodele();
+                    this.setMembersallcbo(cboModele, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCouleur.ToString()))
+                {
+                    cboCouleur.DataSource = clsMetier.GetInstance().getAllClscouleur();
+                    this.setMembersallcbo(cboCouleur, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmPoids.ToString()))
+                {
+                    cboPoids.DataSource = clsMetier.GetInstance().getAllClspoids();
+                    this.setMembersallcbo(cboPoids, "Valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmEtat.ToString()))
+                {
+                    cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
+                    this.setMembersallcbo(cboEtat, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeOrdinateur.ToString()))
+                {
+                    cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
+                    this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeClavier.ToString()))
+                {
+                    cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
+                    this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeOS.ToString()))
+                {
+                    cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
+                    this.setMembersallcbo(cboTypeOS, "Designation", "Id");
                 }
             }
-            catch (Exception) { }
+
+            smartManage.Desktop.Properties.Settings.Default.strFormModifie = "";
         }
 
         private void frmOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
@@ -652,6 +651,260 @@ namespace smartManage.Desktop
         private void lblAddNumCompte_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             frmNumeroCompte frm = new frmNumeroCompte();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void cboCatMateriel_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboNumCompte_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void lblAddMarque_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmMarque frm = new frmMarque();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddModele_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmModele frm = new frmModele();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void cboMarque_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboModele_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboCouleur_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboPoids_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboEtat_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTypeOrdi_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTypeClavier_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTypeOS_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboNbrCoeurProcesseur_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboNbrHDD_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboCapaciteHDD_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboIndicePC_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboUSB2_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboUSB3_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboNbrHDMI_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboNbrVGA_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTensionBatt_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTensionAdap_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboPuissanceAdap_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboIntensiteAdap_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void lblAddCouleur_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmCouleur frm = new frmCouleur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddPoids_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmPoids frm = new frmPoids();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblEtatMatriel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmEtatMateriel frm = new frmEtatMateriel();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddPC_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmModele frm = new frmModele();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddTypeClavier_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmModele frm = new frmModele();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddOS_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmModele frm = new frmModele();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }

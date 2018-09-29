@@ -58,6 +58,9 @@ namespace smartManage.Desktop
 
         private void frmCategorieMateriel_Load(object sender, EventArgs e)
         {
+            this.bdNav.Enabled = true;
+            smartManage.Desktop.Properties.Settings.Default.strFormModifie = "";
+
             try
             {
                 RefreshData();
@@ -78,10 +81,7 @@ namespace smartManage.Desktop
             {
                 bdDelete.Enabled = false;
                 bdSave.Enabled = false;
-                this.bdNav.Enabled = false;
             }
-            else
-                this.bdNav.Enabled = true;
         }
 
         private void New()
@@ -129,9 +129,6 @@ namespace smartManage.Desktop
             {
                 UpdateRec();
             }
-
-            newID = null;
-            RefreshData();
         }
 
         private void UpdateRec()
@@ -155,7 +152,10 @@ namespace smartManage.Desktop
                 {
                     record = materiel.delete(((clscompte)bdsrc.Current));
                     MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     newID = null;
+                    smartManage.Desktop.Properties.Settings.Default.strFormModifie = this.Name;
+                    RefreshData();
                 }
                 else
                     MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -254,6 +254,9 @@ namespace smartManage.Desktop
             try
             {
                 this.Save();
+                smartManage.Desktop.Properties.Settings.Default.strFormModifie = this.Name;
+                newID = null;
+                RefreshData();
             }
             catch (Exception ex)
             {
