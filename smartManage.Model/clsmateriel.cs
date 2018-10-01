@@ -39,7 +39,7 @@ namespace smartManage.Model
         private int? nombre_coeur_processeur;
         private int? nombre_hdd;
         private int? capacite_hdd;
-        private int? indice_performance;
+        private double? indice_performance;
         private int? pouce;
         private int? nombre_usb2;
         private int? nombre_usb3;
@@ -269,7 +269,7 @@ namespace smartManage.Model
             get { return capacite_hdd; }
             set { capacite_hdd = value; }
         }  //***Accesseur de indice_performance***
-        public int? Indice_performance
+        public double? Indice_performance
         {
             get { return indice_performance; }
             set { indice_performance = value; }

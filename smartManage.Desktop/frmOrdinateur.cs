@@ -1,4 +1,5 @@
-﻿using smartManage.Model;
+﻿using ManageQRCode;
+using smartManage.Model;
 using smartManage.Tools;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,30 @@ namespace smartManage.Desktop
         {
             InitializeComponent();
         }
+
+        #region FOR GENERATE QRCode
+        public string SaveTempImage(System.Windows.Forms.PictureBox pbox)
+        {
+            string filename = Environment.GetEnvironmentVariables()["TEMP"].ToString() + @"\" + "fTmp" + DateTime.Now.Millisecond.ToString() + ".png";
+
+            using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite))
+            {
+                System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
+                pbox.Image.Save(fs, imageFormat);
+                fs.Close();
+            }
+
+            return filename;
+        }
+
+        public void RemoveTempImage(string fileName)
+        {
+            if (System.IO.File.Exists(fileName))
+            {
+                System.IO.File.Delete(fileName);
+            }
+        }
+        #endregion
 
         #region FOR BINDING
         private void setMembersallcbo(ComboBox cbo, string displayMember, string valueMember)
@@ -162,9 +187,9 @@ namespace smartManage.Desktop
             SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
             SetBindingControls(txtGuarantie, "Text", materiel, "Guarantie");
-            SetBindingControls(cboMarque, "SelectedText", materiel, "Id_marque");
-            SetBindingControls(cboModele, "SelectedText", materiel, "Id_modele");
-            SetBindingControls(cboCouleur, "SelectedText", materiel, "Id_couleur");
+            SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
+            SetBindingControls(cboModele, "SelectedValue", materiel, "Id_modele");
+            SetBindingControls(cboCouleur, "SelectedValue", materiel, "Id_couleur");
             SetBindingControls(cboPoids, "SelectedValue", materiel, "Id_poids");
             SetBindingControls(cboEtat, "SelectedValue", materiel, "Id_etat_materiel");
             bingImg1(pbPhoto1, materiel, "Image", "Photo1");
@@ -181,23 +206,23 @@ namespace smartManage.Desktop
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedText", materiel, "Id_os");
+            SetBindingControls(cboTypeOS, "SelectedValue", materiel, "Id_os");
             SetBindingControls(txtRAM, "Text", materiel, "Ram");
             SetBindingControls(txtProcesseur, "Text", materiel, "Processeur");
-            SetBindingControls(cboNbrCoeurProcesseur, "SelectedText", materiel, "Nombre_coeur_processeur");
-            SetBindingControls(cboNbrHDD, "SelectedText", materiel, "Nombre_hdd");
-            SetBindingControls(cboCapaciteHDD, "SelectedText", materiel, "Capacite_hdd");
-            SetBindingControls(cboIndicePC, "SelectedText", materiel, "Indice_performance");
+            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", materiel, "Nombre_coeur_processeur");
+            SetBindingControls(cboNbrHDD, "SelectedValue", materiel, "Nombre_hdd");
+            SetBindingControls(cboCapaciteHDD, "SelectedValue", materiel, "Capacite_hdd");
+            SetBindingControls(cboIndicePC, "SelectedValue", materiel, "Indice_performance");
             SetBindingControls(txtTailleEcran, "Text", materiel, "Pouce");
-            SetBindingControls(cboUSB2, "SelectedText", materiel, "Nombre_usb2");
-            SetBindingControls(cboUSB3, "SelectedText", materiel, "Nombre_usb3");
-            SetBindingControls(cboUSB2, "SelectedText", materiel, "Nombre_usb2");
-            SetBindingControls(cboNbrHDMI, "SelectedText", materiel, "Nombre_hdmi");
-            SetBindingControls(cboNbrVGA, "SelectedText", materiel, "Nombre_vga");
-            SetBindingControls(cboTensionBatt, "SelectedText", materiel, "Tension_batterie");
-            SetBindingControls(cboTensionAdap, "SelectedText", materiel, "Tension_adaptateur");
-            SetBindingControls(cboPuissanceAdap, "SelectedText", materiel, "Puissance_adaptateur");
-            SetBindingControls(cboIntensiteAdap, "SelectedText", materiel, "Intensite_adaptateur");
+            SetBindingControls(cboUSB2, "SelectedValue", materiel, "Nombre_usb2");
+            SetBindingControls(cboUSB3, "SelectedValue", materiel, "Nombre_usb3");
+            SetBindingControls(cboUSB2, "SelectedValue", materiel, "Nombre_usb2");
+            SetBindingControls(cboNbrHDMI, "SelectedValue", materiel, "Nombre_hdmi");
+            SetBindingControls(cboNbrVGA, "SelectedValue", materiel, "Nombre_vga");
+            SetBindingControls(cboTensionBatt, "SelectedValue", materiel, "Tension_batterie");
+            SetBindingControls(cboTensionAdap, "SelectedValue", materiel, "Tension_adaptateur");
+            SetBindingControls(cboPuissanceAdap, "SelectedValue", materiel, "Puissance_adaptateur");
+            SetBindingControls(cboIntensiteAdap, "SelectedValue", materiel, "Intensite_adaptateur");
             SetBindingControls(txtNumeroCle, "Text", materiel, "Numero_cle");
         }
 
@@ -210,9 +235,9 @@ namespace smartManage.Desktop
             SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
             SetBindingControls(txtGuarantie, "Text", bdsrc, "Guarantie");
-            SetBindingControls(cboMarque, "SelectedText", bdsrc, "Id_marque");
-            SetBindingControls(cboModele, "SelectedText", bdsrc, "Id_modele");
-            SetBindingControls(cboCouleur, "SelectedText", bdsrc, "Id_couleur");
+            SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
+            SetBindingControls(cboModele, "SelectedValue", bdsrc, "Id_modele");
+            SetBindingControls(cboCouleur, "SelectedValue", bdsrc, "Id_couleur");
             SetBindingControls(cboPoids, "SelectedValue", bdsrc, "Id_poids");
             SetBindingControls(cboEtat, "SelectedValue", bdsrc, "Id_etat_materiel");
             bingImg1(pbPhoto1, bdsrc, "Image", "Photo1");
@@ -229,23 +254,23 @@ namespace smartManage.Desktop
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", bdsrc, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedText", bdsrc, "Id_os");
+            SetBindingControls(cboTypeOS, "SelectedValue", bdsrc, "Id_os");
             SetBindingControls(txtRAM, "Text", bdsrc, "Ram");
             SetBindingControls(txtProcesseur, "Text", bdsrc, "Processeur");
-            SetBindingControls(cboNbrCoeurProcesseur, "SelectedText", bdsrc, "Nombre_coeur_processeur");
-            SetBindingControls(cboNbrHDD, "SelectedText", bdsrc, "Nombre_hdd");
-            SetBindingControls(cboCapaciteHDD, "SelectedText", bdsrc, "Capacite_hdd");
-            SetBindingControls(cboIndicePC, "SelectedText", bdsrc, "Indice_performance");
+            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", bdsrc, "Nombre_coeur_processeur");
+            SetBindingControls(cboNbrHDD, "SelectedValue", bdsrc, "Nombre_hdd");
+            SetBindingControls(cboCapaciteHDD, "SelectedValue", bdsrc, "Capacite_hdd");
+            SetBindingControls(cboIndicePC, "SelectedValue", bdsrc, "Indice_performance");
             SetBindingControls(txtTailleEcran, "Text", bdsrc, "Pouce");
-            SetBindingControls(cboUSB2, "SelectedText", bdsrc, "Nombre_usb2");
-            SetBindingControls(cboUSB3, "SelectedText", bdsrc, "Nombre_usb3");
-            SetBindingControls(cboUSB2, "SelectedText", bdsrc, "Nombre_usb2");
-            SetBindingControls(cboNbrHDMI, "SelectedText", bdsrc, "Nombre_hdmi");
-            SetBindingControls(cboNbrVGA, "SelectedText", bdsrc, "Nombre_vga");
-            SetBindingControls(cboTensionBatt, "SelectedText", bdsrc, "Tension_batterie");
-            SetBindingControls(cboTensionAdap, "SelectedText", bdsrc, "Tension_adaptateur");
-            SetBindingControls(cboPuissanceAdap, "SelectedText", bdsrc, "Puissance_adaptateur");
-            SetBindingControls(cboIntensiteAdap, "SelectedText", bdsrc, "Intensite_adaptateur");
+            SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Nombre_usb2");
+            SetBindingControls(cboUSB3, "SelectedValue", bdsrc, "Nombre_usb3");
+            SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Nombre_usb2");
+            SetBindingControls(cboNbrHDMI, "SelectedValue", bdsrc, "Nombre_hdmi");
+            SetBindingControls(cboNbrVGA, "SelectedValue", bdsrc, "Nombre_vga");
+            SetBindingControls(cboTensionBatt, "SelectedValue", bdsrc, "Tension_batterie");
+            SetBindingControls(cboTensionAdap, "SelectedValue", bdsrc, "Tension_adaptateur");
+            SetBindingControls(cboPuissanceAdap, "SelectedValue", bdsrc, "Puissance_adaptateur");
+            SetBindingControls(cboIntensiteAdap, "SelectedValue", bdsrc, "Intensite_adaptateur");
             SetBindingControls(txtNumeroCle, "Text", bdsrc, "Numero_cle");
         }
         #endregion
@@ -352,11 +377,11 @@ namespace smartManage.Desktop
 
             List<string> lstIndicePC = new List<string>();
             lstIndicePC.Add("1");
-            lstIndicePC.Add("3,1");
-            lstIndicePC.Add("3,2");
-            lstIndicePC.Add("3,3");
-            lstIndicePC.Add("4,4");
-            lstIndicePC.Add("4,5");
+            lstIndicePC.Add("3.1");
+            lstIndicePC.Add("3.2");
+            lstIndicePC.Add("3.3");
+            lstIndicePC.Add("4.4");
+            lstIndicePC.Add("4.5");
             cboIndicePC.DataSource = lstIndicePC; 
 
             List<string> lstUSB2 = new List<string>();
@@ -459,7 +484,7 @@ namespace smartManage.Desktop
                     cboPoids.DataSource = clsMetier.GetInstance().getAllClspoids();
                     this.setMembersallcbo(cboPoids, "Valeur", "Id");
                 }
-                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmEtat.ToString()))
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmEtatMateriel.ToString()))
                 {
                     cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
                     this.setMembersallcbo(cboEtat, "Designation", "Id");
@@ -687,15 +712,6 @@ namespace smartManage.Desktop
             frm.ShowDialog();
         }
 
-        private void cboMarque_DropDown(object sender, EventArgs e)
-        {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
-        }
-
         private void cboModele_DropDown(object sender, EventArgs e)
         {
             try
@@ -907,6 +923,107 @@ namespace smartManage.Desktop
             frmModele frm = new frmModele();
             frm.Icon = this.Icon;
             frm.ShowDialog();
+        }
+
+        private void cboCatMateriel_Leave(object sender, EventArgs e)
+        {
+            try
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                sb.Append(string.Format("{0}-{1}", txtId.Text, ((clscategorie_materiel)cboCatMateriel.SelectedItem).Id.ToString()));
+                txtIdentidiant.Text = sb.ToString();
+
+                //Creating QrCode 
+                clsTools tool = new clsTools();
+                System.Drawing.Image img = QRCodeImage.GetGenerateQRCode(txtIdentidiant.Text, "L", "", 0);//L, M ou Q
+                pbQRCode.Image = img;
+
+                //Convert PictureBox image to Base64 text
+                //Save a temp image file
+                string fileName = tool.SaveTempImage(pbQRCode);
+                txtQRCode.Text = tool.ImageToString64(tool.GetImageFromByte(fileName));
+
+                //Remove the temp image created
+                tool.RemoveTempImage(fileName);
+            }
+            catch (Exception) { }
+        }
+
+        private void cboMarque_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void lblPhoto1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog open;
+                DialogResult result;
+                LoadPicture(out open, out result);
+
+                if (result == DialogResult.OK)
+                {
+                    pbPhoto1.Load(open.FileName);
+                    materiel.Photo1 = new clsTools().ImageToString64(open.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo1", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private static void LoadPicture(out OpenFileDialog open, out DialogResult result)
+        {
+            open = new OpenFileDialog();
+            open.Title = "Sélection d'une photo";
+            open.Filter = "PNG Files(*.png)|*.png|JPG Files(*.jpg)|*.jpg|JPEG Files(*.jpeg)|*.jpeg|TIFF Files(*.tiff)|*.tiff";
+            result = open.ShowDialog();
+        }
+
+        private void lblPhoto2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog open;
+                DialogResult result;
+                LoadPicture(out open, out result);
+
+                if (result == DialogResult.OK)
+                {
+                    pbPhoto2.Load(open.FileName);
+                    materiel.Photo2 = new clsTools().ImageToString64(open.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo2", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void lblPhoto3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                OpenFileDialog open;
+                DialogResult result;
+                LoadPicture(out open, out result);
+
+                if (result == DialogResult.OK)
+                {
+                    pbPhoto3.Load(open.FileName);
+                    materiel.Photo3 = new clsTools().ImageToString64(open.FileName);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo3", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }

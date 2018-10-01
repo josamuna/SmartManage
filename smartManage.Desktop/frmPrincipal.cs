@@ -353,12 +353,6 @@ namespace smartManage.Desktop
             this.bdNav.Enabled = true;
         }
 
-        private void bdNew_Click(object sender, EventArgs e)
-        {
-            if (frmCurrent != null)
-                frmCurrent.New();
-        }
-
         private void bdDelete_Click(object sender, EventArgs e)
         {
             if (frmCurrent != null)
@@ -459,6 +453,12 @@ namespace smartManage.Desktop
                         frmCurrent.RefreshRec();
             }
             catch (Exception) { }
+        }
+
+        private void bdNew_Click(object sender, EventArgs e)
+        {
+            if (frmCurrent != null)
+                frmCurrent.New();
         }
     }
 }

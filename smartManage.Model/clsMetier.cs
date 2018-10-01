@@ -4230,7 +4230,7 @@ namespace smartManage.Model
                             if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
                             if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
                             if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = int.Parse(dr["indice_performance"].ToString());
+                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
                             if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
                             if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
                             if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
@@ -4348,7 +4348,7 @@ namespace smartManage.Model
                             if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
                             if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
                             if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = int.Parse(dr["indice_performance"].ToString());
+                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
                             if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
                             if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
                             if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
@@ -4452,7 +4452,7 @@ namespace smartManage.Model
                             if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
                             if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
                             if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = int.Parse(dr["indice_performance"].ToString());
+                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
                             if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
                             if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
                             if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
@@ -4571,8 +4571,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, varclsmateriel.Capacite_hdd));
                     else cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Int32, 4, varclsmateriel.Indice_performance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, varclsmateriel.Indice_performance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, DBNull.Value));
                     if (varclsmateriel.Pouce.HasValue) cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, varclsmateriel.Pouce));
                     else cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Nombre_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, varclsmateriel.Nombre_usb2));
@@ -4727,8 +4727,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, varclsmateriel.Capacite_hdd));
                     else cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Int32, 4, varclsmateriel.Indice_performance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, varclsmateriel.Indice_performance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, DBNull.Value));
                     if (varclsmateriel.Pouce.HasValue) cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, varclsmateriel.Pouce));
                     else cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Nombre_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, varclsmateriel.Nombre_usb2));

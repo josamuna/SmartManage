@@ -299,7 +299,7 @@ create table materiel
 	nombre_coeur_processeur int,
 	nombre_hdd int,
 	capacite_hdd int,
-	indice_performance int,
+	indice_performance float,
 	pouce int,
 	nombre_usb2 int,
 	nombre_usb3 int,

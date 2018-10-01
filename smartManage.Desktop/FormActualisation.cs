@@ -10,7 +10,7 @@ namespace smartManage.Desktop
         frmModele,
         frmCouleur,
         frmPoids,
-        frmEtat,
+        frmEtatMateriel,
         frmTypeOrdinateur,
         frmTypeClavier,
         frmTypeOS

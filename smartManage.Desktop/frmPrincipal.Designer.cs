@@ -80,23 +80,23 @@
             this.lblDate = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bdNew = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bdDelete = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
             this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.bdSave = new System.Windows.Forms.ToolStripButton();
-            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
+            this.bdDelete = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bdSave = new System.Windows.Forms.ToolStripButton();
+            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
             this.bdSearch = new System.Windows.Forms.ToolStripButton();
             this.bdPreview = new System.Windows.Forms.ToolStripButton();
+            this.bdNew = new System.Windows.Forms.ToolStripButton();
             this.nmStripMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -477,7 +477,7 @@
             // 
             // bdNav
             // 
-            this.bdNav.AddNewItem = this.bdNew;
+            this.bdNav.AddNewItem = null;
             this.bdNav.CountItem = this.bindingNavigatorCountItem;
             this.bdNav.DeleteItem = this.bdDelete;
             this.bdNav.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -511,22 +511,48 @@
             this.bdNav.TabIndex = 0;
             this.bdNav.Text = "bindingNavigator1";
             // 
-            // bdNew
-            // 
-            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
-            this.bdNew.Name = "bdNew";
-            this.bdNew.RightToLeftAutoMirrorImage = true;
-            this.bdNew.Size = new System.Drawing.Size(23, 33);
-            this.bdNew.Text = "Nouvel enregistrement";
-            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
-            // 
             // bindingNavigatorCountItem
             // 
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
             this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 33);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
+            // 
+            // bindingNavigatorSeparator
+            // 
+            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 36);
+            // 
+            // bindingNavigatorPositionItem
+            // 
+            this.bindingNavigatorPositionItem.AccessibleName = "Position";
+            this.bindingNavigatorPositionItem.AutoSize = false;
+            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
+            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 23);
+            this.bindingNavigatorPositionItem.Text = "0";
+            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
+            // 
+            // bindingNavigatorSeparator1
+            // 
+            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
+            // 
+            // bindingNavigatorSeparator2
+            // 
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(250, 36);
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // bdDelete
             // 
@@ -556,25 +582,6 @@
             this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 33);
             this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
             // 
-            // bindingNavigatorSeparator
-            // 
-            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 36);
-            // 
-            // bindingNavigatorPositionItem
-            // 
-            this.bindingNavigatorPositionItem.AccessibleName = "Position";
-            this.bindingNavigatorPositionItem.AutoSize = false;
-            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
-            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 23);
-            this.bindingNavigatorPositionItem.Text = "0";
-            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
-            // 
-            // bindingNavigatorSeparator1
-            // 
-            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
-            // 
             // bindingNavigatorMoveNextItem
             // 
             this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -592,11 +599,6 @@
             this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
             this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 33);
             this.bindingNavigatorMoveLastItem.Text = "Dernier enregistrement";
-            // 
-            // bindingNavigatorSeparator2
-            // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
             // 
             // bdSave
             // 
@@ -618,18 +620,6 @@
             this.bdRefresh.Text = "Actualiser";
             this.bdRefresh.Click += new System.EventHandler(this.bdRefresh_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(250, 36);
-            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
             // bdSearch
             // 
             this.bdSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -649,6 +639,16 @@
             this.bdPreview.Size = new System.Drawing.Size(23, 33);
             this.bdPreview.Text = "Afficher rapport";
             this.bdPreview.Click += new System.EventHandler(this.bdPreview_Click);
+            // 
+            // bdNew
+            // 
+            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
+            this.bdNew.Name = "bdNew";
+            this.bdNew.RightToLeftAutoMirrorImage = true;
+            this.bdNew.Size = new System.Drawing.Size(23, 33);
+            this.bdNew.Text = "Nouvel enregistrement";
+            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
             // 
             // frmPrincipal
             // 
@@ -732,7 +732,6 @@
         private System.Windows.Forms.ToolStripMenuItem ssmParamServer;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.BindingNavigator bdNav;
-        private System.Windows.Forms.ToolStripButton bdNew;
         private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem;
         private System.Windows.Forms.ToolStripButton bdDelete;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem;
@@ -750,6 +749,7 @@
         private System.Windows.Forms.ToolStripButton bdSearch;
         private System.Windows.Forms.ToolStripButton bdPreview;
         private System.Windows.Forms.ToolStripMenuItem smQuit;
+        private System.Windows.Forms.ToolStripButton bdNew;
     }
 }
 
