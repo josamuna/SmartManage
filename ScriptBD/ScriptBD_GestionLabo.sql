@@ -263,6 +263,462 @@ create table netette
 )
 go
 
+create table garantie
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_guarantie primary key(id),
+	constraint uk_guarantie unique(valeur)
+)
+go
+
+create table ram
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_ram primary key(id),
+	constraint uk_ram unique(valeur)
+)
+go
+
+create table processeur
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_processeur primary key(id),
+	constraint uk_processeur unique(valeur)
+)
+go
+
+create table nombre_coeur_processeur
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_nombre_coeur_processeur primary key(id),
+	constraint uk_nombre_coeur_processeur unique(valeur)
+)
+go
+
+create table type_hdd
+(
+	id int,
+	designation varchar(50) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_nombre_type_hdd primary key(id),
+	constraint uk_nombre_type_hdd unique(designation)
+)
+go
+
+create table nombre_hdd
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_nombre_hdd primary key(id),
+	constraint uk_nombre_hdd unique(valeur)
+)
+go
+
+create table capacite_hdd
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_capacite_hdd primary key(id),
+	constraint uk_capacite_hdd unique(valeur)
+)
+go
+
+create table taille_ecran
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_taille_ecran primary key(id),
+	constraint uk_taille_ecran unique(valeur)
+)
+go
+
+create table usb2
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_usb2 primary key(id),
+	constraint uk_usb2 unique(valeur)
+)
+go
+
+create table usb3
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_usb3 primary key(id),
+	constraint uk_usb3 unique(valeur)
+)
+go
+
+create table hdmi
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_hdmi primary key(id),
+	constraint uk_hdmi unique(valeur)
+)
+go
+
+create table vga
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_vga primary key(id),
+	constraint uk_vga unique(valeur)
+)
+go
+
+create table tension_batterie
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_tension_batterie primary key(id),
+	constraint uk_tension_batterie unique(valeur)
+)
+go
+
+create table tension_adaptateur
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_tension_adaptateur primary key(id),
+	constraint uk_tension_adaptateur unique(valeur)
+)
+go
+
+create table puissance_adaptateur
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_puissance_adaptateur primary key(id),
+	constraint uk_puissance_adaptateur unique(valeur)
+)
+go
+
+create table intensite_adaptateur
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_intensite_adaptateur primary key(id),
+	constraint uk_intensite_adaptateur unique(valeur)
+)
+go
+
+create table puissance
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_puissance primary key(id),
+	constraint uk_puissance unique(valeur)
+)
+go
+
+create table intensite
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_intensite primary key(id),
+	constraint uk_intensite unique(valeur)
+)
+go
+
+create table page_par_minute
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_page_par_minute primary key(id),
+	constraint uk_page_par_minute unique(valeur)
+)
+go
+
+create table tension_alimentation
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_tension_alimentation primary key(id),
+	constraint uk_tension_alimentation unique(valeur)
+)
+go
+
+--Nombre usb
+create table usb
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_usb primary key(id),
+	constraint uk_usb unique(valeur)
+)
+go
+
+--Nombre memoire
+create table memoire
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_memoire primary key(id),
+	constraint uk_memoire unique(valeur)
+)
+go
+
+--Nombre sorties_audio
+create table sorties_audio
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_sorties_audio primary key(id),
+	constraint uk_sorties_audio unique(valeur)
+)
+go
+
+--Nombre microphone
+create table microphone
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_microphone primary key(id),
+	constraint uk_microphone unique(valeur)
+)
+go
+
+--gain de l'appareil
+create table gain
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_gain primary key(id),
+	constraint uk_gain unique(valeur)
+)
+go
+
+--Nombre port gigabit eth
+create table gbe
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_gbe primary key(id),
+	constraint uk_gbe unique(valeur)
+)
+go
+
+--Nombre port fast eth
+create table fe
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_fe primary key(id),
+	constraint uk_fe unique(valeur)
+)
+go
+
+--Nombre port pour Fibre Optique
+create table fo
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_fo primary key(id),
+	constraint uk_fo unique(valeur)
+)
+go
+
+--Nombre port Serie
+create table serial
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_serial primary key(id),
+	constraint uk_serial unique(valeur)
+)
+go
+
+--Adresse IP par defaut
+create table default_ip
+(
+	id int,
+	designation varchar(50) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_default_ip primary key(id),
+	constraint uk_default_ip unique(designation)
+)
+go
+
+--Mot de passe 
+create table default_pwd
+(
+	id int,
+	designation varchar(20) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime,
+	constraint pk_default_pwd primary key(id),
+	constraint uk_default_pwd unique(designation)
+)
+go
+
+--Nombre port Console
+create table console
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_console primary key(id),
+	constraint uk_console unique(valeur)
+)
+go
+
+--Nombre port Auxiliaires
+create table auxiliaire
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_auxiliaire primary key(id),
+	constraint uk_auxiliaire unique(valeur)
+)
+go
+
+--Nombre d'antennes
+create table antenne
+(
+	id int,
+	valeur int not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_antenne primary key(id),
+	constraint uk_antenne unique(valeur)
+)
+go
+
 create table materiel
 (
 	id int,
@@ -271,7 +727,7 @@ create table materiel
 	id_compte int not null,
 	qrcode text not null,
 	date_acquisition smalldatetime,
-	guarantie int,
+	id_garantie int,
 	id_marque int not null,
 	id_modele int not null,
 	id_couleur int not null,
@@ -294,55 +750,55 @@ create table materiel
 	id_type_ordinateur int,
 	id_type_clavier int,
 	id_OS int,																																							
-	ram float,
-	processeur float,
-	nombre_coeur_processeur int,
-	nombre_hdd int,
-	capacite_hdd int,
-	indice_performance float,
-	pouce int,
-	nombre_usb2 int,
-	nombre_usb3 int,
-	nombre_hdmi int,
-	nombre_vga int,
-	tension_batterie float,
-	tension_adaptateur float,
-	puissance_adaptateur float,
-	intensite_adaptateur float,
+	id_ram int,
+	id_processeur int,
+	id_nombre_coeur_processeur int,
+	id_type_hdd int,
+	id_nombre_hdd int,
+	id_capacite_hdd int,
+	id_taille_ecran int,
+	id_usb2 int,
+	id_usb3 int,
+	id_hdmi int,
+	id_vga int,
+	id_tension_batterie int,
+	id_tension_adaptateur int,
+	id_puissance_adaptateur int,
+	id_intensite_adaptateur int,
 	numero_cle int,
 	--Imprimante
 	id_type_imprimante int,
-	puissance float,
-	intensite float,
-	nombre_page_par_minute float,
+	id_puissance int,
+	id_intensite int,
+	id_page_par_minute int,
 	--Amplificateur
 	id_type_amplificateur int,
-	tension_alimentation int,
-	nombre_usb int,
-	nombre_memoire int,
-	nombre_sorties_audio int,
-	nombre_microphone int,
-	gain float,
+	id_tension_alimentation int,
+	id_usb int,
+	id_memoire int,
+	id_sorties_audio int,
+	id_microphone int,
+	id_gain int,
 	--RouteurAP
 	id_type_routeur_AP int,
 	id_version_ios int,
-	nombre_gbe int,
-	nombre_fe int,
-	nombre_fo int,
-	nombre_serial int,
+	id_gbe int,
+	id_fe int,
+	id_fo int,
+	id_serial int,
 	capable_usb bit,
-	motpasse_defaut varchar(20),
-	default_IP varchar(50),
-	nombre_console int,
-	nombre_auxiliaire int,
+	id_default_pwd int,
+	id_default_ip int,
+	id_console int,
+	id_auxiliaire int,
 	--AP
 	id_type_AP int,
 	--tension_alimentation
 	id_type_switch int,
 	--Emetteur
-	frequence float,
-	alimentation varchar(20),
-	nombre_antenne int,
+	frequence varchar(20),
+	--alimentation varchar(20), utiliser id_tension_alimentation pour Amplificateur
+	id_antenne int,
 	--Retroprojecteurs
 	id_netette int,
 	compatible_wifi bit,
@@ -364,6 +820,40 @@ create table materiel
 	constraint fk_materiel_version_ios foreign key(id_version_ios) references version_ios(id),
 	constraint fk_materiel_type_amplificateur foreign key(id_type_amplificateur) references type_amplificateur(id),
 	constraint fk_materiel_type_imprimante foreign key(id_type_imprimante) references type_imprimante(id),
+	constraint fk_materiel_garantie foreign key(id_garantie) references garantie(id),
+	constraint fk_materiel_ram foreign key(id_ram) references ram(id),
+	constraint fk_materiel_processeur foreign key(id_processeur) references processeur(id),
+	constraint fk_materiel_nombre_coeur_processeur foreign key(id_nombre_coeur_processeur) references nombre_coeur_processeur(id),
+	constraint fk_materiel_nombre_type_hdd foreign key(id_type_hdd) references type_hdd(id),
+	constraint fk_materiel_nombre_hdd foreign key(id_nombre_hdd) references nombre_hdd(id),
+	constraint fk_materiel_capacite_hdd foreign key(id_capacite_hdd) references capacite_hdd(id),
+	constraint fk_materiel_taille_ecran foreign key(id_taille_ecran) references taille_ecran(id),
+	constraint fk_materiel_usb2 foreign key(id_usb2) references usb2(id),
+	constraint fk_materiel_usb3 foreign key(id_usb3) references usb3(id),
+	constraint fk_materiel_hdmi foreign key(id_hdmi) references hdmi(id),
+	constraint fk_materiel_vga foreign key(id_vga) references vga(id),
+	constraint fk_materiel_tension_batterie foreign key(id_tension_batterie) references tension_batterie(id),
+	constraint fk_materiel_tension_adaptateur foreign key(id_tension_adaptateur) references tension_adaptateur(id),
+	constraint fk_materiel_puissance_adaptateur foreign key(id_puissance_adaptateur) references puissance_adaptateur(id),
+	constraint fk_materiel_intensite_adaptateur foreign key(id_intensite_adaptateur) references intensite_adaptateur(id),
+	constraint fk_materiel_puissance foreign key(id_puissance) references puissance(id),
+	constraint fk_materiel_intensite foreign key(id_intensite) references intensite(id),
+	constraint fk_materiel_page_par_minute foreign key(id_page_par_minute) references page_par_minute(id),
+	constraint fk_materiel_tension_alimentation foreign key(id_tension_alimentation) references tension_alimentation(id),
+	constraint fk_materiel_usb foreign key(id_usb) references usb(id),
+	constraint fk_materiel_memoire foreign key(id_memoire) references memoire(id),
+	constraint fk_materiel_sorties_audio foreign key(id_sorties_audio) references sorties_audio(id),
+	constraint fk_materiel_microphone foreign key(id_microphone) references microphone(id),
+	constraint fk_materiel_gain foreign key(id_gain) references gain(id),
+	constraint fk_materiel_gbe foreign key(id_gbe) references gbe(id),
+	constraint fk_materiel_fe foreign key(id_fe) references fe(id),
+	constraint fk_materiel_fo foreign key(id_fo) references fo(id),
+	constraint fk_materiel_serial foreign key(id_serial) references serial(id),
+	constraint fk_materiel_default_ip foreign key(id_default_ip) references default_ip(id),
+	constraint fk_materiel_default_pwd foreign key(id_default_pwd) references default_pwd(id),
+	constraint fk_materiel_console foreign key(id_console) references console(id),
+	constraint fk_materiel_auxiliaire foreign key(id_auxiliaire) references auxiliaire(id),
+	constraint fk_materiel_antenne foreign key(id_antenne) references antenne(id),
 	constraint uk_materiel unique(code_str)
 )
 go
@@ -714,6 +1204,121 @@ insert into modele(id,designation,user_created,date_created,user_modified,date_m
 (17,'AV-6080B','sa',GETDATE(),null,null),(18,'WG-2186','sa',GETDATE(),null,null),
 (19,'DH-744','sa',GETDATE(),null,null),(20,'DH-755','sa',GETDATE(),null,null),
 (21,'EP4227','sa',GETDATE(),null,null),(22,'1211S','sa',GETDATE(),null,null)
+
+insert into garantie(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null),(4,5,'sa',GETDATE(),null,null)
+
+insert into ram(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null),(4,4,'sa',GETDATE(),null,null)
+
+insert into processeur(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,1.6,'sa',GETDATE(),null,null),
+(3,2,'sa',GETDATE(),null,null),(4,2.2,'sa',GETDATE(),null,null)
+
+insert into nombre_coeur_processeur(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null),(4,4,'sa',GETDATE(),null,null)
+
+insert into type_hdd(id,designation,user_created,date_created,user_modified,date_modified) values
+(1,'IDE','sa',GETDATE(),null,null),(2,'SATA','sa',GETDATE(),null,null),
+(3,'SSD','sa',GETDATE(),null,null)
+
+insert into capacite_hdd(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,78,'sa',GETDATE(),null,null),(2,74,'sa',GETDATE(),null,null),
+(3,233,'sa',GETDATE(),null,null),(4,300,'sa',GETDATE(),null,null),
+(5,450,'sa',GETDATE(),null,null),(6,465,'sa',GETDATE(),null,null),
+(7,500,'sa',GETDATE(),null,null)
+
+insert into nombre_hdd(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into taille_ecran(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,14,'sa',GETDATE(),null,null),(2,15,'sa',GETDATE(),null,null),
+(3,17,'sa',GETDATE(),null,null),(4,24,'sa',GETDATE(),null,null)
+
+insert into usb2(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null),(4,4,'sa',GETDATE(),null,null)
+
+insert into usb3(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null),(4,4,'sa',GETDATE(),null,null)
+
+insert into hdmi(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into vga(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into tension_batterie(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,10.8,'sa',GETDATE(),null,null),(2,12,'sa',GETDATE(),null,null),
+(3,14,'sa',GETDATE(),null,null)
+
+insert into tension_adaptateur(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,15,'sa',GETDATE(),null,null),(2,18.5,'sa',GETDATE(),null,null),
+(3,19,'sa',GETDATE(),null,null),(4,19.5,'sa',GETDATE(),null,null)
+
+insert into puissance_adaptateur(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,10.8,'sa',GETDATE(),null,null),(2,12,'sa',GETDATE(),null,null),
+(3,14,'sa',GETDATE(),null,null)
+
+insert into intensite_adaptateur(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,3.33,'sa',GETDATE(),null,null),(2,3.5,'sa',GETDATE(),null,null),
+(3,5,'sa',GETDATE(),null,null)
+
+insert into usb(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into memoire(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into sorties_audio(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into microphone(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into gain(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,10,'sa',GETDATE(),null,null),(2,20,'sa',GETDATE(),null,null),
+(3,30,'sa',GETDATE(),null,null)
+
+insert into gbe(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into fe(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into fo(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into serial(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null),
+(3,3,'sa',GETDATE(),null,null)
+
+insert into console(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into auxiliaire(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,1,'sa',GETDATE(),null,null),(2,2,'sa',GETDATE(),null,null)
+
+insert into default_ip(id,designation,user_created,date_created,user_modified,date_modified) values
+(1,'192.168.1.1','sa',GETDATE(),null,null),(2,'192.168.20.1','sa',GETDATE(),null,null),
+(3,'192.168.0.1','sa',GETDATE(),null,null)
+
+insert into default_pwd(id,designation,user_created,date_created,user_modified,date_modified) values
+(1,'admin','sa',GETDATE(),null,null),(2,'cisco','sa',GETDATE(),null,null)
+
+insert into antenne(id,valeur,user_created,date_created,user_modified,date_modified) values
+(1,0,'sa',GETDATE(),null,null),(2,1,'sa',GETDATE(),null,null),
+(3,2,'sa',GETDATE(),null,null)
 
 insert into AC(id,code_str,designation,user_created,date_created,user_modified,date_modified) values
 (1,'2014-2015','2014-2015','sa',GETDATE(),null,null),(2,'2015-2016','2015-2016','sa',GETDATE(),null,null),

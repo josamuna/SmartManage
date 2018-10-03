@@ -402,6 +402,213 @@ namespace smartManage.Model
         }
 
         #endregion CLSCOMPTE 
+        #region  CLSFO
+        public clsfo getClsfo(object intid)
+        {
+            clsfo varclsfo = new clsfo();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM fo WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfo.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfo.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfo.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfo.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfo.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfo.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsfo;
+        }
+
+        public List<clsfo> getAllClsfo(string criteria)
+        {
+            List<clsfo> lstclsfo = new List<clsfo>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM fo  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsfo varclsfo = null;
+                        while (dr.Read())
+                        {
+
+                            varclsfo = new clsfo();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfo.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfo.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfo.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfo.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfo.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfo.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfo.Add(varclsfo);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fo' avec la classe 'clsfo' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfo;
+        }
+
+        public List<clsfo> getAllClsfo()
+        {
+            List<clsfo> lstclsfo = new List<clsfo>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM fo ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsfo varclsfo = null;
+                        while (dr.Read())
+                        {
+
+                            varclsfo = new clsfo();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfo.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfo.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfo.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfo.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfo.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfo.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfo.Add(varclsfo);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfo;
+        }
+
+        public int insertClsfo(clsfo varclsfo)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO fo ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfo.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsfo.Valeur));
+                    if (varclsfo.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfo.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfo.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfo.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfo.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfo.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfo.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfo.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsfo(clsfo varclsfo)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE fo  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsfo.Valeur));
+                    if (varclsfo.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfo.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfo.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfo.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfo.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfo.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfo.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfo.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfo.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsfo(clsfo varclsfo)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM fo  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfo.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSFO 
         #region  CLSGROUPE
         public clsgroupe getClsgroupe(object intid)
         {
@@ -590,6 +797,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSGROUPE 
+        #region  CLSSERIAL
+        public clsserial getClsserial(object intid)
+        {
+            clsserial varclsserial = new clsserial();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM serial WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsserial.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsserial.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsserial.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsserial.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsserial.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsserial.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsserial;
+        }
+
+        public List<clsserial> getAllClsserial(string criteria)
+        {
+            List<clsserial> lstclsserial = new List<clsserial>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM serial  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsserial varclsserial = null;
+                        while (dr.Read())
+                        {
+
+                            varclsserial = new clsserial();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsserial.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsserial.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsserial.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsserial.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsserial.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsserial.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsserial.Add(varclsserial);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'serial' avec la classe 'clsserial' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsserial;
+        }
+
+        public List<clsserial> getAllClsserial()
+        {
+            List<clsserial> lstclsserial = new List<clsserial>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM serial ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsserial varclsserial = null;
+                        while (dr.Read())
+                        {
+
+                            varclsserial = new clsserial();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsserial.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsserial.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsserial.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsserial.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsserial.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsserial.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsserial.Add(varclsserial);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsserial;
+        }
+
+        public int insertClsserial(clsserial varclsserial)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO serial ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsserial.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsserial.Valeur));
+                    if (varclsserial.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsserial.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsserial.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsserial.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsserial.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsserial.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsserial.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsserial.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsserial(clsserial varclsserial)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE serial  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsserial.Valeur));
+                    if (varclsserial.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsserial.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsserial.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsserial.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsserial.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsserial.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsserial.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsserial.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsserial.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsserial(clsserial varclsserial)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM serial  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsserial.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSSERIAL 
         #region  CLSMARQUE
         public clsmarque getClsmarque(object intid)
         {
@@ -815,7 +1230,6 @@ namespace smartManage.Model
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmodele.Id = int.Parse(dr["id"].ToString());
                             varclsmodele.Designation = dr["designation"].ToString();
                             varclsmodele.User_created = dr["user_created"].ToString();
@@ -1012,6 +1426,217 @@ namespace smartManage.Model
         }
 
         #endregion CLSMODELE 
+        #region  CLSDEFAULT_IP
+        public clsdefault_ip getClsdefault_ip(object intid)
+        {
+            clsdefault_ip varclsdefault_ip = new clsdefault_ip();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM default_ip WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_ip.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_ip.Designation = dr["designation"].ToString();
+                            varclsdefault_ip.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_ip.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_ip.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_ip.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsdefault_ip;
+        }
+
+        public List<clsdefault_ip> getAllClsdefault_ip(string criteria)
+        {
+            List<clsdefault_ip> lstclsdefault_ip = new List<clsdefault_ip>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM default_ip  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsdefault_ip varclsdefault_ip = null;
+                        while (dr.Read())
+                        {
+
+                            varclsdefault_ip = new clsdefault_ip();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_ip.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_ip.Designation = dr["designation"].ToString();
+                            varclsdefault_ip.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_ip.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_ip.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_ip.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsdefault_ip.Add(varclsdefault_ip);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsdefault_ip;
+        }
+
+        public List<clsdefault_ip> getAllClsdefault_ip()
+        {
+            List<clsdefault_ip> lstclsdefault_ip = new List<clsdefault_ip>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM default_ip ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsdefault_ip varclsdefault_ip = null;
+                        while (dr.Read())
+                        {
+
+                            varclsdefault_ip = new clsdefault_ip();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_ip.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_ip.Designation = dr["designation"].ToString();
+                            varclsdefault_ip.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_ip.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_ip.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_ip.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsdefault_ip.Add(varclsdefault_ip);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsdefault_ip;
+        }
+
+        public int insertClsdefault_ip(clsdefault_ip varclsdefault_ip)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO default_ip ( id,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_ip.Id));
+                    if (varclsdefault_ip.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclsdefault_ip.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsdefault_ip.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsdefault_ip.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsdefault_ip.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsdefault_ip.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_ip.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsdefault_ip(clsdefault_ip varclsdefault_ip)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE default_ip  SET designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    if (varclsdefault_ip.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclsdefault_ip.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsdefault_ip.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsdefault_ip.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsdefault_ip.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsdefault_ip.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_ip.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_ip.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_ip.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsdefault_ip(clsdefault_ip varclsdefault_ip)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM default_ip  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_ip.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSDEFAULT_IP 
         #region  CLSCOULEUR
         public clscouleur getClscouleur(object intid)
         {
@@ -1223,6 +1848,217 @@ namespace smartManage.Model
         }
 
         #endregion CLSCOULEUR 
+        #region  CLSDEFAULT_PWD
+        public clsdefault_pwd getClsdefault_pwd(object intid)
+        {
+            clsdefault_pwd varclsdefault_pwd = new clsdefault_pwd();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM default_pwd WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_pwd.Designation = dr["designation"].ToString();
+                            varclsdefault_pwd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_pwd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsdefault_pwd;
+        }
+
+        public List<clsdefault_pwd> getAllClsdefault_pwd(string criteria)
+        {
+            List<clsdefault_pwd> lstclsdefault_pwd = new List<clsdefault_pwd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM default_pwd  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsdefault_pwd varclsdefault_pwd = null;
+                        while (dr.Read())
+                        {
+
+                            varclsdefault_pwd = new clsdefault_pwd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_pwd.Designation = dr["designation"].ToString();
+                            varclsdefault_pwd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_pwd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsdefault_pwd.Add(varclsdefault_pwd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsdefault_pwd;
+        }
+
+        public List<clsdefault_pwd> getAllClsdefault_pwd()
+        {
+            List<clsdefault_pwd> lstclsdefault_pwd = new List<clsdefault_pwd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM default_pwd ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsdefault_pwd varclsdefault_pwd = null;
+                        while (dr.Read())
+                        {
+
+                            varclsdefault_pwd = new clsdefault_pwd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
+                            varclsdefault_pwd.Designation = dr["designation"].ToString();
+                            varclsdefault_pwd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsdefault_pwd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsdefault_pwd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsdefault_pwd.Add(varclsdefault_pwd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsdefault_pwd;
+        }
+
+        public int insertClsdefault_pwd(clsdefault_pwd varclsdefault_pwd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO default_pwd ( id,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_pwd.Id));
+                    if (varclsdefault_pwd.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, varclsdefault_pwd.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, DBNull.Value));
+                    if (varclsdefault_pwd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsdefault_pwd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_pwd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsdefault_pwd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsdefault_pwd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsdefault_pwd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_pwd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_pwd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsdefault_pwd(clsdefault_pwd varclsdefault_pwd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE default_pwd  SET designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    if (varclsdefault_pwd.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, varclsdefault_pwd.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, DBNull.Value));
+                    if (varclsdefault_pwd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsdefault_pwd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_pwd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsdefault_pwd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsdefault_pwd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsdefault_pwd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsdefault_pwd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_pwd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_pwd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsdefault_pwd(clsdefault_pwd varclsdefault_pwd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM default_pwd  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_pwd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSDEFAULT_PWD 
         #region  CLSPOIDS
         public clspoids getClspoids(object intid)
         {
@@ -1431,6 +2267,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSPOIDS 
+        #region  CLSCONSOLE
+        public clsconsole getClsconsole(object intid)
+        {
+            clsconsole varclsconsole = new clsconsole();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM console WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsconsole.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsconsole.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsconsole.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsconsole.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsconsole;
+        }
+
+        public List<clsconsole> getAllClsconsole(string criteria)
+        {
+            List<clsconsole> lstclsconsole = new List<clsconsole>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM console  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsconsole varclsconsole = null;
+                        while (dr.Read())
+                        {
+
+                            varclsconsole = new clsconsole();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsconsole.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsconsole.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsconsole.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsconsole.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsconsole.Add(varclsconsole);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'console' avec la classe 'clsconsole' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsconsole;
+        }
+
+        public List<clsconsole> getAllClsconsole()
+        {
+            List<clsconsole> lstclsconsole = new List<clsconsole>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM console ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsconsole varclsconsole = null;
+                        while (dr.Read())
+                        {
+
+                            varclsconsole = new clsconsole();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsconsole.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsconsole.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsconsole.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsconsole.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsconsole.Add(varclsconsole);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsconsole;
+        }
+
+        public int insertClsconsole(clsconsole varclsconsole)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO console ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsconsole.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsconsole.Valeur));
+                    if (varclsconsole.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsconsole.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsconsole.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsconsole.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsconsole.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsconsole.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsconsole.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsconsole.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsconsole(clsconsole varclsconsole)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE console  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsconsole.Valeur));
+                    if (varclsconsole.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsconsole.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsconsole.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsconsole.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsconsole.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsconsole.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsconsole.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsconsole.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsconsole.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsconsole(clsconsole varclsconsole)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM console  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsconsole.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSCONSOLE 
         #region  CLSTYPE_ORDINATEUR
         public clstype_ordinateur getClstype_ordinateur(object intid)
         {
@@ -1642,6 +2686,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_ORDINATEUR 
+        #region  CLSAUXILIAIRE
+        public clsauxiliaire getClsauxiliaire(object intid)
+        {
+            clsauxiliaire varclsauxiliaire = new clsauxiliaire();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM auxiliaire WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsauxiliaire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsauxiliaire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsauxiliaire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsauxiliaire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsauxiliaire;
+        }
+
+        public List<clsauxiliaire> getAllClsauxiliaire(string criteria)
+        {
+            List<clsauxiliaire> lstclsauxiliaire = new List<clsauxiliaire>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM auxiliaire  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsauxiliaire varclsauxiliaire = null;
+                        while (dr.Read())
+                        {
+
+                            varclsauxiliaire = new clsauxiliaire();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsauxiliaire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsauxiliaire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsauxiliaire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsauxiliaire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsauxiliaire.Add(varclsauxiliaire);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsauxiliaire;
+        }
+
+        public List<clsauxiliaire> getAllClsauxiliaire()
+        {
+            List<clsauxiliaire> lstclsauxiliaire = new List<clsauxiliaire>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM auxiliaire ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsauxiliaire varclsauxiliaire = null;
+                        while (dr.Read())
+                        {
+
+                            varclsauxiliaire = new clsauxiliaire();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsauxiliaire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsauxiliaire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsauxiliaire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsauxiliaire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsauxiliaire.Add(varclsauxiliaire);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsauxiliaire;
+        }
+
+        public int insertClsauxiliaire(clsauxiliaire varclsauxiliaire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO auxiliaire ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsauxiliaire.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsauxiliaire.Valeur));
+                    if (varclsauxiliaire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsauxiliaire.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsauxiliaire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsauxiliaire.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsauxiliaire.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsauxiliaire.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsauxiliaire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsauxiliaire.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsauxiliaire(clsauxiliaire varclsauxiliaire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE auxiliaire  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsauxiliaire.Valeur));
+                    if (varclsauxiliaire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsauxiliaire.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsauxiliaire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsauxiliaire.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsauxiliaire.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsauxiliaire.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsauxiliaire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsauxiliaire.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsauxiliaire.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsauxiliaire(clsauxiliaire varclsauxiliaire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM auxiliaire  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsauxiliaire.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSAUXILIAIRE 
         #region  CLSTYPE_IMPRIMANTE
         public clstype_imprimante getClstype_imprimante(object intid)
         {
@@ -1853,6 +3105,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_IMPRIMANTE 
+        #region  CLSANTENNE
+        public clsantenne getClsantenne(object intid)
+        {
+            clsantenne varclsantenne = new clsantenne();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM antenne WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsantenne.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsantenne.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsantenne.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsantenne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsantenne;
+        }
+
+        public List<clsantenne> getAllClsantenne(string criteria)
+        {
+            List<clsantenne> lstclsantenne = new List<clsantenne>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM antenne  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsantenne varclsantenne = null;
+                        while (dr.Read())
+                        {
+
+                            varclsantenne = new clsantenne();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsantenne.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsantenne.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsantenne.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsantenne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsantenne.Add(varclsantenne);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsantenne;
+        }
+
+        public List<clsantenne> getAllClsantenne()
+        {
+            List<clsantenne> lstclsantenne = new List<clsantenne>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM antenne ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsantenne varclsantenne = null;
+                        while (dr.Read())
+                        {
+
+                            varclsantenne = new clsantenne();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsantenne.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsantenne.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsantenne.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsantenne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsantenne.Add(varclsantenne);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsantenne;
+        }
+
+        public int insertClsantenne(clsantenne varclsantenne)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO antenne ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsantenne.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsantenne.Valeur));
+                    if (varclsantenne.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsantenne.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsantenne.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsantenne.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsantenne.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsantenne.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsantenne.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsantenne.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsantenne(clsantenne varclsantenne)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE antenne  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsantenne.Valeur));
+                    if (varclsantenne.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsantenne.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsantenne.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsantenne.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsantenne.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsantenne.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsantenne.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsantenne.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsantenne.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsantenne(clsantenne varclsantenne)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM antenne  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsantenne.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSANTENNE 
         #region  CLSTYPE_AMPLIFICATEUR
         public clstype_amplificateur getClstype_amplificateur(object intid)
         {
@@ -4184,6 +5644,1673 @@ namespace smartManage.Model
         }
 
         #endregion CLSNETETTE 
+        #region  CLSGARANTIE
+        public clsgarantie getClsgarantie(object intid)
+        {
+            clsgarantie varclsgarantie = new clsgarantie();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM garantie WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgarantie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgarantie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgarantie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgarantie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsgarantie;
+        }
+
+        public List<clsgarantie> getAllClsgarantie(string criteria)
+        {
+            List<clsgarantie> lstclsgarantie = new List<clsgarantie>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM garantie  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgarantie varclsgarantie = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgarantie = new clsgarantie();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgarantie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgarantie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgarantie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgarantie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgarantie.Add(varclsgarantie);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgarantie;
+        }
+
+        public List<clsgarantie> getAllClsgarantie()
+        {
+            List<clsgarantie> lstclsgarantie = new List<clsgarantie>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM garantie ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgarantie varclsgarantie = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgarantie = new clsgarantie();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgarantie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgarantie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgarantie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgarantie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgarantie.Add(varclsgarantie);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgarantie;
+        }
+
+        public int insertClsgarantie(clsgarantie varclsgarantie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO garantie ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgarantie.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgarantie.Valeur));
+                    if (varclsgarantie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgarantie.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgarantie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgarantie.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgarantie.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgarantie.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgarantie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgarantie.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsgarantie(clsgarantie varclsgarantie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE garantie  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgarantie.Valeur));
+                    if (varclsgarantie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgarantie.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgarantie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgarantie.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgarantie.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgarantie.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgarantie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgarantie.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgarantie.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsgarantie(clsgarantie varclsgarantie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM garantie  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgarantie.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSGARANTIE 
+        #region  CLSRAM
+        public clsram getClsram(object intid)
+        {
+            clsram varclsram = new clsram();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM ram WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsram.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsram.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsram.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsram.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsram;
+        }
+
+        public List<clsram> getAllClsram(string criteria)
+        {
+            List<clsram> lstclsram = new List<clsram>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM ram  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsram varclsram = null;
+                        while (dr.Read())
+                        {
+
+                            varclsram = new clsram();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsram.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsram.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsram.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsram.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsram.Add(varclsram);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'ram' avec la classe 'clsram' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsram;
+        }
+
+        public List<clsram> getAllClsram()
+        {
+            List<clsram> lstclsram = new List<clsram>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM ram ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsram varclsram = null;
+                        while (dr.Read())
+                        {
+
+                            varclsram = new clsram();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsram.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsram.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsram.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsram.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsram.Add(varclsram);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsram;
+        }
+
+        public int insertClsram(clsram varclsram)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO ram ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsram.Valeur));
+                    if (varclsram.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsram.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsram.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsram.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsram.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsram.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsram.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsram.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsram(clsram varclsram)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE ram  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsram.Valeur));
+                    if (varclsram.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsram.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsram.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsram.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsram.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsram.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsram.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsram.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsram(clsram varclsram)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM ram  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSRAM 
+        #region  CLSPROCESSEUR
+        public clsprocesseur getClsprocesseur(object intid)
+        {
+            clsprocesseur varclsprocesseur = new clsprocesseur();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM processeur WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsprocesseur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsprocesseur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsprocesseur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsprocesseur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsprocesseur;
+        }
+
+        public List<clsprocesseur> getAllClsprocesseur(string criteria)
+        {
+            List<clsprocesseur> lstclsprocesseur = new List<clsprocesseur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM processeur  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsprocesseur varclsprocesseur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsprocesseur = new clsprocesseur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsprocesseur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsprocesseur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsprocesseur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsprocesseur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsprocesseur.Add(varclsprocesseur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsprocesseur;
+        }
+
+        public List<clsprocesseur> getAllClsprocesseur()
+        {
+            List<clsprocesseur> lstclsprocesseur = new List<clsprocesseur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM processeur ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsprocesseur varclsprocesseur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsprocesseur = new clsprocesseur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsprocesseur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsprocesseur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsprocesseur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsprocesseur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsprocesseur.Add(varclsprocesseur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsprocesseur;
+        }
+
+        public int insertClsprocesseur(clsprocesseur varclsprocesseur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO processeur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsprocesseur.Valeur));
+                    if (varclsprocesseur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsprocesseur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsprocesseur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsprocesseur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsprocesseur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsprocesseur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsprocesseur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsprocesseur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsprocesseur(clsprocesseur varclsprocesseur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE processeur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsprocesseur.Valeur));
+                    if (varclsprocesseur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsprocesseur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsprocesseur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsprocesseur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsprocesseur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsprocesseur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsprocesseur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsprocesseur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsprocesseur(clsprocesseur varclsprocesseur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM processeur  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSPROCESSEUR 
+        #region  CLSNOMBRE_COEUR_PROCESSEUR
+        public clsnombre_coeur_processeur getClsnombre_coeur_processeur(object intid)
+        {
+            clsnombre_coeur_processeur varclsnombre_coeur_processeur = new clsnombre_coeur_processeur();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM nombre_coeur_processeur WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_coeur_processeur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_coeur_processeur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsnombre_coeur_processeur;
+        }
+
+        public List<clsnombre_coeur_processeur> getAllClsnombre_coeur_processeur(string criteria)
+        {
+            List<clsnombre_coeur_processeur> lstclsnombre_coeur_processeur = new List<clsnombre_coeur_processeur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM nombre_coeur_processeur  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsnombre_coeur_processeur varclsnombre_coeur_processeur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsnombre_coeur_processeur = new clsnombre_coeur_processeur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_coeur_processeur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_coeur_processeur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsnombre_coeur_processeur.Add(varclsnombre_coeur_processeur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsnombre_coeur_processeur;
+        }
+
+        public List<clsnombre_coeur_processeur> getAllClsnombre_coeur_processeur()
+        {
+            List<clsnombre_coeur_processeur> lstclsnombre_coeur_processeur = new List<clsnombre_coeur_processeur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM nombre_coeur_processeur ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsnombre_coeur_processeur varclsnombre_coeur_processeur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsnombre_coeur_processeur = new clsnombre_coeur_processeur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_coeur_processeur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_coeur_processeur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsnombre_coeur_processeur.Add(varclsnombre_coeur_processeur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsnombre_coeur_processeur;
+        }
+
+        public int insertClsnombre_coeur_processeur(clsnombre_coeur_processeur varclsnombre_coeur_processeur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO nombre_coeur_processeur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_coeur_processeur.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsnombre_coeur_processeur.Valeur));
+                    if (varclsnombre_coeur_processeur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsnombre_coeur_processeur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsnombre_coeur_processeur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsnombre_coeur_processeur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_coeur_processeur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsnombre_coeur_processeur(clsnombre_coeur_processeur varclsnombre_coeur_processeur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE nombre_coeur_processeur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsnombre_coeur_processeur.Valeur));
+                    if (varclsnombre_coeur_processeur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsnombre_coeur_processeur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsnombre_coeur_processeur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsnombre_coeur_processeur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_coeur_processeur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_coeur_processeur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_coeur_processeur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsnombre_coeur_processeur(clsnombre_coeur_processeur varclsnombre_coeur_processeur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM nombre_coeur_processeur  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_coeur_processeur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSNOMBRE_COEUR_PROCESSEUR 
+        #region  CLSTYPE_HDD
+        public clstype_hdd getClstype_hdd(object intid)
+        {
+            clstype_hdd varclstype_hdd = new clstype_hdd();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM type_hdd WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
+                            varclstype_hdd.Designation = dr["designation"].ToString();
+                            varclstype_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstype_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstype_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstype_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstype_hdd;
+        }
+
+        public List<clstype_hdd> getAllClstype_hdd(string criteria)
+        {
+            List<clstype_hdd> lstclstype_hdd = new List<clstype_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM type_hdd  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstype_hdd varclstype_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclstype_hdd = new clstype_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
+                            varclstype_hdd.Designation = dr["designation"].ToString();
+                            varclstype_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstype_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstype_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstype_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstype_hdd.Add(varclstype_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstype_hdd;
+        }
+
+        public List<clstype_hdd> getAllClstype_hdd()
+        {
+            List<clstype_hdd> lstclstype_hdd = new List<clstype_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM type_hdd ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstype_hdd varclstype_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclstype_hdd = new clstype_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
+                            varclstype_hdd.Designation = dr["designation"].ToString();
+                            varclstype_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstype_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstype_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstype_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstype_hdd.Add(varclstype_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstype_hdd;
+        }
+
+        public int insertClstype_hdd(clstype_hdd varclstype_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO type_hdd ( id,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_hdd.Id));
+                    if (varclstype_hdd.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclstype_hdd.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstype_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstype_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstype_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstype_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstype_hdd(clstype_hdd varclstype_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE type_hdd  SET designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    if (varclstype_hdd.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclstype_hdd.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstype_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstype_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstype_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstype_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstype_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstype_hdd(clstype_hdd varclstype_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM type_hdd  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTYPE_HDD 
+        #region  CLSNOMBRE_HDD
+        public clsnombre_hdd getClsnombre_hdd(object intid)
+        {
+            clsnombre_hdd varclsnombre_hdd = new clsnombre_hdd();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM nombre_hdd WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsnombre_hdd;
+        }
+
+        public List<clsnombre_hdd> getAllClsnombre_hdd(string criteria)
+        {
+            List<clsnombre_hdd> lstclsnombre_hdd = new List<clsnombre_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM nombre_hdd  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsnombre_hdd varclsnombre_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclsnombre_hdd = new clsnombre_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsnombre_hdd.Add(varclsnombre_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsnombre_hdd;
+        }
+
+        public List<clsnombre_hdd> getAllClsnombre_hdd()
+        {
+            List<clsnombre_hdd> lstclsnombre_hdd = new List<clsnombre_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM nombre_hdd ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsnombre_hdd varclsnombre_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclsnombre_hdd = new clsnombre_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsnombre_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsnombre_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsnombre_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsnombre_hdd.Add(varclsnombre_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsnombre_hdd;
+        }
+
+        public int insertClsnombre_hdd(clsnombre_hdd varclsnombre_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO nombre_hdd ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_hdd.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsnombre_hdd.Valeur));
+                    if (varclsnombre_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsnombre_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsnombre_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsnombre_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsnombre_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsnombre_hdd(clsnombre_hdd varclsnombre_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE nombre_hdd  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsnombre_hdd.Valeur));
+                    if (varclsnombre_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsnombre_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsnombre_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsnombre_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsnombre_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsnombre_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsnombre_hdd(clsnombre_hdd varclsnombre_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM nombre_hdd  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSNOMBRE_HDD 
+        #region  CLSCAPACITE_HDD
+        public clscapacite_hdd getClscapacite_hdd(object intid)
+        {
+            clscapacite_hdd varclscapacite_hdd = new clscapacite_hdd();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM capacite_hdd WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclscapacite_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclscapacite_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclscapacite_hdd;
+        }
+
+        public List<clscapacite_hdd> getAllClscapacite_hdd(string criteria)
+        {
+            List<clscapacite_hdd> lstclscapacite_hdd = new List<clscapacite_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM capacite_hdd  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clscapacite_hdd varclscapacite_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclscapacite_hdd = new clscapacite_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclscapacite_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclscapacite_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclscapacite_hdd.Add(varclscapacite_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclscapacite_hdd;
+        }
+
+        public List<clscapacite_hdd> getAllClscapacite_hdd()
+        {
+            List<clscapacite_hdd> lstclscapacite_hdd = new List<clscapacite_hdd>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM capacite_hdd ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clscapacite_hdd varclscapacite_hdd = null;
+                        while (dr.Read())
+                        {
+
+                            varclscapacite_hdd = new clscapacite_hdd();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclscapacite_hdd.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclscapacite_hdd.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclscapacite_hdd.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclscapacite_hdd.Add(varclscapacite_hdd);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclscapacite_hdd;
+        }
+
+        public int insertClscapacite_hdd(clscapacite_hdd varclscapacite_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO capacite_hdd ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscapacite_hdd.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclscapacite_hdd.Valeur));
+                    if (varclscapacite_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclscapacite_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclscapacite_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclscapacite_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclscapacite_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclscapacite_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclscapacite_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscapacite_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClscapacite_hdd(clscapacite_hdd varclscapacite_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE capacite_hdd  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclscapacite_hdd.Valeur));
+                    if (varclscapacite_hdd.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclscapacite_hdd.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclscapacite_hdd.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclscapacite_hdd.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclscapacite_hdd.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclscapacite_hdd.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclscapacite_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscapacite_hdd.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscapacite_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClscapacite_hdd(clscapacite_hdd varclscapacite_hdd)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM capacite_hdd  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscapacite_hdd.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSCAPACITE_HDD 
+        #region  CLSTAILLE_ECRAN
+        public clstaille_ecran getClstaille_ecran(object intid)
+        {
+            clstaille_ecran varclstaille_ecran = new clstaille_ecran();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM taille_ecran WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstaille_ecran.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstaille_ecran.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstaille_ecran.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstaille_ecran.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstaille_ecran;
+        }
+
+        public List<clstaille_ecran> getAllClstaille_ecran(string criteria)
+        {
+            List<clstaille_ecran> lstclstaille_ecran = new List<clstaille_ecran>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM taille_ecran  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstaille_ecran varclstaille_ecran = null;
+                        while (dr.Read())
+                        {
+
+                            varclstaille_ecran = new clstaille_ecran();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstaille_ecran.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstaille_ecran.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstaille_ecran.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstaille_ecran.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstaille_ecran.Add(varclstaille_ecran);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstaille_ecran;
+        }
+
+        public List<clstaille_ecran> getAllClstaille_ecran()
+        {
+            List<clstaille_ecran> lstclstaille_ecran = new List<clstaille_ecran>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM taille_ecran ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstaille_ecran varclstaille_ecran = null;
+                        while (dr.Read())
+                        {
+
+                            varclstaille_ecran = new clstaille_ecran();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstaille_ecran.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstaille_ecran.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstaille_ecran.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstaille_ecran.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstaille_ecran.Add(varclstaille_ecran);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstaille_ecran;
+        }
+
+        public int insertClstaille_ecran(clstaille_ecran varclstaille_ecran)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO taille_ecran ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstaille_ecran.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclstaille_ecran.Valeur));
+                    if (varclstaille_ecran.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstaille_ecran.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstaille_ecran.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstaille_ecran.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstaille_ecran.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstaille_ecran.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstaille_ecran.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstaille_ecran.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstaille_ecran(clstaille_ecran varclstaille_ecran)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE taille_ecran  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclstaille_ecran.Valeur));
+                    if (varclstaille_ecran.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstaille_ecran.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstaille_ecran.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstaille_ecran.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstaille_ecran.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstaille_ecran.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstaille_ecran.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstaille_ecran.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstaille_ecran.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstaille_ecran(clstaille_ecran varclstaille_ecran)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM taille_ecran  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstaille_ecran.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTAILLE_ECRAN 
         #region  CLSMATERIEL
         public clsmateriel getClsmateriel(object intid)
         {
@@ -4205,7 +7332,7 @@ namespace smartManage.Model
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
                             varclsmateriel.Qrcode = dr["qrcode"].ToString();
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
-                            if (!dr["guarantie"].ToString().Trim().Equals("")) varclsmateriel.Guarantie = int.Parse(dr["guarantie"].ToString());
+                            if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
                             if (!dr["id_modele"].ToString().Trim().Equals("")) varclsmateriel.Id_modele = int.Parse(dr["id_modele"].ToString());
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
@@ -4225,49 +7352,48 @@ namespace smartManage.Model
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
-                            if (!dr["ram"].ToString().Trim().Equals("")) varclsmateriel.Ram = double.Parse(dr["ram"].ToString());
-                            if (!dr["processeur"].ToString().Trim().Equals("")) varclsmateriel.Processeur = double.Parse(dr["processeur"].ToString());
-                            if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
-                            if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
-                            if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
-                            if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
-                            if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
-                            if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
-                            if (!dr["nombre_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdmi = int.Parse(dr["nombre_hdmi"].ToString());
-                            if (!dr["nombre_vga"].ToString().Trim().Equals("")) varclsmateriel.Nombre_vga = int.Parse(dr["nombre_vga"].ToString());
-                            if (!dr["tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Tension_batterie = double.Parse(dr["tension_batterie"].ToString());
-                            if (!dr["tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Tension_adaptateur = double.Parse(dr["tension_adaptateur"].ToString());
-                            if (!dr["puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Puissance_adaptateur = double.Parse(dr["puissance_adaptateur"].ToString());
-                            if (!dr["intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Intensite_adaptateur = double.Parse(dr["intensite_adaptateur"].ToString());
+                            if (!dr["id_ram"].ToString().Trim().Equals("")) varclsmateriel.Id_ram = int.Parse(dr["id_ram"].ToString());
+                            if (!dr["id_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_processeur = int.Parse(dr["id_processeur"].ToString());
+                            if (!dr["id_nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_coeur_processeur = int.Parse(dr["id_nombre_coeur_processeur"].ToString());
+                            if (!dr["id_type_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_type_hdd = int.Parse(dr["id_type_hdd"].ToString());
+                            if (!dr["id_nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_hdd = int.Parse(dr["id_nombre_hdd"].ToString());
+                            if (!dr["id_capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_capacite_hdd = int.Parse(dr["id_capacite_hdd"].ToString());
+                            if (!dr["id_taille_ecran"].ToString().Trim().Equals("")) varclsmateriel.Id_taille_ecran = int.Parse(dr["id_taille_ecran"].ToString());
+                            if (!dr["id_usb2"].ToString().Trim().Equals("")) varclsmateriel.Id_usb2 = int.Parse(dr["id_usb2"].ToString());
+                            if (!dr["id_usb3"].ToString().Trim().Equals("")) varclsmateriel.Id_usb3 = int.Parse(dr["id_usb3"].ToString());
+                            if (!dr["id_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Id_hdmi = int.Parse(dr["id_hdmi"].ToString());
+                            if (!dr["id_vga"].ToString().Trim().Equals("")) varclsmateriel.Id_vga = int.Parse(dr["id_vga"].ToString());
+                            if (!dr["id_tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_batterie = int.Parse(dr["id_tension_batterie"].ToString());
+                            if (!dr["id_tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_adaptateur = int.Parse(dr["id_tension_adaptateur"].ToString());
+                            if (!dr["id_puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance_adaptateur = int.Parse(dr["id_puissance_adaptateur"].ToString());
+                            if (!dr["id_intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite_adaptateur = int.Parse(dr["id_intensite_adaptateur"].ToString());
                             if (!dr["numero_cle"].ToString().Trim().Equals("")) varclsmateriel.Numero_cle = int.Parse(dr["numero_cle"].ToString());
                             if (!dr["id_type_imprimante"].ToString().Trim().Equals("")) varclsmateriel.Id_type_imprimante = int.Parse(dr["id_type_imprimante"].ToString());
-                            if (!dr["puissance"].ToString().Trim().Equals("")) varclsmateriel.Puissance = double.Parse(dr["puissance"].ToString());
-                            if (!dr["intensite"].ToString().Trim().Equals("")) varclsmateriel.Intensite = double.Parse(dr["intensite"].ToString());
-                            if (!dr["nombre_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Nombre_page_par_minute = double.Parse(dr["nombre_page_par_minute"].ToString());
+                            if (!dr["id_puissance"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance = int.Parse(dr["id_puissance"].ToString());
+                            if (!dr["id_intensite"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite = int.Parse(dr["id_intensite"].ToString());
+                            if (!dr["id_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Id_page_par_minute = int.Parse(dr["id_page_par_minute"].ToString());
                             if (!dr["id_type_amplificateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_amplificateur = int.Parse(dr["id_type_amplificateur"].ToString());
-                            if (!dr["tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Tension_alimentation = int.Parse(dr["tension_alimentation"].ToString());
-                            if (!dr["nombre_usb"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb = int.Parse(dr["nombre_usb"].ToString());
-                            if (!dr["nombre_memoire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_memoire = int.Parse(dr["nombre_memoire"].ToString());
-                            if (!dr["nombre_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Nombre_sorties_audio = int.Parse(dr["nombre_sorties_audio"].ToString());
-                            if (!dr["nombre_microphone"].ToString().Trim().Equals("")) varclsmateriel.Nombre_microphone = int.Parse(dr["nombre_microphone"].ToString());
-                            if (!dr["gain"].ToString().Trim().Equals("")) varclsmateriel.Gain = double.Parse(dr["gain"].ToString());
+                            if (!dr["id_tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_alimentation = int.Parse(dr["id_tension_alimentation"].ToString());
+                            if (!dr["id_usb"].ToString().Trim().Equals("")) varclsmateriel.Id_usb = int.Parse(dr["id_usb"].ToString());
+                            if (!dr["id_memoire"].ToString().Trim().Equals("")) varclsmateriel.Id_memoire = int.Parse(dr["id_memoire"].ToString());
+                            if (!dr["id_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Id_sorties_audio = int.Parse(dr["id_sorties_audio"].ToString());
+                            if (!dr["id_microphone"].ToString().Trim().Equals("")) varclsmateriel.Id_microphone = int.Parse(dr["id_microphone"].ToString());
+                            if (!dr["id_gain"].ToString().Trim().Equals("")) varclsmateriel.Id_gain = int.Parse(dr["id_gain"].ToString());
                             if (!dr["id_type_routeur_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_routeur_ap = int.Parse(dr["id_type_routeur_AP"].ToString());
                             if (!dr["id_version_ios"].ToString().Trim().Equals("")) varclsmateriel.Id_version_ios = int.Parse(dr["id_version_ios"].ToString());
-                            if (!dr["nombre_gbe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_gbe = int.Parse(dr["nombre_gbe"].ToString());
-                            if (!dr["nombre_fe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fe = int.Parse(dr["nombre_fe"].ToString());
-                            if (!dr["nombre_fo"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fo = int.Parse(dr["nombre_fo"].ToString());
-                            if (!dr["nombre_serial"].ToString().Trim().Equals("")) varclsmateriel.Nombre_serial = int.Parse(dr["nombre_serial"].ToString());
+                            if (!dr["id_gbe"].ToString().Trim().Equals("")) varclsmateriel.Id_gbe = int.Parse(dr["id_gbe"].ToString());
+                            if (!dr["id_fe"].ToString().Trim().Equals("")) varclsmateriel.Id_fe = int.Parse(dr["id_fe"].ToString());
+                            if (!dr["id_fo"].ToString().Trim().Equals("")) varclsmateriel.Id_fo = int.Parse(dr["id_fo"].ToString());
+                            if (!dr["id_serial"].ToString().Trim().Equals("")) varclsmateriel.Id_serial = int.Parse(dr["id_serial"].ToString());
                             if (!dr["capable_usb"].ToString().Trim().Equals("")) varclsmateriel.Capable_usb = bool.Parse(dr["capable_usb"].ToString());
-                            varclsmateriel.Motpasse_defaut = dr["motpasse_defaut"].ToString();
-                            varclsmateriel.Default_ip = dr["default_IP"].ToString();
-                            if (!dr["nombre_console"].ToString().Trim().Equals("")) varclsmateriel.Nombre_console = int.Parse(dr["nombre_console"].ToString());
-                            if (!dr["nombre_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_auxiliaire = int.Parse(dr["nombre_auxiliaire"].ToString());
+                            if (!dr["id_default_pwd"].ToString().Trim().Equals("")) varclsmateriel.Id_default_pwd = int.Parse(dr["id_default_pwd"].ToString());
+                            if (!dr["id_default_ip"].ToString().Trim().Equals("")) varclsmateriel.Id_default_ip = int.Parse(dr["id_default_ip"].ToString());
+                            if (!dr["id_console"].ToString().Trim().Equals("")) varclsmateriel.Id_console = int.Parse(dr["id_console"].ToString());
+                            if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            if (!dr["frequence"].ToString().Trim().Equals("")) varclsmateriel.Frequence = double.Parse(dr["frequence"].ToString());
-                            varclsmateriel.Alimentation = dr["alimentation"].ToString();
-                            if (!dr["nombre_antenne"].ToString().Trim().Equals("")) varclsmateriel.Nombre_antenne = int.Parse(dr["nombre_antenne"].ToString());
+                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
                         }
@@ -4293,8 +7419,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM materiel  WHERE";
-                    sql += "  code_str LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM materiel  WHERE 1=1";
+                    sql += "  OR   code_str LIKE '%" + criteria + "%'";
                     sql += "  OR   qrcode LIKE '%" + criteria + "%'";
                     sql += "  OR   photo1 LIKE '%" + criteria + "%'";
                     sql += "  OR   photo2 LIKE '%" + criteria + "%'";
@@ -4305,9 +7431,7 @@ namespace smartManage.Model
                     sql += "  OR   commentaire LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    sql += "  OR   motpasse_defaut LIKE '%" + criteria + "%'";
-                    sql += "  OR   default_IP LIKE '%" + criteria + "%'";
-                    sql += "  OR   alimentation LIKE '%" + criteria + "%'";
+                    sql += "  OR   frequence LIKE '%" + criteria + "%' ORDER BY code_str ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4323,7 +7447,7 @@ namespace smartManage.Model
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
                             varclsmateriel.Qrcode = dr["qrcode"].ToString();
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
-                            if (!dr["guarantie"].ToString().Trim().Equals("")) varclsmateriel.Guarantie = int.Parse(dr["guarantie"].ToString());
+                            if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
                             if (!dr["id_modele"].ToString().Trim().Equals("")) varclsmateriel.Id_modele = int.Parse(dr["id_modele"].ToString());
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
@@ -4343,49 +7467,48 @@ namespace smartManage.Model
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
-                            if (!dr["ram"].ToString().Trim().Equals("")) varclsmateriel.Ram = double.Parse(dr["ram"].ToString());
-                            if (!dr["processeur"].ToString().Trim().Equals("")) varclsmateriel.Processeur = double.Parse(dr["processeur"].ToString());
-                            if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
-                            if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
-                            if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
-                            if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
-                            if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
-                            if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
-                            if (!dr["nombre_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdmi = int.Parse(dr["nombre_hdmi"].ToString());
-                            if (!dr["nombre_vga"].ToString().Trim().Equals("")) varclsmateriel.Nombre_vga = int.Parse(dr["nombre_vga"].ToString());
-                            if (!dr["tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Tension_batterie = double.Parse(dr["tension_batterie"].ToString());
-                            if (!dr["tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Tension_adaptateur = double.Parse(dr["tension_adaptateur"].ToString());
-                            if (!dr["puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Puissance_adaptateur = double.Parse(dr["puissance_adaptateur"].ToString());
-                            if (!dr["intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Intensite_adaptateur = double.Parse(dr["intensite_adaptateur"].ToString());
+                            if (!dr["id_ram"].ToString().Trim().Equals("")) varclsmateriel.Id_ram = int.Parse(dr["id_ram"].ToString());
+                            if (!dr["id_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_processeur = int.Parse(dr["id_processeur"].ToString());
+                            if (!dr["id_nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_coeur_processeur = int.Parse(dr["id_nombre_coeur_processeur"].ToString());
+                            if (!dr["id_type_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_type_hdd = int.Parse(dr["id_type_hdd"].ToString());
+                            if (!dr["id_nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_hdd = int.Parse(dr["id_nombre_hdd"].ToString());
+                            if (!dr["id_capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_capacite_hdd = int.Parse(dr["id_capacite_hdd"].ToString());
+                            if (!dr["id_taille_ecran"].ToString().Trim().Equals("")) varclsmateriel.Id_taille_ecran = int.Parse(dr["id_taille_ecran"].ToString());
+                            if (!dr["id_usb2"].ToString().Trim().Equals("")) varclsmateriel.Id_usb2 = int.Parse(dr["id_usb2"].ToString());
+                            if (!dr["id_usb3"].ToString().Trim().Equals("")) varclsmateriel.Id_usb3 = int.Parse(dr["id_usb3"].ToString());
+                            if (!dr["id_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Id_hdmi = int.Parse(dr["id_hdmi"].ToString());
+                            if (!dr["id_vga"].ToString().Trim().Equals("")) varclsmateriel.Id_vga = int.Parse(dr["id_vga"].ToString());
+                            if (!dr["id_tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_batterie = int.Parse(dr["id_tension_batterie"].ToString());
+                            if (!dr["id_tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_adaptateur = int.Parse(dr["id_tension_adaptateur"].ToString());
+                            if (!dr["id_puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance_adaptateur = int.Parse(dr["id_puissance_adaptateur"].ToString());
+                            if (!dr["id_intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite_adaptateur = int.Parse(dr["id_intensite_adaptateur"].ToString());
                             if (!dr["numero_cle"].ToString().Trim().Equals("")) varclsmateriel.Numero_cle = int.Parse(dr["numero_cle"].ToString());
                             if (!dr["id_type_imprimante"].ToString().Trim().Equals("")) varclsmateriel.Id_type_imprimante = int.Parse(dr["id_type_imprimante"].ToString());
-                            if (!dr["puissance"].ToString().Trim().Equals("")) varclsmateriel.Puissance = double.Parse(dr["puissance"].ToString());
-                            if (!dr["intensite"].ToString().Trim().Equals("")) varclsmateriel.Intensite = double.Parse(dr["intensite"].ToString());
-                            if (!dr["nombre_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Nombre_page_par_minute = double.Parse(dr["nombre_page_par_minute"].ToString());
+                            if (!dr["id_puissance"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance = int.Parse(dr["id_puissance"].ToString());
+                            if (!dr["id_intensite"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite = int.Parse(dr["id_intensite"].ToString());
+                            if (!dr["id_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Id_page_par_minute = int.Parse(dr["id_page_par_minute"].ToString());
                             if (!dr["id_type_amplificateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_amplificateur = int.Parse(dr["id_type_amplificateur"].ToString());
-                            if (!dr["tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Tension_alimentation = int.Parse(dr["tension_alimentation"].ToString());
-                            if (!dr["nombre_usb"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb = int.Parse(dr["nombre_usb"].ToString());
-                            if (!dr["nombre_memoire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_memoire = int.Parse(dr["nombre_memoire"].ToString());
-                            if (!dr["nombre_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Nombre_sorties_audio = int.Parse(dr["nombre_sorties_audio"].ToString());
-                            if (!dr["nombre_microphone"].ToString().Trim().Equals("")) varclsmateriel.Nombre_microphone = int.Parse(dr["nombre_microphone"].ToString());
-                            if (!dr["gain"].ToString().Trim().Equals("")) varclsmateriel.Gain = double.Parse(dr["gain"].ToString());
+                            if (!dr["id_tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_alimentation = int.Parse(dr["id_tension_alimentation"].ToString());
+                            if (!dr["id_usb"].ToString().Trim().Equals("")) varclsmateriel.Id_usb = int.Parse(dr["id_usb"].ToString());
+                            if (!dr["id_memoire"].ToString().Trim().Equals("")) varclsmateriel.Id_memoire = int.Parse(dr["id_memoire"].ToString());
+                            if (!dr["id_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Id_sorties_audio = int.Parse(dr["id_sorties_audio"].ToString());
+                            if (!dr["id_microphone"].ToString().Trim().Equals("")) varclsmateriel.Id_microphone = int.Parse(dr["id_microphone"].ToString());
+                            if (!dr["id_gain"].ToString().Trim().Equals("")) varclsmateriel.Id_gain = int.Parse(dr["id_gain"].ToString());
                             if (!dr["id_type_routeur_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_routeur_ap = int.Parse(dr["id_type_routeur_AP"].ToString());
                             if (!dr["id_version_ios"].ToString().Trim().Equals("")) varclsmateriel.Id_version_ios = int.Parse(dr["id_version_ios"].ToString());
-                            if (!dr["nombre_gbe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_gbe = int.Parse(dr["nombre_gbe"].ToString());
-                            if (!dr["nombre_fe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fe = int.Parse(dr["nombre_fe"].ToString());
-                            if (!dr["nombre_fo"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fo = int.Parse(dr["nombre_fo"].ToString());
-                            if (!dr["nombre_serial"].ToString().Trim().Equals("")) varclsmateriel.Nombre_serial = int.Parse(dr["nombre_serial"].ToString());
+                            if (!dr["id_gbe"].ToString().Trim().Equals("")) varclsmateriel.Id_gbe = int.Parse(dr["id_gbe"].ToString());
+                            if (!dr["id_fe"].ToString().Trim().Equals("")) varclsmateriel.Id_fe = int.Parse(dr["id_fe"].ToString());
+                            if (!dr["id_fo"].ToString().Trim().Equals("")) varclsmateriel.Id_fo = int.Parse(dr["id_fo"].ToString());
+                            if (!dr["id_serial"].ToString().Trim().Equals("")) varclsmateriel.Id_serial = int.Parse(dr["id_serial"].ToString());
                             if (!dr["capable_usb"].ToString().Trim().Equals("")) varclsmateriel.Capable_usb = bool.Parse(dr["capable_usb"].ToString());
-                            varclsmateriel.Motpasse_defaut = dr["motpasse_defaut"].ToString();
-                            varclsmateriel.Default_ip = dr["default_IP"].ToString();
-                            if (!dr["nombre_console"].ToString().Trim().Equals("")) varclsmateriel.Nombre_console = int.Parse(dr["nombre_console"].ToString());
-                            if (!dr["nombre_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_auxiliaire = int.Parse(dr["nombre_auxiliaire"].ToString());
+                            if (!dr["id_default_pwd"].ToString().Trim().Equals("")) varclsmateriel.Id_default_pwd = int.Parse(dr["id_default_pwd"].ToString());
+                            if (!dr["id_default_ip"].ToString().Trim().Equals("")) varclsmateriel.Id_default_ip = int.Parse(dr["id_default_ip"].ToString());
+                            if (!dr["id_console"].ToString().Trim().Equals("")) varclsmateriel.Id_console = int.Parse(dr["id_console"].ToString());
+                            if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            if (!dr["frequence"].ToString().Trim().Equals("")) varclsmateriel.Frequence = double.Parse(dr["frequence"].ToString());
-                            varclsmateriel.Alimentation = dr["alimentation"].ToString();
-                            if (!dr["nombre_antenne"].ToString().Trim().Equals("")) varclsmateriel.Nombre_antenne = int.Parse(dr["nombre_antenne"].ToString());
+                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
                             lstclsmateriel.Add(varclsmateriel);
@@ -4427,7 +7550,7 @@ namespace smartManage.Model
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
                             varclsmateriel.Qrcode = dr["qrcode"].ToString();
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
-                            if (!dr["guarantie"].ToString().Trim().Equals("")) varclsmateriel.Guarantie = int.Parse(dr["guarantie"].ToString());
+                            if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
                             if (!dr["id_modele"].ToString().Trim().Equals("")) varclsmateriel.Id_modele = int.Parse(dr["id_modele"].ToString());
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
@@ -4447,49 +7570,48 @@ namespace smartManage.Model
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
-                            if (!dr["ram"].ToString().Trim().Equals("")) varclsmateriel.Ram = double.Parse(dr["ram"].ToString());
-                            if (!dr["processeur"].ToString().Trim().Equals("")) varclsmateriel.Processeur = double.Parse(dr["processeur"].ToString());
-                            if (!dr["nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Nombre_coeur_processeur = int.Parse(dr["nombre_coeur_processeur"].ToString());
-                            if (!dr["nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdd = int.Parse(dr["nombre_hdd"].ToString());
-                            if (!dr["capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Capacite_hdd = int.Parse(dr["capacite_hdd"].ToString());
-                            if (!dr["indice_performance"].ToString().Trim().Equals("")) varclsmateriel.Indice_performance = double.Parse(dr["indice_performance"].ToString());
-                            if (!dr["pouce"].ToString().Trim().Equals("")) varclsmateriel.Pouce = int.Parse(dr["pouce"].ToString());
-                            if (!dr["nombre_usb2"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb2 = int.Parse(dr["nombre_usb2"].ToString());
-                            if (!dr["nombre_usb3"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb3 = int.Parse(dr["nombre_usb3"].ToString());
-                            if (!dr["nombre_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Nombre_hdmi = int.Parse(dr["nombre_hdmi"].ToString());
-                            if (!dr["nombre_vga"].ToString().Trim().Equals("")) varclsmateriel.Nombre_vga = int.Parse(dr["nombre_vga"].ToString());
-                            if (!dr["tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Tension_batterie = double.Parse(dr["tension_batterie"].ToString());
-                            if (!dr["tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Tension_adaptateur = double.Parse(dr["tension_adaptateur"].ToString());
-                            if (!dr["puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Puissance_adaptateur = double.Parse(dr["puissance_adaptateur"].ToString());
-                            if (!dr["intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Intensite_adaptateur = double.Parse(dr["intensite_adaptateur"].ToString());
+                            if (!dr["id_ram"].ToString().Trim().Equals("")) varclsmateriel.Id_ram = int.Parse(dr["id_ram"].ToString());
+                            if (!dr["id_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_processeur = int.Parse(dr["id_processeur"].ToString());
+                            if (!dr["id_nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_coeur_processeur = int.Parse(dr["id_nombre_coeur_processeur"].ToString());
+                            if (!dr["id_type_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_type_hdd = int.Parse(dr["id_type_hdd"].ToString());
+                            if (!dr["id_nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_hdd = int.Parse(dr["id_nombre_hdd"].ToString());
+                            if (!dr["id_capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_capacite_hdd = int.Parse(dr["id_capacite_hdd"].ToString());
+                            if (!dr["id_taille_ecran"].ToString().Trim().Equals("")) varclsmateriel.Id_taille_ecran = int.Parse(dr["id_taille_ecran"].ToString());
+                            if (!dr["id_usb2"].ToString().Trim().Equals("")) varclsmateriel.Id_usb2 = int.Parse(dr["id_usb2"].ToString());
+                            if (!dr["id_usb3"].ToString().Trim().Equals("")) varclsmateriel.Id_usb3 = int.Parse(dr["id_usb3"].ToString());
+                            if (!dr["id_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Id_hdmi = int.Parse(dr["id_hdmi"].ToString());
+                            if (!dr["id_vga"].ToString().Trim().Equals("")) varclsmateriel.Id_vga = int.Parse(dr["id_vga"].ToString());
+                            if (!dr["id_tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_batterie = int.Parse(dr["id_tension_batterie"].ToString());
+                            if (!dr["id_tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_adaptateur = int.Parse(dr["id_tension_adaptateur"].ToString());
+                            if (!dr["id_puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance_adaptateur = int.Parse(dr["id_puissance_adaptateur"].ToString());
+                            if (!dr["id_intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite_adaptateur = int.Parse(dr["id_intensite_adaptateur"].ToString());
                             if (!dr["numero_cle"].ToString().Trim().Equals("")) varclsmateriel.Numero_cle = int.Parse(dr["numero_cle"].ToString());
                             if (!dr["id_type_imprimante"].ToString().Trim().Equals("")) varclsmateriel.Id_type_imprimante = int.Parse(dr["id_type_imprimante"].ToString());
-                            if (!dr["puissance"].ToString().Trim().Equals("")) varclsmateriel.Puissance = double.Parse(dr["puissance"].ToString());
-                            if (!dr["intensite"].ToString().Trim().Equals("")) varclsmateriel.Intensite = double.Parse(dr["intensite"].ToString());
-                            if (!dr["nombre_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Nombre_page_par_minute = double.Parse(dr["nombre_page_par_minute"].ToString());
+                            if (!dr["id_puissance"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance = int.Parse(dr["id_puissance"].ToString());
+                            if (!dr["id_intensite"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite = int.Parse(dr["id_intensite"].ToString());
+                            if (!dr["id_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Id_page_par_minute = int.Parse(dr["id_page_par_minute"].ToString());
                             if (!dr["id_type_amplificateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_amplificateur = int.Parse(dr["id_type_amplificateur"].ToString());
-                            if (!dr["tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Tension_alimentation = int.Parse(dr["tension_alimentation"].ToString());
-                            if (!dr["nombre_usb"].ToString().Trim().Equals("")) varclsmateriel.Nombre_usb = int.Parse(dr["nombre_usb"].ToString());
-                            if (!dr["nombre_memoire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_memoire = int.Parse(dr["nombre_memoire"].ToString());
-                            if (!dr["nombre_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Nombre_sorties_audio = int.Parse(dr["nombre_sorties_audio"].ToString());
-                            if (!dr["nombre_microphone"].ToString().Trim().Equals("")) varclsmateriel.Nombre_microphone = int.Parse(dr["nombre_microphone"].ToString());
-                            if (!dr["gain"].ToString().Trim().Equals("")) varclsmateriel.Gain = double.Parse(dr["gain"].ToString());
+                            if (!dr["id_tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_alimentation = int.Parse(dr["id_tension_alimentation"].ToString());
+                            if (!dr["id_usb"].ToString().Trim().Equals("")) varclsmateriel.Id_usb = int.Parse(dr["id_usb"].ToString());
+                            if (!dr["id_memoire"].ToString().Trim().Equals("")) varclsmateriel.Id_memoire = int.Parse(dr["id_memoire"].ToString());
+                            if (!dr["id_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Id_sorties_audio = int.Parse(dr["id_sorties_audio"].ToString());
+                            if (!dr["id_microphone"].ToString().Trim().Equals("")) varclsmateriel.Id_microphone = int.Parse(dr["id_microphone"].ToString());
+                            if (!dr["id_gain"].ToString().Trim().Equals("")) varclsmateriel.Id_gain = int.Parse(dr["id_gain"].ToString());
                             if (!dr["id_type_routeur_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_routeur_ap = int.Parse(dr["id_type_routeur_AP"].ToString());
                             if (!dr["id_version_ios"].ToString().Trim().Equals("")) varclsmateriel.Id_version_ios = int.Parse(dr["id_version_ios"].ToString());
-                            if (!dr["nombre_gbe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_gbe = int.Parse(dr["nombre_gbe"].ToString());
-                            if (!dr["nombre_fe"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fe = int.Parse(dr["nombre_fe"].ToString());
-                            if (!dr["nombre_fo"].ToString().Trim().Equals("")) varclsmateriel.Nombre_fo = int.Parse(dr["nombre_fo"].ToString());
-                            if (!dr["nombre_serial"].ToString().Trim().Equals("")) varclsmateriel.Nombre_serial = int.Parse(dr["nombre_serial"].ToString());
+                            if (!dr["id_gbe"].ToString().Trim().Equals("")) varclsmateriel.Id_gbe = int.Parse(dr["id_gbe"].ToString());
+                            if (!dr["id_fe"].ToString().Trim().Equals("")) varclsmateriel.Id_fe = int.Parse(dr["id_fe"].ToString());
+                            if (!dr["id_fo"].ToString().Trim().Equals("")) varclsmateriel.Id_fo = int.Parse(dr["id_fo"].ToString());
+                            if (!dr["id_serial"].ToString().Trim().Equals("")) varclsmateriel.Id_serial = int.Parse(dr["id_serial"].ToString());
                             if (!dr["capable_usb"].ToString().Trim().Equals("")) varclsmateriel.Capable_usb = bool.Parse(dr["capable_usb"].ToString());
-                            varclsmateriel.Motpasse_defaut = dr["motpasse_defaut"].ToString();
-                            varclsmateriel.Default_ip = dr["default_IP"].ToString();
-                            if (!dr["nombre_console"].ToString().Trim().Equals("")) varclsmateriel.Nombre_console = int.Parse(dr["nombre_console"].ToString());
-                            if (!dr["nombre_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Nombre_auxiliaire = int.Parse(dr["nombre_auxiliaire"].ToString());
+                            if (!dr["id_default_pwd"].ToString().Trim().Equals("")) varclsmateriel.Id_default_pwd = int.Parse(dr["id_default_pwd"].ToString());
+                            if (!dr["id_default_ip"].ToString().Trim().Equals("")) varclsmateriel.Id_default_ip = int.Parse(dr["id_default_ip"].ToString());
+                            if (!dr["id_console"].ToString().Trim().Equals("")) varclsmateriel.Id_console = int.Parse(dr["id_console"].ToString());
+                            if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            if (!dr["frequence"].ToString().Trim().Equals("")) varclsmateriel.Frequence = double.Parse(dr["frequence"].ToString());
-                            varclsmateriel.Alimentation = dr["alimentation"].ToString();
-                            if (!dr["nombre_antenne"].ToString().Trim().Equals("")) varclsmateriel.Nombre_antenne = int.Parse(dr["nombre_antenne"].ToString());
+                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
                             lstclsmateriel.Add(varclsmateriel);
@@ -4516,29 +7638,29 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("INSERT INTO materiel ( id,code_str,id_categorie_materiel,id_compte,qrcode,date_acquisition,guarantie,id_marque,id_modele,id_couleur,id_poids,id_etat_materiel,photo1,photo2,photo3,label,mac_adresse1,mac_adresse2,commentaire,user_created,date_created,user_modified,date_modified,id_type_ordinateur,id_type_clavier,id_OS,ram,processeur,nombre_coeur_processeur,nombre_hdd,capacite_hdd,indice_performance,pouce,nombre_usb2,nombre_usb3,nombre_hdmi,nombre_vga,tension_batterie,tension_adaptateur,puissance_adaptateur,intensite_adaptateur,numero_cle,id_type_imprimante,puissance,intensite,nombre_page_par_minute,id_type_amplificateur,tension_alimentation,nombre_usb,nombre_memoire,nombre_sorties_audio,nombre_microphone,gain,id_type_routeur_AP,id_version_ios,nombre_gbe,nombre_fe,nombre_fo,nombre_serial,capable_usb,motpasse_defaut,default_IP,nombre_console,nombre_auxiliaire,id_type_AP,id_type_switch,frequence,alimentation,nombre_antenne,id_netette,compatible_wifi ) VALUES (@id,@code_str,@id_categorie_materiel,@id_compte,@qrcode,@date_acquisition,@guarantie,@id_marque,@id_modele,@id_couleur,@id_poids,@id_etat_materiel,@photo1,@photo2,@photo3,@label,@mac_adresse1,@mac_adresse2,@commentaire,@user_created,@date_created,@user_modified,@date_modified,@id_type_ordinateur,@id_type_clavier,@id_OS,@ram,@processeur,@nombre_coeur_processeur,@nombre_hdd,@capacite_hdd,@indice_performance,@pouce,@nombre_usb2,@nombre_usb3,@nombre_hdmi,@nombre_vga,@tension_batterie,@tension_adaptateur,@puissance_adaptateur,@intensite_adaptateur,@numero_cle,@id_type_imprimante,@puissance,@intensite,@nombre_page_par_minute,@id_type_amplificateur,@tension_alimentation,@nombre_usb,@nombre_memoire,@nombre_sorties_audio,@nombre_microphone,@gain,@id_type_routeur_AP,@id_version_ios,@nombre_gbe,@nombre_fe,@nombre_fo,@nombre_serial,@capable_usb,@motpasse_defaut,@default_IP,@nombre_console,@nombre_auxiliaire,@id_type_AP,@id_type_switch,@frequence,@alimentation,@nombre_antenne,@id_netette,@compatible_wifi  )");
+                    cmd.CommandText = string.Format("INSERT INTO materiel ( id,code_str,id_categorie_materiel,id_compte,qrcode,date_acquisition,id_garantie,id_marque,id_modele,id_couleur,id_poids,id_etat_materiel,photo1,photo2,photo3,label,mac_adresse1,mac_adresse2,commentaire,user_created,date_created,user_modified,date_modified,id_type_ordinateur,id_type_clavier,id_OS,id_ram,id_processeur,id_nombre_coeur_processeur,id_type_hdd,id_nombre_hdd,id_capacite_hdd,id_taille_ecran,id_usb2,id_usb3,id_hdmi,id_vga,id_tension_batterie,id_tension_adaptateur,id_puissance_adaptateur,id_intensite_adaptateur,numero_cle,id_type_imprimante,id_puissance,id_intensite,id_page_par_minute,id_type_amplificateur,id_tension_alimentation,id_usb,id_memoire,id_sorties_audio,id_microphone,id_gain,id_type_routeur_AP,id_version_ios,id_gbe,id_fe,id_fo,id_serial,capable_usb,id_default_pwd,id_default_ip,id_console,id_auxiliaire,id_type_AP,id_type_switch,frequence,id_antenne,id_netette,compatible_wifi ) VALUES (@id,@code_str,@id_categorie_materiel,@id_compte,@qrcode,@date_acquisition,@id_garantie,@id_marque,@id_modele,@id_couleur,@id_poids,@id_etat_materiel,@photo1,@photo2,@photo3,@label,@mac_adresse1,@mac_adresse2,@commentaire,@user_created,@date_created,@user_modified,@date_modified,@id_type_ordinateur,@id_type_clavier,@id_OS,@id_ram,@id_processeur,@id_nombre_coeur_processeur,@id_type_hdd,@id_nombre_hdd,@id_capacite_hdd,@id_taille_ecran,@id_usb2,@id_usb3,@id_hdmi,@id_vga,@id_tension_batterie,@id_tension_adaptateur,@id_puissance_adaptateur,@id_intensite_adaptateur,@numero_cle,@id_type_imprimante,@id_puissance,@id_intensite,@id_page_par_minute,@id_type_amplificateur,@id_tension_alimentation,@id_usb,@id_memoire,@id_sorties_audio,@id_microphone,@id_gain,@id_type_routeur_AP,@id_version_ios,@id_gbe,@id_fe,@id_fo,@id_serial,@capable_usb,@id_default_pwd,@id_default_ip,@id_console,@id_auxiliaire,@id_type_AP,@id_type_switch,@frequence,@id_antenne,@id_netette,@compatible_wifi  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     if (varclsmateriel.Code_str != null) cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, varclsmateriel.Code_str));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_categorie_materiel", DbType.Int32, 4, varclsmateriel.Id_categorie_materiel));
                     cmd.Parameters.Add(getParameter(cmd, "@id_compte", DbType.Int32, 4, varclsmateriel.Id_compte));
-                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Object, 2147483647, varclsmateriel.Qrcode));
-                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, varclsmateriel.Qrcode));
+                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Date_acquisition.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, varclsmateriel.Date_acquisition));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, DBNull.Value));
-                    if (varclsmateriel.Guarantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@guarantie", DbType.Int32, 4, varclsmateriel.Guarantie));
-                    else cmd.Parameters.Add(getParameter(cmd, "@guarantie", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_garantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, varclsmateriel.Id_garantie));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_marque", DbType.Int32, 4, varclsmateriel.Id_marque));
                     cmd.Parameters.Add(getParameter(cmd, "@id_modele", DbType.Int32, 4, varclsmateriel.Id_modele));
                     cmd.Parameters.Add(getParameter(cmd, "@id_couleur", DbType.Int32, 4, varclsmateriel.Id_couleur));
                     cmd.Parameters.Add(getParameter(cmd, "@id_poids", DbType.Int32, 4, varclsmateriel.Id_poids));
                     cmd.Parameters.Add(getParameter(cmd, "@id_etat_materiel", DbType.Int32, 4, varclsmateriel.Id_etat_materiel));
-                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Object, 2147483647, varclsmateriel.Photo1));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Object, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Object, 2147483647, varclsmateriel.Photo2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Object, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Object, 2147483647, varclsmateriel.Photo3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, varclsmateriel.Photo1));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, varclsmateriel.Photo2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, varclsmateriel.Photo3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, varclsmateriel.Mac_adresse1));
@@ -4561,92 +7683,90 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_clavier", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_os.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_OS", DbType.Int32, 4, varclsmateriel.Id_os));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_OS", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Ram.HasValue) cmd.Parameters.Add(getParameter(cmd, "@ram", DbType.Single, 4, varclsmateriel.Ram));
-                    else cmd.Parameters.Add(getParameter(cmd, "@ram", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@processeur", DbType.Single, 4, varclsmateriel.Processeur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@processeur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_coeur_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_coeur_processeur", DbType.Int32, 4, varclsmateriel.Nombre_coeur_processeur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_coeur_processeur", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, varclsmateriel.Nombre_hdd));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, varclsmateriel.Capacite_hdd));
-                    else cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, varclsmateriel.Indice_performance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Pouce.HasValue) cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, varclsmateriel.Pouce));
-                    else cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, varclsmateriel.Nombre_usb2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb3.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb3", DbType.Int32, 4, varclsmateriel.Nombre_usb3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb3", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_hdmi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_hdmi", DbType.Int32, 4, varclsmateriel.Nombre_hdmi));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdmi", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_vga.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_vga", DbType.Int32, 4, varclsmateriel.Nombre_vga));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_vga", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_batterie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_batterie", DbType.Single, 4, varclsmateriel.Tension_batterie));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_batterie", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_adaptateur", DbType.Single, 4, varclsmateriel.Tension_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_adaptateur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Puissance_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@puissance_adaptateur", DbType.Single, 4, varclsmateriel.Puissance_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@puissance_adaptateur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Intensite_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@intensite_adaptateur", DbType.Single, 4, varclsmateriel.Intensite_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@intensite_adaptateur", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_ram.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_ram", DbType.Int32, 4, varclsmateriel.Id_ram));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_ram", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_processeur", DbType.Int32, 4, varclsmateriel.Id_processeur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_processeur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_nombre_coeur_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_nombre_coeur_processeur", DbType.Int32, 4, varclsmateriel.Id_nombre_coeur_processeur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_nombre_coeur_processeur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_type_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_hdd", DbType.Int32, 4, varclsmateriel.Id_type_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_type_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_nombre_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_nombre_hdd", DbType.Int32, 4, varclsmateriel.Id_nombre_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_nombre_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_capacite_hdd", DbType.Int32, 4, varclsmateriel.Id_capacite_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_capacite_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_taille_ecran.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_taille_ecran", DbType.Int32, 4, varclsmateriel.Id_taille_ecran));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_taille_ecran", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb2", DbType.Int32, 4, varclsmateriel.Id_usb2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb2", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb3.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb3", DbType.Int32, 4, varclsmateriel.Id_usb3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb3", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_hdmi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_hdmi", DbType.Int32, 4, varclsmateriel.Id_hdmi));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_hdmi", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_vga.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_vga", DbType.Int32, 4, varclsmateriel.Id_vga));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_vga", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_batterie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_batterie", DbType.Int32, 4, varclsmateriel.Id_tension_batterie));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_batterie", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_adaptateur", DbType.Int32, 4, varclsmateriel.Id_tension_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_adaptateur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_puissance_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_puissance_adaptateur", DbType.Int32, 4, varclsmateriel.Id_puissance_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_puissance_adaptateur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_intensite_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_intensite_adaptateur", DbType.Int32, 4, varclsmateriel.Id_intensite_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_intensite_adaptateur", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Numero_cle.HasValue) cmd.Parameters.Add(getParameter(cmd, "@numero_cle", DbType.Int32, 4, varclsmateriel.Numero_cle));
                     else cmd.Parameters.Add(getParameter(cmd, "@numero_cle", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_imprimante.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_imprimante", DbType.Int32, 4, varclsmateriel.Id_type_imprimante));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_imprimante", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Puissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@puissance", DbType.Single, 4, varclsmateriel.Puissance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@puissance", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Intensite.HasValue) cmd.Parameters.Add(getParameter(cmd, "@intensite", DbType.Single, 4, varclsmateriel.Intensite));
-                    else cmd.Parameters.Add(getParameter(cmd, "@intensite", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_page_par_minute.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_page_par_minute", DbType.Single, 4, varclsmateriel.Nombre_page_par_minute));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_page_par_minute", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_puissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_puissance", DbType.Int32, 4, varclsmateriel.Id_puissance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_puissance", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_intensite.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_intensite", DbType.Int32, 4, varclsmateriel.Id_intensite));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_intensite", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_page_par_minute.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_page_par_minute", DbType.Int32, 4, varclsmateriel.Id_page_par_minute));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_page_par_minute", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_amplificateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_amplificateur", DbType.Int32, 4, varclsmateriel.Id_type_amplificateur));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_amplificateur", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_alimentation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_alimentation", DbType.Int32, 4, varclsmateriel.Tension_alimentation));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_alimentation", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb", DbType.Int32, 4, varclsmateriel.Nombre_usb));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_memoire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_memoire", DbType.Int32, 4, varclsmateriel.Nombre_memoire));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_memoire", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_sorties_audio.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_sorties_audio", DbType.Int32, 4, varclsmateriel.Nombre_sorties_audio));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_sorties_audio", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_microphone.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_microphone", DbType.Int32, 4, varclsmateriel.Nombre_microphone));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_microphone", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Gain.HasValue) cmd.Parameters.Add(getParameter(cmd, "@gain", DbType.Single, 4, varclsmateriel.Gain));
-                    else cmd.Parameters.Add(getParameter(cmd, "@gain", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_alimentation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_alimentation", DbType.Int32, 4, varclsmateriel.Id_tension_alimentation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_alimentation", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb", DbType.Int32, 4, varclsmateriel.Id_usb));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_memoire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_memoire", DbType.Int32, 4, varclsmateriel.Id_memoire));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_memoire", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_sorties_audio.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_sorties_audio", DbType.Int32, 4, varclsmateriel.Id_sorties_audio));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_sorties_audio", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_microphone.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_microphone", DbType.Int32, 4, varclsmateriel.Id_microphone));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_microphone", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_gain.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_gain", DbType.Int32, 4, varclsmateriel.Id_gain));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_gain", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_routeur_ap.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_routeur_AP", DbType.Int32, 4, varclsmateriel.Id_type_routeur_ap));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_routeur_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_version_ios.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_version_ios", DbType.Int32, 4, varclsmateriel.Id_version_ios));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_version_ios", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_gbe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_gbe", DbType.Int32, 4, varclsmateriel.Nombre_gbe));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_gbe", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_fe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_fe", DbType.Int32, 4, varclsmateriel.Nombre_fe));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_fe", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_fo.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_fo", DbType.Int32, 4, varclsmateriel.Nombre_fo));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_fo", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_serial.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_serial", DbType.Int32, 4, varclsmateriel.Nombre_serial));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_serial", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_gbe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_gbe", DbType.Int32, 4, varclsmateriel.Id_gbe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_gbe", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_fe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_fe", DbType.Int32, 4, varclsmateriel.Id_fe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_fe", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_fo.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_fo", DbType.Int32, 4, varclsmateriel.Id_fo));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_fo", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_serial.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_serial", DbType.Int32, 4, varclsmateriel.Id_serial));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_serial", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Capable_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capable_usb", DbType.Boolean, 2, varclsmateriel.Capable_usb));
                     else cmd.Parameters.Add(getParameter(cmd, "@capable_usb", DbType.Boolean, 2, DBNull.Value));
-                    if (varclsmateriel.Motpasse_defaut != null) cmd.Parameters.Add(getParameter(cmd, "@motpasse_defaut", DbType.String, 20, varclsmateriel.Motpasse_defaut));
-                    else cmd.Parameters.Add(getParameter(cmd, "@motpasse_defaut", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Default_ip != null) cmd.Parameters.Add(getParameter(cmd, "@default_IP", DbType.String, 50, varclsmateriel.Default_ip));
-                    else cmd.Parameters.Add(getParameter(cmd, "@default_IP", DbType.String, 50, DBNull.Value));
-                    if (varclsmateriel.Nombre_console.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_console", DbType.Int32, 4, varclsmateriel.Nombre_console));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_console", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_auxiliaire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_auxiliaire", DbType.Int32, 4, varclsmateriel.Nombre_auxiliaire));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_auxiliaire", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_default_pwd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_default_pwd", DbType.Int32, 4, varclsmateriel.Id_default_pwd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_default_pwd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_default_ip.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_default_ip", DbType.Int32, 4, varclsmateriel.Id_default_ip));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_default_ip", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_console.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_console", DbType.Int32, 4, varclsmateriel.Id_console));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_console", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_auxiliaire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_auxiliaire", DbType.Int32, 4, varclsmateriel.Id_auxiliaire));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_auxiliaire", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_ap.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, varclsmateriel.Id_type_ap));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_switch.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, varclsmateriel.Id_type_switch));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Frequence.HasValue) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.Single, 4, varclsmateriel.Frequence));
-                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Alimentation != null) cmd.Parameters.Add(getParameter(cmd, "@alimentation", DbType.String, 20, varclsmateriel.Alimentation));
-                    else cmd.Parameters.Add(getParameter(cmd, "@alimentation", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Nombre_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_antenne", DbType.Int32, 4, varclsmateriel.Nombre_antenne));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_antenne", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Frequence != null) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, varclsmateriel.Frequence));
+                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, DBNull.Value));
+                    if (varclsmateriel.Id_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, varclsmateriel.Id_antenne));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_netette.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, varclsmateriel.Id_netette));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Compatible_wifi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@compatible_wifi", DbType.Boolean, 2, varclsmateriel.Compatible_wifi));
@@ -4673,28 +7793,28 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE materiel  SET code_str=@code_str,id_categorie_materiel=@id_categorie_materiel,id_compte=@id_compte,qrcode=@qrcode,date_acquisition=@date_acquisition,guarantie=@guarantie,id_marque=@id_marque,id_modele=@id_modele,id_couleur=@id_couleur,id_poids=@id_poids,id_etat_materiel=@id_etat_materiel,photo1=@photo1,photo2=@photo2,photo3=@photo3,label=@label,mac_adresse1=@mac_adresse1,mac_adresse2=@mac_adresse2,commentaire=@commentaire,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,id_type_ordinateur=@id_type_ordinateur,id_type_clavier=@id_type_clavier,id_OS=@id_OS,ram=@ram,processeur=@processeur,nombre_coeur_processeur=@nombre_coeur_processeur,nombre_hdd=@nombre_hdd,capacite_hdd=@capacite_hdd,indice_performance=@indice_performance,pouce=@pouce,nombre_usb2=@nombre_usb2,nombre_usb3=@nombre_usb3,nombre_hdmi=@nombre_hdmi,nombre_vga=@nombre_vga,tension_batterie=@tension_batterie,tension_adaptateur=@tension_adaptateur,puissance_adaptateur=@puissance_adaptateur,intensite_adaptateur=@intensite_adaptateur,numero_cle=@numero_cle,id_type_imprimante=@id_type_imprimante,puissance=@puissance,intensite=@intensite,nombre_page_par_minute=@nombre_page_par_minute,id_type_amplificateur=@id_type_amplificateur,tension_alimentation=@tension_alimentation,nombre_usb=@nombre_usb,nombre_memoire=@nombre_memoire,nombre_sorties_audio=@nombre_sorties_audio,nombre_microphone=@nombre_microphone,gain=@gain,id_type_routeur_AP=@id_type_routeur_AP,id_version_ios=@id_version_ios,nombre_gbe=@nombre_gbe,nombre_fe=@nombre_fe,nombre_fo=@nombre_fo,nombre_serial=@nombre_serial,capable_usb=@capable_usb,motpasse_defaut=@motpasse_defaut,default_IP=@default_IP,nombre_console=@nombre_console,nombre_auxiliaire=@nombre_auxiliaire,id_type_AP=@id_type_AP,id_type_switch=@id_type_switch,frequence=@frequence,alimentation=@alimentation,nombre_antenne=@nombre_antenne,id_netette=@id_netette,compatible_wifi=@compatible_wifi  WHERE 1=1  AND id=@id ");
+                    cmd.CommandText = string.Format("UPDATE materiel  SET code_str=@code_str,id_categorie_materiel=@id_categorie_materiel,id_compte=@id_compte,qrcode=@qrcode,date_acquisition=@date_acquisition,id_garantie=@id_garantie,id_marque=@id_marque,id_modele=@id_modele,id_couleur=@id_couleur,id_poids=@id_poids,id_etat_materiel=@id_etat_materiel,photo1=@photo1,photo2=@photo2,photo3=@photo3,label=@label,mac_adresse1=@mac_adresse1,mac_adresse2=@mac_adresse2,commentaire=@commentaire,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,id_type_ordinateur=@id_type_ordinateur,id_type_clavier=@id_type_clavier,id_OS=@id_OS,id_ram=@id_ram,id_processeur=@id_processeur,id_nombre_coeur_processeur=@id_nombre_coeur_processeur,id_type_hdd=@id_type_hdd,id_nombre_hdd=@id_nombre_hdd,id_capacite_hdd=@id_capacite_hdd,id_taille_ecran=@id_taille_ecran,id_usb2=@id_usb2,id_usb3=@id_usb3,id_hdmi=@id_hdmi,id_vga=@id_vga,id_tension_batterie=@id_tension_batterie,id_tension_adaptateur=@id_tension_adaptateur,id_puissance_adaptateur=@id_puissance_adaptateur,id_intensite_adaptateur=@id_intensite_adaptateur,numero_cle=@numero_cle,id_type_imprimante=@id_type_imprimante,id_puissance=@id_puissance,id_intensite=@id_intensite,id_page_par_minute=@id_page_par_minute,id_type_amplificateur=@id_type_amplificateur,id_tension_alimentation=@id_tension_alimentation,id_usb=@id_usb,id_memoire=@id_memoire,id_sorties_audio=@id_sorties_audio,id_microphone=@id_microphone,id_gain=@id_gain,id_type_routeur_AP=@id_type_routeur_AP,id_version_ios=@id_version_ios,id_gbe=@id_gbe,id_fe=@id_fe,id_fo=@id_fo,id_serial=@id_serial,capable_usb=@capable_usb,id_default_pwd=@id_default_pwd,id_default_ip=@id_default_ip,id_console=@id_console,id_auxiliaire=@id_auxiliaire,id_type_AP=@id_type_AP,id_type_switch=@id_type_switch,frequence=@frequence,id_antenne=@id_antenne,id_netette=@id_netette,compatible_wifi=@compatible_wifi  WHERE 1=1  AND id=@id ");
                     if (varclsmateriel.Code_str != null) cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, varclsmateriel.Code_str));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_categorie_materiel", DbType.Int32, 4, varclsmateriel.Id_categorie_materiel));
                     cmd.Parameters.Add(getParameter(cmd, "@id_compte", DbType.Int32, 4, varclsmateriel.Id_compte));
-                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Object, 2147483647, varclsmateriel.Qrcode));
-                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, varclsmateriel.Qrcode));
+                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Date_acquisition.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, varclsmateriel.Date_acquisition));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, DBNull.Value));
-                    if (varclsmateriel.Guarantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@guarantie", DbType.Int32, 4, varclsmateriel.Guarantie));
-                    else cmd.Parameters.Add(getParameter(cmd, "@guarantie", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_garantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, varclsmateriel.Id_garantie));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_marque", DbType.Int32, 4, varclsmateriel.Id_marque));
                     cmd.Parameters.Add(getParameter(cmd, "@id_modele", DbType.Int32, 4, varclsmateriel.Id_modele));
                     cmd.Parameters.Add(getParameter(cmd, "@id_couleur", DbType.Int32, 4, varclsmateriel.Id_couleur));
                     cmd.Parameters.Add(getParameter(cmd, "@id_poids", DbType.Int32, 4, varclsmateriel.Id_poids));
                     cmd.Parameters.Add(getParameter(cmd, "@id_etat_materiel", DbType.Int32, 4, varclsmateriel.Id_etat_materiel));
-                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Object, 2147483647, varclsmateriel.Photo1));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Object, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Object, 2147483647, varclsmateriel.Photo2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Object, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Object, 2147483647, varclsmateriel.Photo3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, varclsmateriel.Photo1));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, varclsmateriel.Photo2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, varclsmateriel.Photo3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, varclsmateriel.Mac_adresse1));
@@ -4717,92 +7837,90 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_clavier", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_os.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_OS", DbType.Int32, 4, varclsmateriel.Id_os));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_OS", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Ram.HasValue) cmd.Parameters.Add(getParameter(cmd, "@ram", DbType.Single, 4, varclsmateriel.Ram));
-                    else cmd.Parameters.Add(getParameter(cmd, "@ram", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@processeur", DbType.Single, 4, varclsmateriel.Processeur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@processeur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_coeur_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_coeur_processeur", DbType.Int32, 4, varclsmateriel.Nombre_coeur_processeur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_coeur_processeur", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, varclsmateriel.Nombre_hdd));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, varclsmateriel.Capacite_hdd));
-                    else cmd.Parameters.Add(getParameter(cmd, "@capacite_hdd", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Indice_performance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, varclsmateriel.Indice_performance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@indice_performance", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Pouce.HasValue) cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, varclsmateriel.Pouce));
-                    else cmd.Parameters.Add(getParameter(cmd, "@pouce", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, varclsmateriel.Nombre_usb2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb2", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb3.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb3", DbType.Int32, 4, varclsmateriel.Nombre_usb3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb3", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_hdmi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_hdmi", DbType.Int32, 4, varclsmateriel.Nombre_hdmi));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_hdmi", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_vga.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_vga", DbType.Int32, 4, varclsmateriel.Nombre_vga));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_vga", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_batterie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_batterie", DbType.Single, 4, varclsmateriel.Tension_batterie));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_batterie", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_adaptateur", DbType.Single, 4, varclsmateriel.Tension_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_adaptateur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Puissance_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@puissance_adaptateur", DbType.Single, 4, varclsmateriel.Puissance_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@puissance_adaptateur", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Intensite_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@intensite_adaptateur", DbType.Single, 4, varclsmateriel.Intensite_adaptateur));
-                    else cmd.Parameters.Add(getParameter(cmd, "@intensite_adaptateur", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_ram.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_ram", DbType.Int32, 4, varclsmateriel.Id_ram));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_ram", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_processeur", DbType.Int32, 4, varclsmateriel.Id_processeur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_processeur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_nombre_coeur_processeur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_nombre_coeur_processeur", DbType.Int32, 4, varclsmateriel.Id_nombre_coeur_processeur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_nombre_coeur_processeur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_type_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_hdd", DbType.Int32, 4, varclsmateriel.Id_type_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_type_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_nombre_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_nombre_hdd", DbType.Int32, 4, varclsmateriel.Id_nombre_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_nombre_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_capacite_hdd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_capacite_hdd", DbType.Int32, 4, varclsmateriel.Id_capacite_hdd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_capacite_hdd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_taille_ecran.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_taille_ecran", DbType.Int32, 4, varclsmateriel.Id_taille_ecran));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_taille_ecran", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb2.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb2", DbType.Int32, 4, varclsmateriel.Id_usb2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb2", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb3.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb3", DbType.Int32, 4, varclsmateriel.Id_usb3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb3", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_hdmi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_hdmi", DbType.Int32, 4, varclsmateriel.Id_hdmi));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_hdmi", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_vga.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_vga", DbType.Int32, 4, varclsmateriel.Id_vga));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_vga", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_batterie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_batterie", DbType.Int32, 4, varclsmateriel.Id_tension_batterie));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_batterie", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_adaptateur", DbType.Int32, 4, varclsmateriel.Id_tension_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_adaptateur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_puissance_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_puissance_adaptateur", DbType.Int32, 4, varclsmateriel.Id_puissance_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_puissance_adaptateur", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_intensite_adaptateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_intensite_adaptateur", DbType.Int32, 4, varclsmateriel.Id_intensite_adaptateur));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_intensite_adaptateur", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Numero_cle.HasValue) cmd.Parameters.Add(getParameter(cmd, "@numero_cle", DbType.Int32, 4, varclsmateriel.Numero_cle));
                     else cmd.Parameters.Add(getParameter(cmd, "@numero_cle", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_imprimante.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_imprimante", DbType.Int32, 4, varclsmateriel.Id_type_imprimante));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_imprimante", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Puissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@puissance", DbType.Single, 4, varclsmateriel.Puissance));
-                    else cmd.Parameters.Add(getParameter(cmd, "@puissance", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Intensite.HasValue) cmd.Parameters.Add(getParameter(cmd, "@intensite", DbType.Single, 4, varclsmateriel.Intensite));
-                    else cmd.Parameters.Add(getParameter(cmd, "@intensite", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_page_par_minute.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_page_par_minute", DbType.Single, 4, varclsmateriel.Nombre_page_par_minute));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_page_par_minute", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_puissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_puissance", DbType.Int32, 4, varclsmateriel.Id_puissance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_puissance", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_intensite.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_intensite", DbType.Int32, 4, varclsmateriel.Id_intensite));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_intensite", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_page_par_minute.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_page_par_minute", DbType.Int32, 4, varclsmateriel.Id_page_par_minute));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_page_par_minute", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_amplificateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_amplificateur", DbType.Int32, 4, varclsmateriel.Id_type_amplificateur));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_amplificateur", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Tension_alimentation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@tension_alimentation", DbType.Int32, 4, varclsmateriel.Tension_alimentation));
-                    else cmd.Parameters.Add(getParameter(cmd, "@tension_alimentation", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_usb", DbType.Int32, 4, varclsmateriel.Nombre_usb));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_usb", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_memoire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_memoire", DbType.Int32, 4, varclsmateriel.Nombre_memoire));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_memoire", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_sorties_audio.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_sorties_audio", DbType.Int32, 4, varclsmateriel.Nombre_sorties_audio));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_sorties_audio", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_microphone.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_microphone", DbType.Int32, 4, varclsmateriel.Nombre_microphone));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_microphone", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Gain.HasValue) cmd.Parameters.Add(getParameter(cmd, "@gain", DbType.Single, 4, varclsmateriel.Gain));
-                    else cmd.Parameters.Add(getParameter(cmd, "@gain", DbType.Single, 4, DBNull.Value));
+                    if (varclsmateriel.Id_tension_alimentation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_tension_alimentation", DbType.Int32, 4, varclsmateriel.Id_tension_alimentation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_tension_alimentation", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_usb", DbType.Int32, 4, varclsmateriel.Id_usb));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_usb", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_memoire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_memoire", DbType.Int32, 4, varclsmateriel.Id_memoire));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_memoire", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_sorties_audio.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_sorties_audio", DbType.Int32, 4, varclsmateriel.Id_sorties_audio));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_sorties_audio", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_microphone.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_microphone", DbType.Int32, 4, varclsmateriel.Id_microphone));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_microphone", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_gain.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_gain", DbType.Int32, 4, varclsmateriel.Id_gain));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_gain", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_routeur_ap.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_routeur_AP", DbType.Int32, 4, varclsmateriel.Id_type_routeur_ap));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_routeur_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_version_ios.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_version_ios", DbType.Int32, 4, varclsmateriel.Id_version_ios));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_version_ios", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_gbe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_gbe", DbType.Int32, 4, varclsmateriel.Nombre_gbe));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_gbe", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_fe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_fe", DbType.Int32, 4, varclsmateriel.Nombre_fe));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_fe", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_fo.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_fo", DbType.Int32, 4, varclsmateriel.Nombre_fo));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_fo", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_serial.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_serial", DbType.Int32, 4, varclsmateriel.Nombre_serial));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_serial", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_gbe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_gbe", DbType.Int32, 4, varclsmateriel.Id_gbe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_gbe", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_fe.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_fe", DbType.Int32, 4, varclsmateriel.Id_fe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_fe", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_fo.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_fo", DbType.Int32, 4, varclsmateriel.Id_fo));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_fo", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_serial.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_serial", DbType.Int32, 4, varclsmateriel.Id_serial));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_serial", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Capable_usb.HasValue) cmd.Parameters.Add(getParameter(cmd, "@capable_usb", DbType.Boolean, 2, varclsmateriel.Capable_usb));
                     else cmd.Parameters.Add(getParameter(cmd, "@capable_usb", DbType.Boolean, 2, DBNull.Value));
-                    if (varclsmateriel.Motpasse_defaut != null) cmd.Parameters.Add(getParameter(cmd, "@motpasse_defaut", DbType.String, 20, varclsmateriel.Motpasse_defaut));
-                    else cmd.Parameters.Add(getParameter(cmd, "@motpasse_defaut", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Default_ip != null) cmd.Parameters.Add(getParameter(cmd, "@default_IP", DbType.String, 50, varclsmateriel.Default_ip));
-                    else cmd.Parameters.Add(getParameter(cmd, "@default_IP", DbType.String, 50, DBNull.Value));
-                    if (varclsmateriel.Nombre_console.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_console", DbType.Int32, 4, varclsmateriel.Nombre_console));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_console", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Nombre_auxiliaire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_auxiliaire", DbType.Int32, 4, varclsmateriel.Nombre_auxiliaire));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_auxiliaire", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_default_pwd.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_default_pwd", DbType.Int32, 4, varclsmateriel.Id_default_pwd));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_default_pwd", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_default_ip.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_default_ip", DbType.Int32, 4, varclsmateriel.Id_default_ip));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_default_ip", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_console.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_console", DbType.Int32, 4, varclsmateriel.Id_console));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_console", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Id_auxiliaire.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_auxiliaire", DbType.Int32, 4, varclsmateriel.Id_auxiliaire));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_auxiliaire", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_ap.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, varclsmateriel.Id_type_ap));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_switch.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, varclsmateriel.Id_type_switch));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Frequence.HasValue) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.Single, 4, varclsmateriel.Frequence));
-                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.Single, 4, DBNull.Value));
-                    if (varclsmateriel.Alimentation != null) cmd.Parameters.Add(getParameter(cmd, "@alimentation", DbType.String, 20, varclsmateriel.Alimentation));
-                    else cmd.Parameters.Add(getParameter(cmd, "@alimentation", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Nombre_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@nombre_antenne", DbType.Int32, 4, varclsmateriel.Nombre_antenne));
-                    else cmd.Parameters.Add(getParameter(cmd, "@nombre_antenne", DbType.Int32, 4, DBNull.Value));
+                    if (varclsmateriel.Frequence != null) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, varclsmateriel.Frequence));
+                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, DBNull.Value));
+                    if (varclsmateriel.Id_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, varclsmateriel.Id_antenne));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_netette.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, varclsmateriel.Id_netette));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Compatible_wifi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@compatible_wifi", DbType.Boolean, 2, varclsmateriel.Compatible_wifi));
@@ -5058,6 +8176,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSGRADE 
+        #region  CLSUSB2
+        public clsusb2 getClsusb2(object intid)
+        {
+            clsusb2 varclsusb2 = new clsusb2();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb2 WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb2.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb2.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb2.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb2.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsusb2;
+        }
+
+        public List<clsusb2> getAllClsusb2(string criteria)
+        {
+            List<clsusb2> lstclsusb2 = new List<clsusb2>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM usb2  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb2 varclsusb2 = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb2 = new clsusb2();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb2.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb2.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb2.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb2.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb2.Add(varclsusb2);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb2;
+        }
+
+        public List<clsusb2> getAllClsusb2()
+        {
+            List<clsusb2> lstclsusb2 = new List<clsusb2>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb2 ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb2 varclsusb2 = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb2 = new clsusb2();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb2.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb2.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb2.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb2.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb2.Add(varclsusb2);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb2;
+        }
+
+        public int insertClsusb2(clsusb2 varclsusb2)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO usb2 ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb2.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb2.Valeur));
+                    if (varclsusb2.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb2.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb2.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb2.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb2.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb2.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb2.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb2.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsusb2(clsusb2 varclsusb2)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE usb2  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb2.Valeur));
+                    if (varclsusb2.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb2.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb2.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb2.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb2.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb2.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb2.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb2.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb2.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsusb2(clsusb2 varclsusb2)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM usb2  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb2.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSUSB2 
         #region  CLSPERSONNE
         public clspersonne getClspersonne(object intid)
         {
@@ -5309,6 +8635,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSPERSONNE 
+        #region  CLSUSB3
+        public clsusb3 getClsusb3(object intid)
+        {
+            clsusb3 varclsusb3 = new clsusb3();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb3 WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb3.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb3.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb3.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb3.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsusb3;
+        }
+
+        public List<clsusb3> getAllClsusb3(string criteria)
+        {
+            List<clsusb3> lstclsusb3 = new List<clsusb3>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM usb3  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb3 varclsusb3 = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb3 = new clsusb3();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb3.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb3.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb3.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb3.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb3.Add(varclsusb3);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb3;
+        }
+
+        public List<clsusb3> getAllClsusb3()
+        {
+            List<clsusb3> lstclsusb3 = new List<clsusb3>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb3 ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb3 varclsusb3 = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb3 = new clsusb3();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb3.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb3.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb3.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb3.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb3.Add(varclsusb3);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb3;
+        }
+
+        public int insertClsusb3(clsusb3 varclsusb3)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO usb3 ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb3.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb3.Valeur));
+                    if (varclsusb3.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb3.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb3.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb3.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb3.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb3.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb3.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb3.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsusb3(clsusb3 varclsusb3)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE usb3  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb3.Valeur));
+                    if (varclsusb3.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb3.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb3.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb3.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb3.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb3.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb3.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb3.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb3.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsusb3(clsusb3 varclsusb3)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM usb3  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb3.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSUSB3 
         #region  CLSTYPE_LIEU_AFFECTATION
         public clstype_lieu_affectation getClstype_lieu_affectation(object intid)
         {
@@ -5520,6 +9054,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_LIEU_AFFECTATION 
+        #region  CLSHDMI
+        public clshdmi getClshdmi(object intid)
+        {
+            clshdmi varclshdmi = new clshdmi();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM hdmi WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclshdmi.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclshdmi.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclshdmi.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclshdmi.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclshdmi;
+        }
+
+        public List<clshdmi> getAllClshdmi(string criteria)
+        {
+            List<clshdmi> lstclshdmi = new List<clshdmi>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM hdmi  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clshdmi varclshdmi = null;
+                        while (dr.Read())
+                        {
+
+                            varclshdmi = new clshdmi();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclshdmi.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclshdmi.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclshdmi.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclshdmi.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclshdmi.Add(varclshdmi);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclshdmi;
+        }
+
+        public List<clshdmi> getAllClshdmi()
+        {
+            List<clshdmi> lstclshdmi = new List<clshdmi>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM hdmi ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clshdmi varclshdmi = null;
+                        while (dr.Read())
+                        {
+
+                            varclshdmi = new clshdmi();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclshdmi.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclshdmi.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclshdmi.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclshdmi.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclshdmi.Add(varclshdmi);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclshdmi;
+        }
+
+        public int insertClshdmi(clshdmi varclshdmi)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO hdmi ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclshdmi.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclshdmi.Valeur));
+                    if (varclshdmi.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclshdmi.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclshdmi.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclshdmi.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclshdmi.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclshdmi.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclshdmi.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclshdmi.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClshdmi(clshdmi varclshdmi)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE hdmi  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclshdmi.Valeur));
+                    if (varclshdmi.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclshdmi.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclshdmi.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclshdmi.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclshdmi.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclshdmi.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclshdmi.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclshdmi.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclshdmi.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClshdmi(clshdmi varclshdmi)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM hdmi  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclshdmi.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSHDMI 
         #region  CLSAC
         public clsAC getClsAC(object intid)
         {
@@ -5739,6 +9481,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSAC 
+        #region  CLSVGA
+        public clsvga getClsvga(object intid)
+        {
+            clsvga varclsvga = new clsvga();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM vga WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsvga.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsvga.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsvga.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsvga.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsvga;
+        }
+
+        public List<clsvga> getAllClsvga(string criteria)
+        {
+            List<clsvga> lstclsvga = new List<clsvga>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM vga  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsvga varclsvga = null;
+                        while (dr.Read())
+                        {
+
+                            varclsvga = new clsvga();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsvga.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsvga.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsvga.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsvga.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsvga.Add(varclsvga);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'vga' avec la classe 'clsvga' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsvga;
+        }
+
+        public List<clsvga> getAllClsvga()
+        {
+            List<clsvga> lstclsvga = new List<clsvga>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM vga ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsvga varclsvga = null;
+                        while (dr.Read())
+                        {
+
+                            varclsvga = new clsvga();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsvga.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsvga.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsvga.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsvga.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsvga.Add(varclsvga);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsvga;
+        }
+
+        public int insertClsvga(clsvga varclsvga)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO vga ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsvga.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsvga.Valeur));
+                    if (varclsvga.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsvga.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsvga.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsvga.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsvga.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsvga.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsvga.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsvga.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsvga(clsvga varclsvga)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE vga  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsvga.Valeur));
+                    if (varclsvga.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsvga.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsvga.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsvga.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsvga.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsvga.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsvga.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsvga.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsvga.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsvga(clsvga varclsvga)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM vga  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsvga.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSVGA 
         #region  CLSOPTIO
         public clsoptio getClsoptio(object intid)
         {
@@ -5950,6 +9900,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSOPTIO 
+        #region  CLSTENSION_BATTERIE
+        public clstension_batterie getClstension_batterie(object intid)
+        {
+            clstension_batterie varclstension_batterie = new clstension_batterie();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_batterie WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_batterie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_batterie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_batterie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_batterie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstension_batterie;
+        }
+
+        public List<clstension_batterie> getAllClstension_batterie(string criteria)
+        {
+            List<clstension_batterie> lstclstension_batterie = new List<clstension_batterie>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM tension_batterie  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_batterie varclstension_batterie = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_batterie = new clstension_batterie();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_batterie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_batterie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_batterie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_batterie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_batterie.Add(varclstension_batterie);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_batterie;
+        }
+
+        public List<clstension_batterie> getAllClstension_batterie()
+        {
+            List<clstension_batterie> lstclstension_batterie = new List<clstension_batterie>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_batterie ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_batterie varclstension_batterie = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_batterie = new clstension_batterie();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_batterie.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_batterie.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_batterie.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_batterie.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_batterie.Add(varclstension_batterie);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_batterie;
+        }
+
+        public int insertClstension_batterie(clstension_batterie varclstension_batterie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO tension_batterie ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_batterie.Valeur));
+                    if (varclstension_batterie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_batterie.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_batterie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_batterie.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_batterie.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_batterie.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_batterie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_batterie.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstension_batterie(clstension_batterie varclstension_batterie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE tension_batterie  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_batterie.Valeur));
+                    if (varclstension_batterie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_batterie.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_batterie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_batterie.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_batterie.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_batterie.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_batterie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_batterie.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstension_batterie(clstension_batterie varclstension_batterie)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM tension_batterie  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTENSION_BATTERIE 
         #region  CLSPROMOTION
         public clspromotion getClspromotion(object intid)
         {
@@ -6161,6 +10319,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSPROMOTION 
+        #region  CLSTENSION_ADAPTATEUR
+        public clstension_adaptateur getClstension_adaptateur(object intid)
+        {
+            clstension_adaptateur varclstension_adaptateur = new clstension_adaptateur();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_adaptateur WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstension_adaptateur;
+        }
+
+        public List<clstension_adaptateur> getAllClstension_adaptateur(string criteria)
+        {
+            List<clstension_adaptateur> lstclstension_adaptateur = new List<clstension_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM tension_adaptateur  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_adaptateur varclstension_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_adaptateur = new clstension_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_adaptateur.Add(varclstension_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_adaptateur;
+        }
+
+        public List<clstension_adaptateur> getAllClstension_adaptateur()
+        {
+            List<clstension_adaptateur> lstclstension_adaptateur = new List<clstension_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_adaptateur ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_adaptateur varclstension_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_adaptateur = new clstension_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclstension_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_adaptateur.Add(varclstension_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_adaptateur;
+        }
+
+        public int insertClstension_adaptateur(clstension_adaptateur varclstension_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO tension_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_adaptateur.Valeur));
+                    if (varclstension_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstension_adaptateur(clstension_adaptateur varclstension_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE tension_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_adaptateur.Valeur));
+                    if (varclstension_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstension_adaptateur(clstension_adaptateur varclstension_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM tension_adaptateur  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTENSION_ADAPTATEUR 
         #region  CLSSECTION
         public clssection getClssection(object intid)
         {
@@ -6251,7 +10617,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM section ");
+                    cmd.CommandText = string.Format("SELECT *  FROM section ORDER BY designation1 ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -6380,6 +10746,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSSECTION 
+        #region  CLSPUISSANCE_ADAPTATEUR
+        public clspuissance_adaptateur getClspuissance_adaptateur(object intid)
+        {
+            clspuissance_adaptateur varclspuissance_adaptateur = new clspuissance_adaptateur();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM puissance_adaptateur WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclspuissance_adaptateur;
+        }
+
+        public List<clspuissance_adaptateur> getAllClspuissance_adaptateur(string criteria)
+        {
+            List<clspuissance_adaptateur> lstclspuissance_adaptateur = new List<clspuissance_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM puissance_adaptateur  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspuissance_adaptateur varclspuissance_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclspuissance_adaptateur = new clspuissance_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspuissance_adaptateur.Add(varclspuissance_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspuissance_adaptateur;
+        }
+
+        public List<clspuissance_adaptateur> getAllClspuissance_adaptateur()
+        {
+            List<clspuissance_adaptateur> lstclspuissance_adaptateur = new List<clspuissance_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM puissance_adaptateur ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspuissance_adaptateur varclspuissance_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclspuissance_adaptateur = new clspuissance_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspuissance_adaptateur.Add(varclspuissance_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspuissance_adaptateur;
+        }
+
+        public int insertClspuissance_adaptateur(clspuissance_adaptateur varclspuissance_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO puissance_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance_adaptateur.Valeur));
+                    if (varclspuissance_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspuissance_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspuissance_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClspuissance_adaptateur(clspuissance_adaptateur varclspuissance_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE puissance_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance_adaptateur.Valeur));
+                    if (varclspuissance_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspuissance_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspuissance_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClspuissance_adaptateur(clspuissance_adaptateur varclspuissance_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM puissance_adaptateur  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSPUISSANCE_ADAPTATEUR 
         #region  CLSRETRAIT_MATERIEL
         public clsretrait_materiel getClsretrait_materiel(object intid)
         {
@@ -6634,6 +11208,422 @@ namespace smartManage.Model
         }
 
         #endregion CLSRETRAIT_MATERIEL 
+        #region  CLSINTENSITE_ADAPTATEUR
+        public clsintensite_adaptateur getClsintensite_adaptateur(object intid)
+        {
+            clsintensite_adaptateur varclsintensite_adaptateur = new clsintensite_adaptateur();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM intensite_adaptateur WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsintensite_adaptateur;
+        }
+
+        public List<clsintensite_adaptateur> getAllClsintensite_adaptateur(string criteria)
+        {
+            List<clsintensite_adaptateur> lstclsintensite_adaptateur = new List<clsintensite_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM intensite_adaptateur  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsintensite_adaptateur varclsintensite_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsintensite_adaptateur = new clsintensite_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsintensite_adaptateur.Add(varclsintensite_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsintensite_adaptateur;
+        }
+
+        public List<clsintensite_adaptateur> getAllClsintensite_adaptateur()
+        {
+            List<clsintensite_adaptateur> lstclsintensite_adaptateur = new List<clsintensite_adaptateur>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM intensite_adaptateur ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsintensite_adaptateur varclsintensite_adaptateur = null;
+                        while (dr.Read())
+                        {
+
+                            varclsintensite_adaptateur = new clsintensite_adaptateur();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite_adaptateur.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite_adaptateur.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsintensite_adaptateur.Add(varclsintensite_adaptateur);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsintensite_adaptateur;
+        }
+
+        public int insertClsintensite_adaptateur(clsintensite_adaptateur varclsintensite_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO intensite_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite_adaptateur.Valeur));
+                    if (varclsintensite_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsintensite_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsintensite_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsintensite_adaptateur(clsintensite_adaptateur varclsintensite_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE intensite_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite_adaptateur.Valeur));
+                    if (varclsintensite_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite_adaptateur.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite_adaptateur.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsintensite_adaptateur.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsintensite_adaptateur.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite_adaptateur.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsintensite_adaptateur(clsintensite_adaptateur varclsintensite_adaptateur)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM intensite_adaptateur  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSINTENSITE_ADAPTATEUR 
+        #region  CLSPUISSANCE
+        public clspuissance getClspuissance(object intid)
+        {
+            clspuissance varclspuissance = new clspuissance();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM puissance WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclspuissance;
+        }
+
+        public List<clspuissance> getAllClspuissance(string criteria)
+        {
+            List<clspuissance> lstclspuissance = new List<clspuissance>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM puissance  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspuissance varclspuissance = null;
+                        while (dr.Read())
+                        {
+
+                            varclspuissance = new clspuissance();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspuissance.Add(varclspuissance);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspuissance;
+        }
+
+        public List<clspuissance> getAllClspuissance()
+        {
+            List<clspuissance> lstclspuissance = new List<clspuissance>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM puissance ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspuissance varclspuissance = null;
+                        while (dr.Read())
+                        {
+
+                            varclspuissance = new clspuissance();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspuissance.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspuissance.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspuissance.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspuissance.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspuissance.Add(varclspuissance);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspuissance;
+        }
+
+        public int insertClspuissance(clspuissance varclspuissance)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO puissance ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance.Valeur));
+                    if (varclspuissance.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspuissance.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspuissance.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClspuissance(clspuissance varclspuissance)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE puissance  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance.Valeur));
+                    if (varclspuissance.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspuissance.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspuissance.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspuissance.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClspuissance(clspuissance varclspuissance)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM puissance  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSPUISSANCE 
         #region  CLSDETAIL_RETRAIT_MATERIEL
         public clsdetail_retrait_materiel getClsdetail_retrait_materiel(object intid)
         {
@@ -6847,6 +11837,422 @@ namespace smartManage.Model
         }
 
         #endregion CLSDETAIL_RETRAIT_MATERIEL 
+        #region  CLSINTENSITE
+        public clsintensite getClsintensite(object intid)
+        {
+            clsintensite varclsintensite = new clsintensite();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM intensite WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsintensite;
+        }
+
+        public List<clsintensite> getAllClsintensite(string criteria)
+        {
+            List<clsintensite> lstclsintensite = new List<clsintensite>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM intensite  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsintensite varclsintensite = null;
+                        while (dr.Read())
+                        {
+
+                            varclsintensite = new clsintensite();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsintensite.Add(varclsintensite);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsintensite;
+        }
+
+        public List<clsintensite> getAllClsintensite()
+        {
+            List<clsintensite> lstclsintensite = new List<clsintensite>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM intensite ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsintensite varclsintensite = null;
+                        while (dr.Read())
+                        {
+
+                            varclsintensite = new clsintensite();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclsintensite.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsintensite.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsintensite.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsintensite.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsintensite.Add(varclsintensite);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsintensite;
+        }
+
+        public int insertClsintensite(clsintensite varclsintensite)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO intensite ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite.Valeur));
+                    if (varclsintensite.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsintensite.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsintensite.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsintensite(clsintensite varclsintensite)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE intensite  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite.Valeur));
+                    if (varclsintensite.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsintensite.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsintensite.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsintensite.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsintensite(clsintensite varclsintensite)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM intensite  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSINTENSITE 
+        #region  CLSPAGE_PAR_MINUTE
+        public clspage_par_minute getClspage_par_minute(object intid)
+        {
+            clspage_par_minute varclspage_par_minute = new clspage_par_minute();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM page_par_minute WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspage_par_minute.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspage_par_minute.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspage_par_minute.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspage_par_minute.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclspage_par_minute;
+        }
+
+        public List<clspage_par_minute> getAllClspage_par_minute(string criteria)
+        {
+            List<clspage_par_minute> lstclspage_par_minute = new List<clspage_par_minute>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM page_par_minute  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspage_par_minute varclspage_par_minute = null;
+                        while (dr.Read())
+                        {
+
+                            varclspage_par_minute = new clspage_par_minute();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspage_par_minute.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspage_par_minute.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspage_par_minute.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspage_par_minute.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspage_par_minute.Add(varclspage_par_minute);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspage_par_minute;
+        }
+
+        public List<clspage_par_minute> getAllClspage_par_minute()
+        {
+            List<clspage_par_minute> lstclspage_par_minute = new List<clspage_par_minute>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM page_par_minute ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspage_par_minute varclspage_par_minute = null;
+                        while (dr.Read())
+                        {
+
+                            varclspage_par_minute = new clspage_par_minute();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
+                            varclspage_par_minute.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspage_par_minute.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspage_par_minute.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspage_par_minute.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclspage_par_minute.Add(varclspage_par_minute);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspage_par_minute;
+        }
+
+        public int insertClspage_par_minute(clspage_par_minute varclspage_par_minute)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO page_par_minute ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspage_par_minute.Valeur));
+                    if (varclspage_par_minute.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspage_par_minute.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspage_par_minute.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspage_par_minute.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspage_par_minute.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspage_par_minute.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspage_par_minute.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspage_par_minute.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClspage_par_minute(clspage_par_minute varclspage_par_minute)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE page_par_minute  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspage_par_minute.Valeur));
+                    if (varclspage_par_minute.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspage_par_minute.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclspage_par_minute.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspage_par_minute.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspage_par_minute.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclspage_par_minute.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclspage_par_minute.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspage_par_minute.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClspage_par_minute(clspage_par_minute varclspage_par_minute)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM page_par_minute  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSPAGE_PAR_MINUTE 
         #region  CLSSIGNATAIRE
         public clssignataire getClssignataire(object intid)
         {
@@ -7071,6 +12477,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSSIGNATAIRE 
+        #region  CLSTENSION_ALIMENTATION
+        public clstension_alimentation getClstension_alimentation(object intid)
+        {
+            clstension_alimentation varclstension_alimentation = new clstension_alimentation();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_alimentation WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstension_alimentation.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_alimentation.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_alimentation.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_alimentation.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstension_alimentation;
+        }
+
+        public List<clstension_alimentation> getAllClstension_alimentation(string criteria)
+        {
+            List<clstension_alimentation> lstclstension_alimentation = new List<clstension_alimentation>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM tension_alimentation  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_alimentation varclstension_alimentation = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_alimentation = new clstension_alimentation();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstension_alimentation.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_alimentation.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_alimentation.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_alimentation.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_alimentation.Add(varclstension_alimentation);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_alimentation;
+        }
+
+        public List<clstension_alimentation> getAllClstension_alimentation()
+        {
+            List<clstension_alimentation> lstclstension_alimentation = new List<clstension_alimentation>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM tension_alimentation ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstension_alimentation varclstension_alimentation = null;
+                        while (dr.Read())
+                        {
+
+                            varclstension_alimentation = new clstension_alimentation();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclstension_alimentation.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstension_alimentation.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstension_alimentation.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstension_alimentation.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstension_alimentation.Add(varclstension_alimentation);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstension_alimentation;
+        }
+
+        public int insertClstension_alimentation(clstension_alimentation varclstension_alimentation)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO tension_alimentation ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_alimentation.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclstension_alimentation.Valeur));
+                    if (varclstension_alimentation.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_alimentation.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_alimentation.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_alimentation.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_alimentation.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_alimentation.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_alimentation.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_alimentation.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstension_alimentation(clstension_alimentation varclstension_alimentation)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE tension_alimentation  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclstension_alimentation.Valeur));
+                    if (varclstension_alimentation.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_alimentation.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstension_alimentation.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_alimentation.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstension_alimentation.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstension_alimentation.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstension_alimentation.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_alimentation.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_alimentation.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstension_alimentation(clstension_alimentation varclstension_alimentation)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM tension_alimentation  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_alimentation.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTENSION_ALIMENTATION 
         #region  CLSSALLE
         public clssalle getClssalle(object intid)
         {
@@ -7282,6 +12896,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSSALLE 
+        #region  CLSUSB
+        public clsusb getClsusb(object intid)
+        {
+            clsusb varclsusb = new clsusb();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsusb;
+        }
+
+        public List<clsusb> getAllClsusb(string criteria)
+        {
+            List<clsusb> lstclsusb = new List<clsusb>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM usb  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb varclsusb = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb = new clsusb();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb.Add(varclsusb);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb' avec la classe 'clsusb' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb;
+        }
+
+        public List<clsusb> getAllClsusb()
+        {
+            List<clsusb> lstclsusb = new List<clsusb>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM usb ");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsusb varclsusb = null;
+                        while (dr.Read())
+                        {
+
+                            varclsusb = new clsusb();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsusb.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsusb.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsusb.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsusb.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsusb.Add(varclsusb);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsusb;
+        }
+
+        public int insertClsusb(clsusb varclsusb)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO usb ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb.Valeur));
+                    if (varclsusb.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsusb(clsusb varclsusb)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE usb  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsusb.Valeur));
+                    if (varclsusb.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsusb.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsusb.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsusb.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsusb.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsusb.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsusb.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsusb(clsusb varclsusb)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM usb  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSUSB 
         #region  CLSFONCTION
         public clsfonction getClsfonction(object intid)
         {
@@ -7493,6 +13315,214 @@ namespace smartManage.Model
         }
 
         #endregion CLSFONCTION 
+        #region  CLSMEMOIRE
+        public clsmemoire getClsmemoire(object intid)
+        {
+            clsmemoire varclsmemoire = new clsmemoire();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM memoire WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmemoire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmemoire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmemoire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmemoire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsmemoire;
+        }
+
+        public List<clsmemoire> getAllClsmemoire(string criteria)
+        {
+            List<clsmemoire> lstclsmemoire = new List<clsmemoire>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM memoire  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmemoire varclsmemoire = null;
+                        while (dr.Read())
+                        {
+
+                            varclsmemoire = new clsmemoire();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmemoire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmemoire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmemoire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmemoire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsmemoire.Add(varclsmemoire);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmemoire;
+        }
+
+        public List<clsmemoire> getAllClsmemoire()
+        {
+            List<clsmemoire> lstclsmemoire = new List<clsmemoire>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM memoire ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmemoire varclsmemoire = null;
+                        while (dr.Read())
+                        {
+
+                            varclsmemoire = new clsmemoire();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmemoire.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmemoire.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmemoire.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmemoire.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsmemoire.Add(varclsmemoire);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmemoire;
+        }
+
+        public int insertClsmemoire(clsmemoire varclsmemoire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO memoire ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmemoire.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsmemoire.Valeur));
+                    if (varclsmemoire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsmemoire.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsmemoire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsmemoire.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsmemoire.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsmemoire.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsmemoire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmemoire.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsmemoire(clsmemoire varclsmemoire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE memoire  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsmemoire.Valeur));
+                    if (varclsmemoire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsmemoire.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsmemoire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsmemoire.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsmemoire.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsmemoire.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsmemoire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmemoire.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmemoire.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsmemoire(clsmemoire varclsmemoire)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM memoire  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmemoire.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSMEMOIRE 
         #region  CLSLIEU_AFFECTATION
         public clslieu_affectation getClslieu_affectation(object intid)
         {
@@ -7736,6 +13766,422 @@ namespace smartManage.Model
         }
 
         #endregion CLSLIEU_AFFECTATION 
+        #region  CLSSORTIES_AUDIO
+        public clssorties_audio getClssorties_audio(object intid)
+        {
+            clssorties_audio varclssorties_audio = new clssorties_audio();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM sorties_audio WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclssorties_audio.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclssorties_audio.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclssorties_audio.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclssorties_audio.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclssorties_audio;
+        }
+
+        public List<clssorties_audio> getAllClssorties_audio(string criteria)
+        {
+            List<clssorties_audio> lstclssorties_audio = new List<clssorties_audio>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM sorties_audio  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clssorties_audio varclssorties_audio = null;
+                        while (dr.Read())
+                        {
+
+                            varclssorties_audio = new clssorties_audio();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclssorties_audio.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclssorties_audio.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclssorties_audio.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclssorties_audio.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclssorties_audio.Add(varclssorties_audio);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclssorties_audio;
+        }
+
+        public List<clssorties_audio> getAllClssorties_audio()
+        {
+            List<clssorties_audio> lstclssorties_audio = new List<clssorties_audio>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM sorties_audio ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clssorties_audio varclssorties_audio = null;
+                        while (dr.Read())
+                        {
+
+                            varclssorties_audio = new clssorties_audio();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclssorties_audio.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclssorties_audio.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclssorties_audio.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclssorties_audio.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclssorties_audio.Add(varclssorties_audio);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclssorties_audio;
+        }
+
+        public int insertClssorties_audio(clssorties_audio varclssorties_audio)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO sorties_audio ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssorties_audio.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclssorties_audio.Valeur));
+                    if (varclssorties_audio.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclssorties_audio.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclssorties_audio.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclssorties_audio.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclssorties_audio.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclssorties_audio.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclssorties_audio.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssorties_audio.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClssorties_audio(clssorties_audio varclssorties_audio)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE sorties_audio  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclssorties_audio.Valeur));
+                    if (varclssorties_audio.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclssorties_audio.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclssorties_audio.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclssorties_audio.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclssorties_audio.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclssorties_audio.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclssorties_audio.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssorties_audio.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssorties_audio.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClssorties_audio(clssorties_audio varclssorties_audio)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM sorties_audio  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssorties_audio.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSSORTIES_AUDIO 
+        #region  CLSMICROPHONE
+        public clsmicrophone getClsmicrophone(object intid)
+        {
+            clsmicrophone varclsmicrophone = new clsmicrophone();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM microphone WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmicrophone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmicrophone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmicrophone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmicrophone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsmicrophone;
+        }
+
+        public List<clsmicrophone> getAllClsmicrophone(string criteria)
+        {
+            List<clsmicrophone> lstclsmicrophone = new List<clsmicrophone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM microphone  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmicrophone varclsmicrophone = null;
+                        while (dr.Read())
+                        {
+
+                            varclsmicrophone = new clsmicrophone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmicrophone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmicrophone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmicrophone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmicrophone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsmicrophone.Add(varclsmicrophone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmicrophone;
+        }
+
+        public List<clsmicrophone> getAllClsmicrophone()
+        {
+            List<clsmicrophone> lstclsmicrophone = new List<clsmicrophone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM microphone ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmicrophone varclsmicrophone = null;
+                        while (dr.Read())
+                        {
+
+                            varclsmicrophone = new clsmicrophone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsmicrophone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmicrophone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmicrophone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmicrophone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsmicrophone.Add(varclsmicrophone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmicrophone;
+        }
+
+        public int insertClsmicrophone(clsmicrophone varclsmicrophone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO microphone ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmicrophone.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsmicrophone.Valeur));
+                    if (varclsmicrophone.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsmicrophone.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsmicrophone.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsmicrophone.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsmicrophone.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsmicrophone.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsmicrophone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmicrophone.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsmicrophone(clsmicrophone varclsmicrophone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE microphone  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsmicrophone.Valeur));
+                    if (varclsmicrophone.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsmicrophone.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsmicrophone.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsmicrophone.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsmicrophone.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsmicrophone.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsmicrophone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmicrophone.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmicrophone.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsmicrophone(clsmicrophone varclsmicrophone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM microphone  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmicrophone.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSMICROPHONE 
         #region  CLSAFFECTATION_MATERIEL
         public clsaffectation_materiel getClsaffectation_materiel(object intid)
         {
@@ -7969,6 +14415,422 @@ namespace smartManage.Model
         }
 
         #endregion CLSAFFECTATION_MATERIEL 
+        #region  CLSGAIN
+        public clsgain getClsgain(object intid)
+        {
+            clsgain varclsgain = new clsgain();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM gain WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgain.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgain.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgain.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgain.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsgain;
+        }
+
+        public List<clsgain> getAllClsgain(string criteria)
+        {
+            List<clsgain> lstclsgain = new List<clsgain>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM gain  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgain varclsgain = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgain = new clsgain();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgain.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgain.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgain.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgain.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgain.Add(varclsgain);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gain' avec la classe 'clsgain' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgain;
+        }
+
+        public List<clsgain> getAllClsgain()
+        {
+            List<clsgain> lstclsgain = new List<clsgain>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM gain ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgain varclsgain = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgain = new clsgain();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgain.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgain.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgain.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgain.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgain.Add(varclsgain);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgain;
+        }
+
+        public int insertClsgain(clsgain varclsgain)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO gain ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgain.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgain.Valeur));
+                    if (varclsgain.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgain.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgain.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgain.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgain.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgain.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgain.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgain.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsgain(clsgain varclsgain)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE gain  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgain.Valeur));
+                    if (varclsgain.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgain.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgain.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgain.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgain.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgain.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgain.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgain.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgain.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsgain(clsgain varclsgain)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM gain  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgain.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSGAIN 
+        #region  CLSGBE
+        public clsgbe getClsgbe(object intid)
+        {
+            clsgbe varclsgbe = new clsgbe();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM gbe WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgbe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgbe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgbe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgbe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsgbe;
+        }
+
+        public List<clsgbe> getAllClsgbe(string criteria)
+        {
+            List<clsgbe> lstclsgbe = new List<clsgbe>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM gbe  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgbe varclsgbe = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgbe = new clsgbe();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgbe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgbe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgbe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgbe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgbe.Add(varclsgbe);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgbe;
+        }
+
+        public List<clsgbe> getAllClsgbe()
+        {
+            List<clsgbe> lstclsgbe = new List<clsgbe>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM gbe ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsgbe varclsgbe = null;
+                        while (dr.Read())
+                        {
+
+                            varclsgbe = new clsgbe();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsgbe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsgbe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsgbe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsgbe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsgbe.Add(varclsgbe);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsgbe;
+        }
+
+        public int insertClsgbe(clsgbe varclsgbe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO gbe ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgbe.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgbe.Valeur));
+                    if (varclsgbe.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgbe.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgbe.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgbe.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgbe.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgbe.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgbe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgbe.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsgbe(clsgbe varclsgbe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE gbe  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsgbe.Valeur));
+                    if (varclsgbe.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsgbe.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsgbe.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsgbe.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsgbe.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsgbe.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsgbe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgbe.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgbe.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsgbe(clsgbe varclsgbe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM gbe  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgbe.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSGBE 
         #region  CLSUTILISATEUR
         public clsutilisateur getClsutilisateur(object intid)
         {
@@ -8059,7 +14921,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM utilisateur ");
+                    cmd.CommandText = string.Format("SELECT *  FROM utilisateur ORDER BY nomuser ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -9366,5 +16228,213 @@ namespace smartManage.Model
         }
 
         #endregion CLSCATEGORIE_MATERIEL 
+        #region  CLSFE
+        public clsfe getClsfe(object intid)
+        {
+            clsfe varclsfe = new clsfe();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM fe WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsfe;
+        }
+
+        public List<clsfe> getAllClsfe(string criteria)
+        {
+            List<clsfe> lstclsfe = new List<clsfe>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM fe  WHERE 1=1";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsfe varclsfe = null;
+                        while (dr.Read())
+                        {
+
+                            varclsfe = new clsfe();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfe.Add(varclsfe);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fe' avec la classe 'clsfe' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfe;
+        }
+
+        public List<clsfe> getAllClsfe()
+        {
+            List<clsfe> lstclsfe = new List<clsfe>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM fe ORDER BY valeur ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsfe varclsfe = null;
+                        while (dr.Read())
+                        {
+
+                            varclsfe = new clsfe();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfe.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["valeur"].ToString().Trim().Equals("")) varclsfe.Valeur = int.Parse(dr["valeur"].ToString());
+                            varclsfe.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfe.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfe.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfe.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfe.Add(varclsfe);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfe;
+        }
+
+        public int insertClsfe(clsfe varclsfe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO fe ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfe.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsfe.Valeur));
+                    if (varclsfe.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfe.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfe.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfe.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfe.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfe.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfe.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsfe(clsfe varclsfe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE fe  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Int32, 4, varclsfe.Valeur));
+                    if (varclsfe.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfe.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfe.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfe.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfe.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfe.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfe.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfe.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsfe(clsfe varclsfe)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM fe  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfe.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSFE 
     } //***fin class 
 } //***fin namespace 

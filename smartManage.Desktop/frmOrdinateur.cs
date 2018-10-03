@@ -186,7 +186,7 @@ namespace smartManage.Desktop
             SetBindingControls(cboNumCompte, "SelectedValue", materiel, "Id_compte");
             SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
-            SetBindingControls(txtGuarantie, "Text", materiel, "Guarantie");
+            SetBindingControls(cboGuarantie, "Text", materiel, "Guarantie");
             SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
             SetBindingControls(cboModele, "SelectedValue", materiel, "Id_modele");
             SetBindingControls(cboCouleur, "SelectedValue", materiel, "Id_couleur");
@@ -207,16 +207,15 @@ namespace smartManage.Desktop
             SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
             SetBindingControls(cboTypeOS, "SelectedValue", materiel, "Id_os");
-            SetBindingControls(txtRAM, "Text", materiel, "Ram");
-            SetBindingControls(txtProcesseur, "Text", materiel, "Processeur");
+            SetBindingControls(cboRAM, "Text", materiel, "Ram");
+            SetBindingControls(cboProcesseur, "Text", materiel, "Processeur");
             SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", materiel, "Nombre_coeur_processeur");
-            SetBindingControls(cboNbrHDD, "SelectedValue", materiel, "Nombre_hdd");
+            SetBindingControls(cboTypeHDD, "SelectedValue", materiel, "Nombre_hdd");
             SetBindingControls(cboCapaciteHDD, "SelectedValue", materiel, "Capacite_hdd");
-            SetBindingControls(cboIndicePC, "SelectedValue", materiel, "Indice_performance");
-            SetBindingControls(txtTailleEcran, "Text", materiel, "Pouce");
+            SetBindingControls(cboNbrHDD, "SelectedValue", materiel, "Indice_performance");
+            SetBindingControls(cboTailleEcran, "Text", materiel, "Pouce");
             SetBindingControls(cboUSB2, "SelectedValue", materiel, "Nombre_usb2");
             SetBindingControls(cboUSB3, "SelectedValue", materiel, "Nombre_usb3");
-            SetBindingControls(cboUSB2, "SelectedValue", materiel, "Nombre_usb2");
             SetBindingControls(cboNbrHDMI, "SelectedValue", materiel, "Nombre_hdmi");
             SetBindingControls(cboNbrVGA, "SelectedValue", materiel, "Nombre_vga");
             SetBindingControls(cboTensionBatt, "SelectedValue", materiel, "Tension_batterie");
@@ -234,7 +233,7 @@ namespace smartManage.Desktop
             SetBindingControls(cboNumCompte, "SelectedValue", bdsrc, "Id_compte");
             SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
-            SetBindingControls(txtGuarantie, "Text", bdsrc, "Guarantie");
+            SetBindingControls(cboGuarantie, "Text", bdsrc, "Guarantie");
             SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
             SetBindingControls(cboModele, "SelectedValue", bdsrc, "Id_modele");
             SetBindingControls(cboCouleur, "SelectedValue", bdsrc, "Id_couleur");
@@ -255,16 +254,15 @@ namespace smartManage.Desktop
             SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", bdsrc, "Id_type_clavier");
             SetBindingControls(cboTypeOS, "SelectedValue", bdsrc, "Id_os");
-            SetBindingControls(txtRAM, "Text", bdsrc, "Ram");
-            SetBindingControls(txtProcesseur, "Text", bdsrc, "Processeur");
+            SetBindingControls(cboRAM, "Text", bdsrc, "Ram");
+            SetBindingControls(cboProcesseur, "Text", bdsrc, "Processeur");
             SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", bdsrc, "Nombre_coeur_processeur");
-            SetBindingControls(cboNbrHDD, "SelectedValue", bdsrc, "Nombre_hdd");
+            SetBindingControls(cboTypeHDD, "SelectedValue", bdsrc, "Nombre_hdd");
             SetBindingControls(cboCapaciteHDD, "SelectedValue", bdsrc, "Capacite_hdd");
-            SetBindingControls(cboIndicePC, "SelectedValue", bdsrc, "Indice_performance");
-            SetBindingControls(txtTailleEcran, "Text", bdsrc, "Pouce");
+            SetBindingControls(cboNbrHDD, "SelectedValue", bdsrc, "Indice_performance");
+            SetBindingControls(cboTailleEcran, "Text", bdsrc, "Pouce");
             SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Nombre_usb2");
             SetBindingControls(cboUSB3, "SelectedValue", bdsrc, "Nombre_usb3");
-            SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Nombre_usb2");
             SetBindingControls(cboNbrHDMI, "SelectedValue", bdsrc, "Nombre_hdmi");
             SetBindingControls(cboNbrVGA, "SelectedValue", bdsrc, "Nombre_vga");
             SetBindingControls(cboTensionBatt, "SelectedValue", bdsrc, "Tension_batterie");
@@ -277,11 +275,15 @@ namespace smartManage.Desktop
 
         private void frmOrdinateur_Load(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 RefreshData();
 
                 List<ComboBox> lstCombo = new List<ComboBox>();
+                ComboBox[] tbCbo = { cboCatMateriel, cboNumCompte, cboMarque, cboCouleur, cboPoids, cboEtat,
+                    cboTypeOrdi, cboTypeClavier, cboTypeOS, cboNbrCoeurProcesseur, cboTypeHDD, cboCapaciteHDD,
+                    cboNbrHDD , cboUSB2, cboUSB3, cboNbrHDMI, cboNbrVGA, cboTensionBatt, cboPuissanceAdap,
+                    cboTensionAdap, cboIntensiteAdap};
                 lstCombo.Add(cboCatMateriel);
                 lstCombo.Add(cboNumCompte);
                 lstCombo.Add(cboMarque);
@@ -293,9 +295,9 @@ namespace smartManage.Desktop
                 lstCombo.Add(cboTypeClavier);
                 lstCombo.Add(cboTypeOS);
                 lstCombo.Add(cboNbrCoeurProcesseur);
-                lstCombo.Add(cboNbrHDD);
+                lstCombo.Add(cboTypeHDD);
                 lstCombo.Add(cboCapaciteHDD);
-                lstCombo.Add(cboIndicePC);
+                lstCombo.Add(cboNbrHDD);
                 lstCombo.Add(cboUSB2);
                 lstCombo.Add(cboUSB3);
                 lstCombo.Add(cboNbrHDMI);
@@ -306,11 +308,11 @@ namespace smartManage.Desktop
                 lstCombo.Add(cboIntensiteAdap);
 
                 SetSelectedIndexComboBox(lstCombo);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            //}
+            //catch (Exception)
+            //{
+            //    MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            //}
         }
 
         private void SetSelectedIndexComboBox(List<ComboBox> cbo)
@@ -358,12 +360,14 @@ namespace smartManage.Desktop
             lstNbrCoeurProcesseur.Add("7");
 
             cboNbrCoeurProcesseur.DataSource = lstNbrCoeurProcesseur;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_coeur_processeur", "Nombre_coeur_processeur");
 
             List<string> lstNbrHDD = new List<string>();
             lstNbrHDD.Add("1");
             lstNbrHDD.Add("2");
             lstNbrHDD.Add("3");
-            cboNbrHDD.DataSource = lstNbrHDD;
+            cboTypeHDD.DataSource = lstNbrHDD;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_hdd", "Nombre_hdd");
 
             List<string> lstCapaciteHDD = new List<string>(); 
             lstCapaciteHDD.Add("38");
@@ -374,15 +378,17 @@ namespace smartManage.Desktop
             lstCapaciteHDD.Add("465");
             lstCapaciteHDD.Add("500");
             cboCapaciteHDD.DataSource = lstCapaciteHDD;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Capacite_hdd", "Capacite_hdd");
 
             List<string> lstIndicePC = new List<string>();
             lstIndicePC.Add("1");
-            lstIndicePC.Add("3.1");
-            lstIndicePC.Add("3.2");
-            lstIndicePC.Add("3.3");
-            lstIndicePC.Add("4.4");
-            lstIndicePC.Add("4.5");
-            cboIndicePC.DataSource = lstIndicePC; 
+            lstIndicePC.Add("3,1");
+            lstIndicePC.Add("3,2");
+            lstIndicePC.Add("3,3");
+            lstIndicePC.Add("4,4");
+            lstIndicePC.Add("4,5");
+            cboNbrHDD.DataSource = lstIndicePC;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Indice_performance", "Indice_performance");
 
             List<string> lstUSB2 = new List<string>();
             lstUSB2.Add("0");
@@ -391,6 +397,7 @@ namespace smartManage.Desktop
             lstUSB2.Add("3");
             lstUSB2.Add("4");
             cboUSB2.DataSource = lstUSB2;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_usb2", "Nombre_usb2");
 
             List<string> lstUSB3 = new List<string>();
             lstUSB3.Add("0");
@@ -398,6 +405,7 @@ namespace smartManage.Desktop
             lstUSB3.Add("2");
             lstUSB3.Add("3");
             cboUSB3.DataSource = lstUSB3;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_usb3", "Nombre_usb3");
 
             List<string> lstNbrHDMI = new List<string>();
             lstNbrHDMI.Add("0");
@@ -405,35 +413,41 @@ namespace smartManage.Desktop
             lstNbrHDMI.Add("2");
             lstNbrHDMI.Add("3");
             cboNbrHDMI.DataSource = lstNbrHDMI;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_hdmi", "Nombre_hdmi");
 
             List<string> lstNbrVGA = new List<string>();
             lstNbrVGA.Add("1");
             lstNbrVGA.Add("2");
             lstNbrVGA.Add("3");
             cboNbrVGA.DataSource = lstNbrVGA;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_vga", "Nombre_vga");
 
             List<string> lstTensionBatt = new List<string>();
-            lstTensionBatt.Add("10.8");
+            lstTensionBatt.Add("10,8");
             lstTensionBatt.Add("12");
             cboTensionBatt.DataSource = lstTensionBatt;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Tension_batterie", "Tension_batterie");
 
             List<string> lstPuissanceAdap = new List<string>();
-            lstPuissanceAdap.Add("10.8");
+            lstPuissanceAdap.Add("10,8");
             lstPuissanceAdap.Add("12");
             cboPuissanceAdap.DataSource = lstPuissanceAdap;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Puissance_adaptateur", "Puissance_adaptateur");
 
             List<string> lstTensionAdap = new List<string>();
             lstTensionAdap.Add("15");
-            lstTensionAdap.Add("18.5");
+            lstTensionAdap.Add("18,5");
             lstTensionAdap.Add("19");
-            lstTensionAdap.Add("19.5");
+            lstTensionAdap.Add("19,5");
             cboTensionAdap.DataSource = lstTensionAdap;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Tension_adaptateur", "Tension_adaptateur");
 
             List<string> lstIntensiteAdap = new List<string>();
-            lstIntensiteAdap.Add("3.33");
-            lstIntensiteAdap.Add("3.5");
+            lstIntensiteAdap.Add("3,33");
+            lstIntensiteAdap.Add("3,5");
             lstIntensiteAdap.Add("5");
             cboIntensiteAdap.DataSource = lstIntensiteAdap;
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Intensite_adaptateur", "Intensite_adaptateur");
 
             if (bdsrc.Count == 0)
             {

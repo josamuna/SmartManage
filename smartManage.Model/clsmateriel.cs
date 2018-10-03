@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
 
 namespace smartManage.Model
@@ -14,7 +13,7 @@ namespace smartManage.Model
         private int id_compte;
         private string qrcode;
         private DateTime? date_acquisition;
-        private int? guarantie;
+        private int? id_garantie;
         private int id_marque;
         private int id_modele;
         private int id_couleur;
@@ -34,49 +33,48 @@ namespace smartManage.Model
         private int? id_type_ordinateur;
         private int? id_type_clavier;
         private int? id_os;
-        private double? ram;
-        private double? processeur;
-        private int? nombre_coeur_processeur;
-        private int? nombre_hdd;
-        private int? capacite_hdd;
-        private double? indice_performance;
-        private int? pouce;
-        private int? nombre_usb2;
-        private int? nombre_usb3;
-        private int? nombre_hdmi;
-        private int? nombre_vga;
-        private double? tension_batterie;
-        private double? tension_adaptateur;
-        private double? puissance_adaptateur;
-        private double? intensite_adaptateur;
+        private int? id_ram;
+        private int? id_processeur;
+        private int? id_nombre_coeur_processeur;
+        private int? id_type_hdd;
+        private int? id_nombre_hdd;
+        private int? id_capacite_hdd;
+        private int? id_taille_ecran;
+        private int? id_usb2;
+        private int? id_usb3;
+        private int? id_hdmi;
+        private int? id_vga;
+        private int? id_tension_batterie;
+        private int? id_tension_adaptateur;
+        private int? id_puissance_adaptateur;
+        private int? id_intensite_adaptateur;
         private int? numero_cle;
         private int? id_type_imprimante;
-        private double? puissance;
-        private double? intensite;
-        private double? nombre_page_par_minute;
+        private int? id_puissance;
+        private int? id_intensite;
+        private int? id_page_par_minute;
         private int? id_type_amplificateur;
-        private int? tension_alimentation;
-        private int? nombre_usb;
-        private int? nombre_memoire;
-        private int? nombre_sorties_audio;
-        private int? nombre_microphone;
-        private double? gain;
+        private int? id_tension_alimentation;
+        private int? id_usb;
+        private int? id_memoire;
+        private int? id_sorties_audio;
+        private int? id_microphone;
+        private int? id_gain;
         private int? id_type_routeur_ap;
         private int? id_version_ios;
-        private int? nombre_gbe;
-        private int? nombre_fe;
-        private int? nombre_fo;
-        private int? nombre_serial;
+        private int? id_gbe;
+        private int? id_fe;
+        private int? id_fo;
+        private int? id_serial;
         private bool? capable_usb;
-        private string motpasse_defaut;
-        private string default_ip;
-        private int? nombre_console;
-        private int? nombre_auxiliaire;
+        private int? id_default_pwd;
+        private int? id_default_ip;
+        private int? id_console;
+        private int? id_auxiliaire;
         private int? id_type_ap;
         private int? id_type_switch;
-        private double? frequence;
-        private string alimentation;
-        private int? nombre_antenne;
+        private string frequence;
+        private int? id_antenne;
         private int? id_netette;
         private bool? compatible_wifi;
         //***Listes***
@@ -126,6 +124,7 @@ namespace smartManage.Model
         }  //***Accesseur de id_categorie_materiel***
         public int Id_categorie_materiel
         {
+
             get { return id_categorie_materiel; }
             set { id_categorie_materiel = value; }
         }  //***Accesseur de id_compte***
@@ -143,11 +142,11 @@ namespace smartManage.Model
         {
             get { return date_acquisition; }
             set { date_acquisition = value; }
-        }  //***Accesseur de guarantie***
-        public int? Guarantie
+        }  //***Accesseur de id_garantie***
+        public int? Id_garantie
         {
-            get { return guarantie; }
-            set { guarantie = value; }
+            get { return id_garantie; }
+            set { id_garantie = value; }
         }  //***Accesseur de id_marque***
         public int Id_marque
         {
@@ -201,6 +200,7 @@ namespace smartManage.Model
         }  //***Accesseur de mac_adresse2***
         public string Mac_adresse2
         {
+
             get { return mac_adresse2; }
             set { mac_adresse2 = value; }
         }  //***Accesseur de commentaire***
@@ -211,6 +211,7 @@ namespace smartManage.Model
         }  //***Accesseur de user_created***
         public string User_created
         {
+
             get { return user_created; }
             set { user_created = value; }
         }  //***Accesseur de date_created***
@@ -221,6 +222,7 @@ namespace smartManage.Model
         }  //***Accesseur de user_modified***
         public string User_modified
         {
+
             get { return user_modified; }
             set { user_modified = value; }
         }  //***Accesseur de date_modified***
@@ -243,81 +245,81 @@ namespace smartManage.Model
         {
             get { return id_os; }
             set { id_os = value; }
-        }  //***Accesseur de ram***
-        public double? Ram
+        }  //***Accesseur de id_ram***
+        public int? Id_ram
         {
-            get { return ram; }
-            set { ram = value; }
-        }  //***Accesseur de processeur***
-        public double? Processeur
+            get { return id_ram; }
+            set { id_ram = value; }
+        }  //***Accesseur de id_processeur***
+        public int? Id_processeur
         {
-            get { return processeur; }
-            set { processeur = value; }
-        }  //***Accesseur de nombre_coeur_processeur***
-        public int? Nombre_coeur_processeur
+            get { return id_processeur; }
+            set { id_processeur = value; }
+        }  //***Accesseur de id_nombre_coeur_processeur***
+        public int? Id_nombre_coeur_processeur
         {
-            get { return nombre_coeur_processeur; }
-            set { nombre_coeur_processeur = value; }
-        }  //***Accesseur de nombre_hdd***
-        public int? Nombre_hdd
+            get { return id_nombre_coeur_processeur; }
+            set { id_nombre_coeur_processeur = value; }
+        }  //***Accesseur de id_type_hdd***
+        public int? Id_type_hdd
         {
-            get { return nombre_hdd; }
-            set { nombre_hdd = value; }
-        }  //***Accesseur de capacite_hdd***
-        public int? Capacite_hdd
+            get { return id_type_hdd; }
+            set { id_type_hdd = value; }
+        }  //***Accesseur de id_nombre_hdd***
+        public int? Id_nombre_hdd
         {
-            get { return capacite_hdd; }
-            set { capacite_hdd = value; }
-        }  //***Accesseur de indice_performance***
-        public double? Indice_performance
+            get { return id_nombre_hdd; }
+            set { id_nombre_hdd = value; }
+        }  //***Accesseur de id_capacite_hdd***
+        public int? Id_capacite_hdd
         {
-            get { return indice_performance; }
-            set { indice_performance = value; }
-        }  //***Accesseur de pouce***
-        public int? Pouce
+            get { return id_capacite_hdd; }
+            set { id_capacite_hdd = value; }
+        }  //***Accesseur de id_taille_ecran***
+        public int? Id_taille_ecran
         {
-            get { return pouce; }
-            set { pouce = value; }
-        }  //***Accesseur de nombre_usb2***
-        public int? Nombre_usb2
+            get { return id_taille_ecran; }
+            set { id_taille_ecran = value; }
+        }  //***Accesseur de id_usb2***
+        public int? Id_usb2
         {
-            get { return nombre_usb2; }
-            set { nombre_usb2 = value; }
-        }  //***Accesseur de nombre_usb3***
-        public int? Nombre_usb3
+            get { return id_usb2; }
+            set { id_usb2 = value; }
+        }  //***Accesseur de id_usb3***
+        public int? Id_usb3
         {
-            get { return nombre_usb3; }
-            set { nombre_usb3 = value; }
-        }  //***Accesseur de nombre_hdmi***
-        public int? Nombre_hdmi
+            get { return id_usb3; }
+            set { id_usb3 = value; }
+        }  //***Accesseur de id_hdmi***
+        public int? Id_hdmi
         {
-            get { return nombre_hdmi; }
-            set { nombre_hdmi = value; }
-        }  //***Accesseur de nombre_vga***
-        public int? Nombre_vga
+            get { return id_hdmi; }
+            set { id_hdmi = value; }
+        }  //***Accesseur de id_vga***
+        public int? Id_vga
         {
-            get { return nombre_vga; }
-            set { nombre_vga = value; }
-        }  //***Accesseur de tension_batterie***
-        public double? Tension_batterie
+            get { return id_vga; }
+            set { id_vga = value; }
+        }  //***Accesseur de id_tension_batterie***
+        public int? Id_tension_batterie
         {
-            get { return tension_batterie; }
-            set { tension_batterie = value; }
-        }  //***Accesseur de tension_adaptateur***
-        public double? Tension_adaptateur
+            get { return id_tension_batterie; }
+            set { id_tension_batterie = value; }
+        }  //***Accesseur de id_tension_adaptateur***
+        public int? Id_tension_adaptateur
         {
-            get { return tension_adaptateur; }
-            set { tension_adaptateur = value; }
-        }  //***Accesseur de puissance_adaptateur***
-        public double? Puissance_adaptateur
+            get { return id_tension_adaptateur; }
+            set { id_tension_adaptateur = value; }
+        }  //***Accesseur de id_puissance_adaptateur***
+        public int? Id_puissance_adaptateur
         {
-            get { return puissance_adaptateur; }
-            set { puissance_adaptateur = value; }
-        }  //***Accesseur de intensite_adaptateur***
-        public double? Intensite_adaptateur
+            get { return id_puissance_adaptateur; }
+            set { id_puissance_adaptateur = value; }
+        }  //***Accesseur de id_intensite_adaptateur***
+        public int? Id_intensite_adaptateur
         {
-            get { return intensite_adaptateur; }
-            set { intensite_adaptateur = value; }
+            get { return id_intensite_adaptateur; }
+            set { id_intensite_adaptateur = value; }
         }  //***Accesseur de numero_cle***
         public int? Numero_cle
         {
@@ -328,56 +330,56 @@ namespace smartManage.Model
         {
             get { return id_type_imprimante; }
             set { id_type_imprimante = value; }
-        }  //***Accesseur de puissance***
-        public double? Puissance
+        }  //***Accesseur de id_puissance***
+        public int? Id_puissance
         {
-            get { return puissance; }
-            set { puissance = value; }
-        }  //***Accesseur de intensite***
-        public double? Intensite
+            get { return id_puissance; }
+            set { id_puissance = value; }
+        }  //***Accesseur de id_intensite***
+        public int? Id_intensite
         {
-            get { return intensite; }
-            set { intensite = value; }
-        }  //***Accesseur de nombre_page_par_minute***
-        public double? Nombre_page_par_minute
+            get { return id_intensite; }
+            set { id_intensite = value; }
+        }  //***Accesseur de id_page_par_minute***
+        public int? Id_page_par_minute
         {
-            get { return nombre_page_par_minute; }
-            set { nombre_page_par_minute = value; }
+            get { return id_page_par_minute; }
+            set { id_page_par_minute = value; }
         }  //***Accesseur de id_type_amplificateur***
         public int? Id_type_amplificateur
         {
             get { return id_type_amplificateur; }
             set { id_type_amplificateur = value; }
-        }  //***Accesseur de tension_alimentation***
-        public int? Tension_alimentation
+        }  //***Accesseur de id_tension_alimentation***
+        public int? Id_tension_alimentation
         {
-            get { return tension_alimentation; }
-            set { tension_alimentation = value; }
-        }  //***Accesseur de nombre_usb***
-        public int? Nombre_usb
+            get { return id_tension_alimentation; }
+            set { id_tension_alimentation = value; }
+        }  //***Accesseur de id_usb***
+        public int? Id_usb
         {
-            get { return nombre_usb; }
-            set { nombre_usb = value; }
-        }  //***Accesseur de nombre_memoire***
-        public int? Nombre_memoire
+            get { return id_usb; }
+            set { id_usb = value; }
+        }  //***Accesseur de id_memoire***
+        public int? Id_memoire
         {
-            get { return nombre_memoire; }
-            set { nombre_memoire = value; }
-        }  //***Accesseur de nombre_sorties_audio***
-        public int? Nombre_sorties_audio
+            get { return id_memoire; }
+            set { id_memoire = value; }
+        }  //***Accesseur de id_sorties_audio***
+        public int? Id_sorties_audio
         {
-            get { return nombre_sorties_audio; }
-            set { nombre_sorties_audio = value; }
-        }  //***Accesseur de nombre_microphone***
-        public int? Nombre_microphone
+            get { return id_sorties_audio; }
+            set { id_sorties_audio = value; }
+        }  //***Accesseur de id_microphone***
+        public int? Id_microphone
         {
-            get { return nombre_microphone; }
-            set { nombre_microphone = value; }
-        }  //***Accesseur de gain***
-        public double? Gain
+            get { return id_microphone; }
+            set { id_microphone = value; }
+        }  //***Accesseur de id_gain***
+        public int? Id_gain
         {
-            get { return gain; }
-            set { gain = value; }
+            get { return id_gain; }
+            set { id_gain = value; }
         }  //***Accesseur de id_type_routeur_ap***
         public int? Id_type_routeur_ap
         {
@@ -388,51 +390,51 @@ namespace smartManage.Model
         {
             get { return id_version_ios; }
             set { id_version_ios = value; }
-        }  //***Accesseur de nombre_gbe***
-        public int? Nombre_gbe
+        }  //***Accesseur de id_gbe***
+        public int? Id_gbe
         {
-            get { return nombre_gbe; }
-            set { nombre_gbe = value; }
-        }  //***Accesseur de nombre_fe***
-        public int? Nombre_fe
+            get { return id_gbe; }
+            set { id_gbe = value; }
+        }  //***Accesseur de id_fe***
+        public int? Id_fe
         {
-            get { return nombre_fe; }
-            set { nombre_fe = value; }
-        }  //***Accesseur de nombre_fo***
-        public int? Nombre_fo
+            get { return id_fe; }
+            set { id_fe = value; }
+        }  //***Accesseur de id_fo***
+        public int? Id_fo
         {
-            get { return nombre_fo; }
-            set { nombre_fo = value; }
-        }  //***Accesseur de nombre_serial***
-        public int? Nombre_serial
+            get { return id_fo; }
+            set { id_fo = value; }
+        }  //***Accesseur de id_serial***
+        public int? Id_serial
         {
-            get { return nombre_serial; }
-            set { nombre_serial = value; }
+            get { return id_serial; }
+            set { id_serial = value; }
         }  //***Accesseur de capable_usb***
         public bool? Capable_usb
         {
             get { return capable_usb; }
             set { capable_usb = value; }
-        }  //***Accesseur de motpasse_defaut***
-        public string Motpasse_defaut
+        }  //***Accesseur de id_default_pwd***
+        public int? Id_default_pwd
         {
-            get { return motpasse_defaut; }
-            set { motpasse_defaut = value; }
-        }  //***Accesseur de default_ip***
-        public string Default_ip
+            get { return id_default_pwd; }
+            set { id_default_pwd = value; }
+        }  //***Accesseur de id_default_ip***
+        public int? Id_default_ip
         {
-            get { return default_ip; }
-            set { default_ip = value; }
-        }  //***Accesseur de nombre_console***
-        public int? Nombre_console
+            get { return id_default_ip; }
+            set { id_default_ip = value; }
+        }  //***Accesseur de id_console***
+        public int? Id_console
         {
-            get { return nombre_console; }
-            set { nombre_console = value; }
-        }  //***Accesseur de nombre_auxiliaire***
-        public int? Nombre_auxiliaire
+            get { return id_console; }
+            set { id_console = value; }
+        }  //***Accesseur de id_auxiliaire***
+        public int? Id_auxiliaire
         {
-            get { return nombre_auxiliaire; }
-            set { nombre_auxiliaire = value; }
+            get { return id_auxiliaire; }
+            set { id_auxiliaire = value; }
         }  //***Accesseur de id_type_ap***
         public int? Id_type_ap
         {
@@ -444,20 +446,15 @@ namespace smartManage.Model
             get { return id_type_switch; }
             set { id_type_switch = value; }
         }  //***Accesseur de frequence***
-        public double? Frequence
+        public string Frequence
         {
             get { return frequence; }
             set { frequence = value; }
-        }  //***Accesseur de alimentation***
-        public string Alimentation
+        }  //***Accesseur de id_antenne***
+        public int? Id_antenne
         {
-            get { return alimentation; }
-            set { alimentation = value; }
-        }  //***Accesseur de nombre_antenne***
-        public int? Nombre_antenne
-        {
-            get { return nombre_antenne; }
-            set { nombre_antenne = value; }
+            get { return id_antenne; }
+            set { id_antenne = value; }
         }  //***Accesseur de id_netette***
         public int? Id_netette
         {
