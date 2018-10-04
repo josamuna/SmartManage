@@ -149,6 +149,210 @@
     <Compile Include="frmAmplificateur.Designer.cs">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmDefaultPwd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefaultPwd.Designer.cs">
+      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrAntenne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrAntenne.Designer.cs">
+      <DependentUpon>frmNbrAntenne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrAuxiliaire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrAuxiliaire.Designer.cs">
+      <DependentUpon>frmNbrAuxiliaire.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrFO.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrFO.Designer.cs">
+      <DependentUpon>frmNbrFO.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrConsole.Designer.cs">
+      <DependentUpon>frmNbrConsole.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDefaultIP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefaultIP.Designer.cs">
+      <DependentUpon>frmDefaultIP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrSerial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrSerial.Designer.cs">
+      <DependentUpon>frmNbrSerial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGain.Designer.cs">
+      <DependentUpon>frmGain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrFE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrFE.Designer.cs">
+      <DependentUpon>frmNbrFE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrGBE.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrGBE.Designer.cs">
+      <DependentUpon>frmNbrGBE.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrMicrophone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrMicrophone.Designer.cs">
+      <DependentUpon>frmNbrMicrophone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrSortieAudio.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrSortieAudio.Designer.cs">
+      <DependentUpon>frmNbrSortieAudio.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrMemoire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrMemoire.Designer.cs">
+      <DependentUpon>frmNbrMemoire.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrUSB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrUSB.Designer.cs">
+      <DependentUpon>frmNbrUSB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPageParMinute.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPageParMinute.Designer.cs">
+      <DependentUpon>frmPageParMinute.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCapaciteHDD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCapaciteHDD.Designer.cs">
+      <DependentUpon>frmCapaciteHDD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmIntensite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIntensite.Designer.cs">
+      <DependentUpon>frmIntensite.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrVGA.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrVGA.Designer.cs">
+      <DependentUpon>frmNbrVGA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrHDMI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrHDMI.Designer.cs">
+      <DependentUpon>frmNbrHDMI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrUSB3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrUSB3.Designer.cs">
+      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrUSB2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrUSB2.Designer.cs">
+      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPuissance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPuissance.Designer.cs">
+      <DependentUpon>frmPuissance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPuissanceAdaptateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPuissanceAdaptateur.Designer.cs">
+      <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTensionAlimentation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTensionAlimentation.Designer.cs">
+      <DependentUpon>frmTensionAlimentation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTensionAdaptateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTensionAdaptateur.Designer.cs">
+      <DependentUpon>frmTensionAdaptateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmIntensiteAdaptateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmIntensiteAdaptateur.Designer.cs">
+      <DependentUpon>frmIntensiteAdaptateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTensionBatterie.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTensionBatterie.Designer.cs">
+      <DependentUpon>frmTensionBatterie.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTailleEcran.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTailleEcran.Designer.cs">
+      <DependentUpon>frmTailleEcran.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrHDD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrHDD.Designer.cs">
+      <DependentUpon>frmNbrHDD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeHDD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeHDD.Designer.cs">
+      <DependentUpon>frmTypeHDD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrCoeurProcesseur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrCoeurProcesseur.Designer.cs">
+      <DependentUpon>frmNbrCoeurProcesseur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProcesseur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProcesseur.Designer.cs">
+      <DependentUpon>frmProcesseur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRAM.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRAM.Designer.cs">
+      <DependentUpon>frmRAM.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGarantie.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGarantie.Designer.cs">
+      <DependentUpon>frmGarantie.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTypeOS.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -330,6 +534,108 @@
     <EmbeddedResource Include="frmAdminRadiusDataView.resx">
       <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefaultPwd.resx">
+      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrAntenne.resx">
+      <DependentUpon>frmNbrAntenne.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrAuxiliaire.resx">
+      <DependentUpon>frmNbrAuxiliaire.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrFO.resx">
+      <DependentUpon>frmNbrFO.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrConsole.resx">
+      <DependentUpon>frmNbrConsole.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefaultIP.resx">
+      <DependentUpon>frmDefaultIP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrSerial.resx">
+      <DependentUpon>frmNbrSerial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGain.resx">
+      <DependentUpon>frmGain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrFE.resx">
+      <DependentUpon>frmNbrFE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrGBE.resx">
+      <DependentUpon>frmNbrGBE.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrMicrophone.resx">
+      <DependentUpon>frmNbrMicrophone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrSortieAudio.resx">
+      <DependentUpon>frmNbrSortieAudio.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrMemoire.resx">
+      <DependentUpon>frmNbrMemoire.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrUSB.resx">
+      <DependentUpon>frmNbrUSB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPageParMinute.resx">
+      <DependentUpon>frmPageParMinute.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCapaciteHDD.resx">
+      <DependentUpon>frmCapaciteHDD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIntensite.resx">
+      <DependentUpon>frmIntensite.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrVGA.resx">
+      <DependentUpon>frmNbrVGA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrHDMI.resx">
+      <DependentUpon>frmNbrHDMI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrUSB3.resx">
+      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrUSB2.resx">
+      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPuissance.resx">
+      <DependentUpon>frmPuissance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPuissanceAdaptateur.resx">
+      <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTensionAlimentation.resx">
+      <DependentUpon>frmTensionAlimentation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTensionAdaptateur.resx">
+      <DependentUpon>frmTensionAdaptateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmIntensiteAdaptateur.resx">
+      <DependentUpon>frmIntensiteAdaptateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTensionBatterie.resx">
+      <DependentUpon>frmTensionBatterie.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTailleEcran.resx">
+      <DependentUpon>frmTailleEcran.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrHDD.resx">
+      <DependentUpon>frmNbrHDD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeHDD.resx">
+      <DependentUpon>frmTypeHDD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrCoeurProcesseur.resx">
+      <DependentUpon>frmNbrCoeurProcesseur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProcesseur.resx">
+      <DependentUpon>frmProcesseur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRAM.resx">
+      <DependentUpon>frmRAM.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGarantie.resx">
+      <DependentUpon>frmGarantie.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTypeOS.resx">
       <DependentUpon>frmTypeOS.cs</DependentUpon>

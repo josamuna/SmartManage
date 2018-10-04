@@ -29,26 +29,16 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCategorieMateriel));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmCategorieMateriel));
             this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bdNew = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
             this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.bdDelete = new System.Windows.Forms.ToolStripButton();
-            this.bdSave = new System.Windows.Forms.ToolStripButton();
-            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
-            this.bdSearch = new System.Windows.Forms.ToolStripButton();
-            this.bdPreview = new System.Windows.Forms.ToolStripButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtDateModifie = new System.Windows.Forms.TextBox();
@@ -70,6 +60,16 @@
             this.colDate_created = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUser_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDate_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bdNew = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bdDelete = new System.Windows.Forms.ToolStripButton();
+            this.bdSave = new System.Windows.Forms.ToolStripButton();
+            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
+            this.bdSearch = new System.Windows.Forms.ToolStripButton();
+            this.bdPreview = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).BeginInit();
             this.bdNav.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -112,40 +112,12 @@
             this.bdNav.TabIndex = 1;
             this.bdNav.Text = "bindingNavigator1";
             // 
-            // bdNew
-            // 
-            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
-            this.bdNew.Name = "bdNew";
-            this.bdNew.RightToLeftAutoMirrorImage = true;
-            this.bdNew.Size = new System.Drawing.Size(23, 22);
-            this.bdNew.Text = "Nouvel enregistrement";
-            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
-            // 
             // bindingNavigatorCountItem
             // 
             this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
             this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
-            // 
-            // bindingNavigatorMoveFirstItem
-            // 
-            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
-            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
-            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveFirstItem.Text = "Premier enregistrement";
-            // 
-            // bindingNavigatorMovePreviousItem
-            // 
-            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
-            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
-            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
             // 
             // bindingNavigatorSeparator
             // 
@@ -166,58 +138,10 @@
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
             this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // bindingNavigatorMoveNextItem
-            // 
-            this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
-            this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
-            this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveNextItem.Text = "Enregistrement suivant";
-            // 
-            // bindingNavigatorMoveLastItem
-            // 
-            this.bindingNavigatorMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
-            this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
-            this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveLastItem.Text = "Dernier enregistrement";
-            // 
             // bindingNavigatorSeparator2
             // 
             this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
-            // bdDelete
-            // 
-            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdDelete.Image = global::smartManage.Desktop.Properties.Resources.delete;
-            this.bdDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdDelete.Name = "bdDelete";
-            this.bdDelete.Size = new System.Drawing.Size(23, 22);
-            this.bdDelete.Text = "Supprimer enregistrement";
-            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
-            // 
-            // bdSave
-            // 
-            this.bdSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdSave.Image = global::smartManage.Desktop.Properties.Resources.Save;
-            this.bdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdSave.Name = "bdSave";
-            this.bdSave.Size = new System.Drawing.Size(23, 22);
-            this.bdSave.Text = "Mise à jour enregistrement";
-            this.bdSave.Click += new System.EventHandler(this.bdSave_Click);
-            // 
-            // bdRefresh
-            // 
-            this.bdRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdRefresh.Image = global::smartManage.Desktop.Properties.Resources.Refresh;
-            this.bdRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdRefresh.Name = "bdRefresh";
-            this.bdRefresh.Size = new System.Drawing.Size(23, 22);
-            this.bdRefresh.Text = "Actualiser";
-            this.bdRefresh.Click += new System.EventHandler(this.bdRefresh_Click);
             // 
             // toolStripSeparator6
             // 
@@ -230,26 +154,6 @@
             this.txtSearch.Size = new System.Drawing.Size(120, 25);
             this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
-            // bdSearch
-            // 
-            this.bdSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdSearch.Image = global::smartManage.Desktop.Properties.Resources.Search;
-            this.bdSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdSearch.Name = "bdSearch";
-            this.bdSearch.Size = new System.Drawing.Size(23, 22);
-            this.bdSearch.Text = "Rechercher";
-            this.bdSearch.Click += new System.EventHandler(this.bdSearch_Click);
-            // 
-            // bdPreview
-            // 
-            this.bdPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdPreview.Enabled = false;
-            this.bdPreview.Image = global::smartManage.Desktop.Properties.Resources.Preview;
-            this.bdPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdPreview.Name = "bdPreview";
-            this.bdPreview.Size = new System.Drawing.Size(23, 22);
-            this.bdPreview.Text = "Afficher rapport";
             // 
             // panel1
             // 
@@ -290,6 +194,7 @@
             this.txtDateModifie.ReadOnly = true;
             this.txtDateModifie.Size = new System.Drawing.Size(180, 20);
             this.txtDateModifie.TabIndex = 62;
+            this.txtDateModifie.TabStop = false;
             // 
             // txtDesignation
             // 
@@ -323,6 +228,7 @@
             this.txtId.ReadOnly = true;
             this.txtId.Size = new System.Drawing.Size(180, 20);
             this.txtId.TabIndex = 59;
+            this.txtId.TabStop = false;
             // 
             // txtModifieBy
             // 
@@ -331,6 +237,7 @@
             this.txtModifieBy.ReadOnly = true;
             this.txtModifieBy.Size = new System.Drawing.Size(180, 20);
             this.txtModifieBy.TabIndex = 55;
+            this.txtModifieBy.TabStop = false;
             // 
             // label1
             // 
@@ -366,6 +273,7 @@
             this.txtDateCreate.ReadOnly = true;
             this.txtDateCreate.Size = new System.Drawing.Size(180, 20);
             this.txtDateCreate.TabIndex = 53;
+            this.txtDateCreate.TabStop = false;
             // 
             // txtCreateBy
             // 
@@ -374,6 +282,7 @@
             this.txtCreateBy.ReadOnly = true;
             this.txtCreateBy.Size = new System.Drawing.Size(180, 20);
             this.txtCreateBy.TabIndex = 51;
+            this.txtCreateBy.TabStop = false;
             // 
             // label19
             // 
@@ -413,6 +322,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(575, 179);
             this.dgv.TabIndex = 200;
+            this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
             // 
             // colId
@@ -452,6 +362,102 @@
             this.colDate_modified.DataPropertyName = "Date_modified";
             this.colDate_modified.HeaderText = "Date modified";
             this.colDate_modified.Name = "colDate_modified";
+            // 
+            // bdNew
+            // 
+            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
+            this.bdNew.Name = "bdNew";
+            this.bdNew.RightToLeftAutoMirrorImage = true;
+            this.bdNew.Size = new System.Drawing.Size(23, 22);
+            this.bdNew.Text = "Nouvel enregistrement";
+            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
+            // 
+            // bindingNavigatorMoveFirstItem
+            // 
+            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
+            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
+            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorMoveFirstItem.Text = "Premier enregistrement";
+            // 
+            // bindingNavigatorMovePreviousItem
+            // 
+            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
+            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
+            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
+            // 
+            // bindingNavigatorMoveNextItem
+            // 
+            this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
+            this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
+            this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorMoveNextItem.Text = "Enregistrement suivant";
+            // 
+            // bindingNavigatorMoveLastItem
+            // 
+            this.bindingNavigatorMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
+            this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
+            this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorMoveLastItem.Text = "Dernier enregistrement";
+            // 
+            // bdDelete
+            // 
+            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdDelete.Image = global::smartManage.Desktop.Properties.Resources.delete;
+            this.bdDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdDelete.Name = "bdDelete";
+            this.bdDelete.Size = new System.Drawing.Size(23, 22);
+            this.bdDelete.Text = "Supprimer enregistrement";
+            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
+            // 
+            // bdSave
+            // 
+            this.bdSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdSave.Image = global::smartManage.Desktop.Properties.Resources.Save;
+            this.bdSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdSave.Name = "bdSave";
+            this.bdSave.Size = new System.Drawing.Size(23, 22);
+            this.bdSave.Text = "Mise à jour enregistrement";
+            this.bdSave.Click += new System.EventHandler(this.bdSave_Click);
+            // 
+            // bdRefresh
+            // 
+            this.bdRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdRefresh.Image = global::smartManage.Desktop.Properties.Resources.Refresh;
+            this.bdRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdRefresh.Name = "bdRefresh";
+            this.bdRefresh.Size = new System.Drawing.Size(23, 22);
+            this.bdRefresh.Text = "Actualiser";
+            this.bdRefresh.Click += new System.EventHandler(this.bdRefresh_Click);
+            // 
+            // bdSearch
+            // 
+            this.bdSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdSearch.Image = global::smartManage.Desktop.Properties.Resources.Search;
+            this.bdSearch.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdSearch.Name = "bdSearch";
+            this.bdSearch.Size = new System.Drawing.Size(23, 22);
+            this.bdSearch.Text = "Rechercher";
+            this.bdSearch.Click += new System.EventHandler(this.bdSearch_Click);
+            // 
+            // bdPreview
+            // 
+            this.bdPreview.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdPreview.Enabled = false;
+            this.bdPreview.Image = global::smartManage.Desktop.Properties.Resources.Preview;
+            this.bdPreview.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdPreview.Name = "bdPreview";
+            this.bdPreview.Size = new System.Drawing.Size(23, 22);
+            this.bdPreview.Text = "Afficher rapport";
             // 
             // frmCategorieMateriel
             // 

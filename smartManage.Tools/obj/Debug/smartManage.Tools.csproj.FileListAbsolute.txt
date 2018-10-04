@@ -7,4 +7,3 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Tools\bin\Debug\smartManage.Tools.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Tools\bin\Debug\smartManage.Tools.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.Tools\obj\Debug\smartManage.Tools.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Tools\obj\Debug\smartManage.Tools.pdb
-D:\DOC\GitHub\SmartManageClone\smartManage.Tools\obj\Debug\smartManage.Tools.csprojResolveAssemblyReference.cache

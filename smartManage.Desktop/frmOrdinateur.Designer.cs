@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -103,6 +103,7 @@
             this.colCompatible_wifi = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.lblAddGuaratie = new System.Windows.Forms.LinkLabel();
             this.cboMarque = new System.Windows.Forms.ComboBox();
             this.txtDateModifie = new System.Windows.Forms.TextBox();
             this.txtQRCode = new System.Windows.Forms.RichTextBox();
@@ -120,10 +121,7 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lblPhoto3 = new System.Windows.Forms.LinkLabel();
             this.lblPhoto2 = new System.Windows.Forms.LinkLabel();
-            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
-            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
             this.lblPhoto1 = new System.Windows.Forms.LinkLabel();
-            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
             this.txtMAC1 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.lblEtatMatriel = new System.Windows.Forms.LinkLabel();
@@ -140,7 +138,6 @@
             this.label8 = new System.Windows.Forms.Label();
             this.lblAddMarque = new System.Windows.Forms.LinkLabel();
             this.label9 = new System.Windows.Forms.Label();
-            this.cboGuarantie = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtDateAcquisition = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
@@ -156,8 +153,27 @@
             this.txtId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pbQRCode = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.lblAddIAdapt = new System.Windows.Forms.LinkLabel();
+            this.lblAddPAdapt = new System.Windows.Forms.LinkLabel();
+            this.lblAddUAdapt = new System.Windows.Forms.LinkLabel();
+            this.lblAddVGA = new System.Windows.Forms.LinkLabel();
+            this.lblAddHDMI = new System.Windows.Forms.LinkLabel();
+            this.lblAddUBatterie = new System.Windows.Forms.LinkLabel();
+            this.lblAddUSB2 = new System.Windows.Forms.LinkLabel();
+            this.lblAddScreen = new System.Windows.Forms.LinkLabel();
+            this.lblAddUSB3 = new System.Windows.Forms.LinkLabel();
+            this.cboTailleEcran = new System.Windows.Forms.ComboBox();
+            this.lblAddNbrHDD = new System.Windows.Forms.LinkLabel();
+            this.lblAddCapacityHDD = new System.Windows.Forms.LinkLabel();
+            this.lblAddTypeHDD = new System.Windows.Forms.LinkLabel();
+            this.lblAddCorProcessor = new System.Windows.Forms.LinkLabel();
+            this.lblAddProcessor = new System.Windows.Forms.LinkLabel();
+            this.lblAddRAM = new System.Windows.Forms.LinkLabel();
+            this.cboProcesseur = new System.Windows.Forms.ComboBox();
+            this.cboRAM = new System.Windows.Forms.ComboBox();
             this.label14 = new System.Windows.Forms.Label();
             this.txtNumeroCle = new System.Windows.Forms.TextBox();
             this.cboTensionAdap = new System.Windows.Forms.ComboBox();
@@ -196,38 +212,22 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.cboRAM = new System.Windows.Forms.ComboBox();
-            this.cboProcesseur = new System.Windows.Forms.ComboBox();
-            this.lblAddRAM = new System.Windows.Forms.LinkLabel();
-            this.lblAddProcessor = new System.Windows.Forms.LinkLabel();
-            this.lblAddTypeHDD = new System.Windows.Forms.LinkLabel();
-            this.lblAddCorProcessor = new System.Windows.Forms.LinkLabel();
-            this.lblAddNbrHDD = new System.Windows.Forms.LinkLabel();
-            this.lblAddCapacityHDD = new System.Windows.Forms.LinkLabel();
-            this.cboTailleEcran = new System.Windows.Forms.ComboBox();
-            this.lblAddUSB2 = new System.Windows.Forms.LinkLabel();
-            this.lblAddScreen = new System.Windows.Forms.LinkLabel();
-            this.lblAddUSB3 = new System.Windows.Forms.LinkLabel();
-            this.lblAddIAdapt = new System.Windows.Forms.LinkLabel();
-            this.lblAddPAdapt = new System.Windows.Forms.LinkLabel();
-            this.lblAddUAdapt = new System.Windows.Forms.LinkLabel();
-            this.lblAddVGA = new System.Windows.Forms.LinkLabel();
-            this.lblAddHDMI = new System.Windows.Forms.LinkLabel();
-            this.lblAddUBatterie = new System.Windows.Forms.LinkLabel();
-            this.lblAddGuaratie = new System.Windows.Forms.LinkLabel();
-            this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label23 = new System.Windows.Forms.Label();
+            this.cboGarantie = new System.Windows.Forms.ComboBox();
+            this.pbQRCode = new System.Windows.Forms.PictureBox();
+            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
+            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
+            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).BeginInit();
-            this.groupBox4.SuspendLayout();
-            this.groupBox6.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv
@@ -309,14 +309,14 @@
             this.colNombre_antenne,
             this.colId_netette,
             this.colCompatible_wifi});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgv.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.dgv.Location = new System.Drawing.Point(3, 19);
             this.dgv.MultiSelect = false;
@@ -325,6 +325,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(1185, 204);
             this.dgv.TabIndex = 200;
+            this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
             // 
             // colId
@@ -821,6 +822,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cboGarantie);
             this.groupBox2.Controls.Add(this.lblAddGuaratie);
             this.groupBox2.Controls.Add(this.cboMarque);
             this.groupBox2.Controls.Add(this.txtDateModifie);
@@ -853,7 +855,6 @@
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.lblAddMarque);
             this.groupBox2.Controls.Add(this.label9);
-            this.groupBox2.Controls.Add(this.cboGuarantie);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.txtDateAcquisition);
             this.groupBox2.Controls.Add(this.label6);
@@ -874,6 +875,18 @@
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             // 
+            // lblAddGuaratie
+            // 
+            this.lblAddGuaratie.AutoSize = true;
+            this.lblAddGuaratie.Location = new System.Drawing.Point(214, 165);
+            this.lblAddGuaratie.Name = "lblAddGuaratie";
+            this.lblAddGuaratie.Size = new System.Drawing.Size(29, 13);
+            this.lblAddGuaratie.TabIndex = 6;
+            this.lblAddGuaratie.TabStop = true;
+            this.lblAddGuaratie.Text = "New";
+            this.lblAddGuaratie.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddGuaratie.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddGuaratie_LinkClicked);
+            // 
             // cboMarque
             // 
             this.cboMarque.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
@@ -883,7 +896,7 @@
             this.cboMarque.Location = new System.Drawing.Point(101, 185);
             this.cboMarque.Name = "cboMarque";
             this.cboMarque.Size = new System.Drawing.Size(109, 21);
-            this.cboMarque.TabIndex = 6;
+            this.cboMarque.TabIndex = 7;
             this.cboMarque.DropDown += new System.EventHandler(this.cboMarque_DropDown);
             // 
             // txtDateModifie
@@ -893,6 +906,7 @@
             this.txtDateModifie.ReadOnly = true;
             this.txtDateModifie.Size = new System.Drawing.Size(109, 20);
             this.txtDateModifie.TabIndex = 156;
+            this.txtDateModifie.TabStop = false;
             // 
             // txtQRCode
             // 
@@ -901,6 +915,7 @@
             this.txtQRCode.ReadOnly = true;
             this.txtQRCode.Size = new System.Drawing.Size(109, 22);
             this.txtQRCode.TabIndex = 152;
+            this.txtQRCode.TabStop = false;
             this.txtQRCode.Text = "";
             // 
             // label17
@@ -919,6 +934,7 @@
             this.txtModifieBy.ReadOnly = true;
             this.txtModifieBy.Size = new System.Drawing.Size(109, 20);
             this.txtModifieBy.TabIndex = 155;
+            this.txtModifieBy.TabStop = false;
             // 
             // label18
             // 
@@ -936,6 +952,7 @@
             this.txtDateCreate.ReadOnly = true;
             this.txtDateCreate.Size = new System.Drawing.Size(109, 20);
             this.txtDateCreate.TabIndex = 154;
+            this.txtDateCreate.TabStop = false;
             // 
             // label19
             // 
@@ -953,6 +970,7 @@
             this.txtCreateBy.ReadOnly = true;
             this.txtCreateBy.Size = new System.Drawing.Size(109, 20);
             this.txtCreateBy.TabIndex = 153;
+            this.txtCreateBy.TabStop = false;
             // 
             // label20
             // 
@@ -969,7 +987,7 @@
             this.txtCommentaire.Multiline = true;
             this.txtCommentaire.Name = "txtCommentaire";
             this.txtCommentaire.Size = new System.Drawing.Size(109, 73);
-            this.txtCommentaire.TabIndex = 18;
+            this.txtCommentaire.TabIndex = 19;
             // 
             // label15
             // 
@@ -985,7 +1003,7 @@
             this.txtMAC2.Location = new System.Drawing.Point(339, 37);
             this.txtMAC2.Name = "txtMAC2";
             this.txtMAC2.Size = new System.Drawing.Size(109, 20);
-            this.txtMAC2.TabIndex = 17;
+            this.txtMAC2.TabIndex = 18;
             // 
             // label16
             // 
@@ -1018,7 +1036,7 @@
             this.lblPhoto3.Location = new System.Drawing.Point(305, 152);
             this.lblPhoto3.Name = "lblPhoto3";
             this.lblPhoto3.Size = new System.Drawing.Size(80, 13);
-            this.lblPhoto3.TabIndex = 44;
+            this.lblPhoto3.TabIndex = 59;
             this.lblPhoto3.TabStop = true;
             this.lblPhoto3.Text = "Charger photo3";
             this.lblPhoto3.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
@@ -1031,31 +1049,11 @@
             this.lblPhoto2.Location = new System.Drawing.Point(168, 153);
             this.lblPhoto2.Name = "lblPhoto2";
             this.lblPhoto2.Size = new System.Drawing.Size(80, 13);
-            this.lblPhoto2.TabIndex = 43;
+            this.lblPhoto2.TabIndex = 58;
             this.lblPhoto2.TabStop = true;
             this.lblPhoto2.Text = "Charger photo2";
             this.lblPhoto2.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.lblPhoto2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblPhoto2_LinkClicked);
-            // 
-            // pbPhoto3
-            // 
-            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto3.Location = new System.Drawing.Point(278, 20);
-            this.pbPhoto3.Name = "pbPhoto3";
-            this.pbPhoto3.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto3.TabIndex = 44;
-            this.pbPhoto3.TabStop = false;
-            // 
-            // pbPhoto2
-            // 
-            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto2.Location = new System.Drawing.Point(142, 20);
-            this.pbPhoto2.Name = "pbPhoto2";
-            this.pbPhoto2.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto2.TabIndex = 43;
-            this.pbPhoto2.TabStop = false;
             // 
             // lblPhoto1
             // 
@@ -1064,28 +1062,18 @@
             this.lblPhoto1.Location = new System.Drawing.Point(34, 153);
             this.lblPhoto1.Name = "lblPhoto1";
             this.lblPhoto1.Size = new System.Drawing.Size(80, 13);
-            this.lblPhoto1.TabIndex = 42;
+            this.lblPhoto1.TabIndex = 57;
             this.lblPhoto1.TabStop = true;
             this.lblPhoto1.Text = "Charger photo1";
             this.lblPhoto1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.lblPhoto1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblPhoto1_LinkClicked);
-            // 
-            // pbPhoto1
-            // 
-            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto1.Location = new System.Drawing.Point(7, 20);
-            this.pbPhoto1.Name = "pbPhoto1";
-            this.pbPhoto1.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto1.TabIndex = 2;
-            this.pbPhoto1.TabStop = false;
             // 
             // txtMAC1
             // 
             this.txtMAC1.Location = new System.Drawing.Point(339, 13);
             this.txtMAC1.Name = "txtMAC1";
             this.txtMAC1.Size = new System.Drawing.Size(109, 20);
-            this.txtMAC1.TabIndex = 16;
+            this.txtMAC1.TabIndex = 17;
             // 
             // label12
             // 
@@ -1102,7 +1090,7 @@
             this.lblEtatMatriel.Location = new System.Drawing.Point(213, 288);
             this.lblEtatMatriel.Name = "lblEtatMatriel";
             this.lblEtatMatriel.Size = new System.Drawing.Size(29, 13);
-            this.lblEtatMatriel.TabIndex = 15;
+            this.lblEtatMatriel.TabIndex = 16;
             this.lblEtatMatriel.TabStop = true;
             this.lblEtatMatriel.Text = "New";
             this.lblEtatMatriel.VisitedLinkColor = System.Drawing.Color.Blue;
@@ -1115,7 +1103,7 @@
             this.cboEtat.Location = new System.Drawing.Point(101, 285);
             this.cboEtat.Name = "cboEtat";
             this.cboEtat.Size = new System.Drawing.Size(109, 21);
-            this.cboEtat.TabIndex = 14;
+            this.cboEtat.TabIndex = 15;
             this.cboEtat.DropDown += new System.EventHandler(this.cboEtat_DropDown);
             // 
             // label13
@@ -1133,7 +1121,7 @@
             this.lblAddPoids.Location = new System.Drawing.Point(213, 263);
             this.lblAddPoids.Name = "lblAddPoids";
             this.lblAddPoids.Size = new System.Drawing.Size(29, 13);
-            this.lblAddPoids.TabIndex = 13;
+            this.lblAddPoids.TabIndex = 14;
             this.lblAddPoids.TabStop = true;
             this.lblAddPoids.Text = "New";
             this.lblAddPoids.VisitedLinkColor = System.Drawing.Color.Blue;
@@ -1146,7 +1134,7 @@
             this.cboPoids.Location = new System.Drawing.Point(101, 260);
             this.cboPoids.Name = "cboPoids";
             this.cboPoids.Size = new System.Drawing.Size(109, 21);
-            this.cboPoids.TabIndex = 12;
+            this.cboPoids.TabIndex = 13;
             this.cboPoids.DropDown += new System.EventHandler(this.cboPoids_DropDown);
             // 
             // label10
@@ -1164,7 +1152,7 @@
             this.lblAddCouleur.Location = new System.Drawing.Point(213, 239);
             this.lblAddCouleur.Name = "lblAddCouleur";
             this.lblAddCouleur.Size = new System.Drawing.Size(29, 13);
-            this.lblAddCouleur.TabIndex = 11;
+            this.lblAddCouleur.TabIndex = 12;
             this.lblAddCouleur.TabStop = true;
             this.lblAddCouleur.Text = "New";
             this.lblAddCouleur.VisitedLinkColor = System.Drawing.Color.Blue;
@@ -1178,7 +1166,7 @@
             this.cboCouleur.Location = new System.Drawing.Point(101, 235);
             this.cboCouleur.Name = "cboCouleur";
             this.cboCouleur.Size = new System.Drawing.Size(109, 21);
-            this.cboCouleur.TabIndex = 10;
+            this.cboCouleur.TabIndex = 11;
             this.cboCouleur.DropDown += new System.EventHandler(this.cboCouleur_DropDown);
             // 
             // label11
@@ -1196,7 +1184,7 @@
             this.lblAddModele.Location = new System.Drawing.Point(213, 213);
             this.lblAddModele.Name = "lblAddModele";
             this.lblAddModele.Size = new System.Drawing.Size(29, 13);
-            this.lblAddModele.TabIndex = 9;
+            this.lblAddModele.TabIndex = 10;
             this.lblAddModele.TabStop = true;
             this.lblAddModele.Text = "New";
             this.lblAddModele.VisitedLinkColor = System.Drawing.Color.Blue;
@@ -1211,7 +1199,7 @@
             this.cboModele.Location = new System.Drawing.Point(101, 210);
             this.cboModele.Name = "cboModele";
             this.cboModele.Size = new System.Drawing.Size(109, 21);
-            this.cboModele.TabIndex = 8;
+            this.cboModele.TabIndex = 9;
             this.cboModele.DropDown += new System.EventHandler(this.cboModele_DropDown);
             // 
             // label8
@@ -1229,7 +1217,7 @@
             this.lblAddMarque.Location = new System.Drawing.Point(213, 188);
             this.lblAddMarque.Name = "lblAddMarque";
             this.lblAddMarque.Size = new System.Drawing.Size(29, 13);
-            this.lblAddMarque.TabIndex = 7;
+            this.lblAddMarque.TabIndex = 8;
             this.lblAddMarque.TabStop = true;
             this.lblAddMarque.Text = "New";
             this.lblAddMarque.VisitedLinkColor = System.Drawing.Color.Blue;
@@ -1244,21 +1232,14 @@
             this.label9.TabIndex = 19;
             this.label9.Text = "Marque : ";
             // 
-            // cboGuarantie
-            // 
-            this.cboGuarantie.Location = new System.Drawing.Point(101, 161);
-            this.cboGuarantie.Name = "cboGuarantie";
-            this.cboGuarantie.Size = new System.Drawing.Size(109, 20);
-            this.cboGuarantie.TabIndex = 5;
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 164);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(102, 13);
+            this.label7.Size = new System.Drawing.Size(96, 13);
             this.label7.TabIndex = 17;
-            this.label7.Text = "Guarantie (Année) : ";
+            this.label7.Text = "Garantie (Année) : ";
             // 
             // txtDateAcquisition
             // 
@@ -1325,6 +1306,7 @@
             this.txtIdentidiant.ReadOnly = true;
             this.txtIdentidiant.Size = new System.Drawing.Size(109, 20);
             this.txtIdentidiant.TabIndex = 151;
+            this.txtIdentidiant.TabStop = false;
             // 
             // lblAddCategorieMat
             // 
@@ -1375,6 +1357,7 @@
             this.txtId.ReadOnly = true;
             this.txtId.Size = new System.Drawing.Size(109, 20);
             this.txtId.TabIndex = 150;
+            this.txtId.TabStop = false;
             // 
             // label1
             // 
@@ -1394,15 +1377,6 @@
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "QR Code";
-            // 
-            // pbQRCode
-            // 
-            this.pbQRCode.Location = new System.Drawing.Point(6, 14);
-            this.pbQRCode.Name = "pbQRCode";
-            this.pbQRCode.Size = new System.Drawing.Size(112, 112);
-            this.pbQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbQRCode.TabIndex = 2;
-            this.pbQRCode.TabStop = false;
             // 
             // groupBox4
             // 
@@ -1470,6 +1444,241 @@
             this.groupBox4.TabIndex = 4;
             this.groupBox4.TabStop = false;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.label23);
+            this.groupBox6.ForeColor = System.Drawing.Color.Crimson;
+            this.groupBox6.Location = new System.Drawing.Point(255, 178);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(115, 131);
+            this.groupBox6.TabIndex = 129;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "Duréé restante avant fin garantie : ";
+            // 
+            // label23
+            // 
+            this.label23.BackColor = System.Drawing.Color.White;
+            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label23.ForeColor = System.Drawing.Color.OrangeRed;
+            this.label23.Location = new System.Drawing.Point(4, 36);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(105, 90);
+            this.label23.TabIndex = 130;
+            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblAddIAdapt
+            // 
+            this.lblAddIAdapt.AutoSize = true;
+            this.lblAddIAdapt.Location = new System.Drawing.Point(477, 141);
+            this.lblAddIAdapt.Name = "lblAddIAdapt";
+            this.lblAddIAdapt.Size = new System.Drawing.Size(29, 13);
+            this.lblAddIAdapt.TabIndex = 55;
+            this.lblAddIAdapt.TabStop = true;
+            this.lblAddIAdapt.Text = "New";
+            this.lblAddIAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddIAdapt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddIAdapt_LinkClicked);
+            // 
+            // lblAddPAdapt
+            // 
+            this.lblAddPAdapt.AutoSize = true;
+            this.lblAddPAdapt.Location = new System.Drawing.Point(478, 113);
+            this.lblAddPAdapt.Name = "lblAddPAdapt";
+            this.lblAddPAdapt.Size = new System.Drawing.Size(29, 13);
+            this.lblAddPAdapt.TabIndex = 53;
+            this.lblAddPAdapt.TabStop = true;
+            this.lblAddPAdapt.Text = "New";
+            this.lblAddPAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddPAdapt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddPAdapt_LinkClicked);
+            // 
+            // lblAddUAdapt
+            // 
+            this.lblAddUAdapt.AutoSize = true;
+            this.lblAddUAdapt.Location = new System.Drawing.Point(477, 89);
+            this.lblAddUAdapt.Name = "lblAddUAdapt";
+            this.lblAddUAdapt.Size = new System.Drawing.Size(29, 13);
+            this.lblAddUAdapt.TabIndex = 51;
+            this.lblAddUAdapt.TabStop = true;
+            this.lblAddUAdapt.Text = "New";
+            this.lblAddUAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddUAdapt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddUAdapt_LinkClicked);
+            // 
+            // lblAddVGA
+            // 
+            this.lblAddVGA.AutoSize = true;
+            this.lblAddVGA.Location = new System.Drawing.Point(477, 40);
+            this.lblAddVGA.Name = "lblAddVGA";
+            this.lblAddVGA.Size = new System.Drawing.Size(29, 13);
+            this.lblAddVGA.TabIndex = 47;
+            this.lblAddVGA.TabStop = true;
+            this.lblAddVGA.Text = "New";
+            this.lblAddVGA.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddVGA.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddVGA_LinkClicked);
+            // 
+            // lblAddHDMI
+            // 
+            this.lblAddHDMI.AutoSize = true;
+            this.lblAddHDMI.Location = new System.Drawing.Point(477, 15);
+            this.lblAddHDMI.Name = "lblAddHDMI";
+            this.lblAddHDMI.Size = new System.Drawing.Size(29, 13);
+            this.lblAddHDMI.TabIndex = 45;
+            this.lblAddHDMI.TabStop = true;
+            this.lblAddHDMI.Text = "New";
+            this.lblAddHDMI.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddHDMI.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddHDMI_LinkClicked);
+            // 
+            // lblAddUBatterie
+            // 
+            this.lblAddUBatterie.AutoSize = true;
+            this.lblAddUBatterie.Location = new System.Drawing.Point(477, 64);
+            this.lblAddUBatterie.Name = "lblAddUBatterie";
+            this.lblAddUBatterie.Size = new System.Drawing.Size(29, 13);
+            this.lblAddUBatterie.TabIndex = 49;
+            this.lblAddUBatterie.TabStop = true;
+            this.lblAddUBatterie.Text = "New";
+            this.lblAddUBatterie.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddUBatterie.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddUBatterie_LinkClicked);
+            // 
+            // lblAddUSB2
+            // 
+            this.lblAddUSB2.AutoSize = true;
+            this.lblAddUSB2.Location = new System.Drawing.Point(221, 261);
+            this.lblAddUSB2.Name = "lblAddUSB2";
+            this.lblAddUSB2.Size = new System.Drawing.Size(29, 13);
+            this.lblAddUSB2.TabIndex = 41;
+            this.lblAddUSB2.TabStop = true;
+            this.lblAddUSB2.Text = "New";
+            this.lblAddUSB2.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddUSB2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddUSB2_LinkClicked);
+            // 
+            // lblAddScreen
+            // 
+            this.lblAddScreen.AutoSize = true;
+            this.lblAddScreen.Location = new System.Drawing.Point(221, 236);
+            this.lblAddScreen.Name = "lblAddScreen";
+            this.lblAddScreen.Size = new System.Drawing.Size(29, 13);
+            this.lblAddScreen.TabIndex = 39;
+            this.lblAddScreen.TabStop = true;
+            this.lblAddScreen.Text = "New";
+            this.lblAddScreen.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddScreen.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddScreen_LinkClicked);
+            // 
+            // lblAddUSB3
+            // 
+            this.lblAddUSB3.AutoSize = true;
+            this.lblAddUSB3.Location = new System.Drawing.Point(221, 287);
+            this.lblAddUSB3.Name = "lblAddUSB3";
+            this.lblAddUSB3.Size = new System.Drawing.Size(29, 13);
+            this.lblAddUSB3.TabIndex = 43;
+            this.lblAddUSB3.TabStop = true;
+            this.lblAddUSB3.Text = "New";
+            this.lblAddUSB3.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddUSB3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddUSB3_LinkClicked);
+            // 
+            // cboTailleEcran
+            // 
+            this.cboTailleEcran.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboTailleEcran.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboTailleEcran.FormattingEnabled = true;
+            this.cboTailleEcran.Location = new System.Drawing.Point(109, 233);
+            this.cboTailleEcran.Name = "cboTailleEcran";
+            this.cboTailleEcran.Size = new System.Drawing.Size(109, 21);
+            this.cboTailleEcran.TabIndex = 38;
+            this.cboTailleEcran.DropDown += new System.EventHandler(this.cboTailleEcran_DropDown);
+            // 
+            // lblAddNbrHDD
+            // 
+            this.lblAddNbrHDD.AutoSize = true;
+            this.lblAddNbrHDD.Location = new System.Drawing.Point(222, 212);
+            this.lblAddNbrHDD.Name = "lblAddNbrHDD";
+            this.lblAddNbrHDD.Size = new System.Drawing.Size(29, 13);
+            this.lblAddNbrHDD.TabIndex = 37;
+            this.lblAddNbrHDD.TabStop = true;
+            this.lblAddNbrHDD.Text = "New";
+            this.lblAddNbrHDD.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddNbrHDD.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddNbrHDD_LinkClicked);
+            // 
+            // lblAddCapacityHDD
+            // 
+            this.lblAddCapacityHDD.AutoSize = true;
+            this.lblAddCapacityHDD.Location = new System.Drawing.Point(222, 187);
+            this.lblAddCapacityHDD.Name = "lblAddCapacityHDD";
+            this.lblAddCapacityHDD.Size = new System.Drawing.Size(29, 13);
+            this.lblAddCapacityHDD.TabIndex = 35;
+            this.lblAddCapacityHDD.TabStop = true;
+            this.lblAddCapacityHDD.Text = "New";
+            this.lblAddCapacityHDD.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddCapacityHDD.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddCapacityHDD_LinkClicked);
+            // 
+            // lblAddTypeHDD
+            // 
+            this.lblAddTypeHDD.AutoSize = true;
+            this.lblAddTypeHDD.Location = new System.Drawing.Point(222, 164);
+            this.lblAddTypeHDD.Name = "lblAddTypeHDD";
+            this.lblAddTypeHDD.Size = new System.Drawing.Size(29, 13);
+            this.lblAddTypeHDD.TabIndex = 33;
+            this.lblAddTypeHDD.TabStop = true;
+            this.lblAddTypeHDD.Text = "New";
+            this.lblAddTypeHDD.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddTypeHDD.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddTypeHDD_LinkClicked);
+            // 
+            // lblAddCorProcessor
+            // 
+            this.lblAddCorProcessor.AutoSize = true;
+            this.lblAddCorProcessor.Location = new System.Drawing.Point(221, 139);
+            this.lblAddCorProcessor.Name = "lblAddCorProcessor";
+            this.lblAddCorProcessor.Size = new System.Drawing.Size(29, 13);
+            this.lblAddCorProcessor.TabIndex = 31;
+            this.lblAddCorProcessor.TabStop = true;
+            this.lblAddCorProcessor.Text = "New";
+            this.lblAddCorProcessor.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddCorProcessor.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddCorProcessor_LinkClicked);
+            // 
+            // lblAddProcessor
+            // 
+            this.lblAddProcessor.AutoSize = true;
+            this.lblAddProcessor.Location = new System.Drawing.Point(222, 112);
+            this.lblAddProcessor.Name = "lblAddProcessor";
+            this.lblAddProcessor.Size = new System.Drawing.Size(29, 13);
+            this.lblAddProcessor.TabIndex = 29;
+            this.lblAddProcessor.TabStop = true;
+            this.lblAddProcessor.Text = "New";
+            this.lblAddProcessor.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddProcessor.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddProcessor_LinkClicked);
+            // 
+            // lblAddRAM
+            // 
+            this.lblAddRAM.AutoSize = true;
+            this.lblAddRAM.Location = new System.Drawing.Point(221, 88);
+            this.lblAddRAM.Name = "lblAddRAM";
+            this.lblAddRAM.Size = new System.Drawing.Size(29, 13);
+            this.lblAddRAM.TabIndex = 27;
+            this.lblAddRAM.TabStop = true;
+            this.lblAddRAM.Text = "New";
+            this.lblAddRAM.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddRAM.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddRAM_LinkClicked);
+            // 
+            // cboProcesseur
+            // 
+            this.cboProcesseur.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboProcesseur.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboProcesseur.FormattingEnabled = true;
+            this.cboProcesseur.Location = new System.Drawing.Point(109, 109);
+            this.cboProcesseur.Name = "cboProcesseur";
+            this.cboProcesseur.Size = new System.Drawing.Size(109, 21);
+            this.cboProcesseur.TabIndex = 28;
+            this.cboProcesseur.DropDown += new System.EventHandler(this.cboProcesseur_DropDown);
+            // 
+            // cboRAM
+            // 
+            this.cboRAM.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboRAM.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboRAM.FormattingEnabled = true;
+            this.cboRAM.Location = new System.Drawing.Point(109, 85);
+            this.cboRAM.Name = "cboRAM";
+            this.cboRAM.Size = new System.Drawing.Size(109, 21);
+            this.cboRAM.TabIndex = 26;
+            this.cboRAM.DropDown += new System.EventHandler(this.cboRAM_DropDown);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -1484,7 +1693,7 @@
             this.txtNumeroCle.Location = new System.Drawing.Point(366, 159);
             this.txtNumeroCle.Name = "txtNumeroCle";
             this.txtNumeroCle.Size = new System.Drawing.Size(109, 20);
-            this.txtNumeroCle.TabIndex = 41;
+            this.txtNumeroCle.TabIndex = 56;
             // 
             // cboTensionAdap
             // 
@@ -1494,7 +1703,7 @@
             this.cboTensionAdap.Location = new System.Drawing.Point(366, 85);
             this.cboTensionAdap.Name = "cboTensionAdap";
             this.cboTensionAdap.Size = new System.Drawing.Size(109, 21);
-            this.cboTensionAdap.TabIndex = 38;
+            this.cboTensionAdap.TabIndex = 50;
             this.cboTensionAdap.DropDown += new System.EventHandler(this.cboTensionAdap_DropDown);
             // 
             // cboPuissanceAdap
@@ -1505,7 +1714,7 @@
             this.cboPuissanceAdap.Location = new System.Drawing.Point(366, 109);
             this.cboPuissanceAdap.Name = "cboPuissanceAdap";
             this.cboPuissanceAdap.Size = new System.Drawing.Size(109, 21);
-            this.cboPuissanceAdap.TabIndex = 39;
+            this.cboPuissanceAdap.TabIndex = 52;
             this.cboPuissanceAdap.DropDown += new System.EventHandler(this.cboPuissanceAdap_DropDown);
             // 
             // cboNbrHDMI
@@ -1516,7 +1725,7 @@
             this.cboNbrHDMI.Location = new System.Drawing.Point(366, 11);
             this.cboNbrHDMI.Name = "cboNbrHDMI";
             this.cboNbrHDMI.Size = new System.Drawing.Size(109, 21);
-            this.cboNbrHDMI.TabIndex = 35;
+            this.cboNbrHDMI.TabIndex = 44;
             this.cboNbrHDMI.DropDown += new System.EventHandler(this.cboNbrHDMI_DropDown);
             // 
             // cboIntensiteAdap
@@ -1527,7 +1736,7 @@
             this.cboIntensiteAdap.Location = new System.Drawing.Point(366, 134);
             this.cboIntensiteAdap.Name = "cboIntensiteAdap";
             this.cboIntensiteAdap.Size = new System.Drawing.Size(109, 21);
-            this.cboIntensiteAdap.TabIndex = 40;
+            this.cboIntensiteAdap.TabIndex = 54;
             this.cboIntensiteAdap.DropDown += new System.EventHandler(this.cboIntensiteAdap_DropDown);
             // 
             // cboNbrVGA
@@ -1538,7 +1747,7 @@
             this.cboNbrVGA.Location = new System.Drawing.Point(366, 36);
             this.cboNbrVGA.Name = "cboNbrVGA";
             this.cboNbrVGA.Size = new System.Drawing.Size(109, 21);
-            this.cboNbrVGA.TabIndex = 36;
+            this.cboNbrVGA.TabIndex = 46;
             this.cboNbrVGA.DropDown += new System.EventHandler(this.cboNbrVGA_DropDown);
             // 
             // label46
@@ -1585,7 +1794,7 @@
             this.cboTensionBatt.Location = new System.Drawing.Point(366, 60);
             this.cboTensionBatt.Name = "cboTensionBatt";
             this.cboTensionBatt.Size = new System.Drawing.Size(109, 21);
-            this.cboTensionBatt.TabIndex = 37;
+            this.cboTensionBatt.TabIndex = 48;
             this.cboTensionBatt.DropDown += new System.EventHandler(this.cboTensionBatt_DropDown);
             // 
             // label50
@@ -1623,7 +1832,7 @@
             this.cboTypeHDD.Location = new System.Drawing.Point(109, 159);
             this.cboTypeHDD.Name = "cboTypeHDD";
             this.cboTypeHDD.Size = new System.Drawing.Size(109, 21);
-            this.cboTypeHDD.TabIndex = 29;
+            this.cboTypeHDD.TabIndex = 32;
             this.cboTypeHDD.DropDown += new System.EventHandler(this.cboNbrHDD_DropDown);
             // 
             // cboNbrCoeurProcesseur
@@ -1634,7 +1843,7 @@
             this.cboNbrCoeurProcesseur.Location = new System.Drawing.Point(109, 134);
             this.cboNbrCoeurProcesseur.Name = "cboNbrCoeurProcesseur";
             this.cboNbrCoeurProcesseur.Size = new System.Drawing.Size(109, 21);
-            this.cboNbrCoeurProcesseur.TabIndex = 28;
+            this.cboNbrCoeurProcesseur.TabIndex = 30;
             this.cboNbrCoeurProcesseur.DropDown += new System.EventHandler(this.cboNbrCoeurProcesseur_DropDown);
             // 
             // lblAddTypeClavier
@@ -1689,7 +1898,7 @@
             this.cboUSB3.Location = new System.Drawing.Point(109, 283);
             this.cboUSB3.Name = "cboUSB3";
             this.cboUSB3.Size = new System.Drawing.Size(109, 21);
-            this.cboUSB3.TabIndex = 34;
+            this.cboUSB3.TabIndex = 42;
             this.cboUSB3.DropDown += new System.EventHandler(this.cboUSB3_DropDown);
             // 
             // label21
@@ -1709,7 +1918,7 @@
             this.cboUSB2.Location = new System.Drawing.Point(109, 258);
             this.cboUSB2.Name = "cboUSB2";
             this.cboUSB2.Size = new System.Drawing.Size(109, 21);
-            this.cboUSB2.TabIndex = 33;
+            this.cboUSB2.TabIndex = 40;
             this.cboUSB2.DropDown += new System.EventHandler(this.cboUSB2_DropDown);
             // 
             // label22
@@ -1729,7 +1938,7 @@
             this.cboNbrHDD.Location = new System.Drawing.Point(109, 208);
             this.cboNbrHDD.Name = "cboNbrHDD";
             this.cboNbrHDD.Size = new System.Drawing.Size(109, 21);
-            this.cboNbrHDD.TabIndex = 31;
+            this.cboNbrHDD.TabIndex = 36;
             this.cboNbrHDD.DropDown += new System.EventHandler(this.cboIndicePC_DropDown);
             // 
             // label24
@@ -1749,7 +1958,7 @@
             this.cboCapaciteHDD.Location = new System.Drawing.Point(109, 184);
             this.cboCapaciteHDD.Name = "cboCapaciteHDD";
             this.cboCapaciteHDD.Size = new System.Drawing.Size(109, 21);
-            this.cboCapaciteHDD.TabIndex = 30;
+            this.cboCapaciteHDD.TabIndex = 34;
             this.cboCapaciteHDD.DropDown += new System.EventHandler(this.cboCapaciteHDD_DropDown);
             // 
             // label25
@@ -1847,233 +2056,56 @@
             this.label32.TabIndex = 34;
             this.label32.Text = "Type ordinateur :";
             // 
-            // cboRAM
+            // cboGarantie
             // 
-            this.cboRAM.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboRAM.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboRAM.FormattingEnabled = true;
-            this.cboRAM.Location = new System.Drawing.Point(109, 85);
-            this.cboRAM.Name = "cboRAM";
-            this.cboRAM.Size = new System.Drawing.Size(109, 21);
-            this.cboRAM.TabIndex = 26;
+            this.cboGarantie.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboGarantie.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboGarantie.DropDownWidth = 130;
+            this.cboGarantie.FormattingEnabled = true;
+            this.cboGarantie.Location = new System.Drawing.Point(101, 160);
+            this.cboGarantie.Name = "cboGarantie";
+            this.cboGarantie.Size = new System.Drawing.Size(109, 21);
+            this.cboGarantie.TabIndex = 5;
+            this.cboGarantie.DropDown += new System.EventHandler(this.cboGarantie_DropDown);
             // 
-            // cboProcesseur
+            // pbQRCode
             // 
-            this.cboProcesseur.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboProcesseur.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboProcesseur.FormattingEnabled = true;
-            this.cboProcesseur.Location = new System.Drawing.Point(109, 109);
-            this.cboProcesseur.Name = "cboProcesseur";
-            this.cboProcesseur.Size = new System.Drawing.Size(109, 21);
-            this.cboProcesseur.TabIndex = 27;
+            this.pbQRCode.Location = new System.Drawing.Point(6, 14);
+            this.pbQRCode.Name = "pbQRCode";
+            this.pbQRCode.Size = new System.Drawing.Size(112, 112);
+            this.pbQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbQRCode.TabIndex = 2;
+            this.pbQRCode.TabStop = false;
             // 
-            // lblAddRAM
+            // pbPhoto3
             // 
-            this.lblAddRAM.AutoSize = true;
-            this.lblAddRAM.Location = new System.Drawing.Point(221, 88);
-            this.lblAddRAM.Name = "lblAddRAM";
-            this.lblAddRAM.Size = new System.Drawing.Size(29, 13);
-            this.lblAddRAM.TabIndex = 114;
-            this.lblAddRAM.TabStop = true;
-            this.lblAddRAM.Text = "New";
-            this.lblAddRAM.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto3.Location = new System.Drawing.Point(278, 20);
+            this.pbPhoto3.Name = "pbPhoto3";
+            this.pbPhoto3.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto3.TabIndex = 44;
+            this.pbPhoto3.TabStop = false;
             // 
-            // lblAddProcessor
+            // pbPhoto2
             // 
-            this.lblAddProcessor.AutoSize = true;
-            this.lblAddProcessor.Location = new System.Drawing.Point(222, 112);
-            this.lblAddProcessor.Name = "lblAddProcessor";
-            this.lblAddProcessor.Size = new System.Drawing.Size(29, 13);
-            this.lblAddProcessor.TabIndex = 115;
-            this.lblAddProcessor.TabStop = true;
-            this.lblAddProcessor.Text = "New";
-            this.lblAddProcessor.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto2.Location = new System.Drawing.Point(142, 20);
+            this.pbPhoto2.Name = "pbPhoto2";
+            this.pbPhoto2.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto2.TabIndex = 43;
+            this.pbPhoto2.TabStop = false;
             // 
-            // lblAddTypeHDD
+            // pbPhoto1
             // 
-            this.lblAddTypeHDD.AutoSize = true;
-            this.lblAddTypeHDD.Location = new System.Drawing.Point(222, 164);
-            this.lblAddTypeHDD.Name = "lblAddTypeHDD";
-            this.lblAddTypeHDD.Size = new System.Drawing.Size(29, 13);
-            this.lblAddTypeHDD.TabIndex = 117;
-            this.lblAddTypeHDD.TabStop = true;
-            this.lblAddTypeHDD.Text = "New";
-            this.lblAddTypeHDD.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddCorProcessor
-            // 
-            this.lblAddCorProcessor.AutoSize = true;
-            this.lblAddCorProcessor.Location = new System.Drawing.Point(221, 139);
-            this.lblAddCorProcessor.Name = "lblAddCorProcessor";
-            this.lblAddCorProcessor.Size = new System.Drawing.Size(29, 13);
-            this.lblAddCorProcessor.TabIndex = 116;
-            this.lblAddCorProcessor.TabStop = true;
-            this.lblAddCorProcessor.Text = "New";
-            this.lblAddCorProcessor.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddNbrHDD
-            // 
-            this.lblAddNbrHDD.AutoSize = true;
-            this.lblAddNbrHDD.Location = new System.Drawing.Point(222, 212);
-            this.lblAddNbrHDD.Name = "lblAddNbrHDD";
-            this.lblAddNbrHDD.Size = new System.Drawing.Size(29, 13);
-            this.lblAddNbrHDD.TabIndex = 119;
-            this.lblAddNbrHDD.TabStop = true;
-            this.lblAddNbrHDD.Text = "New";
-            this.lblAddNbrHDD.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddCapacityHDD
-            // 
-            this.lblAddCapacityHDD.AutoSize = true;
-            this.lblAddCapacityHDD.Location = new System.Drawing.Point(222, 187);
-            this.lblAddCapacityHDD.Name = "lblAddCapacityHDD";
-            this.lblAddCapacityHDD.Size = new System.Drawing.Size(29, 13);
-            this.lblAddCapacityHDD.TabIndex = 118;
-            this.lblAddCapacityHDD.TabStop = true;
-            this.lblAddCapacityHDD.Text = "New";
-            this.lblAddCapacityHDD.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // cboTailleEcran
-            // 
-            this.cboTailleEcran.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboTailleEcran.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboTailleEcran.FormattingEnabled = true;
-            this.cboTailleEcran.Location = new System.Drawing.Point(109, 233);
-            this.cboTailleEcran.Name = "cboTailleEcran";
-            this.cboTailleEcran.Size = new System.Drawing.Size(109, 21);
-            this.cboTailleEcran.TabIndex = 32;
-            // 
-            // lblAddUSB2
-            // 
-            this.lblAddUSB2.AutoSize = true;
-            this.lblAddUSB2.Location = new System.Drawing.Point(221, 261);
-            this.lblAddUSB2.Name = "lblAddUSB2";
-            this.lblAddUSB2.Size = new System.Drawing.Size(29, 13);
-            this.lblAddUSB2.TabIndex = 121;
-            this.lblAddUSB2.TabStop = true;
-            this.lblAddUSB2.Text = "New";
-            this.lblAddUSB2.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddScreen
-            // 
-            this.lblAddScreen.AutoSize = true;
-            this.lblAddScreen.Location = new System.Drawing.Point(221, 236);
-            this.lblAddScreen.Name = "lblAddScreen";
-            this.lblAddScreen.Size = new System.Drawing.Size(29, 13);
-            this.lblAddScreen.TabIndex = 120;
-            this.lblAddScreen.TabStop = true;
-            this.lblAddScreen.Text = "New";
-            this.lblAddScreen.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddUSB3
-            // 
-            this.lblAddUSB3.AutoSize = true;
-            this.lblAddUSB3.Location = new System.Drawing.Point(221, 287);
-            this.lblAddUSB3.Name = "lblAddUSB3";
-            this.lblAddUSB3.Size = new System.Drawing.Size(29, 13);
-            this.lblAddUSB3.TabIndex = 122;
-            this.lblAddUSB3.TabStop = true;
-            this.lblAddUSB3.Text = "New";
-            this.lblAddUSB3.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddIAdapt
-            // 
-            this.lblAddIAdapt.AutoSize = true;
-            this.lblAddIAdapt.Location = new System.Drawing.Point(477, 141);
-            this.lblAddIAdapt.Name = "lblAddIAdapt";
-            this.lblAddIAdapt.Size = new System.Drawing.Size(29, 13);
-            this.lblAddIAdapt.TabIndex = 128;
-            this.lblAddIAdapt.TabStop = true;
-            this.lblAddIAdapt.Text = "New";
-            this.lblAddIAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddPAdapt
-            // 
-            this.lblAddPAdapt.AutoSize = true;
-            this.lblAddPAdapt.Location = new System.Drawing.Point(478, 113);
-            this.lblAddPAdapt.Name = "lblAddPAdapt";
-            this.lblAddPAdapt.Size = new System.Drawing.Size(29, 13);
-            this.lblAddPAdapt.TabIndex = 127;
-            this.lblAddPAdapt.TabStop = true;
-            this.lblAddPAdapt.Text = "New";
-            this.lblAddPAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddUAdapt
-            // 
-            this.lblAddUAdapt.AutoSize = true;
-            this.lblAddUAdapt.Location = new System.Drawing.Point(477, 89);
-            this.lblAddUAdapt.Name = "lblAddUAdapt";
-            this.lblAddUAdapt.Size = new System.Drawing.Size(29, 13);
-            this.lblAddUAdapt.TabIndex = 126;
-            this.lblAddUAdapt.TabStop = true;
-            this.lblAddUAdapt.Text = "New";
-            this.lblAddUAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddVGA
-            // 
-            this.lblAddVGA.AutoSize = true;
-            this.lblAddVGA.Location = new System.Drawing.Point(477, 40);
-            this.lblAddVGA.Name = "lblAddVGA";
-            this.lblAddVGA.Size = new System.Drawing.Size(29, 13);
-            this.lblAddVGA.TabIndex = 124;
-            this.lblAddVGA.TabStop = true;
-            this.lblAddVGA.Text = "New";
-            this.lblAddVGA.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddHDMI
-            // 
-            this.lblAddHDMI.AutoSize = true;
-            this.lblAddHDMI.Location = new System.Drawing.Point(477, 15);
-            this.lblAddHDMI.Name = "lblAddHDMI";
-            this.lblAddHDMI.Size = new System.Drawing.Size(29, 13);
-            this.lblAddHDMI.TabIndex = 123;
-            this.lblAddHDMI.TabStop = true;
-            this.lblAddHDMI.Text = "New";
-            this.lblAddHDMI.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddUBatterie
-            // 
-            this.lblAddUBatterie.AutoSize = true;
-            this.lblAddUBatterie.Location = new System.Drawing.Point(477, 64);
-            this.lblAddUBatterie.Name = "lblAddUBatterie";
-            this.lblAddUBatterie.Size = new System.Drawing.Size(29, 13);
-            this.lblAddUBatterie.TabIndex = 125;
-            this.lblAddUBatterie.TabStop = true;
-            this.lblAddUBatterie.Text = "New";
-            this.lblAddUBatterie.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // lblAddGuaratie
-            // 
-            this.lblAddGuaratie.AutoSize = true;
-            this.lblAddGuaratie.Location = new System.Drawing.Point(214, 165);
-            this.lblAddGuaratie.Name = "lblAddGuaratie";
-            this.lblAddGuaratie.Size = new System.Drawing.Size(29, 13);
-            this.lblAddGuaratie.TabIndex = 157;
-            this.lblAddGuaratie.TabStop = true;
-            this.lblAddGuaratie.Text = "New";
-            this.lblAddGuaratie.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // groupBox6
-            // 
-            this.groupBox6.Controls.Add(this.label23);
-            this.groupBox6.ForeColor = System.Drawing.Color.Crimson;
-            this.groupBox6.Location = new System.Drawing.Point(255, 178);
-            this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(115, 131);
-            this.groupBox6.TabIndex = 129;
-            this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Duréé restante avant fin garantie : ";
-            // 
-            // label23
-            // 
-            this.label23.BackColor = System.Drawing.Color.White;
-            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label23.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label23.Location = new System.Drawing.Point(4, 36);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(105, 90);
-            this.label23.TabIndex = 130;
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto1.Location = new System.Drawing.Point(7, 20);
+            this.pbPhoto1.Name = "pbPhoto1";
+            this.pbPhoto1.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto1.TabIndex = 2;
+            this.pbPhoto1.TabStop = false;
             // 
             // frmOrdinateur
             // 
@@ -2097,14 +2129,14 @@
             this.groupBox2.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).EndInit();
             this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).EndInit();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
             this.groupBox6.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -2144,7 +2176,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.LinkLabel lblAddMarque;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox cboGuarantie;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox txtCommentaire;
         private System.Windows.Forms.Label label15;
@@ -2299,5 +2330,6 @@
         private System.Windows.Forms.LinkLabel lblAddGuaratie;
         private System.Windows.Forms.GroupBox groupBox6;
         private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.ComboBox cboGarantie;
     }
 }

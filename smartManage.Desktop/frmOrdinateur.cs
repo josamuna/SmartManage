@@ -186,7 +186,7 @@ namespace smartManage.Desktop
             SetBindingControls(cboNumCompte, "SelectedValue", materiel, "Id_compte");
             SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
-            SetBindingControls(cboGuarantie, "Text", materiel, "Guarantie");
+            SetBindingControls(cboGarantie, "Text", materiel, "Guarantie");
             SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
             SetBindingControls(cboModele, "SelectedValue", materiel, "Id_modele");
             SetBindingControls(cboCouleur, "SelectedValue", materiel, "Id_couleur");
@@ -233,7 +233,7 @@ namespace smartManage.Desktop
             SetBindingControls(cboNumCompte, "SelectedValue", bdsrc, "Id_compte");
             SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
-            SetBindingControls(cboGuarantie, "Text", bdsrc, "Guarantie");
+            SetBindingControls(cboGarantie, "Text", bdsrc, "Guarantie");
             SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
             SetBindingControls(cboModele, "SelectedValue", bdsrc, "Id_modele");
             SetBindingControls(cboCouleur, "SelectedValue", bdsrc, "Id_couleur");
@@ -275,44 +275,22 @@ namespace smartManage.Desktop
 
         private void frmOrdinateur_Load(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
+                //Must be executed in new thred
                 RefreshData();
 
-                List<ComboBox> lstCombo = new List<ComboBox>();
-                ComboBox[] tbCbo = { cboCatMateriel, cboNumCompte, cboMarque, cboCouleur, cboPoids, cboEtat,
+                List<ComboBox> lstCombo = new List<ComboBox>(){ cboCatMateriel, cboNumCompte, cboGarantie, cboMarque, cboCouleur, cboPoids, cboEtat,
                     cboTypeOrdi, cboTypeClavier, cboTypeOS, cboNbrCoeurProcesseur, cboTypeHDD, cboCapaciteHDD,
                     cboNbrHDD , cboUSB2, cboUSB3, cboNbrHDMI, cboNbrVGA, cboTensionBatt, cboPuissanceAdap,
                     cboTensionAdap, cboIntensiteAdap};
-                lstCombo.Add(cboCatMateriel);
-                lstCombo.Add(cboNumCompte);
-                lstCombo.Add(cboMarque);
-                lstCombo.Add(cboModele);
-                lstCombo.Add(cboCouleur);
-                lstCombo.Add(cboPoids);
-                lstCombo.Add(cboEtat);
-                lstCombo.Add(cboTypeOrdi);
-                lstCombo.Add(cboTypeClavier);
-                lstCombo.Add(cboTypeOS);
-                lstCombo.Add(cboNbrCoeurProcesseur);
-                lstCombo.Add(cboTypeHDD);
-                lstCombo.Add(cboCapaciteHDD);
-                lstCombo.Add(cboNbrHDD);
-                lstCombo.Add(cboUSB2);
-                lstCombo.Add(cboUSB3);
-                lstCombo.Add(cboNbrHDMI);
-                lstCombo.Add(cboNbrVGA);
-                lstCombo.Add(cboTensionBatt);
-                lstCombo.Add(cboPuissanceAdap);
-                lstCombo.Add(cboTensionAdap);
-                lstCombo.Add(cboIntensiteAdap);
 
                 SetSelectedIndexComboBox(lstCombo);
-            //}
-            //catch (Exception)
-            //{
-            //    MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            //}
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void SetSelectedIndexComboBox(List<ComboBox> cbo)
@@ -350,104 +328,38 @@ namespace smartManage.Desktop
             cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
             this.setMembersallcbo(cboTypeOS, "Designation", "Id");
 
-            List<string> lstNbrCoeurProcesseur = new List<string>();
-            lstNbrCoeurProcesseur.Add("1");
-            lstNbrCoeurProcesseur.Add("2");
-            lstNbrCoeurProcesseur.Add("3");
-            lstNbrCoeurProcesseur.Add("4");
-            lstNbrCoeurProcesseur.Add("5");
-            lstNbrCoeurProcesseur.Add("6");
-            lstNbrCoeurProcesseur.Add("7");
-
-            cboNbrCoeurProcesseur.DataSource = lstNbrCoeurProcesseur;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_coeur_processeur", "Nombre_coeur_processeur");
-
-            List<string> lstNbrHDD = new List<string>();
-            lstNbrHDD.Add("1");
-            lstNbrHDD.Add("2");
-            lstNbrHDD.Add("3");
-            cboTypeHDD.DataSource = lstNbrHDD;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_hdd", "Nombre_hdd");
-
-            List<string> lstCapaciteHDD = new List<string>(); 
-            lstCapaciteHDD.Add("38");
-            lstCapaciteHDD.Add("74");
-            lstCapaciteHDD.Add("233");
-            lstCapaciteHDD.Add("300");
-            lstCapaciteHDD.Add("450");
-            lstCapaciteHDD.Add("465");
-            lstCapaciteHDD.Add("500");
-            cboCapaciteHDD.DataSource = lstCapaciteHDD;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Capacite_hdd", "Capacite_hdd");
-
-            List<string> lstIndicePC = new List<string>();
-            lstIndicePC.Add("1");
-            lstIndicePC.Add("3,1");
-            lstIndicePC.Add("3,2");
-            lstIndicePC.Add("3,3");
-            lstIndicePC.Add("4,4");
-            lstIndicePC.Add("4,5");
-            cboNbrHDD.DataSource = lstIndicePC;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Indice_performance", "Indice_performance");
-
-            List<string> lstUSB2 = new List<string>();
-            lstUSB2.Add("0");
-            lstUSB2.Add("1");
-            lstUSB2.Add("2");
-            lstUSB2.Add("3");
-            lstUSB2.Add("4");
-            cboUSB2.DataSource = lstUSB2;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_usb2", "Nombre_usb2");
-
-            List<string> lstUSB3 = new List<string>();
-            lstUSB3.Add("0");
-            lstUSB3.Add("1");
-            lstUSB3.Add("2");
-            lstUSB3.Add("3");
-            cboUSB3.DataSource = lstUSB3;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_usb3", "Nombre_usb3");
-
-            List<string> lstNbrHDMI = new List<string>();
-            lstNbrHDMI.Add("0");
-            lstNbrHDMI.Add("1");
-            lstNbrHDMI.Add("2");
-            lstNbrHDMI.Add("3");
-            cboNbrHDMI.DataSource = lstNbrHDMI;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_hdmi", "Nombre_hdmi");
-
-            List<string> lstNbrVGA = new List<string>();
-            lstNbrVGA.Add("1");
-            lstNbrVGA.Add("2");
-            lstNbrVGA.Add("3");
-            cboNbrVGA.DataSource = lstNbrVGA;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Nombre_vga", "Nombre_vga");
-
-            List<string> lstTensionBatt = new List<string>();
-            lstTensionBatt.Add("10,8");
-            lstTensionBatt.Add("12");
-            cboTensionBatt.DataSource = lstTensionBatt;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Tension_batterie", "Tension_batterie");
-
-            List<string> lstPuissanceAdap = new List<string>();
-            lstPuissanceAdap.Add("10,8");
-            lstPuissanceAdap.Add("12");
-            cboPuissanceAdap.DataSource = lstPuissanceAdap;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Puissance_adaptateur", "Puissance_adaptateur");
-
-            List<string> lstTensionAdap = new List<string>();
-            lstTensionAdap.Add("15");
-            lstTensionAdap.Add("18,5");
-            lstTensionAdap.Add("19");
-            lstTensionAdap.Add("19,5");
-            cboTensionAdap.DataSource = lstTensionAdap;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Tension_adaptateur", "Tension_adaptateur");
-
-            List<string> lstIntensiteAdap = new List<string>();
-            lstIntensiteAdap.Add("3,33");
-            lstIntensiteAdap.Add("3,5");
-            lstIntensiteAdap.Add("5");
-            cboIntensiteAdap.DataSource = lstIntensiteAdap;
-            this.setMembersallcbo(cboNbrCoeurProcesseur, "Intensite_adaptateur", "Intensite_adaptateur");
+            cboGarantie.DataSource = clsMetier.GetInstance().getAllClsgarantie();
+            this.setMembersallcbo(cboGarantie, "Valeur", "Id");
+            cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
+            this.setMembersallcbo(cboRAM, "Valeur", "Id");
+            cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
+            this.setMembersallcbo(cboProcesseur, "Valeur", "Id");
+            cboNbrCoeurProcesseur.DataSource = clsMetier.GetInstance().getAllClsnombre_coeur_processeur();
+            this.setMembersallcbo(cboNbrCoeurProcesseur, "Valeur", "Id");
+            cboTypeHDD.DataSource = clsMetier.GetInstance().getAllClstype_hdd();
+            this.setMembersallcbo(cboTypeHDD, "Designation", "Id");
+            cboCapaciteHDD.DataSource = clsMetier.GetInstance().getAllClscapacite_hdd();
+            this.setMembersallcbo(cboCapaciteHDD, "Valeur", "Id");
+            cboNbrHDD.DataSource = clsMetier.GetInstance().getAllClsnombre_hdd();
+            this.setMembersallcbo(cboNbrHDD, "Valeur", "Id");
+            cboTailleEcran.DataSource = clsMetier.GetInstance().getAllClstaille_ecran();
+            this.setMembersallcbo(cboTailleEcran, "Valeur", "Id");
+            cboUSB2.DataSource = clsMetier.GetInstance().getAllClsusb2();
+            this.setMembersallcbo(cboUSB2, "Valeur", "Id");
+            cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb3();
+            this.setMembersallcbo(cboUSB3, "Valeur", "Id");
+            cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
+            this.setMembersallcbo(cboNbrHDMI, "Valeur", "Id");
+            cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
+            this.setMembersallcbo(cboNbrVGA, "Valeur", "Id");
+            cboTensionBatt.DataSource = clsMetier.GetInstance().getAllClstension_batterie();
+            this.setMembersallcbo(cboTensionBatt, "Valeur", "Id");
+            cboTensionAdap.DataSource = clsMetier.GetInstance().getAllClstension_adaptateur();
+            this.setMembersallcbo(cboTensionAdap, "Valeur", "Id");
+            cboPuissanceAdap.DataSource = clsMetier.GetInstance().getAllClspuissance_adaptateur();
+            this.setMembersallcbo(cboPuissanceAdap, "Valeur", "Id");
+            cboIntensiteAdap.DataSource = clsMetier.GetInstance().getAllClsintensite_adaptateur();
+            this.setMembersallcbo(cboIntensiteAdap, "Valeur", "Id");
 
             if (bdsrc.Count == 0)
             {
@@ -517,6 +429,86 @@ namespace smartManage.Desktop
                 {
                     cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
                     this.setMembersallcbo(cboTypeOS, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmGarantie.ToString()))
+                {
+                    cboGarantie.DataSource = clsMetier.GetInstance().getAllClsgarantie();
+                    this.setMembersallcbo(cboGarantie, "Valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmRAM.ToString()))
+                {
+                    cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
+                    this.setMembersallcbo(cboRAM, "Valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmRAM.ToString()))
+                {
+                    cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
+                    this.setMembersallcbo(cboProcesseur, "Valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrCoeurProcesseur.ToString()))
+                {
+                    cboNbrCoeurProcesseur.DataSource = clsMetier.GetInstance().getAllClsnombre_coeur_processeur();
+                    this.setMembersallcbo(cboNbrCoeurProcesseur, "Valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeHDD.ToString()))
+                {
+                    cboTypeHDD.DataSource = clsMetier.GetInstance().getAllClstype_hdd();
+                    this.setMembersallcbo(cboTypeHDD, "Designation", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCapaciteHDD.ToString()))
+                {
+                    cboCapaciteHDD.DataSource = clsMetier.GetInstance().getAllClscapacite_hdd();
+                    this.setMembersallcbo(cboCapaciteHDD, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDD.ToString()))
+                {
+                    cboNbrHDD.DataSource = clsMetier.GetInstance().getAllClsnombre_hdd();
+                    this.setMembersallcbo(cboNbrHDD, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTailleEcran.ToString()))
+                {
+                    cboTailleEcran.DataSource = clsMetier.GetInstance().getAllClstaille_ecran();
+                    this.setMembersallcbo(cboTailleEcran, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB2.ToString()))
+                {
+                    cboUSB2.DataSource = clsMetier.GetInstance().getAllClsusb2();
+                    this.setMembersallcbo(cboUSB2, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB3.ToString()))
+                {
+                    cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb2();
+                    this.setMembersallcbo(cboUSB3, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDMI.ToString()))
+                {
+                    cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
+                    this.setMembersallcbo(cboNbrHDMI, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrVGA.ToString()))
+                {
+                    cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
+                    this.setMembersallcbo(cboNbrVGA, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionBatterie.ToString()))
+                {
+                    cboTensionBatt.DataSource = clsMetier.GetInstance().getAllClstension_batterie();
+                    this.setMembersallcbo(cboTensionBatt, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionAdaptateur.ToString()))
+                {
+                    cboTensionAdap.DataSource = clsMetier.GetInstance().getAllClstension_adaptateur();
+                    this.setMembersallcbo(cboTensionAdap, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmPuissanceAdaptateur.ToString()))
+                {
+                    cboPuissanceAdap.DataSource = clsMetier.GetInstance().getAllClspuissance_adaptateur();
+                    this.setMembersallcbo(cboPuissanceAdap, "valeur", "Id");
+                }
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmIntensiteAdaptateur.ToString()))
+                {
+                    cboIntensiteAdap.DataSource = clsMetier.GetInstance().getAllClsintensite_adaptateur();
+                    this.setMembersallcbo(cboIntensiteAdap, "valeur", "Id");
                 }
             }
 
@@ -943,6 +935,7 @@ namespace smartManage.Desktop
         {
             try
             {
+                //Must be executed in new thred
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
                 sb.Append(string.Format("{0}-{1}", txtId.Text, ((clscategorie_materiel)cboCatMateriel.SelectedItem).Id.ToString()));
                 txtIdentidiant.Text = sb.ToString();
@@ -1038,6 +1031,154 @@ namespace smartManage.Desktop
             {
                 MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo3", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        private void lblAddGuaratie_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmGarantie frm = new frmGarantie();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void cboGarantie_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboRAM_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboProcesseur_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void cboTailleEcran_DropDown(object sender, EventArgs e)
+        {
+            try
+            {
+                ActualiseComboBoxModification();
+            }
+            catch (Exception) { }
+        }
+
+        private void lblAddRAM_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmRAM frm = new frmRAM();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddProcessor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmProcesseur frm = new frmProcesseur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddCorProcessor_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrCoeurProcesseur frm = new frmNbrCoeurProcesseur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddTypeHDD_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmTypeHDD frm = new frmTypeHDD();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddCapacityHDD_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmCapaciteHDD frm = new frmCapaciteHDD();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddNbrHDD_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrHDD frm = new frmNbrHDD();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddScreen_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmTailleEcran frm = new frmTailleEcran();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddUSB2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrUSB2 frm = new frmNbrUSB2();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddUSB3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrUSB3 frm = new frmNbrUSB3();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddHDMI_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrHDMI frm = new frmNbrHDMI();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddVGA_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmNbrVGA frm = new frmNbrVGA();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddUBatterie_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmTensionBatterie frm = new frmTensionBatterie();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddUAdapt_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmTensionAdaptateur frm = new frmTensionAdaptateur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddPAdapt_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmPuissanceAdaptateur frm = new frmPuissanceAdaptateur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void lblAddIAdapt_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmIntensiteAdaptateur frm = new frmIntensiteAdaptateur();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
         }
     }
 }

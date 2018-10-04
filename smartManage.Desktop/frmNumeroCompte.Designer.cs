@@ -290,6 +290,7 @@
             this.txtDateModifie.ReadOnly = true;
             this.txtDateModifie.Size = new System.Drawing.Size(180, 20);
             this.txtDateModifie.TabIndex = 62;
+            this.txtDateModifie.TabStop = false;
             // 
             // txtNumero
             // 
@@ -323,6 +324,7 @@
             this.txtId.ReadOnly = true;
             this.txtId.Size = new System.Drawing.Size(180, 20);
             this.txtId.TabIndex = 59;
+            this.txtId.TabStop = false;
             // 
             // txtModifieBy
             // 
@@ -331,6 +333,7 @@
             this.txtModifieBy.ReadOnly = true;
             this.txtModifieBy.Size = new System.Drawing.Size(180, 20);
             this.txtModifieBy.TabIndex = 55;
+            this.txtModifieBy.TabStop = false;
             // 
             // label1
             // 
@@ -366,6 +369,7 @@
             this.txtDateCreate.ReadOnly = true;
             this.txtDateCreate.Size = new System.Drawing.Size(180, 20);
             this.txtDateCreate.TabIndex = 53;
+            this.txtDateCreate.TabStop = false;
             // 
             // txtCreateBy
             // 
@@ -374,6 +378,7 @@
             this.txtCreateBy.ReadOnly = true;
             this.txtCreateBy.Size = new System.Drawing.Size(180, 20);
             this.txtCreateBy.TabIndex = 51;
+            this.txtCreateBy.TabStop = false;
             // 
             // label19
             // 
@@ -413,6 +418,7 @@
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv.Size = new System.Drawing.Size(575, 179);
             this.dgv.TabIndex = 200;
+            this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
             // 
             // colId
