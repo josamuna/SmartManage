@@ -28,7 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -36,7 +37,7 @@
             this.colId_compte = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQrcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDate_acquisition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGuarantie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_garantie = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_marque = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_modele = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_couleur = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,53 +57,54 @@
             this.colId_type_ordinateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_clavier = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_os = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colRam = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colProcesseur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_coeur_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCapacite_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIndice_performance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPouce = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_usb2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_usb3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_hdmi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_vga = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTension_batterie = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTension_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPuissance_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIntensite_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_ram = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_nombre_coeur_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_nombre_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_capacite_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_taille_ecran = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_hdmi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_vga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_batterie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_puissance_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_intensite_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNumero_cle = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_imprimante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPuissance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colIntensite = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_page_par_minute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_puissance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_intensite = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_page_par_minute = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_amplificateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colTension_alimentation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_usb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_memoire = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_sorties_audio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_microphone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colGain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_alimentation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_memoire = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_sorties_audio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_microphone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_gain = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_routeur_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_version_ios = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_gbe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_fe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_fo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCapable_usb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMotpasse_defaut = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDefault_ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_console = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_auxiliaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_gbe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_fe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_fo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCapable_usb = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colId_default_pwd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_default_ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_console = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_auxiliaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_type_switch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colFrequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_frequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colAlimentation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre_antenne = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_antenne = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_netette = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCompatible_wifi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCompatible_wifi = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.cboGarantie = new System.Windows.Forms.ComboBox();
             this.lblAddGuaratie = new System.Windows.Forms.LinkLabel();
             this.cboMarque = new System.Windows.Forms.ComboBox();
             this.txtDateModifie = new System.Windows.Forms.TextBox();
@@ -121,7 +123,10 @@
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.lblPhoto3 = new System.Windows.Forms.LinkLabel();
             this.lblPhoto2 = new System.Windows.Forms.LinkLabel();
+            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
+            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
             this.lblPhoto1 = new System.Windows.Forms.LinkLabel();
+            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
             this.txtMAC1 = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
             this.lblEtatMatriel = new System.Windows.Forms.LinkLabel();
@@ -153,9 +158,10 @@
             this.txtId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pbQRCode = new System.Windows.Forms.PictureBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this.label23 = new System.Windows.Forms.Label();
+            this.lblStatusGuaraty = new System.Windows.Forms.Label();
             this.lblAddIAdapt = new System.Windows.Forms.LinkLabel();
             this.lblAddPAdapt = new System.Windows.Forms.LinkLabel();
             this.lblAddUAdapt = new System.Windows.Forms.LinkLabel();
@@ -212,28 +218,35 @@
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
-            this.cboGarantie = new System.Windows.Forms.ComboBox();
-            this.pbQRCode = new System.Windows.Forms.PictureBox();
-            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
-            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
-            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
+            this.ctxMenuPhoto1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.smnCtxPhoto1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxMenuPhoto2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.smnCtxPhoto2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxMenuPhoto3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.smnCtxPhoto3 = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
-            this.groupBox6.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.ctxMenuPhoto1.SuspendLayout();
+            this.ctxMenuPhoto2.SuspendLayout();
+            this.ctxMenuPhoto3.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgv
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dgv.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.dgv.BackgroundColor = System.Drawing.Color.White;
             this.dgv.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -244,7 +257,7 @@
             this.colId_compte,
             this.colQrcode,
             this.colDate_acquisition,
-            this.colGuarantie,
+            this.colid_garantie,
             this.colId_marque,
             this.colId_modele,
             this.colId_couleur,
@@ -264,66 +277,65 @@
             this.colId_type_ordinateur,
             this.colId_type_clavier,
             this.colId_os,
-            this.colRam,
-            this.colProcesseur,
-            this.colNombre_coeur_processeur,
-            this.colNombre_hdd,
-            this.colCapacite_hdd,
-            this.colIndice_performance,
-            this.colPouce,
-            this.colNombre_usb2,
-            this.colNombre_usb3,
-            this.colNombre_hdmi,
-            this.colNombre_vga,
-            this.colTension_batterie,
-            this.colTension_adaptateur,
-            this.colPuissance_adaptateur,
-            this.colIntensite_adaptateur,
+            this.colid_ram,
+            this.colid_processeur,
+            this.colid_nombre_coeur_processeur,
+            this.colId_type_hdd,
+            this.colId_nombre_hdd,
+            this.colId_capacite_hdd,
+            this.colId_taille_ecran,
+            this.colId_usb2,
+            this.colId_usb3,
+            this.colId_hdmi,
+            this.colId_vga,
+            this.colId_tension_batterie,
+            this.colId_tension_adaptateur,
+            this.colId_puissance_adaptateur,
+            this.colId_intensite_adaptateur,
             this.colNumero_cle,
             this.colId_type_imprimante,
-            this.colPuissance,
-            this.colIntensite,
-            this.colNombre_page_par_minute,
+            this.colId_puissance,
+            this.colId_intensite,
+            this.colId_page_par_minute,
             this.colId_type_amplificateur,
-            this.colTension_alimentation,
-            this.colNombre_usb,
-            this.colNombre_memoire,
-            this.colNombre_sorties_audio,
-            this.colNombre_microphone,
-            this.colGain,
+            this.colId_tension_alimentation,
+            this.colId_usb,
+            this.colId_memoire,
+            this.colId_sorties_audio,
+            this.colId_microphone,
+            this.colId_gain,
             this.colId_type_routeur_ap,
             this.colId_version_ios,
-            this.colNombre_gbe,
-            this.colNombre_fe,
-            this.colNombre_fo,
-            this.colNombre_serial,
+            this.colId_gbe,
+            this.colId_fe,
+            this.colId_fo,
+            this.colId_serial,
             this.colCapable_usb,
-            this.colMotpasse_defaut,
-            this.colDefault_ip,
-            this.colNombre_console,
-            this.colNombre_auxiliaire,
+            this.colId_default_pwd,
+            this.colId_default_ip,
+            this.colId_console,
+            this.colId_auxiliaire,
             this.colId_type_ap,
             this.colId_type_switch,
-            this.colFrequence,
+            this.colId_frequence,
             this.colAlimentation,
-            this.colNombre_antenne,
+            this.colId_antenne,
             this.colId_netette,
             this.colCompatible_wifi});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgv.Dock = System.Windows.Forms.DockStyle.Bottom;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgv.Location = new System.Drawing.Point(3, 19);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
             this.dgv.RowHeadersVisible = false;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1185, 204);
+            this.dgv.Size = new System.Drawing.Size(1185, 208);
             this.dgv.TabIndex = 200;
             this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
@@ -369,11 +381,12 @@
             this.colDate_acquisition.Name = "colDate_acquisition";
             this.colDate_acquisition.Width = 110;
             // 
-            // colGuarantie
+            // colid_garantie
             // 
-            this.colGuarantie.DataPropertyName = "Guarantie";
-            this.colGuarantie.HeaderText = "Guarantie";
-            this.colGuarantie.Name = "colGuarantie";
+            this.colid_garantie.DataPropertyName = "id_garantie";
+            this.colid_garantie.HeaderText = "id_garantie";
+            this.colid_garantie.Name = "colid_garantie";
+            this.colid_garantie.Visible = false;
             // 
             // colId_marque
             // 
@@ -454,6 +467,7 @@
             this.colCommentaire.DataPropertyName = "Commentaire";
             this.colCommentaire.HeaderText = "Commentaire";
             this.colCommentaire.Name = "colCommentaire";
+            this.colCommentaire.Width = 300;
             // 
             // colUser_created
             // 
@@ -500,103 +514,118 @@
             this.colId_os.Name = "colId_os";
             this.colId_os.Visible = false;
             // 
-            // colRam
+            // colid_ram
             // 
-            this.colRam.DataPropertyName = "Ram";
-            this.colRam.HeaderText = "Ram (Ghz)";
-            this.colRam.Name = "colRam";
+            this.colid_ram.DataPropertyName = "id_ram";
+            this.colid_ram.HeaderText = "id_ram";
+            this.colid_ram.Name = "colid_ram";
+            this.colid_ram.Visible = false;
             // 
-            // colProcesseur
+            // colid_processeur
             // 
-            this.colProcesseur.DataPropertyName = "Ram";
-            this.colProcesseur.HeaderText = "Processeur (Ghz)";
-            this.colProcesseur.Name = "colProcesseur";
-            this.colProcesseur.Width = 130;
+            this.colid_processeur.DataPropertyName = "id_processeur";
+            this.colid_processeur.HeaderText = "id_processeur";
+            this.colid_processeur.Name = "colid_processeur";
+            this.colid_processeur.Visible = false;
+            this.colid_processeur.Width = 130;
             // 
-            // colNombre_coeur_processeur
+            // colid_nombre_coeur_processeur
             // 
-            this.colNombre_coeur_processeur.DataPropertyName = "Nombre_coeur_processeur";
-            this.colNombre_coeur_processeur.HeaderText = "Nbr coeur processeur";
-            this.colNombre_coeur_processeur.Name = "colNombre_coeur_processeur";
-            this.colNombre_coeur_processeur.Width = 150;
+            this.colid_nombre_coeur_processeur.DataPropertyName = "id_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.HeaderText = "id_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.Name = "colid_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.Visible = false;
+            this.colid_nombre_coeur_processeur.Width = 150;
             // 
-            // colNombre_hdd
+            // colId_type_hdd
             // 
-            this.colNombre_hdd.DataPropertyName = "Nombre_hdd";
-            this.colNombre_hdd.HeaderText = "Nbr HDD";
-            this.colNombre_hdd.Name = "colNombre_hdd";
+            this.colId_type_hdd.DataPropertyName = "Id_type_hdd";
+            this.colId_type_hdd.HeaderText = "Id_type_hdd";
+            this.colId_type_hdd.Name = "colId_type_hdd";
+            this.colId_type_hdd.Visible = false;
             // 
-            // colCapacite_hdd
+            // colId_nombre_hdd
             // 
-            this.colCapacite_hdd.DataPropertyName = "Capacite_hdd";
-            this.colCapacite_hdd.HeaderText = "Capacite HDD";
-            this.colCapacite_hdd.Name = "colCapacite_hdd";
-            this.colCapacite_hdd.Width = 120;
+            this.colId_nombre_hdd.DataPropertyName = "Id_nombre_hdd";
+            this.colId_nombre_hdd.HeaderText = "Id_nombre_hdd";
+            this.colId_nombre_hdd.Name = "colId_nombre_hdd";
+            this.colId_nombre_hdd.Visible = false;
             // 
-            // colIndice_performance
+            // colId_capacite_hdd
             // 
-            this.colIndice_performance.DataPropertyName = "Indice_performance";
-            this.colIndice_performance.HeaderText = "Indice perfo.";
-            this.colIndice_performance.Name = "colIndice_performance";
+            this.colId_capacite_hdd.DataPropertyName = "Id_capacite_hdd";
+            this.colId_capacite_hdd.HeaderText = "Id_capacite_hdd";
+            this.colId_capacite_hdd.Name = "colId_capacite_hdd";
+            this.colId_capacite_hdd.Visible = false;
+            this.colId_capacite_hdd.Width = 120;
             // 
-            // colPouce
+            // colId_taille_ecran
             // 
-            this.colPouce.DataPropertyName = "Pouce";
-            this.colPouce.HeaderText = "Taille écran (Pouce)";
-            this.colPouce.Name = "colPouce";
-            this.colPouce.Width = 150;
+            this.colId_taille_ecran.DataPropertyName = "Id_taille_ecran";
+            this.colId_taille_ecran.HeaderText = "Id_taille_ecran";
+            this.colId_taille_ecran.Name = "colId_taille_ecran";
+            this.colId_taille_ecran.Visible = false;
+            this.colId_taille_ecran.Width = 150;
             // 
-            // colNombre_usb2
+            // colId_usb2
             // 
-            this.colNombre_usb2.DataPropertyName = "Nombre_usb2";
-            this.colNombre_usb2.HeaderText = "USB 2.0";
-            this.colNombre_usb2.Name = "colNombre_usb2";
+            this.colId_usb2.DataPropertyName = "Id_usb2";
+            this.colId_usb2.HeaderText = "Id_usb2";
+            this.colId_usb2.Name = "colId_usb2";
+            this.colId_usb2.Visible = false;
             // 
-            // colNombre_usb3
+            // colId_usb3
             // 
-            this.colNombre_usb3.DataPropertyName = "Nombre_usb3";
-            this.colNombre_usb3.HeaderText = "USB 3.0";
-            this.colNombre_usb3.Name = "colNombre_usb3";
+            this.colId_usb3.DataPropertyName = "Id_usb3";
+            this.colId_usb3.HeaderText = "Id_usb3";
+            this.colId_usb3.Name = "colId_usb3";
+            this.colId_usb3.Visible = false;
             // 
-            // colNombre_hdmi
+            // colId_hdmi
             // 
-            this.colNombre_hdmi.DataPropertyName = "Nombre_hdmi";
-            this.colNombre_hdmi.HeaderText = "HDMI";
-            this.colNombre_hdmi.Name = "colNombre_hdmi";
+            this.colId_hdmi.DataPropertyName = "Id_hdmi";
+            this.colId_hdmi.HeaderText = "Id_hdmi";
+            this.colId_hdmi.Name = "colId_hdmi";
+            this.colId_hdmi.Visible = false;
             // 
-            // colNombre_vga
+            // colId_vga
             // 
-            this.colNombre_vga.DataPropertyName = "Nombre_vga";
-            this.colNombre_vga.HeaderText = "VGA";
-            this.colNombre_vga.Name = "colNombre_vga";
+            this.colId_vga.DataPropertyName = "Id_vga";
+            this.colId_vga.HeaderText = "Id_vga";
+            this.colId_vga.Name = "colId_vga";
+            this.colId_vga.Visible = false;
             // 
-            // colTension_batterie
+            // colId_tension_batterie
             // 
-            this.colTension_batterie.DataPropertyName = "Tension_batterie";
-            this.colTension_batterie.HeaderText = "Tension batterie (V)";
-            this.colTension_batterie.Name = "colTension_batterie";
-            this.colTension_batterie.Width = 130;
+            this.colId_tension_batterie.DataPropertyName = "Id_tension_batterie";
+            this.colId_tension_batterie.HeaderText = "Id_tension_batterie";
+            this.colId_tension_batterie.Name = "colId_tension_batterie";
+            this.colId_tension_batterie.Visible = false;
+            this.colId_tension_batterie.Width = 130;
             // 
-            // colTension_adaptateur
+            // colId_tension_adaptateur
             // 
-            this.colTension_adaptateur.DataPropertyName = "Tension_adaptateur";
-            this.colTension_adaptateur.HeaderText = "Tension adapt. (V)";
-            this.colTension_adaptateur.Name = "colTension_adaptateur";
-            this.colTension_adaptateur.Width = 130;
+            this.colId_tension_adaptateur.DataPropertyName = "Id_tension_adaptateur";
+            this.colId_tension_adaptateur.HeaderText = "Id_tension_adaptateur";
+            this.colId_tension_adaptateur.Name = "colId_tension_adaptateur";
+            this.colId_tension_adaptateur.Visible = false;
+            this.colId_tension_adaptateur.Width = 130;
             // 
-            // colPuissance_adaptateur
+            // colId_puissance_adaptateur
             // 
-            this.colPuissance_adaptateur.DataPropertyName = "Puissance_adaptateur";
-            this.colPuissance_adaptateur.HeaderText = "Puissance adapt. (W)";
-            this.colPuissance_adaptateur.Name = "colPuissance_adaptateur";
-            this.colPuissance_adaptateur.Width = 150;
+            this.colId_puissance_adaptateur.DataPropertyName = "Id_puissance_adaptateur";
+            this.colId_puissance_adaptateur.HeaderText = "Id_puissance_adaptateur";
+            this.colId_puissance_adaptateur.Name = "colId_puissance_adaptateur";
+            this.colId_puissance_adaptateur.Visible = false;
+            this.colId_puissance_adaptateur.Width = 150;
             // 
-            // colIntensite_adaptateur
+            // colId_intensite_adaptateur
             // 
-            this.colIntensite_adaptateur.DataPropertyName = "Intensite_adaptateur";
-            this.colIntensite_adaptateur.HeaderText = "Intensité adapt. (A)";
-            this.colIntensite_adaptateur.Name = "colIntensite_adaptateur";
-            this.colIntensite_adaptateur.Width = 130;
+            this.colId_intensite_adaptateur.DataPropertyName = "Id_intensite_adaptateur";
+            this.colId_intensite_adaptateur.HeaderText = "Id_intensite_adaptateur";
+            this.colId_intensite_adaptateur.Name = "colId_intensite_adaptateur";
+            this.colId_intensite_adaptateur.Visible = false;
+            this.colId_intensite_adaptateur.Width = 130;
             // 
             // colNumero_cle
             // 
@@ -611,26 +640,26 @@
             this.colId_type_imprimante.Name = "colId_type_imprimante";
             this.colId_type_imprimante.Visible = false;
             // 
-            // colPuissance
+            // colId_puissance
             // 
-            this.colPuissance.DataPropertyName = "Puissance";
-            this.colPuissance.HeaderText = "Puissance (W)";
-            this.colPuissance.Name = "colPuissance";
-            this.colPuissance.Visible = false;
+            this.colId_puissance.DataPropertyName = "Id_puissance";
+            this.colId_puissance.HeaderText = "Id_puissance";
+            this.colId_puissance.Name = "colId_puissance";
+            this.colId_puissance.Visible = false;
             // 
-            // colIntensite
+            // colId_intensite
             // 
-            this.colIntensite.DataPropertyName = "Intensite";
-            this.colIntensite.HeaderText = "Intensité (A)";
-            this.colIntensite.Name = "colIntensite";
-            this.colIntensite.Visible = false;
+            this.colId_intensite.DataPropertyName = "Id_intensite";
+            this.colId_intensite.HeaderText = "Id_intensite";
+            this.colId_intensite.Name = "colId_intensite";
+            this.colId_intensite.Visible = false;
             // 
-            // colNombre_page_par_minute
+            // colId_page_par_minute
             // 
-            this.colNombre_page_par_minute.DataPropertyName = "Nombre_page_par_minute";
-            this.colNombre_page_par_minute.HeaderText = "Page/minute";
-            this.colNombre_page_par_minute.Name = "colNombre_page_par_minute";
-            this.colNombre_page_par_minute.Visible = false;
+            this.colId_page_par_minute.DataPropertyName = "Id_page_par_minute";
+            this.colId_page_par_minute.HeaderText = "Id_page_par_minute";
+            this.colId_page_par_minute.Name = "colId_page_par_minute";
+            this.colId_page_par_minute.Visible = false;
             // 
             // colId_type_amplificateur
             // 
@@ -639,48 +668,48 @@
             this.colId_type_amplificateur.Name = "colId_type_amplificateur";
             this.colId_type_amplificateur.Visible = false;
             // 
-            // colTension_alimentation
+            // colId_tension_alimentation
             // 
-            this.colTension_alimentation.DataPropertyName = "Tension_alimentation";
-            this.colTension_alimentation.HeaderText = "Tension alimentation";
-            this.colTension_alimentation.Name = "colTension_alimentation";
-            this.colTension_alimentation.Visible = false;
-            this.colTension_alimentation.Width = 110;
+            this.colId_tension_alimentation.DataPropertyName = "Id_tension_alimentation";
+            this.colId_tension_alimentation.HeaderText = "Id_tension_alimentation";
+            this.colId_tension_alimentation.Name = "colId_tension_alimentation";
+            this.colId_tension_alimentation.Visible = false;
+            this.colId_tension_alimentation.Width = 110;
             // 
-            // colNombre_usb
+            // colId_usb
             // 
-            this.colNombre_usb.DataPropertyName = "Nombre_usb";
-            this.colNombre_usb.HeaderText = "Nbr USB";
-            this.colNombre_usb.Name = "colNombre_usb";
-            this.colNombre_usb.Visible = false;
+            this.colId_usb.DataPropertyName = "Id_usb";
+            this.colId_usb.HeaderText = "Id_usb";
+            this.colId_usb.Name = "colId_usb";
+            this.colId_usb.Visible = false;
             // 
-            // colNombre_memoire
+            // colId_memoire
             // 
-            this.colNombre_memoire.DataPropertyName = "Nombre_memoire";
-            this.colNombre_memoire.HeaderText = "Nbr mémoire";
-            this.colNombre_memoire.Name = "colNombre_memoire";
-            this.colNombre_memoire.Visible = false;
+            this.colId_memoire.DataPropertyName = "Id_memoire";
+            this.colId_memoire.HeaderText = "Id_memoire";
+            this.colId_memoire.Name = "colId_memoire";
+            this.colId_memoire.Visible = false;
             // 
-            // colNombre_sorties_audio
+            // colId_sorties_audio
             // 
-            this.colNombre_sorties_audio.DataPropertyName = "Nombre_sorties_audio";
-            this.colNombre_sorties_audio.HeaderText = "Nbr sorties audio";
-            this.colNombre_sorties_audio.Name = "colNombre_sorties_audio";
-            this.colNombre_sorties_audio.Visible = false;
+            this.colId_sorties_audio.DataPropertyName = "Id_sorties_audio";
+            this.colId_sorties_audio.HeaderText = "Id_sorties_audio";
+            this.colId_sorties_audio.Name = "colId_sorties_audio";
+            this.colId_sorties_audio.Visible = false;
             // 
-            // colNombre_microphone
+            // colId_microphone
             // 
-            this.colNombre_microphone.DataPropertyName = "Nombre_microphone";
-            this.colNombre_microphone.HeaderText = "Nbr microphone";
-            this.colNombre_microphone.Name = "colNombre_microphone";
-            this.colNombre_microphone.Visible = false;
+            this.colId_microphone.DataPropertyName = "Id_microphone";
+            this.colId_microphone.HeaderText = "Id_microphone";
+            this.colId_microphone.Name = "colId_microphone";
+            this.colId_microphone.Visible = false;
             // 
-            // colGain
+            // colId_gain
             // 
-            this.colGain.DataPropertyName = "Gain";
-            this.colGain.HeaderText = "Gain (dB)";
-            this.colGain.Name = "colGain";
-            this.colGain.Visible = false;
+            this.colId_gain.DataPropertyName = "Id_gain";
+            this.colId_gain.HeaderText = "Id_gain";
+            this.colId_gain.Name = "colId_gain";
+            this.colId_gain.Visible = false;
             // 
             // colId_type_routeur_ap
             // 
@@ -696,68 +725,70 @@
             this.colId_version_ios.Name = "colId_version_ios";
             this.colId_version_ios.Visible = false;
             // 
-            // colNombre_gbe
+            // colId_gbe
             // 
-            this.colNombre_gbe.DataPropertyName = "Nombre_gbe";
-            this.colNombre_gbe.HeaderText = "GB Eth";
-            this.colNombre_gbe.Name = "colNombre_gbe";
-            this.colNombre_gbe.Visible = false;
+            this.colId_gbe.DataPropertyName = "Id_gbe";
+            this.colId_gbe.HeaderText = "Id_gbe";
+            this.colId_gbe.Name = "colId_gbe";
+            this.colId_gbe.Visible = false;
             // 
-            // colNombre_fe
+            // colId_fe
             // 
-            this.colNombre_fe.DataPropertyName = "Nombre_fe";
-            this.colNombre_fe.HeaderText = "Fast Eth";
-            this.colNombre_fe.Name = "colNombre_fe";
-            this.colNombre_fe.Visible = false;
+            this.colId_fe.DataPropertyName = "Id_fe";
+            this.colId_fe.HeaderText = "Id_fe";
+            this.colId_fe.Name = "colId_fe";
+            this.colId_fe.Visible = false;
             // 
-            // colNombre_fo
+            // colId_fo
             // 
-            this.colNombre_fo.DataPropertyName = "Nombre_fo";
-            this.colNombre_fo.HeaderText = "Fibre Optique";
-            this.colNombre_fo.Name = "colNombre_fo";
-            this.colNombre_fo.Visible = false;
+            this.colId_fo.DataPropertyName = "Id_fo";
+            this.colId_fo.HeaderText = "Id_fo";
+            this.colId_fo.Name = "colId_fo";
+            this.colId_fo.Visible = false;
             // 
-            // colNombre_serial
+            // colId_serial
             // 
-            this.colNombre_serial.DataPropertyName = "Nombre_serial";
-            this.colNombre_serial.HeaderText = "Serial";
-            this.colNombre_serial.Name = "colNombre_serial";
-            this.colNombre_serial.Visible = false;
+            this.colId_serial.DataPropertyName = "Id_serial";
+            this.colId_serial.HeaderText = "Id_serial";
+            this.colId_serial.Name = "colId_serial";
+            this.colId_serial.Visible = false;
             // 
             // colCapable_usb
             // 
             this.colCapable_usb.DataPropertyName = "Capable_usb";
             this.colCapable_usb.HeaderText = "Support USB";
             this.colCapable_usb.Name = "colCapable_usb";
+            this.colCapable_usb.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colCapable_usb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colCapable_usb.Visible = false;
             // 
-            // colMotpasse_defaut
+            // colId_default_pwd
             // 
-            this.colMotpasse_defaut.DataPropertyName = "Motpasse_defaut";
-            this.colMotpasse_defaut.HeaderText = "Default pwd";
-            this.colMotpasse_defaut.Name = "colMotpasse_defaut";
-            this.colMotpasse_defaut.Visible = false;
+            this.colId_default_pwd.DataPropertyName = "Id_default_pwd";
+            this.colId_default_pwd.HeaderText = "Id_default_pwd";
+            this.colId_default_pwd.Name = "colId_default_pwd";
+            this.colId_default_pwd.Visible = false;
             // 
-            // colDefault_ip
+            // colId_default_ip
             // 
-            this.colDefault_ip.DataPropertyName = "Default_ip";
-            this.colDefault_ip.HeaderText = "Default IP";
-            this.colDefault_ip.Name = "colDefault_ip";
-            this.colDefault_ip.Visible = false;
+            this.colId_default_ip.DataPropertyName = "Id_default_ip";
+            this.colId_default_ip.HeaderText = "Id_default_ip";
+            this.colId_default_ip.Name = "colId_default_ip";
+            this.colId_default_ip.Visible = false;
             // 
-            // colNombre_console
+            // colId_console
             // 
-            this.colNombre_console.DataPropertyName = "Nombre_console";
-            this.colNombre_console.HeaderText = "Port Console";
-            this.colNombre_console.Name = "colNombre_console";
-            this.colNombre_console.Visible = false;
+            this.colId_console.DataPropertyName = "Id_console";
+            this.colId_console.HeaderText = "Id_console";
+            this.colId_console.Name = "colId_console";
+            this.colId_console.Visible = false;
             // 
-            // colNombre_auxiliaire
+            // colId_auxiliaire
             // 
-            this.colNombre_auxiliaire.DataPropertyName = "Nombre_auxiliaire";
-            this.colNombre_auxiliaire.HeaderText = "Nombre_auxiliaire";
-            this.colNombre_auxiliaire.Name = "colNombre_auxiliaire";
-            this.colNombre_auxiliaire.Visible = false;
+            this.colId_auxiliaire.DataPropertyName = "Id_auxiliaire";
+            this.colId_auxiliaire.HeaderText = "Id_auxiliaire";
+            this.colId_auxiliaire.Name = "colId_auxiliaire";
+            this.colId_auxiliaire.Visible = false;
             // 
             // colId_type_ap
             // 
@@ -773,12 +804,12 @@
             this.colId_type_switch.Name = "colId_type_switch";
             this.colId_type_switch.Visible = false;
             // 
-            // colFrequence
+            // colId_frequence
             // 
-            this.colFrequence.DataPropertyName = "Frequence";
-            this.colFrequence.HeaderText = "Fréquence";
-            this.colFrequence.Name = "colFrequence";
-            this.colFrequence.Visible = false;
+            this.colId_frequence.DataPropertyName = "Id_frequence";
+            this.colId_frequence.HeaderText = "Id_frequence";
+            this.colId_frequence.Name = "colId_frequence";
+            this.colId_frequence.Visible = false;
             // 
             // colAlimentation
             // 
@@ -787,12 +818,12 @@
             this.colAlimentation.Name = "colAlimentation";
             this.colAlimentation.Visible = false;
             // 
-            // colNombre_antenne
+            // colId_antenne
             // 
-            this.colNombre_antenne.DataPropertyName = "Nombre_antenne";
-            this.colNombre_antenne.HeaderText = "Nbr antenne";
-            this.colNombre_antenne.Name = "colNombre_antenne";
-            this.colNombre_antenne.Visible = false;
+            this.colId_antenne.DataPropertyName = "Id_antenne";
+            this.colId_antenne.HeaderText = "Id_antenne";
+            this.colId_antenne.Name = "colId_antenne";
+            this.colId_antenne.Visible = false;
             // 
             // colId_netette
             // 
@@ -806,17 +837,20 @@
             this.colCompatible_wifi.DataPropertyName = "Compatible_wifi";
             this.colCompatible_wifi.HeaderText = "Compatible Wifi";
             this.colCompatible_wifi.Name = "colCompatible_wifi";
+            this.colCompatible_wifi.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colCompatible_wifi.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colCompatible_wifi.Visible = false;
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dgv);
-            this.groupBox1.Location = new System.Drawing.Point(8, 326);
+            this.groupBox1.Location = new System.Drawing.Point(8, 322);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1191, 226);
-            this.groupBox1.TabIndex = 2;
+            this.groupBox1.Size = new System.Drawing.Size(1191, 230);
+            this.groupBox1.TabIndex = 540;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Affichage des données manipulées";
             // 
@@ -872,8 +906,20 @@
             this.groupBox2.Location = new System.Drawing.Point(8, 5);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(671, 315);
-            this.groupBox2.TabIndex = 3;
+            this.groupBox2.TabIndex = 510;
             this.groupBox2.TabStop = false;
+            // 
+            // cboGarantie
+            // 
+            this.cboGarantie.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboGarantie.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboGarantie.DropDownWidth = 130;
+            this.cboGarantie.FormattingEnabled = true;
+            this.cboGarantie.Location = new System.Drawing.Point(101, 160);
+            this.cboGarantie.Name = "cboGarantie";
+            this.cboGarantie.Size = new System.Drawing.Size(109, 21);
+            this.cboGarantie.TabIndex = 5;
+            this.cboGarantie.DropDown += new System.EventHandler(this.cboGarantie_DropDown);
             // 
             // lblAddGuaratie
             // 
@@ -1055,6 +1101,26 @@
             this.lblPhoto2.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.lblPhoto2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblPhoto2_LinkClicked);
             // 
+            // pbPhoto3
+            // 
+            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto3.Location = new System.Drawing.Point(278, 20);
+            this.pbPhoto3.Name = "pbPhoto3";
+            this.pbPhoto3.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto3.TabIndex = 44;
+            this.pbPhoto3.TabStop = false;
+            // 
+            // pbPhoto2
+            // 
+            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto2.Location = new System.Drawing.Point(142, 20);
+            this.pbPhoto2.Name = "pbPhoto2";
+            this.pbPhoto2.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto2.TabIndex = 43;
+            this.pbPhoto2.TabStop = false;
+            // 
             // lblPhoto1
             // 
             this.lblPhoto1.AutoSize = true;
@@ -1067,6 +1133,16 @@
             this.lblPhoto1.Text = "Charger photo1";
             this.lblPhoto1.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
             this.lblPhoto1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblPhoto1_LinkClicked);
+            // 
+            // pbPhoto1
+            // 
+            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto1.Location = new System.Drawing.Point(7, 20);
+            this.pbPhoto1.Name = "pbPhoto1";
+            this.pbPhoto1.Size = new System.Drawing.Size(131, 131);
+            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto1.TabIndex = 2;
+            this.pbPhoto1.TabStop = false;
             // 
             // txtMAC1
             // 
@@ -1370,16 +1446,29 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.pbQRCode);
-            this.groupBox3.Location = new System.Drawing.Point(377, 178);
+            this.groupBox3.Location = new System.Drawing.Point(373, 179);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(124, 130);
-            this.groupBox3.TabIndex = 4;
+            this.groupBox3.Size = new System.Drawing.Size(132, 129);
+            this.groupBox3.TabIndex = 550;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "QR Code";
             // 
+            // pbQRCode
+            // 
+            this.pbQRCode.Location = new System.Drawing.Point(7, 14);
+            this.pbQRCode.Name = "pbQRCode";
+            this.pbQRCode.Size = new System.Drawing.Size(119, 111);
+            this.pbQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbQRCode.TabIndex = 2;
+            this.pbQRCode.TabStop = false;
+            // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.groupBox6);
             this.groupBox4.Controls.Add(this.lblAddIAdapt);
             this.groupBox4.Controls.Add(this.lblAddPAdapt);
@@ -1441,30 +1530,31 @@
             this.groupBox4.Location = new System.Drawing.Point(686, 5);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Size = new System.Drawing.Size(513, 315);
-            this.groupBox4.TabIndex = 4;
+            this.groupBox4.TabIndex = 500;
             this.groupBox4.TabStop = false;
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this.label23);
+            this.groupBox6.Controls.Add(this.lblStatusGuaraty);
             this.groupBox6.ForeColor = System.Drawing.Color.Crimson;
-            this.groupBox6.Location = new System.Drawing.Point(255, 178);
+            this.groupBox6.Location = new System.Drawing.Point(255, 179);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(115, 131);
-            this.groupBox6.TabIndex = 129;
+            this.groupBox6.Size = new System.Drawing.Size(111, 129);
+            this.groupBox6.TabIndex = 520;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Duréé restante avant fin garantie : ";
+            this.groupBox6.Text = "  Duréé restante avant fin garantie : ";
             // 
-            // label23
+            // lblStatusGuaraty
             // 
-            this.label23.BackColor = System.Drawing.Color.White;
-            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label23.ForeColor = System.Drawing.Color.OrangeRed;
-            this.label23.Location = new System.Drawing.Point(4, 36);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(105, 90);
-            this.label23.TabIndex = 130;
-            this.label23.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblStatusGuaraty.BackColor = System.Drawing.Color.White;
+            this.lblStatusGuaraty.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.lblStatusGuaraty.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblStatusGuaraty.ForeColor = System.Drawing.Color.OrangeRed;
+            this.lblStatusGuaraty.Location = new System.Drawing.Point(6, 33);
+            this.lblStatusGuaraty.Name = "lblStatusGuaraty";
+            this.lblStatusGuaraty.Size = new System.Drawing.Size(98, 90);
+            this.lblStatusGuaraty.TabIndex = 130;
+            this.lblStatusGuaraty.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblAddIAdapt
             // 
@@ -1475,11 +1565,14 @@
             this.lblAddIAdapt.TabIndex = 55;
             this.lblAddIAdapt.TabStop = true;
             this.lblAddIAdapt.Text = "New";
+            this.lblAddIAdapt.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.lblAddIAdapt.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblAddIAdapt.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddIAdapt_LinkClicked);
             // 
             // lblAddPAdapt
             // 
+            this.lblAddPAdapt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAddPAdapt.AutoSize = true;
             this.lblAddPAdapt.Location = new System.Drawing.Point(478, 113);
             this.lblAddPAdapt.Name = "lblAddPAdapt";
@@ -1492,6 +1585,8 @@
             // 
             // lblAddUAdapt
             // 
+            this.lblAddUAdapt.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAddUAdapt.AutoSize = true;
             this.lblAddUAdapt.Location = new System.Drawing.Point(477, 89);
             this.lblAddUAdapt.Name = "lblAddUAdapt";
@@ -1504,6 +1599,8 @@
             // 
             // lblAddVGA
             // 
+            this.lblAddVGA.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAddVGA.AutoSize = true;
             this.lblAddVGA.Location = new System.Drawing.Point(477, 40);
             this.lblAddVGA.Name = "lblAddVGA";
@@ -1516,6 +1613,8 @@
             // 
             // lblAddHDMI
             // 
+            this.lblAddHDMI.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAddHDMI.AutoSize = true;
             this.lblAddHDMI.Location = new System.Drawing.Point(477, 15);
             this.lblAddHDMI.Name = "lblAddHDMI";
@@ -1528,6 +1627,8 @@
             // 
             // lblAddUBatterie
             // 
+            this.lblAddUBatterie.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAddUBatterie.AutoSize = true;
             this.lblAddUBatterie.Location = new System.Drawing.Point(477, 64);
             this.lblAddUBatterie.Name = "lblAddUBatterie";
@@ -2056,56 +2157,52 @@
             this.label32.TabIndex = 34;
             this.label32.Text = "Type ordinateur :";
             // 
-            // cboGarantie
+            // ctxMenuPhoto1
             // 
-            this.cboGarantie.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboGarantie.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboGarantie.DropDownWidth = 130;
-            this.cboGarantie.FormattingEnabled = true;
-            this.cboGarantie.Location = new System.Drawing.Point(101, 160);
-            this.cboGarantie.Name = "cboGarantie";
-            this.cboGarantie.Size = new System.Drawing.Size(109, 21);
-            this.cboGarantie.TabIndex = 5;
-            this.cboGarantie.DropDown += new System.EventHandler(this.cboGarantie_DropDown);
+            this.ctxMenuPhoto1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.smnCtxPhoto1});
+            this.ctxMenuPhoto1.Name = "ctxMenuPhoto1";
+            this.ctxMenuPhoto1.Size = new System.Drawing.Size(158, 26);
             // 
-            // pbQRCode
+            // smnCtxPhoto1
             // 
-            this.pbQRCode.Location = new System.Drawing.Point(6, 14);
-            this.pbQRCode.Name = "pbQRCode";
-            this.pbQRCode.Size = new System.Drawing.Size(112, 112);
-            this.pbQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbQRCode.TabIndex = 2;
-            this.pbQRCode.TabStop = false;
+            this.smnCtxPhoto1.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.smnCtxPhoto1.Name = "smnCtxPhoto1";
+            this.smnCtxPhoto1.Size = new System.Drawing.Size(157, 22);
+            this.smnCtxPhoto1.Text = "Charger photo1";
+            this.smnCtxPhoto1.ToolTipText = "Charger photo1";
+            this.smnCtxPhoto1.Click += new System.EventHandler(this.smnCtxPhoto1_Click);
             // 
-            // pbPhoto3
+            // ctxMenuPhoto2
             // 
-            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto3.Location = new System.Drawing.Point(278, 20);
-            this.pbPhoto3.Name = "pbPhoto3";
-            this.pbPhoto3.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto3.TabIndex = 44;
-            this.pbPhoto3.TabStop = false;
+            this.ctxMenuPhoto2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.smnCtxPhoto2});
+            this.ctxMenuPhoto2.Name = "ctxMenuPhoto1";
+            this.ctxMenuPhoto2.Size = new System.Drawing.Size(158, 26);
             // 
-            // pbPhoto2
+            // smnCtxPhoto2
             // 
-            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto2.Location = new System.Drawing.Point(142, 20);
-            this.pbPhoto2.Name = "pbPhoto2";
-            this.pbPhoto2.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto2.TabIndex = 43;
-            this.pbPhoto2.TabStop = false;
+            this.smnCtxPhoto2.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.smnCtxPhoto2.Name = "smnCtxPhoto2";
+            this.smnCtxPhoto2.Size = new System.Drawing.Size(157, 22);
+            this.smnCtxPhoto2.Text = "Charger photo2";
+            this.smnCtxPhoto2.ToolTipText = "Charger photo2";
+            this.smnCtxPhoto2.Click += new System.EventHandler(this.smnCtxPhoto2_Click);
             // 
-            // pbPhoto1
+            // ctxMenuPhoto3
             // 
-            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto1.Location = new System.Drawing.Point(7, 20);
-            this.pbPhoto1.Name = "pbPhoto1";
-            this.pbPhoto1.Size = new System.Drawing.Size(131, 131);
-            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto1.TabIndex = 2;
-            this.pbPhoto1.TabStop = false;
+            this.ctxMenuPhoto3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.smnCtxPhoto3});
+            this.ctxMenuPhoto3.Name = "ctxMenuPhoto1";
+            this.ctxMenuPhoto3.Size = new System.Drawing.Size(158, 26);
+            // 
+            // smnCtxPhoto3
+            // 
+            this.smnCtxPhoto3.ForeColor = System.Drawing.Color.SaddleBrown;
+            this.smnCtxPhoto3.Name = "smnCtxPhoto3";
+            this.smnCtxPhoto3.Size = new System.Drawing.Size(157, 22);
+            this.smnCtxPhoto3.Text = "Charger photo3";
+            this.smnCtxPhoto3.ToolTipText = "Charger photo3";
             // 
             // frmOrdinateur
             // 
@@ -2129,14 +2226,17 @@
             this.groupBox2.PerformLayout();
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
-            this.groupBox6.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pbQRCode)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.ctxMenuPhoto1.ResumeLayout(false);
+            this.ctxMenuPhoto2.ResumeLayout(false);
+            this.ctxMenuPhoto3.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -2236,77 +2336,6 @@
         private System.Windows.Forms.ComboBox cboPuissanceAdap;
         private System.Windows.Forms.TextBox txtNumeroCle;
         private System.Windows.Forms.TextBox txtDateModifie;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCode_str;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_categorie_materiel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_compte;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colQrcode;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_acquisition;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGuarantie;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_marque;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_modele;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_couleur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_poids;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_etat_materiel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colLabel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMac_adresse1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMac_adresse2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCommentaire;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_created;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_created;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_modified;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_modified;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_ordinateur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_clavier;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_os;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colRam;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colProcesseur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_coeur_processeur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_hdd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCapacite_hdd;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIndice_performance;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPouce;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_usb2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_usb3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_hdmi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_vga;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTension_batterie;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTension_adaptateur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPuissance_adaptateur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIntensite_adaptateur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNumero_cle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_imprimante;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colPuissance;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colIntensite;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_page_par_minute;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_amplificateur;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTension_alimentation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_usb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_memoire;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_sorties_audio;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_microphone;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colGain;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_routeur_ap;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_version_ios;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_gbe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_fe;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_fo;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_serial;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCapable_usb;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMotpasse_defaut;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDefault_ip;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_console;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_auxiliaire;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_ap;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_switch;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colFrequence;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colAlimentation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNombre_antenne;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_netette;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCompatible_wifi;
         private System.Windows.Forms.ComboBox cboMarque;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox cboProcesseur;
@@ -2329,7 +2358,84 @@
         private System.Windows.Forms.ComboBox cboTailleEcran;
         private System.Windows.Forms.LinkLabel lblAddGuaratie;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label lblStatusGuaraty;
         private System.Windows.Forms.ComboBox cboGarantie;
+        private System.Windows.Forms.ContextMenuStrip ctxMenuPhoto1;
+        private System.Windows.Forms.ToolStripMenuItem smnCtxPhoto1;
+        private System.Windows.Forms.ContextMenuStrip ctxMenuPhoto2;
+        private System.Windows.Forms.ToolStripMenuItem smnCtxPhoto2;
+        private System.Windows.Forms.ContextMenuStrip ctxMenuPhoto3;
+        private System.Windows.Forms.ToolStripMenuItem smnCtxPhoto3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCode_str;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_categorie_materiel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_compte;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colQrcode;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_acquisition;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid_garantie;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_marque;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_modele;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_couleur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_poids;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_etat_materiel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPhoto3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLabel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMac_adresse1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMac_adresse2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCommentaire;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_created;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_created;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_modified;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_modified;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_ordinateur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_clavier;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_os;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid_ram;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid_processeur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid_nombre_coeur_processeur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_hdd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_nombre_hdd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_capacite_hdd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_taille_ecran;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_usb2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_usb3;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_hdmi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_vga;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_tension_batterie;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_tension_adaptateur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_puissance_adaptateur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_intensite_adaptateur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNumero_cle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_imprimante;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_puissance;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_intensite;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_page_par_minute;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_amplificateur;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_tension_alimentation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_usb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_memoire;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_sorties_audio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_microphone;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_gain;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_routeur_ap;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_version_ios;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_gbe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_fe;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_fo;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_serial;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colCapable_usb;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_default_pwd;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_default_ip;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_console;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_auxiliaire;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_ap;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_type_switch;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_frequence;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colAlimentation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_antenne;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_netette;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colCompatible_wifi;
     }
 }

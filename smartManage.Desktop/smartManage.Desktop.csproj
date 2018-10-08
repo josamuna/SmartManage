@@ -30,8 +30,8 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationVersion>1.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -148,6 +148,12 @@
     </Compile>
     <Compile Include="frmAmplificateur.Designer.cs">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmFrequence.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFrequence.Designer.cs">
+      <DependentUpon>frmFrequence.cs</DependentUpon>
     </Compile>
     <Compile Include="frmDefaultPwd.cs">
       <SubType>Form</SubType>
@@ -534,6 +540,9 @@
     <EmbeddedResource Include="frmAdminRadiusDataView.resx">
       <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmFrequence.resx">
+      <DependentUpon>frmFrequence.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmDefaultPwd.resx">
       <DependentUpon>frmDefaultPwd.cs</DependentUpon>

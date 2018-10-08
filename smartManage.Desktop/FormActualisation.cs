@@ -47,6 +47,7 @@ namespace smartManage.Desktop
         frmDefaultPwd,
         frmNbrConsole,
         frmNbrAuxiliaire,
+        frmFrequence,
         frmNbrAntenne
     }
 }

@@ -143,3 +143,4 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.application
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.exe
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmFrequence.resources

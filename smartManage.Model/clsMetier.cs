@@ -238,7 +238,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM compte  WHERE";
                     sql += "  numero LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1052,7 +1052,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM marque  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1262,7 +1262,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM modele  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1684,7 +1684,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM couleur  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2105,7 +2105,7 @@ namespace smartManage.Model
                 {
                     string sql = "SELECT *  FROM poids  WHERE";
                     sql += "  user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2522,7 +2522,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_ordinateur  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2941,7 +2941,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_imprimante  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3105,6 +3105,213 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_IMPRIMANTE 
+        #region  CLSFREQUENCE
+        public clsfrequence getClsfrequence(object intid)
+        {
+            clsfrequence varclsfrequence = new clsfrequence();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM frequence WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfrequence.Id = int.Parse(dr["id"].ToString());
+                            varclsfrequence.Designation = dr["designation"].ToString();
+                            varclsfrequence.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfrequence.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfrequence.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfrequence.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsfrequence;
+        }
+
+        public List<clsfrequence> getAllClsfrequence(string criteria)
+        {
+            List<clsfrequence> lstclsfrequence = new List<clsfrequence>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM frequence  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsfrequence varclsfrequence = null;
+                        while (dr.Read())
+                        {
+                            varclsfrequence = new clsfrequence();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfrequence.Id = int.Parse(dr["id"].ToString());
+                            varclsfrequence.Designation = dr["designation"].ToString();
+                            varclsfrequence.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfrequence.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfrequence.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfrequence.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfrequence.Add(varclsfrequence);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfrequence;
+        }
+
+        public List<clsfrequence> getAllClsfrequence()
+        {
+            List<clsfrequence> lstclsfrequence = new List<clsfrequence>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM frequence ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsfrequence varclsfrequence = null;
+                        while (dr.Read())
+                        {
+                            varclsfrequence = new clsfrequence();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsfrequence.Id = int.Parse(dr["id"].ToString());
+                            varclsfrequence.Designation = dr["designation"].ToString();
+                            varclsfrequence.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsfrequence.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsfrequence.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsfrequence.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsfrequence.Add(varclsfrequence);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsfrequence;
+        }
+
+        public int insertClsfrequence(clsfrequence varclsfrequence)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO frequence ( id,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfrequence.Id));
+                    if (varclsfrequence.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, varclsfrequence.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, DBNull.Value));
+                    if (varclsfrequence.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfrequence.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfrequence.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfrequence.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfrequence.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfrequence.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfrequence.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfrequence.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsfrequence(clsfrequence varclsfrequence)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE frequence  SET designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    if (varclsfrequence.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, varclsfrequence.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 20, DBNull.Value));
+                    if (varclsfrequence.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsfrequence.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsfrequence.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsfrequence.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsfrequence.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsfrequence.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsfrequence.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfrequence.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfrequence.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsfrequence(clsfrequence varclsfrequence)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM frequence  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfrequence.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSFREQUENCE 
         #region  CLSANTENNE
         public clsantenne getClsantenne(object intid)
         {
@@ -3360,7 +3567,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_amplificateur  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3571,7 +3778,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_routeur_AP  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3782,7 +3989,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_AP  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3993,7 +4200,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_switch  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4204,7 +4411,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_clavier  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4415,7 +4622,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM etat_materiel  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4626,7 +4833,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_OS  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4837,7 +5044,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM architecture_OS  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5050,7 +5257,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM OS  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5269,7 +5476,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM version_ios  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5480,7 +5687,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM netette  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7312,6 +7519,73 @@ namespace smartManage.Model
 
         #endregion CLSTAILLE_ECRAN 
         #region  CLSMATERIEL
+        public string CalculateEndGuarany(int? dureeGuaraty, DateTime date_acquisition)
+        {
+            string str = "Durée de vie indeterminée";
+            if (dureeGuaraty.HasValue)
+            {
+                double duree_annee_estime_garantie = (double)dureeGuaraty;
+                TimeSpan ts = DateTime.Today - date_acquisition;
+                double duree_annee = (double)ts.Days / 365;
+                double annee_restantes = duree_annee_estime_garantie - duree_annee;
+
+                if (annee_restantes < 0)
+                {
+                    //Equipement obsolete
+                    if ((annee_restantes - (int)annee_restantes) < 0)
+                    {
+                        //Valeur decimale
+                        annee_restantes = Math.Abs(annee_restantes);
+                        int temps_annee = (int)(annee_restantes);
+                        double temps_mois = (annee_restantes - temps_annee) * 12;
+
+                        if ((temps_mois - (int)temps_mois) > 0)
+                        {
+                            double temps_jours = (temps_mois - (int)temps_mois) * 30;
+                            str = string.Format("Durée dépassée d'environs {0} ans, {1} mois et {2} jours", temps_annee, (int)temps_mois, (int)temps_jours);
+                        }
+                        else
+                        {
+                            str = string.Format("Durée dépassée d'environs {0} ans et {1} mois", temps_annee, (int)temps_mois);
+                        }
+                    }
+                    else
+                    {
+                        //Valeur entiere
+                        str = string.Format("Durée dépassée d'environs {0} ans", annee_restantes);
+                    }
+                }
+                else if (annee_restantes > 0)
+                {
+                    //Equipement non obsolete
+                    if ((annee_restantes - (int)annee_restantes) > 0)
+                    {
+                        //Valeur decimale
+                        int temps_annee = (int)annee_restantes;
+                        double temps_mois = (annee_restantes - temps_annee) * 12;
+
+                        if ((temps_mois - (int)temps_mois) > 0)
+                        {
+                            double temps_jours = (temps_mois - (int)temps_mois) * 30;
+                            str = string.Format("Durée d'environs {0} ans, {1} mois et {2} jours", temps_annee, (int)temps_mois, (int)temps_jours);
+                        }
+                        else
+                        {
+                            str = string.Format("Durée d'environs {0} ans et {1} mois", temps_annee, (int)temps_mois);
+                        }
+                    }
+                    else
+                    {
+                        //Valeur entiere
+                        str = string.Format("Durée d'environs {0} ans", annee_restantes);
+                    }
+                }
+            }
+            else
+                return str;
+            return str;
+        }
+
         public clsmateriel getClsmateriel(object intid)
         {
             clsmateriel varclsmateriel = new clsmateriel();
@@ -7392,7 +7666,7 @@ namespace smartManage.Model
                             if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_frequence"].ToString().Trim().Equals("")) varclsmateriel.Id_frequence = int.Parse(dr["id_frequence"].ToString());
                             if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
@@ -7430,8 +7704,7 @@ namespace smartManage.Model
                     sql += "  OR   mac_adresse2 LIKE '%" + criteria + "%'";
                     sql += "  OR   commentaire LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    sql += "  OR   frequence LIKE '%" + criteria + "%' ORDER BY code_str ASC";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY code_str ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7507,7 +7780,7 @@ namespace smartManage.Model
                             if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_frequence"].ToString().Trim().Equals("")) varclsmateriel.Id_frequence = int.Parse(dr["id_frequence"].ToString());
                             if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
@@ -7610,7 +7883,7 @@ namespace smartManage.Model
                             if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
                             if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
                             if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
-                            varclsmateriel.Frequence = dr["frequence"].ToString();
+                            if (!dr["id_frequence"].ToString().Trim().Equals("")) varclsmateriel.Id_frequence = int.Parse(dr["id_frequence"].ToString());
                             if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
                             if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
                             if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
@@ -7638,7 +7911,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("INSERT INTO materiel ( id,code_str,id_categorie_materiel,id_compte,qrcode,date_acquisition,id_garantie,id_marque,id_modele,id_couleur,id_poids,id_etat_materiel,photo1,photo2,photo3,label,mac_adresse1,mac_adresse2,commentaire,user_created,date_created,user_modified,date_modified,id_type_ordinateur,id_type_clavier,id_OS,id_ram,id_processeur,id_nombre_coeur_processeur,id_type_hdd,id_nombre_hdd,id_capacite_hdd,id_taille_ecran,id_usb2,id_usb3,id_hdmi,id_vga,id_tension_batterie,id_tension_adaptateur,id_puissance_adaptateur,id_intensite_adaptateur,numero_cle,id_type_imprimante,id_puissance,id_intensite,id_page_par_minute,id_type_amplificateur,id_tension_alimentation,id_usb,id_memoire,id_sorties_audio,id_microphone,id_gain,id_type_routeur_AP,id_version_ios,id_gbe,id_fe,id_fo,id_serial,capable_usb,id_default_pwd,id_default_ip,id_console,id_auxiliaire,id_type_AP,id_type_switch,frequence,id_antenne,id_netette,compatible_wifi ) VALUES (@id,@code_str,@id_categorie_materiel,@id_compte,@qrcode,@date_acquisition,@id_garantie,@id_marque,@id_modele,@id_couleur,@id_poids,@id_etat_materiel,@photo1,@photo2,@photo3,@label,@mac_adresse1,@mac_adresse2,@commentaire,@user_created,@date_created,@user_modified,@date_modified,@id_type_ordinateur,@id_type_clavier,@id_OS,@id_ram,@id_processeur,@id_nombre_coeur_processeur,@id_type_hdd,@id_nombre_hdd,@id_capacite_hdd,@id_taille_ecran,@id_usb2,@id_usb3,@id_hdmi,@id_vga,@id_tension_batterie,@id_tension_adaptateur,@id_puissance_adaptateur,@id_intensite_adaptateur,@numero_cle,@id_type_imprimante,@id_puissance,@id_intensite,@id_page_par_minute,@id_type_amplificateur,@id_tension_alimentation,@id_usb,@id_memoire,@id_sorties_audio,@id_microphone,@id_gain,@id_type_routeur_AP,@id_version_ios,@id_gbe,@id_fe,@id_fo,@id_serial,@capable_usb,@id_default_pwd,@id_default_ip,@id_console,@id_auxiliaire,@id_type_AP,@id_type_switch,@frequence,@id_antenne,@id_netette,@compatible_wifi  )");
+                    cmd.CommandText = string.Format("INSERT INTO materiel ( id,code_str,id_categorie_materiel,id_compte,qrcode,date_acquisition,id_garantie,id_marque,id_modele,id_couleur,id_poids,id_etat_materiel,photo1,photo2,photo3,label,mac_adresse1,mac_adresse2,commentaire,user_created,date_created,user_modified,date_modified,id_type_ordinateur,id_type_clavier,id_OS,id_ram,id_processeur,id_nombre_coeur_processeur,id_type_hdd,id_nombre_hdd,id_capacite_hdd,id_taille_ecran,id_usb2,id_usb3,id_hdmi,id_vga,id_tension_batterie,id_tension_adaptateur,id_puissance_adaptateur,id_intensite_adaptateur,numero_cle,id_type_imprimante,id_puissance,id_intensite,id_page_par_minute,id_type_amplificateur,id_tension_alimentation,id_usb,id_memoire,id_sorties_audio,id_microphone,id_gain,id_type_routeur_AP,id_version_ios,id_gbe,id_fe,id_fo,id_serial,capable_usb,id_default_pwd,id_default_ip,id_console,id_auxiliaire,id_type_AP,id_type_switch,id_frequence,id_antenne,id_netette,compatible_wifi ) VALUES (@id,@code_str,@id_categorie_materiel,@id_compte,@qrcode,@date_acquisition,@id_garantie,@id_marque,@id_modele,@id_couleur,@id_poids,@id_etat_materiel,@photo1,@photo2,@photo3,@label,@mac_adresse1,@mac_adresse2,@commentaire,@user_created,@date_created,@user_modified,@date_modified,@id_type_ordinateur,@id_type_clavier,@id_OS,@id_ram,@id_processeur,@id_nombre_coeur_processeur,@id_type_hdd,@id_nombre_hdd,@id_capacite_hdd,@id_taille_ecran,@id_usb2,@id_usb3,@id_hdmi,@id_vga,@id_tension_batterie,@id_tension_adaptateur,@id_puissance_adaptateur,@id_intensite_adaptateur,@numero_cle,@id_type_imprimante,@id_puissance,@id_intensite,@id_page_par_minute,@id_type_amplificateur,@id_tension_alimentation,@id_usb,@id_memoire,@id_sorties_audio,@id_microphone,@id_gain,@id_type_routeur_AP,@id_version_ios,@id_gbe,@id_fe,@id_fo,@id_serial,@capable_usb,@id_default_pwd,@id_default_ip,@id_console,@id_auxiliaire,@id_type_AP,@id_type_switch,@id_frequence,@id_antenne,@id_netette,@compatible_wifi  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     if (varclsmateriel.Code_str != null) cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, varclsmateriel.Code_str));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
@@ -7763,8 +8036,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_switch.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, varclsmateriel.Id_type_switch));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Frequence != null) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, varclsmateriel.Frequence));
-                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, DBNull.Value));
+                    if (varclsmateriel.Id_frequence.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_frequence", DbType.Int32, 4, varclsmateriel.Id_frequence));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_frequence", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, varclsmateriel.Id_antenne));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_netette.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, varclsmateriel.Id_netette));
@@ -7793,7 +8066,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE materiel  SET code_str=@code_str,id_categorie_materiel=@id_categorie_materiel,id_compte=@id_compte,qrcode=@qrcode,date_acquisition=@date_acquisition,id_garantie=@id_garantie,id_marque=@id_marque,id_modele=@id_modele,id_couleur=@id_couleur,id_poids=@id_poids,id_etat_materiel=@id_etat_materiel,photo1=@photo1,photo2=@photo2,photo3=@photo3,label=@label,mac_adresse1=@mac_adresse1,mac_adresse2=@mac_adresse2,commentaire=@commentaire,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,id_type_ordinateur=@id_type_ordinateur,id_type_clavier=@id_type_clavier,id_OS=@id_OS,id_ram=@id_ram,id_processeur=@id_processeur,id_nombre_coeur_processeur=@id_nombre_coeur_processeur,id_type_hdd=@id_type_hdd,id_nombre_hdd=@id_nombre_hdd,id_capacite_hdd=@id_capacite_hdd,id_taille_ecran=@id_taille_ecran,id_usb2=@id_usb2,id_usb3=@id_usb3,id_hdmi=@id_hdmi,id_vga=@id_vga,id_tension_batterie=@id_tension_batterie,id_tension_adaptateur=@id_tension_adaptateur,id_puissance_adaptateur=@id_puissance_adaptateur,id_intensite_adaptateur=@id_intensite_adaptateur,numero_cle=@numero_cle,id_type_imprimante=@id_type_imprimante,id_puissance=@id_puissance,id_intensite=@id_intensite,id_page_par_minute=@id_page_par_minute,id_type_amplificateur=@id_type_amplificateur,id_tension_alimentation=@id_tension_alimentation,id_usb=@id_usb,id_memoire=@id_memoire,id_sorties_audio=@id_sorties_audio,id_microphone=@id_microphone,id_gain=@id_gain,id_type_routeur_AP=@id_type_routeur_AP,id_version_ios=@id_version_ios,id_gbe=@id_gbe,id_fe=@id_fe,id_fo=@id_fo,id_serial=@id_serial,capable_usb=@capable_usb,id_default_pwd=@id_default_pwd,id_default_ip=@id_default_ip,id_console=@id_console,id_auxiliaire=@id_auxiliaire,id_type_AP=@id_type_AP,id_type_switch=@id_type_switch,frequence=@frequence,id_antenne=@id_antenne,id_netette=@id_netette,compatible_wifi=@compatible_wifi  WHERE 1=1  AND id=@id ");
+                    cmd.CommandText = string.Format("UPDATE materiel  SET code_str=@code_str,id_categorie_materiel=@id_categorie_materiel,id_compte=@id_compte,qrcode=@qrcode,date_acquisition=@date_acquisition,id_garantie=@id_garantie,id_marque=@id_marque,id_modele=@id_modele,id_couleur=@id_couleur,id_poids=@id_poids,id_etat_materiel=@id_etat_materiel,photo1=@photo1,photo2=@photo2,photo3=@photo3,label=@label,mac_adresse1=@mac_adresse1,mac_adresse2=@mac_adresse2,commentaire=@commentaire,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,id_type_ordinateur=@id_type_ordinateur,id_type_clavier=@id_type_clavier,id_OS=@id_OS,id_ram=@id_ram,id_processeur=@id_processeur,id_nombre_coeur_processeur=@id_nombre_coeur_processeur,id_type_hdd=@id_type_hdd,id_nombre_hdd=@id_nombre_hdd,id_capacite_hdd=@id_capacite_hdd,id_taille_ecran=@id_taille_ecran,id_usb2=@id_usb2,id_usb3=@id_usb3,id_hdmi=@id_hdmi,id_vga=@id_vga,id_tension_batterie=@id_tension_batterie,id_tension_adaptateur=@id_tension_adaptateur,id_puissance_adaptateur=@id_puissance_adaptateur,id_intensite_adaptateur=@id_intensite_adaptateur,numero_cle=@numero_cle,id_type_imprimante=@id_type_imprimante,id_puissance=@id_puissance,id_intensite=@id_intensite,id_page_par_minute=@id_page_par_minute,id_type_amplificateur=@id_type_amplificateur,id_tension_alimentation=@id_tension_alimentation,id_usb=@id_usb,id_memoire=@id_memoire,id_sorties_audio=@id_sorties_audio,id_microphone=@id_microphone,id_gain=@id_gain,id_type_routeur_AP=@id_type_routeur_AP,id_version_ios=@id_version_ios,id_gbe=@id_gbe,id_fe=@id_fe,id_fo=@id_fo,id_serial=@id_serial,capable_usb=@capable_usb,id_default_pwd=@id_default_pwd,id_default_ip=@id_default_ip,id_console=@id_console,id_auxiliaire=@id_auxiliaire,id_type_AP=@id_type_AP,id_type_switch=@id_type_switch,id_frequence=@id_frequence,id_antenne=@id_antenne,id_netette=@id_netette,compatible_wifi=@compatible_wifi  WHERE 1=1  AND id=@id ");
                     if (varclsmateriel.Code_str != null) cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, varclsmateriel.Code_str));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_categorie_materiel", DbType.Int32, 4, varclsmateriel.Id_categorie_materiel));
@@ -7917,8 +8190,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_AP", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_switch.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, varclsmateriel.Id_type_switch));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_switch", DbType.Int32, 4, DBNull.Value));
-                    if (varclsmateriel.Frequence != null) cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, varclsmateriel.Frequence));
-                    else cmd.Parameters.Add(getParameter(cmd, "@frequence", DbType.String, 20, DBNull.Value));
+                    if (varclsmateriel.Id_frequence.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_frequence", DbType.Int32, 4, varclsmateriel.Id_frequence));
+                    else cmd.Parameters.Add(getParameter(cmd, "@id_frequence", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_antenne.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, varclsmateriel.Id_antenne));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_antenne", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_netette.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, varclsmateriel.Id_netette));
@@ -8012,7 +8285,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM grade  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8439,7 +8712,7 @@ namespace smartManage.Model
                     sql += "  OR   postnom LIKE '%" + criteria + "%'";
                     sql += "  OR   prenom LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY nom ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8890,7 +9163,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM type_lieu_affectation  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -9311,7 +9584,7 @@ namespace smartManage.Model
                     sql += "  code_str LIKE '%" + criteria + "%'";
                     sql += "  OR   designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY code_str ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -9736,7 +10009,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM optio  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -10155,7 +10428,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM promotion  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -10576,7 +10849,7 @@ namespace smartManage.Model
                     sql += "  designation1 LIKE '%" + criteria + "%'";
                     sql += "  OR   designation2 LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation1 ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12732,7 +13005,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM salle  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13151,7 +13424,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM fonction  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13576,7 +13849,7 @@ namespace smartManage.Model
                     sql += "  code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16064,7 +16337,7 @@ namespace smartManage.Model
                     string sql = "SELECT *  FROM categorie_materiel  WHERE";
                     sql += "  designation LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {

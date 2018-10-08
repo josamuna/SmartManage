@@ -126,6 +126,7 @@ namespace smartManage.Desktop
         public void ActivateOnNewSelectionChangeDgvCommandButtons(bool blnStatus)
         {
             bdDelete.Enabled = blnStatus;
+            bdSave.Enabled = blnStatus;
         }
 
         public void ActivateOnSelectionChangeDgvExceptionCommandButtons(bool blnStatus)

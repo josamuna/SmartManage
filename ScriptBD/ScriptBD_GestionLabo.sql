@@ -705,6 +705,20 @@ create table auxiliaire
 )
 go
 
+--Fréquence de fonctionnement
+create table frequence
+(
+	id int,
+	designation varchar(20) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_frequence primary key(id),
+	constraint uk_frequence unique(designation)
+)
+go
+
 --Nombre d'antennes
 create table antenne
 (
@@ -796,7 +810,7 @@ create table materiel
 	--tension_alimentation
 	id_type_switch int,
 	--Emetteur
-	frequence varchar(20),
+	id_frequence int,
 	--alimentation varchar(20), utiliser id_tension_alimentation pour Amplificateur
 	id_antenne int,
 	--Retroprojecteurs
@@ -853,6 +867,7 @@ create table materiel
 	constraint fk_materiel_default_pwd foreign key(id_default_pwd) references default_pwd(id),
 	constraint fk_materiel_console foreign key(id_console) references console(id),
 	constraint fk_materiel_auxiliaire foreign key(id_auxiliaire) references auxiliaire(id),
+	constraint fk_materiel_frequence foreign key(id_frequence) references frequence(id),
 	constraint fk_materiel_antenne foreign key(id_antenne) references antenne(id),
 	constraint uk_materiel unique(code_str)
 )
@@ -1315,6 +1330,11 @@ insert into default_ip(id,designation,user_created,date_created,user_modified,da
 
 insert into default_pwd(id,designation,user_created,date_created,user_modified,date_modified) values
 (1,'admin','sa',GETDATE(),null,null),(2,'cisco','sa',GETDATE(),null,null)
+
+insert into frequence(id,designation,user_created,date_created,user_modified,date_modified) values
+(1,'255,1-227,1','sa',GETDATE(),null,null),(2,'256,9-228,9','sa',GETDATE(),null,null),
+(3,'263,4-239,4','sa',GETDATE(),null,null),(4,'247,1-218,2','sa',GETDATE(),null,null),
+(5,'252,1-214,1','sa',GETDATE(),null,null),(6,'254,6-230,7','sa',GETDATE(),null,null)
 
 insert into antenne(id,valeur,user_created,date_created,user_modified,date_modified) values
 (1,0,'sa',GETDATE(),null,null),(2,1,'sa',GETDATE(),null,null),

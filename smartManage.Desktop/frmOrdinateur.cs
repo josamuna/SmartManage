@@ -3,6 +3,8 @@ using smartManage.Model;
 using smartManage.Tools;
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace smartManage.Desktop
@@ -13,6 +15,32 @@ namespace smartManage.Desktop
         bool blnModifie = false;
         private clsmateriel materiel = new clsmateriel();
         int? newID = null;
+
+        //Delegate utilisation des threads
+        private delegate void LoadSomeData(string threadName);
+
+        //Timer for automatically unload thread for update comboBox on DropDown event
+        System.Timers.Timer tempsActualiseCombo = null;
+
+        //Timer for automatically unload thread for generate QrCode
+        System.Timers.Timer tempsGenerateQrCode = null;
+
+        //Timer for automatically unload thread for SelectionChange DataGridView event
+        System.Timers.Timer tempsSelectionChangeDataGrid = null;
+
+        //Timer for automatically unload thread for RefreshData method
+        System.Timers.Timer tempsRefreshData = null;
+
+        System.Timers.Timer tempsActivateForm = null;
+
+        //All thread for loading values
+        Thread tDataGrid = null;
+        Thread tSelectionChangeDataGrid = null;
+        Thread tLeftCombo = null, tMiddleCombo = null, tRightCombo = null;
+        Thread tActualiseComb = null;
+        Thread tGenerateQrCode = null;
+
+        bool firstLoad = false;
 
         public frmPrincipal Principal
         {
@@ -25,292 +53,24 @@ namespace smartManage.Desktop
             InitializeComponent();
         }
 
-        #region FOR GENERATE QRCode
-        public string SaveTempImage(System.Windows.Forms.PictureBox pbox)
+        #region Methods For THREAD
+        private void UnloadThreadRessource(Thread thread)
         {
-            string filename = Environment.GetEnvironmentVariables()["TEMP"].ToString() + @"\" + "fTmp" + DateTime.Now.Millisecond.ToString() + ".png";
-
-            using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite))
+            if (thread != null)
             {
-                System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
-                pbox.Image.Save(fs, imageFormat);
-                fs.Close();
-            }
-
-            return filename;
-        }
-
-        public void RemoveTempImage(string fileName)
-        {
-            if (System.IO.File.Exists(fileName))
-            {
-                System.IO.File.Delete(fileName);
-            }
-        }
-        #endregion
-
-        #region FOR BINDING
-        private void setMembersallcbo(ComboBox cbo, string displayMember, string valueMember)
-        {
-            cbo.DisplayMember = displayMember;
-            cbo.ValueMember = valueMember;
-        }
-
-        private void SetBindingControls(Control ctr, string ctr_prop, object objsrce, string obj_prop)
-        {
-            ctr.DataBindings.Clear();
-            ctr.DataBindings.Add(ctr_prop, objsrce, obj_prop, true, DataSourceUpdateMode.OnPropertyChanged);
-        }
-
-        private void Bs_Parse1(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto1.Image));
-            }
-            catch { }
-        }
-
-        private void Bs_Parse2(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto2.Image));
-            }
-            catch { }
-        }
-
-        private void Bs_Parse3(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto3.Image));
-            }
-            catch { }
-        }
-        void binding_Format1(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                pbPhoto1.Tag = null;
-                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
-                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
-                if (e.Value == null || e.Value.ToString() == "")
-                {
-                    pbPhoto1.Tag = "1";
-                }
-                else
-                {
-                    string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
-                }
-            }
-            catch { }
-        }
-
-        void binding_Format2(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                pbPhoto2.Tag = null;
-                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
-                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
-                if (e.Value == null || e.Value.ToString() == "")
-                {
-                    pbPhoto2.Tag = "1";
-                }
-                else
-                {
-                    string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
-                }
-            }
-            catch { }
-        }
-
-        void binding_Format3(object sender, ConvertEventArgs e)
-        {
-            try
-            {
-                pbPhoto3.Tag = null;
-                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
-                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
-                if (e.Value == null || e.Value.ToString() == "")
-                {
-                    pbPhoto3.Tag = "1";
-                }
-                else
-                {
-                    string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
-                }
-            }
-            catch { }
-        }
-
-        private void bingImg1(PictureBox pb, Object src, string ctrProp, string obj)
-        {
-            pb.DataBindings.Clear();
-            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
-            binding.Parse += new ConvertEventHandler(Bs_Parse1);
-            binding.Format += new ConvertEventHandler(binding_Format1);
-            pb.DataBindings.Add(binding);
-        }
-
-        private void bingImg2(PictureBox pb, Object src, string ctrProp, string obj)
-        {
-            pb.DataBindings.Clear();
-            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
-            binding.Parse += new ConvertEventHandler(Bs_Parse2);
-            binding.Format += new ConvertEventHandler(binding_Format2);
-            pb.DataBindings.Add(binding);
-        }
-
-        private void bingImg3(PictureBox pb, Object src, string ctrProp, string obj)
-        {
-            pb.DataBindings.Clear();
-            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
-            binding.Parse += new ConvertEventHandler(Bs_Parse3);
-            binding.Format += new ConvertEventHandler(binding_Format3);
-            pb.DataBindings.Add(binding);
-        }
-
-        private void BindingCls()
-        {
-            SetBindingControls(txtId, "Text", materiel, "Id");
-            SetBindingControls(txtIdentidiant, "Text", materiel, "Code_str");
-            SetBindingControls(cboCatMateriel, "SelectedValue", materiel, "Id_categorie_materiel");
-            SetBindingControls(cboNumCompte, "SelectedValue", materiel, "Id_compte");
-            SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
-            SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
-            SetBindingControls(cboGarantie, "Text", materiel, "Guarantie");
-            SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
-            SetBindingControls(cboModele, "SelectedValue", materiel, "Id_modele");
-            SetBindingControls(cboCouleur, "SelectedValue", materiel, "Id_couleur");
-            SetBindingControls(cboPoids, "SelectedValue", materiel, "Id_poids");
-            SetBindingControls(cboEtat, "SelectedValue", materiel, "Id_etat_materiel");
-            bingImg1(pbPhoto1, materiel, "Image", "Photo1");
-            bingImg2(pbPhoto2, materiel, "Image", "Photo2");
-            bingImg3(pbPhoto3, materiel, "Image", "Photo3");
-            SetBindingControls(txtMAC1, "Text", materiel, "Mac_adresse1");
-            SetBindingControls(txtMAC2, "Text", materiel, "Mac_adresse2");
-            SetBindingControls(txtCommentaire, "Text", materiel, "Commentaire");
-            SetBindingControls(txtCreateBy, "Text", materiel, "User_created");
-            SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
-            SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
-            SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");
-            
-            //Partie pour ordinateur
-            SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
-            SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedValue", materiel, "Id_os");
-            SetBindingControls(cboRAM, "Text", materiel, "Ram");
-            SetBindingControls(cboProcesseur, "Text", materiel, "Processeur");
-            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", materiel, "Nombre_coeur_processeur");
-            SetBindingControls(cboTypeHDD, "SelectedValue", materiel, "Nombre_hdd");
-            SetBindingControls(cboCapaciteHDD, "SelectedValue", materiel, "Capacite_hdd");
-            SetBindingControls(cboNbrHDD, "SelectedValue", materiel, "Indice_performance");
-            SetBindingControls(cboTailleEcran, "Text", materiel, "Pouce");
-            SetBindingControls(cboUSB2, "SelectedValue", materiel, "Nombre_usb2");
-            SetBindingControls(cboUSB3, "SelectedValue", materiel, "Nombre_usb3");
-            SetBindingControls(cboNbrHDMI, "SelectedValue", materiel, "Nombre_hdmi");
-            SetBindingControls(cboNbrVGA, "SelectedValue", materiel, "Nombre_vga");
-            SetBindingControls(cboTensionBatt, "SelectedValue", materiel, "Tension_batterie");
-            SetBindingControls(cboTensionAdap, "SelectedValue", materiel, "Tension_adaptateur");
-            SetBindingControls(cboPuissanceAdap, "SelectedValue", materiel, "Puissance_adaptateur");
-            SetBindingControls(cboIntensiteAdap, "SelectedValue", materiel, "Intensite_adaptateur");
-            SetBindingControls(txtNumeroCle, "Text", materiel, "Numero_cle");
-        }
-
-        private void BindingList()
-        {
-            SetBindingControls(txtId, "Text", bdsrc, "Id");
-            SetBindingControls(txtIdentidiant, "Text", bdsrc, "Code_str");
-            SetBindingControls(cboCatMateriel, "SelectedValue", bdsrc, "Id_categorie_materiel");
-            SetBindingControls(cboNumCompte, "SelectedValue", bdsrc, "Id_compte");
-            SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
-            SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
-            SetBindingControls(cboGarantie, "Text", bdsrc, "Guarantie");
-            SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
-            SetBindingControls(cboModele, "SelectedValue", bdsrc, "Id_modele");
-            SetBindingControls(cboCouleur, "SelectedValue", bdsrc, "Id_couleur");
-            SetBindingControls(cboPoids, "SelectedValue", bdsrc, "Id_poids");
-            SetBindingControls(cboEtat, "SelectedValue", bdsrc, "Id_etat_materiel");
-            bingImg1(pbPhoto1, bdsrc, "Image", "Photo1");
-            bingImg2(pbPhoto2, bdsrc, "Image", "Photo2");
-            bingImg3(pbPhoto3, bdsrc, "Image", "Photo3");
-            SetBindingControls(txtMAC1, "Text", bdsrc, "Mac_adresse1");
-            SetBindingControls(txtMAC2, "Text", bdsrc, "Mac_adresse2");
-            SetBindingControls(txtCommentaire, "Text", bdsrc, "Commentaire");
-            SetBindingControls(txtCreateBy, "Text", bdsrc, "User_created");
-            SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
-            SetBindingControls(txtModifieBy, "Text", bdsrc, "User_modified");
-            SetBindingControls(txtDateModifie, "Text", bdsrc, "Date_modified");
-
-            //Partie pour ordinateur
-            SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
-            SetBindingControls(cboTypeClavier, "SelectedValue", bdsrc, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedValue", bdsrc, "Id_os");
-            SetBindingControls(cboRAM, "Text", bdsrc, "Ram");
-            SetBindingControls(cboProcesseur, "Text", bdsrc, "Processeur");
-            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", bdsrc, "Nombre_coeur_processeur");
-            SetBindingControls(cboTypeHDD, "SelectedValue", bdsrc, "Nombre_hdd");
-            SetBindingControls(cboCapaciteHDD, "SelectedValue", bdsrc, "Capacite_hdd");
-            SetBindingControls(cboNbrHDD, "SelectedValue", bdsrc, "Indice_performance");
-            SetBindingControls(cboTailleEcran, "Text", bdsrc, "Pouce");
-            SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Nombre_usb2");
-            SetBindingControls(cboUSB3, "SelectedValue", bdsrc, "Nombre_usb3");
-            SetBindingControls(cboNbrHDMI, "SelectedValue", bdsrc, "Nombre_hdmi");
-            SetBindingControls(cboNbrVGA, "SelectedValue", bdsrc, "Nombre_vga");
-            SetBindingControls(cboTensionBatt, "SelectedValue", bdsrc, "Tension_batterie");
-            SetBindingControls(cboTensionAdap, "SelectedValue", bdsrc, "Tension_adaptateur");
-            SetBindingControls(cboPuissanceAdap, "SelectedValue", bdsrc, "Puissance_adaptateur");
-            SetBindingControls(cboIntensiteAdap, "SelectedValue", bdsrc, "Intensite_adaptateur");
-            SetBindingControls(txtNumeroCle, "Text", bdsrc, "Numero_cle");
-        }
-        #endregion
-
-        private void frmOrdinateur_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //Must be executed in new thred
-                RefreshData();
-
-                List<ComboBox> lstCombo = new List<ComboBox>(){ cboCatMateriel, cboNumCompte, cboGarantie, cboMarque, cboCouleur, cboPoids, cboEtat,
-                    cboTypeOrdi, cboTypeClavier, cboTypeOS, cboNbrCoeurProcesseur, cboTypeHDD, cboCapaciteHDD,
-                    cboNbrHDD , cboUSB2, cboUSB3, cboNbrHDMI, cboNbrVGA, cboTensionBatt, cboPuissanceAdap,
-                    cboTensionAdap, cboIntensiteAdap};
-
-                SetSelectedIndexComboBox(lstCombo);
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                thread.Abort();
+                thread = null;
             }
         }
 
-        private void SetSelectedIndexComboBox(List<ComboBox> cbo)
+        private void LoadLeftCombo(string threadName)
         {
-            foreach (ComboBox cmb in cbo)
-                if (cmb.Items.Count > 0)
-                    cmb.SelectedIndex = 0;
-        }
-
-        private void RefreshData()
-        {
-            bdsrc.DataSource = clsMetier.GetInstance().getAllClsmateriel();
-            Principal.SetDataSource(bdsrc);
-
-            dgv.DataSource = bdsrc;
-
             cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
             this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
             cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
             this.setMembersallcbo(cboNumCompte, "Numero", "Id");
+            cboGarantie.DataSource = clsMetier.GetInstance().getAllClsgarantie();
+            this.setMembersallcbo(cboGarantie, "Valeur", "Id");
             cboMarque.DataSource = clsMetier.GetInstance().getAllClsmarque();
             this.setMembersallcbo(cboMarque, "Designation", "Id");
             cboModele.DataSource = clsMetier.GetInstance().getAllClsmodele();
@@ -321,15 +81,34 @@ namespace smartManage.Desktop
             this.setMembersallcbo(cboPoids, "Valeur", "Id");
             cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
             this.setMembersallcbo(cboEtat, "Designation", "Id");
+
+            List<ComboBox> lstCombo = new List<ComboBox>() { cboCatMateriel, cboNumCompte, cboGarantie, cboMarque, cboModele, cboCouleur, cboPoids, cboEtat};
+
+            SetSelectedIndexComboBox(lstCombo);
+        }
+
+        private void ExecuteLeftCombo()
+        {
+            try
+            {
+                LoadSomeData leftCbo = new LoadSomeData(LoadLeftCombo);
+
+                this.Invoke(leftCbo, "tLeftCombo");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors du chargement des listes déroulantes left, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void LoadMiddleCombo(string threadName)
+        {
             cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
             this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
             cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
             this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
             cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
             this.setMembersallcbo(cboTypeOS, "Designation", "Id");
-
-            cboGarantie.DataSource = clsMetier.GetInstance().getAllClsgarantie();
-            this.setMembersallcbo(cboGarantie, "Valeur", "Id");
             cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
             this.setMembersallcbo(cboRAM, "Valeur", "Id");
             cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
@@ -348,6 +127,29 @@ namespace smartManage.Desktop
             this.setMembersallcbo(cboUSB2, "Valeur", "Id");
             cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb3();
             this.setMembersallcbo(cboUSB3, "Valeur", "Id");
+
+            List<ComboBox> lstCombo = new List<ComboBox>() { cboTypeOrdi, cboTypeClavier, cboTypeOS, cboRAM, cboProcesseur, cboNbrCoeurProcesseur,
+                cboTypeHDD, cboCapaciteHDD, cboNbrHDD, cboTailleEcran, cboUSB2, cboUSB3 };
+
+            SetSelectedIndexComboBox(lstCombo);
+        }
+
+        private void ExecuteMiddleCombo()
+        {
+            try
+            {
+                LoadSomeData middleCbo = new LoadSomeData(LoadMiddleCombo);
+
+                this.Invoke(middleCbo, "tMiddleCombo");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors du chargement des listes déroulantes middle, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void LoadRightCombo(string threadName)
+        {
             cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
             this.setMembersallcbo(cboNbrHDMI, "Valeur", "Id");
             cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
@@ -361,23 +163,127 @@ namespace smartManage.Desktop
             cboIntensiteAdap.DataSource = clsMetier.GetInstance().getAllClsintensite_adaptateur();
             this.setMembersallcbo(cboIntensiteAdap, "Valeur", "Id");
 
-            if (bdsrc.Count == 0)
+            List<ComboBox> lstCombo = new List<ComboBox>() { cboNbrHDMI, cboNbrVGA, cboTensionBatt, cboTensionAdap, cboPuissanceAdap, cboIntensiteAdap };
+
+            SetSelectedIndexComboBox(lstCombo);
+        }
+
+        private void ExecuteRightCombo()
+        {
+            try
             {
-                Principal.ActivateOnLoadCommandButtons(false);
+                LoadSomeData rightCbo = new LoadSomeData(LoadRightCombo);
+
+                this.Invoke(rightCbo, "tRightCombo");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors du chargement des listes déroulantes right, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
-        private void frmOrdinateur_Activated(object sender, EventArgs e)
+        private void LoadDataGrid(string threadName)
         {
-            Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
-            Principal.SetCurrentICRUDChildForm(this);
-            frmOrdinateur_Load(sender, e);
+            bdsrc.DataSource = clsMetier.GetInstance().getAllClsmateriel();
+            Principal.SetDataSource(bdsrc);
+
+            dgv.DataSource = bdsrc;
         }
 
-        private void ActualiseComboBoxModification()
+        private void ExecuteDataGrid()
+        {
+            try
+            {
+                LoadSomeData datagrid = new LoadSomeData(LoadDataGrid);
+
+                this.Invoke(datagrid, "tDataGrid");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors du chargement de la zone d'affichage, {0}", ex.Message), "Chargement zone d'affichage", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void GenerateQrCode(string threadName)
+        {
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            sb.Append(string.Format("{0}-{1}", txtId.Text, ((clscategorie_materiel)cboCatMateriel.SelectedItem).Id.ToString()));
+            txtIdentidiant.Text = sb.ToString();
+
+            //Creating QrCode 
+            clsTools tool = new clsTools();
+            System.Drawing.Image img = QRCodeImage.GetGenerateQRCode(txtIdentidiant.Text, "L", "", 0);//L, M ou Q
+            pbQRCode.Image = img;
+
+            //Convert PictureBox image to Base64 text
+            //Save a temp image file
+            string fileName = tool.SaveTempImage(pbQRCode);
+            txtQRCode.Text = tool.ImageToString64(tool.GetImageFromByte(fileName));
+
+            //Remove the temp image created
+            tool.RemoveTempImage(fileName);
+        }
+
+        private void ExecuteGenerateQrCode()
+        {
+            try
+            {
+                LoadSomeData codeQr = new LoadSomeData(GenerateQrCode);
+
+                this.Invoke(codeQr, "tQrCode");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de la génération du QrCode, {0}", ex.Message), "Génération QrCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void DoExecuteSelectionDataGrid(string threadName)
+        {
+            BindingList();
+            blnModifie = true;
+            Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
+
+            try
+            {
+                //Affectation de la duree restante par rapport a la garantie de l'equipement
+                int? duree = null;
+
+                if(cboGarantie.SelectedValue != null)
+                    duree = int.Parse(cboGarantie.SelectedValue.ToString());
+
+                lblStatusGuaraty.Text = clsMetier.GetInstance().CalculateEndGuarany(duree, DateTime.Parse(txtDateAcquisition.Text));
+            }
+            catch
+            {
+                lblStatusGuaraty.Text = "Erreur de génération alerte";
+            }
+
+            //Affiche QrCode from rtfTextBox
+            pbQRCode.Image = null;
+            pbQRCode.Image = new clsTools().LoadImage(txtQRCode.Text);
+        }
+
+        private void ExecuteSelectionDataGrid()
+        {
+            LoadSomeData selectDataGrid = new LoadSomeData(DoExecuteSelectionDataGrid);
+            
+            try
+            {
+                this.Invoke(selectDataGrid, "tSelectedItemDataGrid");
+            }
+            catch 
+            {
+                blnModifie = false;
+                Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
+            }
+        }
+
+        #region Actualise value in ComboBox
+        private void CallActualiseComboBoxModification(string threadName)
         {
             //Actualisation des combobox si modification
-            
+
             if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifie))
             {
                 if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCategorieMateriel.ToString()))
@@ -515,9 +421,491 @@ namespace smartManage.Desktop
             smartManage.Desktop.Properties.Settings.Default.strFormModifie = "";
         }
 
+        private void ActualiseComboBoxModification()
+        {
+            try
+            {
+                LoadSomeData actualiseCboModifie = new LoadSomeData(CallActualiseComboBoxModification);
+
+                this.Invoke(actualiseCboModifie, "tActualiseComb");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de l'actuaisation de la liste deroulante, {0}", ex.Message), "Actuelisation liste deroulante", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void TempsActualiseCombo_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tActualiseComb != null)
+            {
+                if (!tActualiseComb.IsAlive)
+                {
+                    tempsActualiseCombo.Enabled = false;
+                    tActualiseComb.Abort();
+                    tActualiseComb = null;
+                }
+            }
+        }
+
+        private void TempsGenerateQrCode_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tGenerateQrCode != null)
+            {
+                if (!tGenerateQrCode.IsAlive)
+                {
+                    tempsGenerateQrCode.Enabled = false;
+                    tGenerateQrCode.Abort();
+                    tGenerateQrCode = null;
+                }
+            }
+        }
+
+        private void TempsSelectionChangeDataGrid_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tSelectionChangeDataGrid != null)
+            {
+                if (!tSelectionChangeDataGrid.IsAlive)
+                {
+                    tempsSelectionChangeDataGrid.Enabled = false;
+                    tSelectionChangeDataGrid.Abort();
+                    tSelectionChangeDataGrid = null;
+
+                    //try
+                    //{
+                    //    //Try to unload old image ressources
+                    //    var oldImage1 = pbPhoto1.Image;
+                    //    var oldImage2 = pbPhoto2.Image;
+                    //    var oldImage3 = pbPhoto3.Image;
+                    //    var oldImageQrCode = pbQRCode.Image;
+
+                    //    if (oldImage1 != null)
+                    //        ((IDisposable)oldImage1).Dispose();
+                    //    if (oldImage2 != null)
+                    //        ((IDisposable)oldImage2).Dispose();
+                    //    if (oldImage3 != null)
+                    //        ((IDisposable)oldImage3).Dispose();
+                    //    if (oldImageQrCode != null)
+                    //        ((IDisposable)oldImageQrCode).Dispose();
+                    //}catch(Exception ex) { }
+                }
+            }
+        }
+
+        private void TempsActivateForm_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tDataGrid != null)
+            {
+                if (!tDataGrid.IsAlive)
+                {
+                    tempsActivateForm.Enabled = false;
+                    tDataGrid.Abort();
+                    tDataGrid = null; 
+                }
+            }
+        }
+
+        private void TempsRefreshData_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tLeftCombo != null || tMiddleCombo != null || tRightCombo != null || tDataGrid != null)
+            {
+                if (!tRightCombo.IsAlive)
+                {
+                    if (!tMiddleCombo.IsAlive)
+                    {
+                        if (!tDataGrid.IsAlive)
+                        {
+                            if (!tLeftCombo.IsAlive)
+                            {
+                                tempsRefreshData.Enabled = false;
+
+                                tLeftCombo.Abort();
+                                tLeftCombo = null;
+
+                                tDataGrid.Abort();
+                                tDataGrid = null;
+
+                                tMiddleCombo.Abort();
+                                tMiddleCombo = null;
+
+                                tRightCombo.Abort();
+                                tRightCombo = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void DoActualiseDropDown()
+        {
+            tempsActualiseCombo.Enabled = true;
+            tempsActualiseCombo.Elapsed += TempsActualiseCombo_Elapsed;
+
+            if (tActualiseComb == null)
+            {
+                tActualiseComb = new Thread(new ThreadStart(ActualiseComboBoxModification));
+                tActualiseComb.Start();
+            }
+        }
+        #endregion  
+
+        #endregion
+
+        #region FOR GENERATE QRCode
+        public string SaveTempImage(System.Windows.Forms.PictureBox pbox)
+        {
+            string filename = Environment.GetEnvironmentVariables()["TEMP"].ToString() + @"\" + "fTmp" + DateTime.Now.Millisecond.ToString() + ".png";
+
+            using (System.IO.FileStream fs = new System.IO.FileStream(filename, System.IO.FileMode.Create, System.IO.FileAccess.ReadWrite))
+            {
+                System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
+                pbox.Image.Save(fs, imageFormat);
+                fs.Close();
+            }
+
+            return filename;
+        }
+
+        public void RemoveTempImage(string fileName)
+        {
+            if (System.IO.File.Exists(fileName))
+            {
+                System.IO.File.Delete(fileName);
+            }
+        }
+        #endregion
+
+        #region FOR BINDING
+        private void setMembersallcbo(ComboBox cbo, string displayMember, string valueMember)
+        {
+            cbo.DisplayMember = displayMember;
+            cbo.ValueMember = valueMember;
+        }
+
+        private void SetBindingControls(Control ctr, string ctr_prop, object objsrce, string obj_prop)
+        {
+            ctr.DataBindings.Clear();
+            ctr.DataBindings.Add(ctr_prop, objsrce, obj_prop, true, DataSourceUpdateMode.OnPropertyChanged);
+        }
+
+        private void Bs_Parse1(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                if (e.Value == null) e = null;
+                else e.Value = (new clsTools().ImageToString64(pbPhoto1.Image));
+            }
+            catch { }
+        }
+
+        private void Bs_Parse2(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                if (e.Value == null) e = null;
+                else e.Value = (new clsTools().ImageToString64(pbPhoto2.Image));
+            }
+            catch { }
+        }
+
+        private void Bs_Parse3(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                if (e.Value == null) e = null;
+                else e.Value = (new clsTools().ImageToString64(pbPhoto3.Image));
+            }
+            catch { }
+        }
+        void binding_Format1(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                pbPhoto1.Tag = null;
+                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
+                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
+                if (e.Value == null || e.Value.ToString() == "")
+                {
+                    pbPhoto1.Tag = "1";
+                    pbPhoto1.Image = null;
+                }
+                else
+                {
+                    string imagestr = e.Value.ToString();
+                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                }
+            }
+            catch { }
+        }
+
+        void binding_Format2(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                pbPhoto2.Tag = null;
+                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
+                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
+                if (e.Value == null || e.Value.ToString() == "")
+                {
+                    pbPhoto2.Tag = "1";
+                    pbPhoto2.Image = null;
+                }
+                else
+                {
+                    string imagestr = e.Value.ToString();
+                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                }
+            }
+            catch { }
+        }
+
+        void binding_Format3(object sender, ConvertEventArgs e)
+        {
+            try
+            {
+                pbPhoto3.Tag = null;
+                if (e.DesiredType != typeof(System.Drawing.Image) || e.Value.ToString() == e.DesiredType.FullName || e.Value.ToString() == e.DesiredType.Name) return;
+                if (e.Value.ToString() == "System.Drawing.Bitmap") return;
+                if (e.Value == null || e.Value.ToString() == "")
+                {
+                    pbPhoto3.Tag = "1";
+                    pbPhoto3.Image = null;
+                }
+                else
+                {
+                    string imagestr = e.Value.ToString();
+                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                }
+            }
+            catch { }
+        }
+
+        private void bingImg1(PictureBox pb, Object src, string ctrProp, string obj)
+        {
+            pb.DataBindings.Clear();
+            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
+            binding.Parse += new ConvertEventHandler(Bs_Parse1);
+            binding.Format += new ConvertEventHandler(binding_Format1);
+            pb.DataBindings.Add(binding);
+        }
+
+        private void bingImg2(PictureBox pb, Object src, string ctrProp, string obj)
+        {
+            pb.DataBindings.Clear();
+            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
+            binding.Parse += new ConvertEventHandler(Bs_Parse2);
+            binding.Format += new ConvertEventHandler(binding_Format2);
+            pb.DataBindings.Add(binding);
+        }
+
+        private void bingImg3(PictureBox pb, Object src, string ctrProp, string obj)
+        {
+            pb.DataBindings.Clear();
+            Binding binding = new Binding(ctrProp, src, obj, true, DataSourceUpdateMode.OnPropertyChanged);
+            binding.Parse += new ConvertEventHandler(Bs_Parse3);
+            binding.Format += new ConvertEventHandler(binding_Format3);
+            pb.DataBindings.Add(binding);
+        }
+
+        private void BindingCls()
+        {
+            SetBindingControls(txtId, "Text", materiel, "Id");
+            SetBindingControls(txtIdentidiant, "Text", materiel, "Code_str");
+            SetBindingControls(cboCatMateriel, "SelectedValue", materiel, "Id_categorie_materiel");
+            SetBindingControls(cboNumCompte, "SelectedValue", materiel, "Id_compte");
+            SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
+            SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
+            SetBindingControls(cboGarantie, "SelectedValue", materiel, "Id_garantie");
+            SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
+            SetBindingControls(cboModele, "SelectedValue", materiel, "Id_modele");
+            SetBindingControls(cboCouleur, "SelectedValue", materiel, "Id_couleur");
+            SetBindingControls(cboPoids, "SelectedValue", materiel, "Id_poids");
+            SetBindingControls(cboEtat, "SelectedValue", materiel, "Id_etat_materiel");
+            bingImg1(pbPhoto1, materiel, "Image", "Photo1");
+            bingImg2(pbPhoto2, materiel, "Image", "Photo2");
+            bingImg3(pbPhoto3, materiel, "Image", "Photo3");
+            SetBindingControls(txtMAC1, "Text", materiel, "Mac_adresse1");
+            SetBindingControls(txtMAC2, "Text", materiel, "Mac_adresse2");
+            SetBindingControls(txtCommentaire, "Text", materiel, "Commentaire");
+            SetBindingControls(txtCreateBy, "Text", materiel, "User_created");
+            SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
+            SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
+            SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");
+            
+            //Partie pour ordinateur
+            SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
+            SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
+            SetBindingControls(cboTypeOS, "SelectedValue", materiel, "Id_os");
+            SetBindingControls(cboRAM, "SelectedValue", materiel, "Id_ram");
+            SetBindingControls(cboProcesseur, "SelectedValue", materiel, "Id_processeur");
+            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", materiel, "Id_nombre_coeur_processeur");
+            SetBindingControls(cboTypeHDD, "SelectedValue", materiel, "Id_type_hdd");
+            SetBindingControls(cboCapaciteHDD, "SelectedValue", materiel, "Id_capacite_hdd");
+            SetBindingControls(cboNbrHDD, "SelectedValue", materiel, "Id_nombre_hdd");
+            SetBindingControls(cboTailleEcran, "SelectedValue", materiel, "Id_taille_ecran");
+            SetBindingControls(cboUSB2, "SelectedValue", materiel, "Id_usb2");
+            SetBindingControls(cboUSB3, "SelectedValue", materiel, "Id_usb3");
+            SetBindingControls(cboNbrHDMI, "SelectedValue", materiel, "Id_hdmi");
+            SetBindingControls(cboNbrVGA, "SelectedValue", materiel, "Id_vga");
+            SetBindingControls(cboTensionBatt, "SelectedValue", materiel, "Id_tension_batterie");
+            SetBindingControls(cboTensionAdap, "SelectedValue", materiel, "Id_tension_adaptateur");
+            SetBindingControls(cboPuissanceAdap, "SelectedValue", materiel, "Id_puissance_adaptateur");
+            SetBindingControls(cboIntensiteAdap, "SelectedValue", materiel, "Id_intensite_adaptateur");
+            SetBindingControls(txtNumeroCle, "Text", materiel, "Numero_cle");
+        }
+
+        private void BindingList()
+        {
+            SetBindingControls(txtId, "Text", bdsrc, "Id");
+            SetBindingControls(txtIdentidiant, "Text", bdsrc, "Code_str");
+            SetBindingControls(cboCatMateriel, "SelectedValue", bdsrc, "Id_categorie_materiel");
+            SetBindingControls(cboNumCompte, "SelectedValue", bdsrc, "Id_compte");
+            SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
+            SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
+            SetBindingControls(cboGarantie, "SelectedValue", bdsrc, "Id_garantie");
+            SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
+            SetBindingControls(cboModele, "SelectedValue", bdsrc, "Id_modele");
+            SetBindingControls(cboCouleur, "SelectedValue", bdsrc, "Id_couleur");
+            SetBindingControls(cboPoids, "SelectedValue", bdsrc, "Id_poids");
+            SetBindingControls(cboEtat, "SelectedValue", bdsrc, "Id_etat_materiel");
+            bingImg1(pbPhoto1, bdsrc, "Image", "Photo1");
+            bingImg2(pbPhoto2, bdsrc, "Image", "Photo2");
+            bingImg3(pbPhoto3, bdsrc, "Image", "Photo3");
+            SetBindingControls(txtMAC1, "Text", bdsrc, "Mac_adresse1");
+            SetBindingControls(txtMAC2, "Text", bdsrc, "Mac_adresse2");
+            SetBindingControls(txtCommentaire, "Text", bdsrc, "Commentaire");
+            SetBindingControls(txtCreateBy, "Text", bdsrc, "User_created");
+            SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
+            SetBindingControls(txtModifieBy, "Text", bdsrc, "User_modified");
+            SetBindingControls(txtDateModifie, "Text", bdsrc, "Date_modified");
+
+            //Partie pour ordinateur
+            SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
+            SetBindingControls(cboTypeClavier, "SelectedValue", bdsrc, "Id_type_clavier");
+            SetBindingControls(cboTypeOS, "SelectedValue", bdsrc, "Id_os");
+            SetBindingControls(cboRAM, "SelectedValue", bdsrc, "Id_ram");
+            SetBindingControls(cboProcesseur, "SelectedValue", bdsrc, "Id_processeur");
+            SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", bdsrc, "Id_nombre_coeur_processeur");
+            SetBindingControls(cboTypeHDD, "SelectedValue", bdsrc, "Id_type_hdd");
+            SetBindingControls(cboCapaciteHDD, "SelectedValue", bdsrc, "Id_capacite_hdd");
+            SetBindingControls(cboNbrHDD, "SelectedValue", bdsrc, "Id_nombre_hdd");
+            SetBindingControls(cboTailleEcran, "SelectedValue", bdsrc, "Id_taille_ecran");
+            SetBindingControls(cboUSB2, "SelectedValue", bdsrc, "Id_usb2");
+            SetBindingControls(cboUSB3, "SelectedValue", bdsrc, "Id_usb3");
+            SetBindingControls(cboNbrHDMI, "SelectedValue", bdsrc, "Id_hdmi");
+            SetBindingControls(cboNbrVGA, "SelectedValue", bdsrc, "Id_vga");
+            SetBindingControls(cboTensionBatt, "SelectedValue", bdsrc, "Id_tension_batterie");
+            SetBindingControls(cboTensionAdap, "SelectedValue", bdsrc, "Id_tension_adaptateur");
+            SetBindingControls(cboPuissanceAdap, "SelectedValue", bdsrc, "Id_puissance_adaptateur");
+            SetBindingControls(cboIntensiteAdap, "SelectedValue", bdsrc, "Id_intensite_adaptateur");
+            SetBindingControls(txtNumeroCle, "Text", bdsrc, "Numero_cle");
+        }
+        #endregion
+
+        private void frmOrdinateur_Load(object sender, EventArgs e)
+        {
+            //Initialise timers
+            tempsActualiseCombo = new System.Timers.Timer();
+            tempsActualiseCombo.Interval = 100;
+
+            tempsGenerateQrCode = new System.Timers.Timer();
+            tempsGenerateQrCode.Interval = 100;
+
+            tempsSelectionChangeDataGrid = new System.Timers.Timer();
+            tempsSelectionChangeDataGrid.Interval = 100;
+
+            tempsRefreshData = new System.Timers.Timer();
+            tempsRefreshData.Interval = 100;
+
+            tempsActivateForm = new System.Timers.Timer();
+            tempsActivateForm.Interval = 100;
+
+            //Affecte MenuStrip
+            pbPhoto1.ContextMenuStrip = ctxMenuPhoto1;
+            pbPhoto2.ContextMenuStrip = ctxMenuPhoto2;
+            pbPhoto3.ContextMenuStrip = ctxMenuPhoto3;
+
+            //executed in many independant thread
+            RefreshData();
+        }
+
+        private void SetSelectedIndexComboBox(List<ComboBox> cbo)
+        {
+            foreach (ComboBox cmb in cbo)
+                if (cmb.Items.Count > 0)
+                    cmb.SelectedIndex = 0;
+        }
+
+        private void RefreshData()
+        {
+            tempsRefreshData.Enabled = true;
+            tempsRefreshData.Elapsed += TempsRefreshData_Elapsed;
+
+            if (tLeftCombo == null)
+            {
+                tLeftCombo = new Thread(new ThreadStart(ExecuteLeftCombo));
+                tLeftCombo.Start();
+
+                tMiddleCombo = new Thread(new ThreadStart(ExecuteMiddleCombo));
+                tMiddleCombo.Start();
+
+                tRightCombo = new Thread(new ThreadStart(ExecuteRightCombo));
+                tRightCombo.Start();
+
+                tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+                tDataGrid.Start();
+            }
+            else
+            {
+                tLeftCombo.Abort();
+                tLeftCombo = null;
+            }
+
+            if (bdsrc.Count == 0)
+            {
+                Principal.ActivateOnLoadCommandButtons(false);
+            }
+        }
+
+        private void frmOrdinateur_Activated(object sender, EventArgs e)
+        {
+            Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
+            Principal.SetCurrentICRUDChildForm(this);
+
+            if (firstLoad)
+            {
+                tempsActivateForm.Enabled = true;
+                tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+
+                if (tDataGrid == null)
+                {
+                    tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+                    tDataGrid.Start();
+                }
+            }
+
+            firstLoad = true;
+        }
+
         private void frmOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
         {
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Attente d'une action de l'utilisateur");
+
+            //Reinitialise all Thread
+            try
+            {
+                this.UnloadThreadRessource(tDataGrid);
+                this.UnloadThreadRessource(tSelectionChangeDataGrid);
+                this.UnloadThreadRessource(tGenerateQrCode);
+                this.UnloadThreadRessource(tLeftCombo);
+                this.UnloadThreadRessource(tRightCombo);
+                this.UnloadThreadRessource(tMiddleCombo);
+                this.UnloadThreadRessource(tActualiseComb);
+            }
+            catch { }
+
+            Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
         }
 
         public void New()
@@ -538,6 +926,7 @@ namespace smartManage.Desktop
                 txtId.Text = newID.ToString();
                 txtCreateBy.Text = smartManage.Desktop.Properties.Settings.Default.UserConnected;
                 txtDateCreate.Text = DateTime.Now.ToString();
+                lblStatusGuaraty.Text = "";
             }
             catch (Exception)
             {
@@ -659,16 +1048,14 @@ namespace smartManage.Desktop
 
         private void dgv_SelectionChanged(object sender, EventArgs e)
         {
-            try
+            tempsSelectionChangeDataGrid.Enabled = true;
+            tempsSelectionChangeDataGrid.Elapsed += TempsSelectionChangeDataGrid_Elapsed;
+
+            //Executed in thread
+            if(tSelectionChangeDataGrid == null)
             {
-                BindingList();
-                blnModifie = true;
-                Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
-            }
-            catch (Exception)
-            {
-                blnModifie = false;
-                Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
+                tSelectionChangeDataGrid = new Thread(new ThreadStart(ExecuteSelectionDataGrid));
+                tSelectionChangeDataGrid.Start();
             }
         }
 
@@ -688,20 +1075,12 @@ namespace smartManage.Desktop
 
         private void cboCatMateriel_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboNumCompte_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void lblAddMarque_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -720,173 +1099,97 @@ namespace smartManage.Desktop
 
         private void cboModele_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboCouleur_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboPoids_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboEtat_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTypeOrdi_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTypeClavier_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTypeOS_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboNbrCoeurProcesseur_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboNbrHDD_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboCapaciteHDD_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboIndicePC_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboUSB2_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboUSB3_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboNbrHDMI_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboNbrVGA_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTensionBatt_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTensionAdap_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboPuissanceAdap_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboIntensiteAdap_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void lblAddCouleur_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -933,55 +1236,44 @@ namespace smartManage.Desktop
 
         private void cboCatMateriel_Leave(object sender, EventArgs e)
         {
-            try
+            tempsGenerateQrCode.Enabled = true;
+            tempsGenerateQrCode.Elapsed += TempsGenerateQrCode_Elapsed;
+
+            //Executed in new thread
+            if(tGenerateQrCode == null)
             {
-                //Must be executed in new thred
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                sb.Append(string.Format("{0}-{1}", txtId.Text, ((clscategorie_materiel)cboCatMateriel.SelectedItem).Id.ToString()));
-                txtIdentidiant.Text = sb.ToString();
-
-                //Creating QrCode 
-                clsTools tool = new clsTools();
-                System.Drawing.Image img = QRCodeImage.GetGenerateQRCode(txtIdentidiant.Text, "L", "", 0);//L, M ou Q
-                pbQRCode.Image = img;
-
-                //Convert PictureBox image to Base64 text
-                //Save a temp image file
-                string fileName = tool.SaveTempImage(pbQRCode);
-                txtQRCode.Text = tool.ImageToString64(tool.GetImageFromByte(fileName));
-
-                //Remove the temp image created
-                tool.RemoveTempImage(fileName);
+                tGenerateQrCode = new Thread(new ThreadStart(ExecuteGenerateQrCode));
+                tGenerateQrCode.Start();
             }
-            catch (Exception) { }
         }
 
         private void cboMarque_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void lblPhoto1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
-
-                if (result == DialogResult.OK)
-                {
-                    pbPhoto1.Load(open.FileName);
-                    materiel.Photo1 = new clsTools().ImageToString64(open.FileName);
-                }
+                LoadPicture1();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo1", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void LoadPicture1()
+        {
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
+
+            if (result == DialogResult.OK)
+            {
+                pbPhoto1.Load(open.FileName);
+                materiel.Photo1 = new clsTools().ImageToString64(open.FileName);
             }
         }
 
@@ -997,15 +1289,7 @@ namespace smartManage.Desktop
         {
             try
             {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
-
-                if (result == DialogResult.OK)
-                {
-                    pbPhoto2.Load(open.FileName);
-                    materiel.Photo2 = new clsTools().ImageToString64(open.FileName);
-                }
+                LoadPicture2();
             }
             catch (Exception ex)
             {
@@ -1013,23 +1297,41 @@ namespace smartManage.Desktop
             }
         }
 
+        private void LoadPicture2()
+        {
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
+
+            if (result == DialogResult.OK)
+            {
+                pbPhoto2.Load(open.FileName);
+                materiel.Photo2 = new clsTools().ImageToString64(open.FileName);
+            }
+        }
+
         private void lblPhoto3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             try
             {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
-
-                if (result == DialogResult.OK)
-                {
-                    pbPhoto3.Load(open.FileName);
-                    materiel.Photo3 = new clsTools().ImageToString64(open.FileName);
-                }
+                LoadPicture3();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo3", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void LoadPicture3()
+        {
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
+
+            if (result == DialogResult.OK)
+            {
+                pbPhoto3.Load(open.FileName);
+                materiel.Photo3 = new clsTools().ImageToString64(open.FileName);
             }
         }
 
@@ -1042,38 +1344,22 @@ namespace smartManage.Desktop
 
         private void cboGarantie_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboRAM_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboProcesseur_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void cboTailleEcran_DropDown(object sender, EventArgs e)
         {
-            try
-            {
-                ActualiseComboBoxModification();
-            }
-            catch (Exception) { }
+            DoActualiseDropDown();
         }
 
         private void lblAddRAM_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1179,6 +1465,30 @@ namespace smartManage.Desktop
             frmIntensiteAdaptateur frm = new frmIntensiteAdaptateur();
             frm.Icon = this.Icon;
             frm.ShowDialog();
+        }
+
+        private void smnCtxPhoto1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadPicture1();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo1", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void smnCtxPhoto2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadPicture2();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo2", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
     }
 }

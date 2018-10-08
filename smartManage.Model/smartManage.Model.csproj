@@ -61,6 +61,7 @@
     <Compile Include="clsfe.cs" />
     <Compile Include="clsfo.cs" />
     <Compile Include="clsfonction.cs" />
+    <Compile Include="clsfrequence.cs" />
     <Compile Include="clsgain.cs" />
     <Compile Include="clsgarantie.cs" />
     <Compile Include="clsgbe.cs" />

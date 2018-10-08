@@ -73,7 +73,7 @@ namespace smartManage.Model
         private int? id_auxiliaire;
         private int? id_type_ap;
         private int? id_type_switch;
-        private string frequence;
+        private int? id_frequence;
         private int? id_antenne;
         private int? id_netette;
         private bool? compatible_wifi;
@@ -196,13 +196,13 @@ namespace smartManage.Model
         public string Mac_adresse1
         {
             get { return mac_adresse1; }
-            set { mac_adresse1 = value; }
+            set { mac_adresse1 = value.ToUpper(); }
         }  //***Accesseur de mac_adresse2***
         public string Mac_adresse2
         {
 
             get { return mac_adresse2; }
-            set { mac_adresse2 = value; }
+            set { mac_adresse2 = value.ToUpper(); }
         }  //***Accesseur de commentaire***
         public string Commentaire
         {
@@ -446,11 +446,11 @@ namespace smartManage.Model
             get { return id_type_switch; }
             set { id_type_switch = value; }
         }  //***Accesseur de frequence***
-        public string Frequence
+        public int? Id_frequence
         {
-            get { return frequence; }
-            set { frequence = value; }
-        }  //***Accesseur de id_antenne***
+            get { return id_frequence; }
+            set { id_frequence = value; }
+        } //***Accesseur de id_antenne***
         public int? Id_antenne
         {
             get { return id_antenne; }
