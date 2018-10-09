@@ -81,22 +81,22 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
-            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.bdDelete = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
+            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.bdNew = new System.Windows.Forms.ToolStripButton();
             this.bdSave = new System.Windows.Forms.ToolStripButton();
             this.bdRefresh = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.bdSearch = new System.Windows.Forms.ToolStripButton();
             this.bdPreview = new System.Windows.Forms.ToolStripButton();
-            this.bdNew = new System.Windows.Forms.ToolStripButton();
             this.nmStripMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -187,7 +187,7 @@
             this.ssmProjector,
             this.ssmSwitch});
             this.matérielToolStripMenuItem.Name = "matérielToolStripMenuItem";
-            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.matérielToolStripMenuItem.Text = "Matériel";
             // 
             // ssmAmplifie
@@ -207,6 +207,7 @@
             this.ssmEmetteur.Name = "ssmEmetteur";
             this.ssmEmetteur.Size = new System.Drawing.Size(189, 22);
             this.ssmEmetteur.Text = "Emetteur";
+            this.ssmEmetteur.Click += new System.EventHandler(this.ssmEmetteur_Click);
             // 
             // ssmPrinter
             // 
@@ -243,19 +244,19 @@
             // smPerson
             // 
             this.smPerson.Name = "smPerson";
-            this.smPerson.Size = new System.Drawing.Size(133, 22);
+            this.smPerson.Size = new System.Drawing.Size(152, 22);
             this.smPerson.Text = "Personne";
             // 
             // smSignataire
             // 
             this.smSignataire.Name = "smSignataire";
-            this.smSignataire.Size = new System.Drawing.Size(133, 22);
+            this.smSignataire.Size = new System.Drawing.Size(152, 22);
             this.smSignataire.Text = "Signataire";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(130, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // affectationToolStripMenuItem
             // 
@@ -263,7 +264,7 @@
             this.ssmAffectationPerson,
             this.ssmAffectationMaterials});
             this.affectationToolStripMenuItem.Name = "affectationToolStripMenuItem";
-            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.affectationToolStripMenuItem.Text = "Affectation";
             // 
             // ssmAffectationPerson
@@ -518,42 +519,6 @@
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
             // 
-            // bindingNavigatorSeparator
-            // 
-            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 36);
-            // 
-            // bindingNavigatorPositionItem
-            // 
-            this.bindingNavigatorPositionItem.AccessibleName = "Position";
-            this.bindingNavigatorPositionItem.AutoSize = false;
-            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
-            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 23);
-            this.bindingNavigatorPositionItem.Text = "0";
-            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
-            // 
-            // bindingNavigatorSeparator1
-            // 
-            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
-            // 
-            // bindingNavigatorSeparator2
-            // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
-            // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(250, 36);
-            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
             // bdDelete
             // 
             this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -582,6 +547,25 @@
             this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 33);
             this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
             // 
+            // bindingNavigatorSeparator
+            // 
+            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 36);
+            // 
+            // bindingNavigatorPositionItem
+            // 
+            this.bindingNavigatorPositionItem.AccessibleName = "Position";
+            this.bindingNavigatorPositionItem.AutoSize = false;
+            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
+            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 23);
+            this.bindingNavigatorPositionItem.Text = "0";
+            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
+            // 
+            // bindingNavigatorSeparator1
+            // 
+            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
+            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
+            // 
             // bindingNavigatorMoveNextItem
             // 
             this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -599,6 +583,21 @@
             this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
             this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 33);
             this.bindingNavigatorMoveLastItem.Text = "Dernier enregistrement";
+            // 
+            // bindingNavigatorSeparator2
+            // 
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
+            // 
+            // bdNew
+            // 
+            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
+            this.bdNew.Name = "bdNew";
+            this.bdNew.RightToLeftAutoMirrorImage = true;
+            this.bdNew.Size = new System.Drawing.Size(23, 33);
+            this.bdNew.Text = "Nouvel enregistrement";
+            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
             // 
             // bdSave
             // 
@@ -620,6 +619,18 @@
             this.bdRefresh.Text = "Actualiser";
             this.bdRefresh.Click += new System.EventHandler(this.bdRefresh_Click);
             // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(250, 36);
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
             // bdSearch
             // 
             this.bdSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -639,16 +650,6 @@
             this.bdPreview.Size = new System.Drawing.Size(23, 33);
             this.bdPreview.Text = "Afficher rapport";
             this.bdPreview.Click += new System.EventHandler(this.bdPreview_Click);
-            // 
-            // bdNew
-            // 
-            this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdNew.Image = ((System.Drawing.Image)(resources.GetObject("bdNew.Image")));
-            this.bdNew.Name = "bdNew";
-            this.bdNew.RightToLeftAutoMirrorImage = true;
-            this.bdNew.Size = new System.Drawing.Size(23, 33);
-            this.bdNew.Text = "Nouvel enregistrement";
-            this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
             // 
             // frmPrincipal
             // 

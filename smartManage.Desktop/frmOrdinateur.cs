@@ -3,6 +3,7 @@ using smartManage.Model;
 using smartManage.Tools;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Timers;
 using System.Windows.Forms;
@@ -31,7 +32,11 @@ namespace smartManage.Desktop
         //Timer for automatically unload thread for RefreshData method
         System.Timers.Timer tempsRefreshData = null;
 
+        //Timer for automatically unload thread when FormActivated event occurs in form
         System.Timers.Timer tempsActivateForm = null;
+
+        //Timer for automatically set default cursor to form
+        System.Timers.Timer tempsStopWaitCursor = null;
 
         //All thread for loading values
         Thread tDataGrid = null;
@@ -39,6 +44,12 @@ namespace smartManage.Desktop
         Thread tLeftCombo = null, tMiddleCombo = null, tRightCombo = null;
         Thread tActualiseComb = null;
         Thread tGenerateQrCode = null;
+        Thread tStopWaitCursor = null;
+
+        //Boolean variables for photo
+        bool blnPhoto1 = false;
+        bool blnPhoto2 = false;
+        bool blnPhoto3 = false;
 
         bool firstLoad = false;
 
@@ -65,6 +76,8 @@ namespace smartManage.Desktop
 
         private void LoadLeftCombo(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
             this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
             cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
@@ -103,6 +116,8 @@ namespace smartManage.Desktop
 
         private void LoadMiddleCombo(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
             this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
             cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
@@ -150,6 +165,8 @@ namespace smartManage.Desktop
 
         private void LoadRightCombo(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
             this.setMembersallcbo(cboNbrHDMI, "Valeur", "Id");
             cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
@@ -184,6 +201,8 @@ namespace smartManage.Desktop
 
         private void LoadDataGrid(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             bdsrc.DataSource = clsMetier.GetInstance().getAllClsmateriel();
             Principal.SetDataSource(bdsrc);
 
@@ -206,22 +225,23 @@ namespace smartManage.Desktop
 
         private void GenerateQrCode(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             System.Text.StringBuilder sb = new System.Text.StringBuilder();
             sb.Append(string.Format("{0}-{1}", txtId.Text, ((clscategorie_materiel)cboCatMateriel.SelectedItem).Id.ToString()));
             txtIdentidiant.Text = sb.ToString();
 
             //Creating QrCode 
-            clsTools tool = new clsTools();
             System.Drawing.Image img = QRCodeImage.GetGenerateQRCode(txtIdentidiant.Text, "L", "", 0);//L, M ou Q
             pbQRCode.Image = img;
 
             //Convert PictureBox image to Base64 text
             //Save a temp image file
-            string fileName = tool.SaveTempImage(pbQRCode);
-            txtQRCode.Text = tool.ImageToString64(tool.GetImageFromByte(fileName));
+            string fileName = clsTools.Instance.SaveTempImage(pbQRCode);
+            txtQRCode.Text = clsTools.Instance.ImageToString64_(clsTools.Instance.GetImageFromByte(fileName));
 
             //Remove the temp image created
-            tool.RemoveTempImage(fileName);
+            clsTools.Instance.RemoveTempImage(fileName);
         }
 
         private void ExecuteGenerateQrCode()
@@ -240,6 +260,8 @@ namespace smartManage.Desktop
 
         private void DoExecuteSelectionDataGrid(string threadName)
         {
+            this.Cursor = Cursors.WaitCursor;
+
             BindingList();
             blnModifie = true;
             Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
@@ -261,7 +283,7 @@ namespace smartManage.Desktop
 
             //Affiche QrCode from rtfTextBox
             pbQRCode.Image = null;
-            pbQRCode.Image = new clsTools().LoadImage(txtQRCode.Text);
+            pbQRCode.Image = clsTools.Instance.LoadImage(txtQRCode.Text);
         }
 
         private void ExecuteSelectionDataGrid()
@@ -276,6 +298,25 @@ namespace smartManage.Desktop
             {
                 blnModifie = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
+            }
+        }
+
+        private void DoSetDefaultCursor(string threadName)
+        {
+            this.Cursor = Cursors.Default;
+        }
+
+        private void ExecuteDefaultCursor()
+        {
+            LoadSomeData defaultCurs = new LoadSomeData(DoSetDefaultCursor);
+
+            try
+            {
+                this.Invoke(defaultCurs, "DoSetDefaultCursor");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(string.Format("Error occur when change cursor, {0}", ex.Message), "Defaut Cursor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -444,6 +485,14 @@ namespace smartManage.Desktop
                     tempsActualiseCombo.Enabled = false;
                     tActualiseComb.Abort();
                     tActualiseComb = null;
+
+                    try
+                    { 
+                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                    }
+                    catch { }
+
+                    ExecuteThreadStopWaitCursor();
                 }
             }
         }
@@ -457,6 +506,14 @@ namespace smartManage.Desktop
                     tempsGenerateQrCode.Enabled = false;
                     tGenerateQrCode.Abort();
                     tGenerateQrCode = null;
+
+                    try
+                    {
+                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                    }
+                    catch { }
+
+                    ExecuteThreadStopWaitCursor();
                 }
             }
         }
@@ -471,23 +528,13 @@ namespace smartManage.Desktop
                     tSelectionChangeDataGrid.Abort();
                     tSelectionChangeDataGrid = null;
 
-                    //try
-                    //{
-                    //    //Try to unload old image ressources
-                    //    var oldImage1 = pbPhoto1.Image;
-                    //    var oldImage2 = pbPhoto2.Image;
-                    //    var oldImage3 = pbPhoto3.Image;
-                    //    var oldImageQrCode = pbQRCode.Image;
+                    try
+                    {
+                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                    }
+                    catch { }
 
-                    //    if (oldImage1 != null)
-                    //        ((IDisposable)oldImage1).Dispose();
-                    //    if (oldImage2 != null)
-                    //        ((IDisposable)oldImage2).Dispose();
-                    //    if (oldImage3 != null)
-                    //        ((IDisposable)oldImage3).Dispose();
-                    //    if (oldImageQrCode != null)
-                    //        ((IDisposable)oldImageQrCode).Dispose();
-                    //}catch(Exception ex) { }
+                    ExecuteThreadStopWaitCursor();
                 }
             }
         }
@@ -500,8 +547,84 @@ namespace smartManage.Desktop
                 {
                     tempsActivateForm.Enabled = false;
                     tDataGrid.Abort();
-                    tDataGrid = null; 
+                    tDataGrid = null;
+
+                    try
+                    {
+                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                    }
+                    catch { }
+
+                    ExecuteThreadStopWaitCursor();
                 }
+            }
+        }
+
+        private void TempsStopWaitCursor_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            List<Thread> lstThread = new List<Thread>();
+
+            if (tStopWaitCursor != null)
+            {
+                if (!tStopWaitCursor.IsAlive)
+                {
+                    if (tDataGrid != null)
+                        lstThread.Add(tDataGrid);
+                    else if (tSelectionChangeDataGrid != null)
+                        lstThread.Add(tSelectionChangeDataGrid);
+                    else if (tGenerateQrCode != null)
+                        lstThread.Add(tGenerateQrCode);
+                    else if (tLeftCombo != null)
+                        lstThread.Add(tLeftCombo);
+                    else if (tRightCombo != null)
+                        lstThread.Add(tRightCombo);
+                    else if (tMiddleCombo != null)
+                        lstThread.Add(tMiddleCombo);
+                    else if (tActualiseComb != null)
+                        lstThread.Add(tActualiseComb);
+
+                    bool[] tb = { };
+                    int count = 1;
+
+                    foreach (Thread t in lstThread)
+                    {
+                        if (!t.IsAlive)
+                            count++;
+                    }
+
+                    if (count == tb.Length)
+                    {
+                        tempsStopWaitCursor.Enabled = false;
+                        tStopWaitCursor.Abort();
+                        tStopWaitCursor = null;
+                    }
+
+                    try
+                    {
+                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                    }
+                    catch { }
+                }
+            }
+        }
+
+        private void ExecuteThreadStopWaitCursor()
+        {
+            tempsStopWaitCursor.Enabled = true;
+            tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
+
+            if (tStopWaitCursor == null)
+            {
+                tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
+                tStopWaitCursor.Start();
+            }
+            else
+            {
+                tStopWaitCursor.Abort();
+                tStopWaitCursor = null;
+
+                tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
+                tStopWaitCursor.Start();
             }
         }
 
@@ -530,6 +653,15 @@ namespace smartManage.Desktop
 
                                 tRightCombo.Abort();
                                 tRightCombo = null;
+
+                                try
+                                {
+                                    clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                                }
+                                catch { }
+
+                                tempsStopWaitCursor.Enabled = true;
+                                tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
                             }
                         }
                     }
@@ -594,7 +726,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto1.Image));
+                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto1.Image));
             }
             catch { }
         }
@@ -604,7 +736,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto2.Image));
+                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto2.Image));
             }
             catch { }
         }
@@ -614,7 +746,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (new clsTools().ImageToString64(pbPhoto3.Image));
+                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto3.Image));
             }
             catch { }
         }
@@ -633,7 +765,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
                 }
             }
             catch { }
@@ -654,7 +786,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
                 }
             }
             catch { }
@@ -675,7 +807,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (new clsTools().LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
                 }
             }
             catch { }
@@ -821,6 +953,9 @@ namespace smartManage.Desktop
             tempsActivateForm = new System.Timers.Timer();
             tempsActivateForm.Interval = 100;
 
+            tempsStopWaitCursor = new System.Timers.Timer();
+            tempsStopWaitCursor.Interval = 50;
+
             //Affecte MenuStrip
             pbPhoto1.ContextMenuStrip = ctxMenuPhoto1;
             pbPhoto2.ContextMenuStrip = ctxMenuPhoto2;
@@ -902,6 +1037,7 @@ namespace smartManage.Desktop
                 this.UnloadThreadRessource(tRightCombo);
                 this.UnloadThreadRessource(tMiddleCombo);
                 this.UnloadThreadRessource(tActualiseComb);
+                this.UnloadThreadRessource(tStopWaitCursor);
             }
             catch { }
 
@@ -985,7 +1121,25 @@ namespace smartManage.Desktop
             ((clsmateriel)bdsrc.Current).User_modified = smartManage.Desktop.Properties.Settings.Default.UserConnected;
             ((clsmateriel)bdsrc.Current).Date_modified = DateTime.Now;
 
-            int record = materiel.update(((clsmateriel)bdsrc.Current));
+            clsmateriel mat = new clsmateriel();
+            mat = ((clsmateriel)bdsrc.Current);
+            if (blnPhoto1)
+            {
+                mat.Photo1 = materiel.Photo1;
+                blnPhoto1 = false;
+            }
+            if (blnPhoto2)
+            {
+                mat.Photo2 = materiel.Photo2;
+                blnPhoto2 = false;
+            }
+            if (blnPhoto3)
+            {
+                mat.Photo3 = materiel.Photo3;
+                blnPhoto3 = false;
+            }
+
+            int record = materiel.update(mat);
             MessageBox.Show("Modification éffectuée : " + record + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -1272,8 +1426,22 @@ namespace smartManage.Desktop
 
             if (result == DialogResult.OK)
             {
-                pbPhoto1.Load(open.FileName);
-                materiel.Photo1 = new clsTools().ImageToString64(open.FileName);
+                if (clsTools.Instance.LimiteImageSize(open.FileName, 3000000, 150, 150))
+                {
+                    pbPhoto1.Load(open.FileName);
+                    //string img1 = clsTools.Instance.ImageToString64(open.FileName);
+                    //string img2 = clsTools.Instance.ImageToString64_(open.FileName);
+                    //int compare = string.Compare(img1, img2);
+                    //if(compare == 0)
+                    //    MessageBox.Show("Equal, tail = {0}", img1.Length.ToString());
+                    //else if(compare > 0)
+                    //    MessageBox.Show(string.Format("img1 > img2, taille1 = {0} et taille2 = {1}", img1.Length.ToString(), img2.Length.ToString()));
+                    //else
+                    //    MessageBox.Show(string.Format("img2 > img1, taille2 = {0} et taille1 = {1}", img2.Length.ToString(), img1.Length.ToString()));
+
+                    blnPhoto1 = true;
+                    materiel.Photo1 = clsTools.Instance.ImageToString64(open.FileName);
+                }
             }
         }
 
@@ -1306,7 +1474,8 @@ namespace smartManage.Desktop
             if (result == DialogResult.OK)
             {
                 pbPhoto2.Load(open.FileName);
-                materiel.Photo2 = new clsTools().ImageToString64(open.FileName);
+                blnPhoto2 = true;
+                materiel.Photo2 = clsTools.Instance.ImageToString64(open.FileName);
             }
         }
 
@@ -1331,7 +1500,8 @@ namespace smartManage.Desktop
             if (result == DialogResult.OK)
             {
                 pbPhoto3.Load(open.FileName);
-                materiel.Photo3 = new clsTools().ImageToString64(open.FileName);
+                blnPhoto3 = true;
+                materiel.Photo3 = clsTools.Instance.ImageToString64(open.FileName);
             }
         }
 

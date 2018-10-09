@@ -461,5 +461,12 @@ namespace smartManage.Desktop
             if (frmCurrent != null)
                 frmCurrent.New();
         }
+
+        private void ssmEmetteur_Click(object sender, EventArgs e)
+        {
+            TestQRCode frm = new TestQRCode();
+            frm.Icon = this.Icon;
+            frm.Show();
+        }
     }
 }

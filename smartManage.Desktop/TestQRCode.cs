@@ -29,16 +29,15 @@ namespace smartManage.Desktop
                 pbox.Image = img;
 
                 //Conversion de l'image se trouvant dans le PictureBox pour le convertir en Base64
-                clsTools outils = new clsTools();
 
-                string fileName = outils.SaveTempImage(pbox);
+                string fileName = clsTools.Instance.SaveTempImage(pbox);
                 //Chaine string
-                txtText.Text = outils.ImageToString64(outils.GetImageFromByte(fileName));
+                txtText.Text = clsTools.Instance.ImageToString64(clsTools.Instance.GetImageFromByte(fileName));
 
                 //Tableau Bytes
                 //lstImg.DataSource = outils.PictureBoxImageToBytes(outils.getImageFromByte(fileName));
 
-                outils.RemoveTempImage(fileName);
+                clsTools.Instance.RemoveTempImage(fileName);
 
                 sw.Stop();
                 MessageBox.Show("Complete in " + (sw.ElapsedMilliseconds / 1000) + "Sec");
@@ -56,10 +55,8 @@ namespace smartManage.Desktop
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                clsTools outils = new clsTools();
-
                 pbox.Image = null;
-                pbox.Image = outils.LoadImage(txtText.Text);
+                pbox.Image = clsTools.Instance.LoadImage(txtText.Text);
 
                 sw.Stop();
                 MessageBox.Show("Complete in " + (sw.ElapsedMilliseconds / 1000) + "Sec");
@@ -97,9 +94,7 @@ namespace smartManage.Desktop
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                clsTools outils = new clsTools();
-
-                txtImgTxt.Text = outils.ImageToString64(pbox1.Image);
+                txtImgTxt.Text = clsTools.Instance.ImageToString64(pbox1.Image);
 
                 sw.Stop();
                 MessageBox.Show("Complete in " + (sw.ElapsedMilliseconds / 1000) + "Sec");
@@ -147,9 +142,7 @@ namespace smartManage.Desktop
                 Stopwatch sw = new Stopwatch();
                 sw.Start();
 
-                clsTools outils = new clsTools();
-
-                byte[] tbByte = outils.PictureBoxImageToBytes(pbox1.Image);
+                byte[] tbByte = clsTools.Instance.PictureBoxImageToBytes(pbox1.Image);
                 //////byte[] tbByte = outils.PictureBoxImageToBytes(Image.FromFile(txtChemin.Text));
                 lstImg.DataSource = tbByte;
 

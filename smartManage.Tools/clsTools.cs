@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace smartManage.Tools
 {
     public class clsTools
     {
+        private static clsTools _instance;
+
         public static int etat_modification_user = -1;//Variable permettant de prendre le statut pour modification du user (User seul, Mot passe seul ou les deux)
         public static string oldUser = "";
         public static string newUser = "";
@@ -16,11 +19,22 @@ namespace smartManage.Tools
 
         public static System.Collections.Generic.List<string> valueUser = new System.Collections.Generic.List<string>();//Liste qui contient les droits de l'utilisateur connecté
 
-        public clsTools()
+        public static clsTools Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new clsTools();
+
+                return _instance;
+            }
+        }
+
+        private clsTools()
         {
         }
 
-        public string ImageToString64(string path)
+        public string ImageToString64_(string path)
         {
             string strValu = "";
             try
@@ -42,6 +56,38 @@ namespace smartManage.Tools
             return strValu;
         }
 
+        public string ImageToString64(string path)
+        {
+            string strValu = "";
+            FileStream fs = null;
+
+            try
+            {
+                long size = (new FileInfo(path)).Length;
+                fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                byte[] data = new byte[size];
+
+                fs.Read(data, 0, (int)size);
+
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    ms.Write(data, 0, (int)size);
+                    byte[] imageBytes = ms.ToArray();
+                    strValu = Convert.ToBase64String(imageBytes);  
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                fs.Close();
+                fs.Dispose();
+            }
+            return strValu;
+        }
+
         public string ImageToString64(Image image)
         {
             string strValu = "";
@@ -49,10 +95,35 @@ namespace smartManage.Tools
             {
                 //using (Image image = Image.FromFile(path))
                 //{
-                using (MemoryStream m = new MemoryStream())
+                using (MemoryStream ms = new MemoryStream())
                 {
-                    image.Save(m, image.RawFormat);
-                    byte[] imageBytes = m.ToArray();
+                    Image newImage = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+                    //image.Save(m, image.RawFormat);
+                    //byte[] imageBytes = m.ToArray();
+                    //byte[] imageBytes = CreateThumbnail(m.ToArray(), 50);
+                    byte[] imageBytes = ms.ToArray();
+                    strValu = Convert.ToBase64String(imageBytes);
+                }
+                //}
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            return strValu;
+        }
+
+        public string ImageToString64_(Image image)
+        {
+            string strValu = "";
+            try
+            {
+                //using (Image image = Image.FromFile(path))
+                //{
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, image.RawFormat);
+                    byte[] imageBytes = ms.ToArray();
                     strValu = Convert.ToBase64String(imageBytes);
                 }
                 //}
@@ -146,7 +217,9 @@ namespace smartManage.Tools
             Image image;
             using (MemoryStream ms = new MemoryStream(bytes))
             {
-                image = Image.FromStream(ms);
+                ////image = Image.FromStream(ms);
+                //image = new Bitmap(Image.FromStream(ms), 120, 120);
+                image = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
             }
 
             return image;
@@ -249,6 +322,31 @@ namespace smartManage.Tools
             }
             else
                 throw new Exception("Le fichier spécifier n'existe pas !!!");
+        }
+
+        /// <summary>
+        /// Permet la reduction de l'utilisation de la mémoire vive
+        /// </summary>
+        /// <param name="hProcess">Pointeur</param>
+        /// <param name="dwMinimumWorkingSetSize">Entier</param>
+        /// <param name="dwMaximumWorkingSetSize">Entier</param>
+        /// <returns></returns>
+        [DllImport("kernel32.dll")]
+        public static extern bool SetProcessWorkingSetSize(IntPtr hProcess, int dwMinimumWorkingSetSize, int dwMaximumWorkingSetSize);
+
+        public bool LimiteImageSize(string fileName, long byteSize, int heightSize, int widthSize)
+        {
+            var fileSizeInBytes = new FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                throw new Exception("L'image est plus large que la taille requise");
+
+            using (var img = new Bitmap(fileName))
+            {
+                if (img.Width > widthSize || img.Height > heightSize)
+                    throw new Exception("Les dimension de l'image excèdent celles requises");
+            }
+
+            return true;
         }
     }
 }
