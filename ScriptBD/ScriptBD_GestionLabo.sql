@@ -758,6 +758,7 @@ create table materiel
 	date_created smalldatetime,
 	user_modified varchar(50),
 	date_modified smalldatetime,
+	archiver bit default 0,
 	
 	--Partie non commune
 	--Ordinateur

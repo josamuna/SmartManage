@@ -109,8 +109,6 @@ namespace smartManage.Desktop
 
         private void btnxConn_Click(object sender, EventArgs e)
         {
-            this.Cursor = Cursors.WaitCursor;
-
             try
             {
                 //Appel de l'initialisation de la chaine de connexion avant de l'ouvrir

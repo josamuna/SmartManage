@@ -81,7 +81,6 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bdDelete = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -97,6 +96,7 @@
             this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
             this.bdSearch = new System.Windows.Forms.ToolStripButton();
             this.bdPreview = new System.Windows.Forms.ToolStripButton();
+            this.bdDelete = new System.Windows.Forms.ToolStripButton();
             this.nmStripMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -187,7 +187,7 @@
             this.ssmProjector,
             this.ssmSwitch});
             this.matérielToolStripMenuItem.Name = "matérielToolStripMenuItem";
-            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.matérielToolStripMenuItem.Text = "Matériel";
             // 
             // ssmAmplifie
@@ -244,19 +244,19 @@
             // smPerson
             // 
             this.smPerson.Name = "smPerson";
-            this.smPerson.Size = new System.Drawing.Size(152, 22);
+            this.smPerson.Size = new System.Drawing.Size(133, 22);
             this.smPerson.Text = "Personne";
             // 
             // smSignataire
             // 
             this.smSignataire.Name = "smSignataire";
-            this.smSignataire.Size = new System.Drawing.Size(152, 22);
+            this.smSignataire.Size = new System.Drawing.Size(133, 22);
             this.smSignataire.Text = "Signataire";
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(130, 6);
             // 
             // affectationToolStripMenuItem
             // 
@@ -264,7 +264,7 @@
             this.ssmAffectationPerson,
             this.ssmAffectationMaterials});
             this.affectationToolStripMenuItem.Name = "affectationToolStripMenuItem";
-            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.affectationToolStripMenuItem.Text = "Affectation";
             // 
             // ssmAffectationPerson
@@ -480,7 +480,7 @@
             // 
             this.bdNav.AddNewItem = null;
             this.bdNav.CountItem = this.bindingNavigatorCountItem;
-            this.bdNav.DeleteItem = this.bdDelete;
+            this.bdNav.DeleteItem = null;
             this.bdNav.Dock = System.Windows.Forms.DockStyle.Fill;
             this.bdNav.Enabled = false;
             this.bdNav.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -518,16 +518,6 @@
             this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 33);
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
-            // 
-            // bdDelete
-            // 
-            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdDelete.Image = ((System.Drawing.Image)(resources.GetObject("bdDelete.Image")));
-            this.bdDelete.Name = "bdDelete";
-            this.bdDelete.RightToLeftAutoMirrorImage = true;
-            this.bdDelete.Size = new System.Drawing.Size(23, 33);
-            this.bdDelete.Text = "Supprimer enregistrement";
-            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
             // 
             // bindingNavigatorMoveFirstItem
             // 
@@ -651,6 +641,16 @@
             this.bdPreview.Text = "Afficher rapport";
             this.bdPreview.Click += new System.EventHandler(this.bdPreview_Click);
             // 
+            // bdDelete
+            // 
+            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdDelete.Image = global::smartManage.Desktop.Properties.Resources.delete;
+            this.bdDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdDelete.Name = "bdDelete";
+            this.bdDelete.Size = new System.Drawing.Size(23, 33);
+            this.bdDelete.Text = "Supprimer enregistrement";
+            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -734,7 +734,6 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.BindingNavigator bdNav;
         private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem;
-        private System.Windows.Forms.ToolStripButton bdDelete;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMovePreviousItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
@@ -751,6 +750,7 @@
         private System.Windows.Forms.ToolStripButton bdPreview;
         private System.Windows.Forms.ToolStripMenuItem smQuit;
         private System.Windows.Forms.ToolStripButton bdNew;
+        private System.Windows.Forms.ToolStripButton bdDelete;
     }
 }
 

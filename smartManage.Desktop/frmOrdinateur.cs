@@ -266,6 +266,16 @@ namespace smartManage.Desktop
             blnModifie = true;
             Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
 
+            if (bdsrc.Count > 0)
+            {
+                if ((bool)((clsmateriel)bdsrc.Current).Archiver)
+                    cmdArchiver.Enabled = false;
+                else
+                    cmdArchiver.Enabled = true;
+            }
+            else
+                cmdArchiver.Enabled = false;
+
             try
             {
                 //Affectation de la duree restante par rapport a la garantie de l'equipement
@@ -316,7 +326,7 @@ namespace smartManage.Desktop
             }
             catch(Exception ex)
             {
-                MessageBox.Show(string.Format("Error occur when change cursor, {0}", ex.Message), "Defaut Cursor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Error occur when change cursor, {0}", ex.Message), "Default Cursor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -387,7 +397,7 @@ namespace smartManage.Desktop
                     cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
                     this.setMembersallcbo(cboRAM, "Valeur", "Id");
                 }
-                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmRAM.ToString()))
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmProcesseur.ToString()))
                 {
                     cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
                     this.setMembersallcbo(cboProcesseur, "Valeur", "Id");
@@ -405,57 +415,57 @@ namespace smartManage.Desktop
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCapaciteHDD.ToString()))
                 {
                     cboCapaciteHDD.DataSource = clsMetier.GetInstance().getAllClscapacite_hdd();
-                    this.setMembersallcbo(cboCapaciteHDD, "valeur", "Id");
+                    this.setMembersallcbo(cboCapaciteHDD, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDD.ToString()))
                 {
                     cboNbrHDD.DataSource = clsMetier.GetInstance().getAllClsnombre_hdd();
-                    this.setMembersallcbo(cboNbrHDD, "valeur", "Id");
+                    this.setMembersallcbo(cboNbrHDD, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTailleEcran.ToString()))
                 {
                     cboTailleEcran.DataSource = clsMetier.GetInstance().getAllClstaille_ecran();
-                    this.setMembersallcbo(cboTailleEcran, "valeur", "Id");
+                    this.setMembersallcbo(cboTailleEcran, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB2.ToString()))
                 {
                     cboUSB2.DataSource = clsMetier.GetInstance().getAllClsusb2();
-                    this.setMembersallcbo(cboUSB2, "valeur", "Id");
+                    this.setMembersallcbo(cboUSB2, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB3.ToString()))
                 {
-                    cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb2();
-                    this.setMembersallcbo(cboUSB3, "valeur", "Id");
+                    cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb3();
+                    this.setMembersallcbo(cboUSB3, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDMI.ToString()))
                 {
                     cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
-                    this.setMembersallcbo(cboNbrHDMI, "valeur", "Id");
+                    this.setMembersallcbo(cboNbrHDMI, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrVGA.ToString()))
                 {
                     cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
-                    this.setMembersallcbo(cboNbrVGA, "valeur", "Id");
+                    this.setMembersallcbo(cboNbrVGA, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionBatterie.ToString()))
                 {
                     cboTensionBatt.DataSource = clsMetier.GetInstance().getAllClstension_batterie();
-                    this.setMembersallcbo(cboTensionBatt, "valeur", "Id");
+                    this.setMembersallcbo(cboTensionBatt, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionAdaptateur.ToString()))
                 {
                     cboTensionAdap.DataSource = clsMetier.GetInstance().getAllClstension_adaptateur();
-                    this.setMembersallcbo(cboTensionAdap, "valeur", "Id");
+                    this.setMembersallcbo(cboTensionAdap, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmPuissanceAdaptateur.ToString()))
                 {
                     cboPuissanceAdap.DataSource = clsMetier.GetInstance().getAllClspuissance_adaptateur();
-                    this.setMembersallcbo(cboPuissanceAdap, "valeur", "Id");
+                    this.setMembersallcbo(cboPuissanceAdap, "Valeur", "Id");
                 }
                 else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmIntensiteAdaptateur.ToString()))
                 {
                     cboIntensiteAdap.DataSource = clsMetier.GetInstance().getAllClsintensite_adaptateur();
-                    this.setMembersallcbo(cboIntensiteAdap, "valeur", "Id");
+                    this.setMembersallcbo(cboIntensiteAdap, "Valeur", "Id");
                 }
             }
 
@@ -486,12 +496,6 @@ namespace smartManage.Desktop
                     tActualiseComb.Abort();
                     tActualiseComb = null;
 
-                    try
-                    { 
-                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
-                    }
-                    catch { }
-
                     ExecuteThreadStopWaitCursor();
                 }
             }
@@ -506,12 +510,6 @@ namespace smartManage.Desktop
                     tempsGenerateQrCode.Enabled = false;
                     tGenerateQrCode.Abort();
                     tGenerateQrCode = null;
-
-                    try
-                    {
-                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
-                    }
-                    catch { }
 
                     ExecuteThreadStopWaitCursor();
                 }
@@ -528,13 +526,13 @@ namespace smartManage.Desktop
                     tSelectionChangeDataGrid.Abort();
                     tSelectionChangeDataGrid = null;
 
+                    ExecuteThreadStopWaitCursor();
+
                     try
                     {
                         clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
                     }
                     catch { }
-
-                    ExecuteThreadStopWaitCursor();
                 }
             }
         }
@@ -549,13 +547,48 @@ namespace smartManage.Desktop
                     tDataGrid.Abort();
                     tDataGrid = null;
 
-                    try
-                    {
-                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
-                    }
-                    catch { }
-
                     ExecuteThreadStopWaitCursor();
+                }
+            }
+        }
+
+        private void TempsRefreshData_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (tLeftCombo != null || tMiddleCombo != null || tRightCombo != null || tDataGrid != null)
+            {
+                if (!tRightCombo.IsAlive)
+                {
+                    if (!tMiddleCombo.IsAlive)
+                    {
+                        if (!tDataGrid.IsAlive)
+                        {
+                            if (!tLeftCombo.IsAlive)
+                            {
+                                tempsRefreshData.Enabled = false;
+
+                                tLeftCombo.Abort();
+                                tLeftCombo = null;
+
+                                tDataGrid.Abort();
+                                tDataGrid = null;
+
+                                tMiddleCombo.Abort();
+                                tMiddleCombo = null;
+
+                                tRightCombo.Abort();
+                                tRightCombo = null;
+
+                                tempsStopWaitCursor.Enabled = true;
+                                tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
+
+                                try
+                                {
+                                    clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                                }
+                                catch { }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -598,73 +631,6 @@ namespace smartManage.Desktop
                         tStopWaitCursor.Abort();
                         tStopWaitCursor = null;
                     }
-
-                    try
-                    {
-                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
-                    }
-                    catch { }
-                }
-            }
-        }
-
-        private void ExecuteThreadStopWaitCursor()
-        {
-            tempsStopWaitCursor.Enabled = true;
-            tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
-
-            if (tStopWaitCursor == null)
-            {
-                tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
-                tStopWaitCursor.Start();
-            }
-            else
-            {
-                tStopWaitCursor.Abort();
-                tStopWaitCursor = null;
-
-                tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
-                tStopWaitCursor.Start();
-            }
-        }
-
-        private void TempsRefreshData_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            if (tLeftCombo != null || tMiddleCombo != null || tRightCombo != null || tDataGrid != null)
-            {
-                if (!tRightCombo.IsAlive)
-                {
-                    if (!tMiddleCombo.IsAlive)
-                    {
-                        if (!tDataGrid.IsAlive)
-                        {
-                            if (!tLeftCombo.IsAlive)
-                            {
-                                tempsRefreshData.Enabled = false;
-
-                                tLeftCombo.Abort();
-                                tLeftCombo = null;
-
-                                tDataGrid.Abort();
-                                tDataGrid = null;
-
-                                tMiddleCombo.Abort();
-                                tMiddleCombo = null;
-
-                                tRightCombo.Abort();
-                                tRightCombo = null;
-
-                                try
-                                {
-                                    clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
-                                }
-                                catch { }
-
-                                tempsStopWaitCursor.Enabled = true;
-                                tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -674,13 +640,42 @@ namespace smartManage.Desktop
             tempsActualiseCombo.Enabled = true;
             tempsActualiseCombo.Elapsed += TempsActualiseCombo_Elapsed;
 
-            if (tActualiseComb == null)
+            try
             {
-                tActualiseComb = new Thread(new ThreadStart(ActualiseComboBoxModification));
-                tActualiseComb.Start();
+                if (tActualiseComb == null)
+                {
+                    tActualiseComb = new Thread(new ThreadStart(ActualiseComboBoxModification));
+                    tActualiseComb.Start();
+                }
             }
+            catch { }
         }
-        #endregion  
+
+        private void ExecuteThreadStopWaitCursor()
+        {
+            tempsStopWaitCursor.Enabled = true;
+            tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
+
+            try
+            {
+                if (tStopWaitCursor == null)
+                {
+                    tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
+                    tStopWaitCursor.Start();
+                }
+                else
+                {
+                    tStopWaitCursor.Abort();
+                    tStopWaitCursor = null;
+
+                    tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
+                    tStopWaitCursor.Start();
+                }
+            }
+            catch { }
+        }
+
+        #endregion
 
         #endregion
 
@@ -864,7 +859,8 @@ namespace smartManage.Desktop
             SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
             SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
             SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");
-            
+            SetBindingControls(chkArchiver, "Checked", materiel, "Archiver");
+
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
@@ -911,6 +907,7 @@ namespace smartManage.Desktop
             SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
             SetBindingControls(txtModifieBy, "Text", bdsrc, "User_modified");
             SetBindingControls(txtDateModifie, "Text", bdsrc, "Date_modified");
+            SetBindingControls(chkArchiver, "Checked", bdsrc, "Archiver");
 
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
@@ -937,6 +934,8 @@ namespace smartManage.Desktop
 
         private void frmOrdinateur_Load(object sender, EventArgs e)
         {
+            cmdArchiver.Enabled = false;
+
             //Initialise timers
             tempsActualiseCombo = new System.Timers.Timer();
             tempsActualiseCombo.Interval = 100;
@@ -977,25 +976,29 @@ namespace smartManage.Desktop
             tempsRefreshData.Enabled = true;
             tempsRefreshData.Elapsed += TempsRefreshData_Elapsed;
 
-            if (tLeftCombo == null)
+            try
             {
-                tLeftCombo = new Thread(new ThreadStart(ExecuteLeftCombo));
-                tLeftCombo.Start();
+                if (tLeftCombo == null)
+                {
+                    tLeftCombo = new Thread(new ThreadStart(ExecuteLeftCombo));
+                    tLeftCombo.Start();
 
-                tMiddleCombo = new Thread(new ThreadStart(ExecuteMiddleCombo));
-                tMiddleCombo.Start();
+                    tMiddleCombo = new Thread(new ThreadStart(ExecuteMiddleCombo));
+                    tMiddleCombo.Start();
 
-                tRightCombo = new Thread(new ThreadStart(ExecuteRightCombo));
-                tRightCombo.Start();
+                    tRightCombo = new Thread(new ThreadStart(ExecuteRightCombo));
+                    tRightCombo.Start();
 
-                tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
-                tDataGrid.Start();
+                    tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+                    tDataGrid.Start();
+                }
+                else
+                {
+                    tLeftCombo.Abort();
+                    tLeftCombo = null;
+                }
             }
-            else
-            {
-                tLeftCombo.Abort();
-                tLeftCombo = null;
-            }
+            catch { }
 
             if (bdsrc.Count == 0)
             {
@@ -1008,17 +1011,21 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
             Principal.SetCurrentICRUDChildForm(this);
 
-            if (firstLoad)
+            try
             {
-                tempsActivateForm.Enabled = true;
-                tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
-
-                if (tDataGrid == null)
+                if (firstLoad)
                 {
-                    tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
-                    tDataGrid.Start();
+                    tempsActivateForm.Enabled = true;
+                    tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+
+                    if (tDataGrid == null)
+                    {
+                        tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+                        tDataGrid.Start();
+                    }
                 }
             }
+            catch { }
 
             firstLoad = true;
         }
@@ -1063,6 +1070,8 @@ namespace smartManage.Desktop
                 txtCreateBy.Text = smartManage.Desktop.Properties.Settings.Default.UserConnected;
                 txtDateCreate.Text = DateTime.Now.ToString();
                 lblStatusGuaraty.Text = "";
+                pbQRCode.Image = null;
+                cmdArchiver.Enabled = false;
             }
             catch (Exception)
             {
@@ -1099,6 +1108,9 @@ namespace smartManage.Desktop
             {
                 if (!blnModifie)
                 {
+                    if (chkArchiver.Checked)
+                        throw new Exception("Vous ne pouvez archiver un enregistrement non encore sauvegardé !!! Réessayer svp !!!");
+
                     int record = materiel.inserts();
                     MessageBox.Show("Enregistrement éffectué : " + record + " Affecté", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -1173,19 +1185,11 @@ namespace smartManage.Desktop
 
         public void Preview()
         {
-            try
-            {
-                frmReport frm = new frmReport();
-                frm.Text = "Rapports pour ordinateurs";
-                frm.MdiParent = Principal;
-                //frm.setData(factory.getAllSexe_Dt(), @"D:\appStockMS\appStock.Desktop\reports\rptListSexe.rdlc");
-                frm.Icon = this.Icon;
-                frm.Show();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Echec de la mise à jour, " + ex.Message, "Mise à jour", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            frmReportOrdinateur frm = new frmReportOrdinateur();
+            frm.MdiParent = Principal;
+            //frm.setData(factory.getAllSexe_Dt(), @"D:\appStockMS\appStock.Desktop\reports\rptListSexe.rdlc");
+            frm.Icon = this.Icon;
+            frm.Show();
         }
 
         public void RefreshRec()
@@ -1205,12 +1209,16 @@ namespace smartManage.Desktop
             tempsSelectionChangeDataGrid.Enabled = true;
             tempsSelectionChangeDataGrid.Elapsed += TempsSelectionChangeDataGrid_Elapsed;
 
-            //Executed in thread
-            if(tSelectionChangeDataGrid == null)
+            try
             {
-                tSelectionChangeDataGrid = new Thread(new ThreadStart(ExecuteSelectionDataGrid));
-                tSelectionChangeDataGrid.Start();
+                //Executed in thread
+                if (tSelectionChangeDataGrid == null)
+                {
+                    tSelectionChangeDataGrid = new Thread(new ThreadStart(ExecuteSelectionDataGrid));
+                    tSelectionChangeDataGrid.Start();
+                }
             }
+            catch { }
         }
 
         private void lblAddCategorieMat_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -1369,21 +1377,21 @@ namespace smartManage.Desktop
 
         private void lblAddPC_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmModele frm = new frmModele();
+            frmTypeOrdinateur frm = new frmTypeOrdinateur();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }
 
         private void lblAddTypeClavier_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmModele frm = new frmModele();
+            frmTypeClavier frm = new frmTypeClavier();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }
 
         private void lblAddOS_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmModele frm = new frmModele();
+            frmTypeOS frm = new frmTypeOS();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }
@@ -1393,12 +1401,16 @@ namespace smartManage.Desktop
             tempsGenerateQrCode.Enabled = true;
             tempsGenerateQrCode.Elapsed += TempsGenerateQrCode_Elapsed;
 
-            //Executed in new thread
-            if(tGenerateQrCode == null)
+            try
             {
-                tGenerateQrCode = new Thread(new ThreadStart(ExecuteGenerateQrCode));
-                tGenerateQrCode.Start();
+                //Executed in new thread
+                if (tGenerateQrCode == null)
+                {
+                    tGenerateQrCode = new Thread(new ThreadStart(ExecuteGenerateQrCode));
+                    tGenerateQrCode.Start();
+                }
             }
+            catch { }
         }
 
         private void cboMarque_DropDown(object sender, EventArgs e)
@@ -1426,19 +1438,9 @@ namespace smartManage.Desktop
 
             if (result == DialogResult.OK)
             {
-                if (clsTools.Instance.LimiteImageSize(open.FileName, 3000000, 150, 150))
+                if (clsTools.Instance.LimiteImageSize(open.FileName, 1024000, 1000, 1000))
                 {
                     pbPhoto1.Load(open.FileName);
-                    //string img1 = clsTools.Instance.ImageToString64(open.FileName);
-                    //string img2 = clsTools.Instance.ImageToString64_(open.FileName);
-                    //int compare = string.Compare(img1, img2);
-                    //if(compare == 0)
-                    //    MessageBox.Show("Equal, tail = {0}", img1.Length.ToString());
-                    //else if(compare > 0)
-                    //    MessageBox.Show(string.Format("img1 > img2, taille1 = {0} et taille2 = {1}", img1.Length.ToString(), img2.Length.ToString()));
-                    //else
-                    //    MessageBox.Show(string.Format("img2 > img1, taille2 = {0} et taille1 = {1}", img2.Length.ToString(), img1.Length.ToString()));
-
                     blnPhoto1 = true;
                     materiel.Photo1 = clsTools.Instance.ImageToString64(open.FileName);
                 }
@@ -1473,9 +1475,12 @@ namespace smartManage.Desktop
 
             if (result == DialogResult.OK)
             {
-                pbPhoto2.Load(open.FileName);
-                blnPhoto2 = true;
-                materiel.Photo2 = clsTools.Instance.ImageToString64(open.FileName);
+                if (clsTools.Instance.LimiteImageSize(open.FileName, 1024000, 1000, 1000))
+                {
+                    pbPhoto2.Load(open.FileName);
+                    blnPhoto2 = true;
+                    materiel.Photo2 = clsTools.Instance.ImageToString64(open.FileName);
+                }
             }
         }
 
@@ -1499,9 +1504,12 @@ namespace smartManage.Desktop
 
             if (result == DialogResult.OK)
             {
-                pbPhoto3.Load(open.FileName);
-                blnPhoto3 = true;
-                materiel.Photo3 = clsTools.Instance.ImageToString64(open.FileName);
+                if (clsTools.Instance.LimiteImageSize(open.FileName, 1024000, 1000, 1000))
+                {
+                    pbPhoto3.Load(open.FileName);
+                    blnPhoto3 = true;
+                    materiel.Photo3 = clsTools.Instance.ImageToString64(open.FileName);
+                }
             }
         }
 
@@ -1635,6 +1643,65 @@ namespace smartManage.Desktop
             frmIntensiteAdaptateur frm = new frmIntensiteAdaptateur();
             frm.Icon = this.Icon;
             frm.ShowDialog();
+        }
+
+        private void smnCtxPhoto3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                LoadPicture3();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de chargement de la photo, " + ex.Message, "Chargement de la photo3", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void pbPhoto3_MouseHover(object sender, EventArgs e)
+        {
+            pbPhoto3.Cursor = Cursors.Hand;
+        }
+
+        private void pbPhoto2_MouseHover(object sender, EventArgs e)
+        {
+            pbPhoto2.Cursor = Cursors.Hand;
+        }
+
+        private void pbPhoto1_MouseHover(object sender, EventArgs e)
+        {
+            pbPhoto1.Cursor = Cursors.Hand;
+        }
+
+        private void pbPhoto1_MouseLeave(object sender, EventArgs e)
+        {
+            pbPhoto1.Cursor = Cursors.Default;
+        }
+
+        private void pbPhoto2_MouseLeave(object sender, EventArgs e)
+        {
+            pbPhoto2.Cursor = Cursors.Default;
+        }
+
+        private void pbPhoto3_MouseLeave(object sender, EventArgs e)
+        {
+            pbPhoto3.Cursor = Cursors.Default;
+        }
+
+        private void cmdArchiver_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                clsmateriel mat = new clsmateriel();
+                mat = ((clsmateriel)bdsrc.Current);
+                int record = clsMetier.GetInstance().ArchiverMateriel(mat);
+
+                MessageBox.Show("Archivage éffectué : " + record + " Affecté", "Archivage enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                RefreshData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec d'archivage, " + ex.Message, "Archivage enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
         }
 
         private void smnCtxPhoto1_Click(object sender, EventArgs e)

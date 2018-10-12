@@ -94,6 +94,7 @@
     </Reference>
     <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="ManageUtilities, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -233,6 +234,18 @@
     <Compile Include="frmNbrMemoire.Designer.cs">
       <DependentUpon>frmNbrMemoire.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmNbrUSB3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrUSB3.Designer.cs">
+      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmNbrUSB2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmNbrUSB2.Designer.cs">
+      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmNbrUSB.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -269,18 +282,6 @@
     <Compile Include="frmNbrHDMI.Designer.cs">
       <DependentUpon>frmNbrHDMI.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmNbrUSB3.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmNbrUSB3.Designer.cs">
-      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmNbrUSB2.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmNbrUSB2.Designer.cs">
-      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmPuissance.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +293,12 @@
     </Compile>
     <Compile Include="frmPuissanceAdaptateur.Designer.cs">
       <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportOrdinateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportOrdinateur.designer.cs">
+      <DependentUpon>frmReportOrdinateur.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTensionAlimentation.cs">
       <SubType>Form</SubType>
@@ -485,12 +492,6 @@
     <Compile Include="frmRptAffectationPersonne.Designer.cs">
       <DependentUpon>frmRptAffectationPersonne.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRptMateriel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRptMateriel.Designer.cs">
-      <DependentUpon>frmRptMateriel.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmSignataire.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -530,6 +531,12 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LstOrdinateurIdentifiant.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LstOrdinateurIdentifiant.rpt</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="TestQRCode.cs">
       <SubType>Form</SubType>
@@ -583,6 +590,12 @@
     <EmbeddedResource Include="frmNbrMemoire.resx">
       <DependentUpon>frmNbrMemoire.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrUSB3.resx">
+      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmNbrUSB2.resx">
+      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmNbrUSB.resx">
       <DependentUpon>frmNbrUSB.cs</DependentUpon>
     </EmbeddedResource>
@@ -601,17 +614,14 @@
     <EmbeddedResource Include="frmNbrHDMI.resx">
       <DependentUpon>frmNbrHDMI.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmNbrUSB3.resx">
-      <DependentUpon>frmNbrUSB3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmNbrUSB2.resx">
-      <DependentUpon>frmNbrUSB2.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmPuissance.resx">
       <DependentUpon>frmPuissance.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPuissanceAdaptateur.resx">
       <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportOrdinateur.resx">
+      <DependentUpon>frmReportOrdinateur.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTensionAlimentation.resx">
       <DependentUpon>frmTensionAlimentation.cs</DependentUpon>
@@ -699,6 +709,10 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstOrdinateurIdentifiant.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstOrdinateurIdentifiant.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </EmbeddedResource>
@@ -745,15 +759,16 @@
     <Content Include="Images\Refresh.png" />
     <Content Include="Images\Search.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Reports\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

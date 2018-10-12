@@ -338,13 +338,22 @@ namespace smartManage.Tools
         {
             var fileSizeInBytes = new FileInfo(fileName).Length;
             if (fileSizeInBytes > byteSize)
-                throw new Exception("L'image est plus large que la taille requise");
+                throw new Exception(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize/1000000));
 
             using (var img = new Bitmap(fileName))
             {
                 if (img.Width > widthSize || img.Height > heightSize)
-                    throw new Exception("Les dimension de l'image excèdent celles requises");
+                    throw new Exception(string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize));
             }
+
+            return true;
+        }
+
+        public bool LimiteImageSize(string fileName, long byteSize)
+        {
+            var fileSizeInBytes = new FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                throw new Exception(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
 
             return true;
         }

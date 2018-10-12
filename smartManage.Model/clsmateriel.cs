@@ -30,6 +30,7 @@ namespace smartManage.Model
         private DateTime? date_created;
         private string user_modified;
         private DateTime? date_modified;
+        private bool? archiver;
         private int? id_type_ordinateur;
         private int? id_type_clavier;
         private int? id_os;
@@ -200,7 +201,6 @@ namespace smartManage.Model
         }  //***Accesseur de mac_adresse2***
         public string Mac_adresse2
         {
-
             get { return mac_adresse2; }
             set { mac_adresse2 = value.ToUpper(); }
         }  //***Accesseur de commentaire***
@@ -211,7 +211,6 @@ namespace smartManage.Model
         }  //***Accesseur de user_created***
         public string User_created
         {
-
             get { return user_created; }
             set { user_created = value; }
         }  //***Accesseur de date_created***
@@ -222,7 +221,6 @@ namespace smartManage.Model
         }  //***Accesseur de user_modified***
         public string User_modified
         {
-
             get { return user_modified; }
             set { user_modified = value; }
         }  //***Accesseur de date_modified***
@@ -230,7 +228,12 @@ namespace smartManage.Model
         {
             get { return date_modified; }
             set { date_modified = value; }
-        }  //***Accesseur de id_type_ordinateur***
+        } //***Accesseur de archiver***
+        public bool? Archiver
+        {
+            get { return archiver; }
+            set { archiver = value; }
+        } //***Accesseur de id_type_ordinateur***
         public int? Id_type_ordinateur
         {
             get { return id_type_ordinateur; }

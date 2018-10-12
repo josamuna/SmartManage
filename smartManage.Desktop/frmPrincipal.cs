@@ -354,12 +354,6 @@ namespace smartManage.Desktop
             this.bdNav.Enabled = true;
         }
 
-        private void bdDelete_Click(object sender, EventArgs e)
-        {
-            if (frmCurrent != null)
-                frmCurrent.Delete();
-        }
-
         private void bdSave_Click(object sender, EventArgs e)
         {
             if (frmCurrent != null)
@@ -467,6 +461,12 @@ namespace smartManage.Desktop
             TestQRCode frm = new TestQRCode();
             frm.Icon = this.Icon;
             frm.Show();
+        }
+
+        private void bdDelete_Click(object sender, EventArgs e)
+        {
+            if (frmCurrent != null)
+                frmCurrent.Delete();
         }
     }
 }

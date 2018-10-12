@@ -33,6 +33,7 @@
             this.dgv = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colArchiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.colId_categorie_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_compte = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQrcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -104,6 +105,8 @@
             this.colCompatible_wifi = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.chkArchiver = new System.Windows.Forms.CheckBox();
+            this.cmdArchiver = new System.Windows.Forms.Button();
             this.cboGarantie = new System.Windows.Forms.ComboBox();
             this.lblAddGuaratie = new System.Windows.Forms.LinkLabel();
             this.cboMarque = new System.Windows.Forms.ComboBox();
@@ -253,6 +256,7 @@
             this.dgv.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colId,
             this.colCode_str,
+            this.colArchiver,
             this.colId_categorie_materiel,
             this.colId_compte,
             this.colQrcode,
@@ -352,6 +356,13 @@
             this.colCode_str.DataPropertyName = "Code_str";
             this.colCode_str.HeaderText = "Code texte";
             this.colCode_str.Name = "colCode_str";
+            // 
+            // colArchiver
+            // 
+            this.colArchiver.DataPropertyName = "Archiver";
+            this.colArchiver.HeaderText = "Archiver";
+            this.colArchiver.Name = "colArchiver";
+            this.colArchiver.Width = 50;
             // 
             // colId_categorie_materiel
             // 
@@ -856,6 +867,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.chkArchiver);
+            this.groupBox2.Controls.Add(this.cmdArchiver);
             this.groupBox2.Controls.Add(this.cboGarantie);
             this.groupBox2.Controls.Add(this.lblAddGuaratie);
             this.groupBox2.Controls.Add(this.cboMarque);
@@ -908,6 +921,31 @@
             this.groupBox2.Size = new System.Drawing.Size(671, 315);
             this.groupBox2.TabIndex = 510;
             this.groupBox2.TabStop = false;
+            // 
+            // chkArchiver
+            // 
+            this.chkArchiver.AutoSize = true;
+            this.chkArchiver.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.chkArchiver.Location = new System.Drawing.Point(247, 91);
+            this.chkArchiver.Name = "chkArchiver";
+            this.chkArchiver.Size = new System.Drawing.Size(65, 17);
+            this.chkArchiver.TabIndex = 157;
+            this.chkArchiver.TabStop = false;
+            this.chkArchiver.Text = "Archiver";
+            this.chkArchiver.UseVisualStyleBackColor = true;
+            // 
+            // cmdArchiver
+            // 
+            this.cmdArchiver.BackColor = System.Drawing.Color.LavenderBlush;
+            this.cmdArchiver.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdArchiver.ForeColor = System.Drawing.Color.Crimson;
+            this.cmdArchiver.Location = new System.Drawing.Point(456, 108);
+            this.cmdArchiver.Name = "cmdArchiver";
+            this.cmdArchiver.Size = new System.Drawing.Size(201, 26);
+            this.cmdArchiver.TabIndex = 60;
+            this.cmdArchiver.Text = "Modifier archivage matériel";
+            this.cmdArchiver.UseVisualStyleBackColor = false;
+            this.cmdArchiver.Click += new System.EventHandler(this.cmdArchiver_Click);
             // 
             // cboGarantie
             // 
@@ -1104,22 +1142,26 @@
             // pbPhoto3
             // 
             this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto3.Location = new System.Drawing.Point(278, 20);
+            this.pbPhoto3.Location = new System.Drawing.Point(279, 20);
             this.pbPhoto3.Name = "pbPhoto3";
             this.pbPhoto3.Size = new System.Drawing.Size(131, 131);
             this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPhoto3.TabIndex = 44;
             this.pbPhoto3.TabStop = false;
+            this.pbPhoto3.MouseLeave += new System.EventHandler(this.pbPhoto3_MouseLeave);
+            this.pbPhoto3.MouseHover += new System.EventHandler(this.pbPhoto3_MouseHover);
             // 
             // pbPhoto2
             // 
             this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto2.Location = new System.Drawing.Point(142, 20);
+            this.pbPhoto2.Location = new System.Drawing.Point(143, 20);
             this.pbPhoto2.Name = "pbPhoto2";
             this.pbPhoto2.Size = new System.Drawing.Size(131, 131);
             this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPhoto2.TabIndex = 43;
             this.pbPhoto2.TabStop = false;
+            this.pbPhoto2.MouseLeave += new System.EventHandler(this.pbPhoto2_MouseLeave);
+            this.pbPhoto2.MouseHover += new System.EventHandler(this.pbPhoto2_MouseHover);
             // 
             // lblPhoto1
             // 
@@ -1143,6 +1185,8 @@
             this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbPhoto1.TabIndex = 2;
             this.pbPhoto1.TabStop = false;
+            this.pbPhoto1.MouseLeave += new System.EventHandler(this.pbPhoto1_MouseLeave);
+            this.pbPhoto1.MouseHover += new System.EventHandler(this.pbPhoto1_MouseHover);
             // 
             // txtMAC1
             // 
@@ -1458,6 +1502,8 @@
             // 
             // pbQRCode
             // 
+            this.pbQRCode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbQRCode.Location = new System.Drawing.Point(7, 14);
             this.pbQRCode.Name = "pbQRCode";
             this.pbQRCode.Size = new System.Drawing.Size(119, 111);
@@ -2203,6 +2249,7 @@
             this.smnCtxPhoto3.Size = new System.Drawing.Size(157, 22);
             this.smnCtxPhoto3.Text = "Charger photo3";
             this.smnCtxPhoto3.ToolTipText = "Charger photo3";
+            this.smnCtxPhoto3.Click += new System.EventHandler(this.smnCtxPhoto3_Click);
             // 
             // frmOrdinateur
             // 
@@ -2366,8 +2413,11 @@
         private System.Windows.Forms.ToolStripMenuItem smnCtxPhoto2;
         private System.Windows.Forms.ContextMenuStrip ctxMenuPhoto3;
         private System.Windows.Forms.ToolStripMenuItem smnCtxPhoto3;
+        private System.Windows.Forms.Button cmdArchiver;
+        private System.Windows.Forms.CheckBox chkArchiver;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCode_str;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colArchiver;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId_categorie_materiel;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId_compte;
         private System.Windows.Forms.DataGridViewTextBoxColumn colQrcode;

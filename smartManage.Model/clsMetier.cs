@@ -60,6 +60,9 @@ namespace smartManage.Model
                 case 2: sch = string.Format("Data Source={0};Persist Security Info=True; Initial Catalog={1};User ID={2}; Password={3}", _host, _db, _user, _pwd); break;
                 case 3: break;
             }
+
+            //On garde la chaine de connexion pour utilisation avec les reports
+            smartManage.Model.Properties.Settings.Default.strChaineConnexion = sch;
             conn = new SqlConnection(sch);
         }
         public void Initialize(string host, string db, string user, string pwd)
@@ -7599,7 +7602,6 @@ namespace smartManage.Model
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
@@ -7623,6 +7625,7 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsmateriel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsmateriel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmateriel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            if (!dr["archiver"].ToString().Trim().Equals("")) varclsmateriel.Archiver = bool.Parse(dr["archiver"].ToString());
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
@@ -7737,6 +7740,7 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsmateriel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsmateriel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmateriel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            if (!dr["archiver"].ToString().Trim().Equals("")) varclsmateriel.Archiver = bool.Parse(dr["archiver"].ToString());
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
@@ -7840,6 +7844,7 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsmateriel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsmateriel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmateriel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            if (!dr["archiver"].ToString().Trim().Equals("")) varclsmateriel.Archiver = bool.Parse(dr["archiver"].ToString());
                             if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
                             if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
                             if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
@@ -7950,6 +7955,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
                     if (varclsmateriel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmateriel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    //if (varclsmateriel.Archiver.HasValue) cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, varclsmateriel.Archiver));
+                    //else cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, DBNull.Value));
                     if (varclsmateriel.Id_type_ordinateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_ordinateur", DbType.Int32, 4, varclsmateriel.Id_type_ordinateur));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_ordinateur", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_clavier.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_clavier", DbType.Int32, 4, varclsmateriel.Id_type_clavier));
@@ -8104,6 +8111,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
                     if (varclsmateriel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmateriel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    //if (varclsmateriel.Archiver.HasValue) cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, varclsmateriel.Archiver));
+                    //else cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, DBNull.Value));
                     if (varclsmateriel.Id_type_ordinateur.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_ordinateur", DbType.Int32, 4, varclsmateriel.Id_type_ordinateur));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_type_ordinateur", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Id_type_clavier.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_type_clavier", DbType.Int32, 4, varclsmateriel.Id_type_clavier));
@@ -8198,6 +8207,31 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_netette", DbType.Int32, 4, DBNull.Value));
                     if (varclsmateriel.Compatible_wifi.HasValue) cmd.Parameters.Add(getParameter(cmd, "@compatible_wifi", DbType.Boolean, 2, varclsmateriel.Compatible_wifi));
                     else cmd.Parameters.Add(getParameter(cmd, "@compatible_wifi", DbType.Boolean, 2, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int ArchiverMateriel(clsmateriel varclsmateriel)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE materiel  SET archiver=@archiver WHERE id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, varclsmateriel.Archiver));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();

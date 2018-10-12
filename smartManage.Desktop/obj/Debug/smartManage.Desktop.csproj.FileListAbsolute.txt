@@ -144,3 +144,5 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.exe.manifest
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.application
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.Desktop.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\CrystalDecisions.Windows.Forms.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmReportOrdinateur.resources
