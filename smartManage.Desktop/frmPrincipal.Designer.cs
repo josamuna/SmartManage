@@ -32,12 +32,47 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPrincipal));
             this.nmStripMenu = new System.Windows.Forms.MenuStrip();
             this.fichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.smConnection = new System.Windows.Forms.ToolStripMenuItem();
-            this.smDeconnection = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.smCloseAllForms = new System.Windows.Forms.ToolStripMenuItem();
-            this.smQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.donnéesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.affectationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.rapportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this.situationAffectationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.outilsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.aideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.smAbout = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusBar = new System.Windows.Forms.StatusStrip();
+            this.lblUserConnected = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblStatusApplication = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblDate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
+            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
+            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
+            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
+            this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
+            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.bdNew = new System.Windows.Forms.ToolStripButton();
+            this.bdDelete = new System.Windows.Forms.ToolStripButton();
+            this.bdSave = new System.Windows.Forms.ToolStripButton();
+            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
+            this.bdSearch = new System.Windows.Forms.ToolStripButton();
+            this.bdPreview = new System.Windows.Forms.ToolStripButton();
+            this.smConnection = new System.Windows.Forms.ToolStripMenuItem();
+            this.smDeconnection = new System.Windows.Forms.ToolStripMenuItem();
+            this.smQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.matérielToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmAmplifie = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmAP = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,19 +84,13 @@
             this.ssmSwitch = new System.Windows.Forms.ToolStripMenuItem();
             this.smPerson = new System.Windows.Forms.ToolStripMenuItem();
             this.smSignataire = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.affectationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmAffectationPerson = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmAffectationMaterials = new System.Windows.Forms.ToolStripMenuItem();
-            this.rapportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smRptMateriels = new System.Windows.Forms.ToolStripMenuItem();
             this.smRptPerson = new System.Windows.Forms.ToolStripMenuItem();
-            this.situationAffectationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmRptAffectationPerson = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmRptAffectationMateriels = new System.Windows.Forms.ToolStripMenuItem();
-            this.outilsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smManageUsers = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.smRadiusServer = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmRadiusServerAdmin = new System.Windows.Forms.ToolStripMenuItem();
             this.sssmVueDataAdministration = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,34 +98,8 @@
             this.sssmVueDataStudent = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.ssmParamServer = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.smRestoreBackup = new System.Windows.Forms.ToolStripMenuItem();
-            this.aideToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.smContent = new System.Windows.Forms.ToolStripMenuItem();
-            this.smAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusBar = new System.Windows.Forms.StatusStrip();
-            this.lblUserConnected = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblStatusApplication = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblDate = new System.Windows.Forms.ToolStripStatusLabel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
-            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.bdNew = new System.Windows.Forms.ToolStripButton();
-            this.bdSave = new System.Windows.Forms.ToolStripButton();
-            this.bdRefresh = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.txtSearch = new System.Windows.Forms.ToolStripTextBox();
-            this.bdSearch = new System.Windows.Forms.ToolStripButton();
-            this.bdPreview = new System.Windows.Forms.ToolStripButton();
-            this.bdDelete = new System.Windows.Forms.ToolStripButton();
             this.nmStripMenu.SuspendLayout();
             this.statusBar.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -130,43 +133,23 @@
             this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.fichierToolStripMenuItem.Text = "&Fichier";
             // 
-            // smConnection
-            // 
-            this.smConnection.Name = "smConnection";
-            this.smConnection.Size = new System.Drawing.Size(143, 22);
-            this.smConnection.Text = "Conne&xion";
-            this.smConnection.Click += new System.EventHandler(this.smConnection_Click);
-            // 
-            // smDeconnection
-            // 
-            this.smDeconnection.Name = "smDeconnection";
-            this.smDeconnection.Size = new System.Drawing.Size(143, 22);
-            this.smDeconnection.Text = "Déconnexion";
-            this.smDeconnection.Click += new System.EventHandler(this.smDeconnection_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(140, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
             // 
             // smCloseAllForms
             // 
             this.smCloseAllForms.Name = "smCloseAllForms";
-            this.smCloseAllForms.Size = new System.Drawing.Size(143, 22);
+            this.smCloseAllForms.Size = new System.Drawing.Size(152, 22);
             this.smCloseAllForms.Text = "&Fermer tous";
             this.smCloseAllForms.Click += new System.EventHandler(this.smCloseAllForms_Click);
-            // 
-            // smQuit
-            // 
-            this.smQuit.Name = "smQuit";
-            this.smQuit.Size = new System.Drawing.Size(143, 22);
-            this.smQuit.Text = "&Quitter";
-            this.smQuit.Click += new System.EventHandler(this.smQuit_Click);
             // 
             // donnéesToolStripMenuItem
             // 
             this.donnéesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.matérielToolStripMenuItem,
+            this.toolStripSeparator9,
             this.smPerson,
             this.smSignataire,
             this.toolStripSeparator4,
@@ -175,88 +158,15 @@
             this.donnéesToolStripMenuItem.Size = new System.Drawing.Size(65, 20);
             this.donnéesToolStripMenuItem.Text = "D&onnées";
             // 
-            // matérielToolStripMenuItem
+            // toolStripSeparator9
             // 
-            this.matérielToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ssmAmplifie,
-            this.ssmAP,
-            this.ssmEmetteur,
-            this.ssmPrinter,
-            this.ssmComputer,
-            this.ssmRouter,
-            this.ssmProjector,
-            this.ssmSwitch});
-            this.matérielToolStripMenuItem.Name = "matérielToolStripMenuItem";
-            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
-            this.matérielToolStripMenuItem.Text = "Matériel";
-            // 
-            // ssmAmplifie
-            // 
-            this.ssmAmplifie.Name = "ssmAmplifie";
-            this.ssmAmplifie.Size = new System.Drawing.Size(189, 22);
-            this.ssmAmplifie.Text = "Amplificateur";
-            // 
-            // ssmAP
-            // 
-            this.ssmAP.Name = "ssmAP";
-            this.ssmAP.Size = new System.Drawing.Size(189, 22);
-            this.ssmAP.Text = "Accès Point";
-            // 
-            // ssmEmetteur
-            // 
-            this.ssmEmetteur.Name = "ssmEmetteur";
-            this.ssmEmetteur.Size = new System.Drawing.Size(189, 22);
-            this.ssmEmetteur.Text = "Emetteur";
-            this.ssmEmetteur.Click += new System.EventHandler(this.ssmEmetteur_Click);
-            // 
-            // ssmPrinter
-            // 
-            this.ssmPrinter.Name = "ssmPrinter";
-            this.ssmPrinter.Size = new System.Drawing.Size(189, 22);
-            this.ssmPrinter.Text = "Imprimante";
-            this.ssmPrinter.Click += new System.EventHandler(this.ssmPrinter_Click);
-            // 
-            // ssmComputer
-            // 
-            this.ssmComputer.Name = "ssmComputer";
-            this.ssmComputer.Size = new System.Drawing.Size(189, 22);
-            this.ssmComputer.Text = "Ordinateur";
-            this.ssmComputer.Click += new System.EventHandler(this.ssmComputer_Click);
-            // 
-            // ssmRouter
-            // 
-            this.ssmRouter.Name = "ssmRouter";
-            this.ssmRouter.Size = new System.Drawing.Size(189, 22);
-            this.ssmRouter.Text = "Routeur-Acces Point";
-            // 
-            // ssmProjector
-            // 
-            this.ssmProjector.Name = "ssmProjector";
-            this.ssmProjector.Size = new System.Drawing.Size(189, 22);
-            this.ssmProjector.Text = "Retroprojecteurs";
-            // 
-            // ssmSwitch
-            // 
-            this.ssmSwitch.Name = "ssmSwitch";
-            this.ssmSwitch.Size = new System.Drawing.Size(189, 22);
-            this.ssmSwitch.Text = "Switch-Commutateur";
-            // 
-            // smPerson
-            // 
-            this.smPerson.Name = "smPerson";
-            this.smPerson.Size = new System.Drawing.Size(133, 22);
-            this.smPerson.Text = "Personne";
-            // 
-            // smSignataire
-            // 
-            this.smSignataire.Name = "smSignataire";
-            this.smSignataire.Size = new System.Drawing.Size(133, 22);
-            this.smSignataire.Text = "Signataire";
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(130, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
             // 
             // affectationToolStripMenuItem
             // 
@@ -264,42 +174,30 @@
             this.ssmAffectationPerson,
             this.ssmAffectationMaterials});
             this.affectationToolStripMenuItem.Name = "affectationToolStripMenuItem";
-            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.affectationToolStripMenuItem.Text = "Affectation";
-            // 
-            // ssmAffectationPerson
-            // 
-            this.ssmAffectationPerson.Name = "ssmAffectationPerson";
-            this.ssmAffectationPerson.Size = new System.Drawing.Size(185, 22);
-            this.ssmAffectationPerson.Text = "Affectation personne";
-            // 
-            // ssmAffectationMaterials
-            // 
-            this.ssmAffectationMaterials.Name = "ssmAffectationMaterials";
-            this.ssmAffectationMaterials.Size = new System.Drawing.Size(185, 22);
-            this.ssmAffectationMaterials.Text = "Affectation matériel";
             // 
             // rapportsToolStripMenuItem
             // 
             this.rapportsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.smRptMateriels,
+            this.toolStripSeparator7,
             this.smRptPerson,
+            this.toolStripSeparator8,
             this.situationAffectationToolStripMenuItem});
             this.rapportsToolStripMenuItem.Name = "rapportsToolStripMenuItem";
             this.rapportsToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.rapportsToolStripMenuItem.Text = "&Rapports";
             // 
-            // smRptMateriels
+            // toolStripSeparator7
             // 
-            this.smRptMateriels.Name = "smRptMateriels";
-            this.smRptMateriels.Size = new System.Drawing.Size(181, 22);
-            this.smRptMateriels.Text = "Matériels";
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(178, 6);
             // 
-            // smRptPerson
+            // toolStripSeparator8
             // 
-            this.smRptPerson.Name = "smRptPerson";
-            this.smRptPerson.Size = new System.Drawing.Size(181, 22);
-            this.smRptPerson.Text = "Personne";
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(178, 6);
             // 
             // situationAffectationToolStripMenuItem
             // 
@@ -309,18 +207,6 @@
             this.situationAffectationToolStripMenuItem.Name = "situationAffectationToolStripMenuItem";
             this.situationAffectationToolStripMenuItem.Size = new System.Drawing.Size(181, 22);
             this.situationAffectationToolStripMenuItem.Text = "Situation affectation";
-            // 
-            // ssmRptAffectationPerson
-            // 
-            this.ssmRptAffectationPerson.Name = "ssmRptAffectationPerson";
-            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(126, 22);
-            this.ssmRptAffectationPerson.Text = "Personnel";
-            // 
-            // ssmRptAffectationMateriels
-            // 
-            this.ssmRptAffectationMateriels.Name = "ssmRptAffectationMateriels";
-            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(126, 22);
-            this.ssmRptAffectationMateriels.Text = "Matériels";
             // 
             // outilsToolStripMenuItem
             // 
@@ -334,78 +220,15 @@
             this.outilsToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.outilsToolStripMenuItem.Text = "O&utils";
             // 
-            // smManageUsers
-            // 
-            this.smManageUsers.Name = "smManageUsers";
-            this.smManageUsers.Size = new System.Drawing.Size(336, 22);
-            this.smManageUsers.Text = "Gestion des utilisateurs";
-            this.smManageUsers.Click += new System.EventHandler(this.smManageUsers_Click);
-            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(333, 6);
             // 
-            // smRadiusServer
-            // 
-            this.smRadiusServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ssmRadiusServerAdmin,
-            this.ssmRadiusServerStudent,
-            this.toolStripSeparator5,
-            this.ssmParamServer});
-            this.smRadiusServer.Name = "smRadiusServer";
-            this.smRadiusServer.Size = new System.Drawing.Size(336, 22);
-            this.smRadiusServer.Text = "Accès aux serveurs Radius";
-            // 
-            // ssmRadiusServerAdmin
-            // 
-            this.ssmRadiusServerAdmin.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sssmVueDataAdministration});
-            this.ssmRadiusServerAdmin.Name = "ssmRadiusServerAdmin";
-            this.ssmRadiusServerAdmin.Size = new System.Drawing.Size(230, 22);
-            this.ssmRadiusServerAdmin.Text = "Administration";
-            // 
-            // sssmVueDataAdministration
-            // 
-            this.sssmVueDataAdministration.Name = "sssmVueDataAdministration";
-            this.sssmVueDataAdministration.Size = new System.Drawing.Size(163, 22);
-            this.sssmVueDataAdministration.Text = "Vue des données";
-            // 
-            // ssmRadiusServerStudent
-            // 
-            this.ssmRadiusServerStudent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.sssmVueDataStudent});
-            this.ssmRadiusServerStudent.Name = "ssmRadiusServerStudent";
-            this.ssmRadiusServerStudent.Size = new System.Drawing.Size(230, 22);
-            this.ssmRadiusServerStudent.Text = "Etudiant";
-            // 
-            // sssmVueDataStudent
-            // 
-            this.sssmVueDataStudent.Name = "sssmVueDataStudent";
-            this.sssmVueDataStudent.Size = new System.Drawing.Size(163, 22);
-            this.sssmVueDataStudent.Text = "Vue des données";
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(227, 6);
-            // 
-            // ssmParamServer
-            // 
-            this.ssmParamServer.Name = "ssmParamServer";
-            this.ssmParamServer.Size = new System.Drawing.Size(230, 22);
-            this.ssmParamServer.Text = "Parametrage accès au serveur";
-            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(333, 6);
-            // 
-            // smRestoreBackup
-            // 
-            this.smRestoreBackup.Name = "smRestoreBackup";
-            this.smRestoreBackup.Size = new System.Drawing.Size(336, 22);
-            this.smRestoreBackup.Text = "Sauvegarde et Restauration de la Base de données";
             // 
             // aideToolStripMenuItem
             // 
@@ -415,12 +238,6 @@
             this.aideToolStripMenuItem.Name = "aideToolStripMenuItem";
             this.aideToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
             this.aideToolStripMenuItem.Text = "&Aide";
-            // 
-            // smContent
-            // 
-            this.smContent.Name = "smContent";
-            this.smContent.Size = new System.Drawing.Size(131, 22);
-            this.smContent.Text = "Contenu";
             // 
             // smAbout
             // 
@@ -519,24 +336,6 @@
             this.bindingNavigatorCountItem.Text = "of {0}";
             this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
             // 
-            // bindingNavigatorMoveFirstItem
-            // 
-            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
-            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
-            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 33);
-            this.bindingNavigatorMoveFirstItem.Text = "Premier enregistrement";
-            // 
-            // bindingNavigatorMovePreviousItem
-            // 
-            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
-            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
-            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 33);
-            this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
-            // 
             // bindingNavigatorSeparator
             // 
             this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
@@ -556,6 +355,41 @@
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
             this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 36);
             // 
+            // bindingNavigatorSeparator2
+            // 
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
+            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
+            // 
+            // toolStripSeparator6
+            // 
+            this.toolStripSeparator6.Name = "toolStripSeparator6";
+            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
+            // 
+            // txtSearch
+            // 
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(250, 36);
+            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
+            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // bindingNavigatorMoveFirstItem
+            // 
+            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
+            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
+            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 33);
+            this.bindingNavigatorMoveFirstItem.Text = "Premier enregistrement";
+            // 
+            // bindingNavigatorMovePreviousItem
+            // 
+            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
+            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
+            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 33);
+            this.bindingNavigatorMovePreviousItem.Text = "Enregistrement précédent";
+            // 
             // bindingNavigatorMoveNextItem
             // 
             this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -574,11 +408,6 @@
             this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 33);
             this.bindingNavigatorMoveLastItem.Text = "Dernier enregistrement";
             // 
-            // bindingNavigatorSeparator2
-            // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 36);
-            // 
             // bdNew
             // 
             this.bdNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -588,6 +417,16 @@
             this.bdNew.Size = new System.Drawing.Size(23, 33);
             this.bdNew.Text = "Nouvel enregistrement";
             this.bdNew.Click += new System.EventHandler(this.bdNew_Click);
+            // 
+            // bdDelete
+            // 
+            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bdDelete.Image = global::smartManage.Desktop.Properties.Resources.delete;
+            this.bdDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.bdDelete.Name = "bdDelete";
+            this.bdDelete.Size = new System.Drawing.Size(23, 33);
+            this.bdDelete.Text = "Supprimer enregistrement";
+            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
             // 
             // bdSave
             // 
@@ -609,18 +448,6 @@
             this.bdRefresh.Text = "Actualiser";
             this.bdRefresh.Click += new System.EventHandler(this.bdRefresh_Click);
             // 
-            // toolStripSeparator6
-            // 
-            this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(6, 36);
-            // 
-            // txtSearch
-            // 
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(250, 36);
-            this.txtSearch.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyDown);
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
             // bdSearch
             // 
             this.bdSearch.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -641,15 +468,238 @@
             this.bdPreview.Text = "Afficher rapport";
             this.bdPreview.Click += new System.EventHandler(this.bdPreview_Click);
             // 
-            // bdDelete
+            // smConnection
             // 
-            this.bdDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bdDelete.Image = global::smartManage.Desktop.Properties.Resources.delete;
-            this.bdDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.bdDelete.Name = "bdDelete";
-            this.bdDelete.Size = new System.Drawing.Size(23, 33);
-            this.bdDelete.Text = "Supprimer enregistrement";
-            this.bdDelete.Click += new System.EventHandler(this.bdDelete_Click);
+            this.smConnection.Image = global::smartManage.Desktop.Properties.Resources.password_lock;
+            this.smConnection.Name = "smConnection";
+            this.smConnection.Size = new System.Drawing.Size(152, 22);
+            this.smConnection.Text = "Conne&xion";
+            this.smConnection.Click += new System.EventHandler(this.smConnection_Click);
+            // 
+            // smDeconnection
+            // 
+            this.smDeconnection.Image = global::smartManage.Desktop.Properties.Resources.verouiller;
+            this.smDeconnection.Name = "smDeconnection";
+            this.smDeconnection.Size = new System.Drawing.Size(152, 22);
+            this.smDeconnection.Text = "Déconnexion";
+            this.smDeconnection.Click += new System.EventHandler(this.smDeconnection_Click);
+            // 
+            // smQuit
+            // 
+            this.smQuit.Image = global::smartManage.Desktop.Properties.Resources.Arrêter;
+            this.smQuit.Name = "smQuit";
+            this.smQuit.Size = new System.Drawing.Size(152, 22);
+            this.smQuit.Text = "&Quitter";
+            this.smQuit.Click += new System.EventHandler(this.smQuit_Click);
+            // 
+            // matérielToolStripMenuItem
+            // 
+            this.matérielToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ssmAmplifie,
+            this.ssmAP,
+            this.ssmEmetteur,
+            this.ssmPrinter,
+            this.ssmComputer,
+            this.ssmRouter,
+            this.ssmProjector,
+            this.ssmSwitch});
+            this.matérielToolStripMenuItem.Image = global::smartManage.Desktop.Properties.Resources.materielInfo1;
+            this.matérielToolStripMenuItem.Name = "matérielToolStripMenuItem";
+            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.matérielToolStripMenuItem.Text = "Matériel";
+            // 
+            // ssmAmplifie
+            // 
+            this.ssmAmplifie.Image = global::smartManage.Desktop.Properties.Resources.amplifiePNG;
+            this.ssmAmplifie.Name = "ssmAmplifie";
+            this.ssmAmplifie.Size = new System.Drawing.Size(189, 22);
+            this.ssmAmplifie.Text = "Amplificateur";
+            // 
+            // ssmAP
+            // 
+            this.ssmAP.Image = ((System.Drawing.Image)(resources.GetObject("ssmAP.Image")));
+            this.ssmAP.Name = "ssmAP";
+            this.ssmAP.Size = new System.Drawing.Size(189, 22);
+            this.ssmAP.Text = "Accès Point";
+            // 
+            // ssmEmetteur
+            // 
+            this.ssmEmetteur.Image = ((System.Drawing.Image)(resources.GetObject("ssmEmetteur.Image")));
+            this.ssmEmetteur.Name = "ssmEmetteur";
+            this.ssmEmetteur.Size = new System.Drawing.Size(189, 22);
+            this.ssmEmetteur.Text = "Emetteur";
+            this.ssmEmetteur.Click += new System.EventHandler(this.ssmEmetteur_Click);
+            // 
+            // ssmPrinter
+            // 
+            this.ssmPrinter.Image = global::smartManage.Desktop.Properties.Resources.imprimante;
+            this.ssmPrinter.Name = "ssmPrinter";
+            this.ssmPrinter.Size = new System.Drawing.Size(189, 22);
+            this.ssmPrinter.Text = "Imprimante";
+            this.ssmPrinter.Click += new System.EventHandler(this.ssmPrinter_Click);
+            // 
+            // ssmComputer
+            // 
+            this.ssmComputer.Image = global::smartManage.Desktop.Properties.Resources.ordinateur;
+            this.ssmComputer.Name = "ssmComputer";
+            this.ssmComputer.Size = new System.Drawing.Size(189, 22);
+            this.ssmComputer.Text = "Ordinateur";
+            this.ssmComputer.Click += new System.EventHandler(this.ssmComputer_Click);
+            // 
+            // ssmRouter
+            // 
+            this.ssmRouter.Image = ((System.Drawing.Image)(resources.GetObject("ssmRouter.Image")));
+            this.ssmRouter.Name = "ssmRouter";
+            this.ssmRouter.Size = new System.Drawing.Size(189, 22);
+            this.ssmRouter.Text = "Routeur-Acces Point";
+            // 
+            // ssmProjector
+            // 
+            this.ssmProjector.Image = global::smartManage.Desktop.Properties.Resources.retro4;
+            this.ssmProjector.Name = "ssmProjector";
+            this.ssmProjector.Size = new System.Drawing.Size(189, 22);
+            this.ssmProjector.Text = "Retroprojecteurs";
+            // 
+            // ssmSwitch
+            // 
+            this.ssmSwitch.Image = global::smartManage.Desktop.Properties.Resources.switch21;
+            this.ssmSwitch.Name = "ssmSwitch";
+            this.ssmSwitch.Size = new System.Drawing.Size(189, 22);
+            this.ssmSwitch.Text = "Switch-Commutateur";
+            // 
+            // smPerson
+            // 
+            this.smPerson.Image = global::smartManage.Desktop.Properties.Resources.Utilisateurs;
+            this.smPerson.Name = "smPerson";
+            this.smPerson.Size = new System.Drawing.Size(152, 22);
+            this.smPerson.Text = "Personne";
+            // 
+            // smSignataire
+            // 
+            this.smSignataire.Image = global::smartManage.Desktop.Properties.Resources.personne5;
+            this.smSignataire.Name = "smSignataire";
+            this.smSignataire.Size = new System.Drawing.Size(152, 22);
+            this.smSignataire.Text = "Signataire";
+            // 
+            // ssmAffectationPerson
+            // 
+            this.ssmAffectationPerson.Image = global::smartManage.Desktop.Properties.Resources.Team;
+            this.ssmAffectationPerson.Name = "ssmAffectationPerson";
+            this.ssmAffectationPerson.Size = new System.Drawing.Size(185, 22);
+            this.ssmAffectationPerson.Text = "Affectation personne";
+            // 
+            // ssmAffectationMaterials
+            // 
+            this.ssmAffectationMaterials.Image = global::smartManage.Desktop.Properties.Resources.img31;
+            this.ssmAffectationMaterials.Name = "ssmAffectationMaterials";
+            this.ssmAffectationMaterials.Size = new System.Drawing.Size(185, 22);
+            this.ssmAffectationMaterials.Text = "Affectation matériel";
+            // 
+            // smRptMateriels
+            // 
+            this.smRptMateriels.Image = global::smartManage.Desktop.Properties.Resources.report11;
+            this.smRptMateriels.Name = "smRptMateriels";
+            this.smRptMateriels.Size = new System.Drawing.Size(181, 22);
+            this.smRptMateriels.Text = "Matériels";
+            // 
+            // smRptPerson
+            // 
+            this.smRptPerson.Image = global::smartManage.Desktop.Properties.Resources.personnes;
+            this.smRptPerson.Name = "smRptPerson";
+            this.smRptPerson.Size = new System.Drawing.Size(181, 22);
+            this.smRptPerson.Text = "Personne";
+            // 
+            // ssmRptAffectationPerson
+            // 
+            this.ssmRptAffectationPerson.Image = ((System.Drawing.Image)(resources.GetObject("ssmRptAffectationPerson.Image")));
+            this.ssmRptAffectationPerson.Name = "ssmRptAffectationPerson";
+            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationPerson.Text = "Personnel";
+            // 
+            // ssmRptAffectationMateriels
+            // 
+            this.ssmRptAffectationMateriels.Image = global::smartManage.Desktop.Properties.Resources.report13;
+            this.ssmRptAffectationMateriels.Name = "ssmRptAffectationMateriels";
+            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationMateriels.Text = "Matériels";
+            // 
+            // smManageUsers
+            // 
+            this.smManageUsers.Image = global::smartManage.Desktop.Properties.Resources.user_business;
+            this.smManageUsers.Name = "smManageUsers";
+            this.smManageUsers.Size = new System.Drawing.Size(336, 22);
+            this.smManageUsers.Text = "Gestion des utilisateurs";
+            this.smManageUsers.Click += new System.EventHandler(this.smManageUsers_Click);
+            // 
+            // smRadiusServer
+            // 
+            this.smRadiusServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ssmRadiusServerAdmin,
+            this.ssmRadiusServerStudent,
+            this.toolStripSeparator5,
+            this.ssmParamServer});
+            this.smRadiusServer.Image = global::smartManage.Desktop.Properties.Resources.radius3;
+            this.smRadiusServer.Name = "smRadiusServer";
+            this.smRadiusServer.Size = new System.Drawing.Size(336, 22);
+            this.smRadiusServer.Text = "Accès aux serveurs Radius";
+            // 
+            // ssmRadiusServerAdmin
+            // 
+            this.ssmRadiusServerAdmin.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sssmVueDataAdministration});
+            this.ssmRadiusServerAdmin.Image = ((System.Drawing.Image)(resources.GetObject("ssmRadiusServerAdmin.Image")));
+            this.ssmRadiusServerAdmin.Name = "ssmRadiusServerAdmin";
+            this.ssmRadiusServerAdmin.Size = new System.Drawing.Size(230, 22);
+            this.ssmRadiusServerAdmin.Text = "Administration";
+            // 
+            // sssmVueDataAdministration
+            // 
+            this.sssmVueDataAdministration.Image = global::smartManage.Desktop.Properties.Resources.dataView2;
+            this.sssmVueDataAdministration.Name = "sssmVueDataAdministration";
+            this.sssmVueDataAdministration.Size = new System.Drawing.Size(163, 22);
+            this.sssmVueDataAdministration.Text = "Vue des données";
+            // 
+            // ssmRadiusServerStudent
+            // 
+            this.ssmRadiusServerStudent.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.sssmVueDataStudent});
+            this.ssmRadiusServerStudent.Image = ((System.Drawing.Image)(resources.GetObject("ssmRadiusServerStudent.Image")));
+            this.ssmRadiusServerStudent.Name = "ssmRadiusServerStudent";
+            this.ssmRadiusServerStudent.Size = new System.Drawing.Size(230, 22);
+            this.ssmRadiusServerStudent.Text = "Etudiant";
+            // 
+            // sssmVueDataStudent
+            // 
+            this.sssmVueDataStudent.Image = global::smartManage.Desktop.Properties.Resources.dataView1;
+            this.sssmVueDataStudent.Name = "sssmVueDataStudent";
+            this.sssmVueDataStudent.Size = new System.Drawing.Size(163, 22);
+            this.sssmVueDataStudent.Text = "Vue des données";
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(227, 6);
+            // 
+            // ssmParamServer
+            // 
+            this.ssmParamServer.Image = global::smartManage.Desktop.Properties.Resources.configure;
+            this.ssmParamServer.Name = "ssmParamServer";
+            this.ssmParamServer.Size = new System.Drawing.Size(230, 22);
+            this.ssmParamServer.Text = "Parametrage accès au serveur";
+            // 
+            // smRestoreBackup
+            // 
+            this.smRestoreBackup.Image = global::smartManage.Desktop.Properties.Resources.modifier_bd;
+            this.smRestoreBackup.Name = "smRestoreBackup";
+            this.smRestoreBackup.Size = new System.Drawing.Size(336, 22);
+            this.smRestoreBackup.Text = "Sauvegarde et Restauration de la Base de données";
+            // 
+            // smContent
+            // 
+            this.smContent.Image = global::smartManage.Desktop.Properties.Resources.help;
+            this.smContent.Name = "smContent";
+            this.smContent.Size = new System.Drawing.Size(131, 22);
+            this.smContent.Text = "Contenu";
             // 
             // frmPrincipal
             // 
@@ -751,6 +801,9 @@
         private System.Windows.Forms.ToolStripMenuItem smQuit;
         private System.Windows.Forms.ToolStripButton bdNew;
         private System.Windows.Forms.ToolStripButton bdDelete;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
     }
 }
 

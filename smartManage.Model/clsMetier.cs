@@ -7812,7 +7812,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM materiel ORDER BY code_str ASC");
+                    cmd.CommandText = string.Format("SELECT *  FROM materiel ORDER BY id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -7908,6 +7908,264 @@ namespace smartManage.Model
             return lstclsmateriel;
         }
 
+        public List<clsmateriel> getAllClsmateriel_MAC1()
+        {
+            List<clsmateriel> lstclsmateriel = new List<clsmateriel>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM materiel where mac_adresse1 is not null");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmateriel varclsmateriel = null;
+                        while (dr.Read())
+                        {
+                            varclsmateriel = new clsmateriel();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
+                            varclsmateriel.Code_str = dr["code_str"].ToString();
+                            if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
+                            if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
+                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
+                            if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
+                            if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
+                            if (!dr["id_modele"].ToString().Trim().Equals("")) varclsmateriel.Id_modele = int.Parse(dr["id_modele"].ToString());
+                            if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
+                            if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
+                            if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
+                            varclsmateriel.Photo1 = dr["photo1"].ToString();
+                            varclsmateriel.Photo2 = dr["photo2"].ToString();
+                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            varclsmateriel.Label = dr["label"].ToString();
+                            varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
+                            varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
+                            varclsmateriel.Commentaire = dr["commentaire"].ToString();
+                            varclsmateriel.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmateriel.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmateriel.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmateriel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            if (!dr["archiver"].ToString().Trim().Equals("")) varclsmateriel.Archiver = bool.Parse(dr["archiver"].ToString());
+                            if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
+                            if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
+                            if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
+                            if (!dr["id_ram"].ToString().Trim().Equals("")) varclsmateriel.Id_ram = int.Parse(dr["id_ram"].ToString());
+                            if (!dr["id_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_processeur = int.Parse(dr["id_processeur"].ToString());
+                            if (!dr["id_nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_coeur_processeur = int.Parse(dr["id_nombre_coeur_processeur"].ToString());
+                            if (!dr["id_type_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_type_hdd = int.Parse(dr["id_type_hdd"].ToString());
+                            if (!dr["id_nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_hdd = int.Parse(dr["id_nombre_hdd"].ToString());
+                            if (!dr["id_capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_capacite_hdd = int.Parse(dr["id_capacite_hdd"].ToString());
+                            if (!dr["id_taille_ecran"].ToString().Trim().Equals("")) varclsmateriel.Id_taille_ecran = int.Parse(dr["id_taille_ecran"].ToString());
+                            if (!dr["id_usb2"].ToString().Trim().Equals("")) varclsmateriel.Id_usb2 = int.Parse(dr["id_usb2"].ToString());
+                            if (!dr["id_usb3"].ToString().Trim().Equals("")) varclsmateriel.Id_usb3 = int.Parse(dr["id_usb3"].ToString());
+                            if (!dr["id_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Id_hdmi = int.Parse(dr["id_hdmi"].ToString());
+                            if (!dr["id_vga"].ToString().Trim().Equals("")) varclsmateriel.Id_vga = int.Parse(dr["id_vga"].ToString());
+                            if (!dr["id_tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_batterie = int.Parse(dr["id_tension_batterie"].ToString());
+                            if (!dr["id_tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_adaptateur = int.Parse(dr["id_tension_adaptateur"].ToString());
+                            if (!dr["id_puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance_adaptateur = int.Parse(dr["id_puissance_adaptateur"].ToString());
+                            if (!dr["id_intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite_adaptateur = int.Parse(dr["id_intensite_adaptateur"].ToString());
+                            if (!dr["numero_cle"].ToString().Trim().Equals("")) varclsmateriel.Numero_cle = int.Parse(dr["numero_cle"].ToString());
+                            if (!dr["id_type_imprimante"].ToString().Trim().Equals("")) varclsmateriel.Id_type_imprimante = int.Parse(dr["id_type_imprimante"].ToString());
+                            if (!dr["id_puissance"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance = int.Parse(dr["id_puissance"].ToString());
+                            if (!dr["id_intensite"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite = int.Parse(dr["id_intensite"].ToString());
+                            if (!dr["id_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Id_page_par_minute = int.Parse(dr["id_page_par_minute"].ToString());
+                            if (!dr["id_type_amplificateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_amplificateur = int.Parse(dr["id_type_amplificateur"].ToString());
+                            if (!dr["id_tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_alimentation = int.Parse(dr["id_tension_alimentation"].ToString());
+                            if (!dr["id_usb"].ToString().Trim().Equals("")) varclsmateriel.Id_usb = int.Parse(dr["id_usb"].ToString());
+                            if (!dr["id_memoire"].ToString().Trim().Equals("")) varclsmateriel.Id_memoire = int.Parse(dr["id_memoire"].ToString());
+                            if (!dr["id_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Id_sorties_audio = int.Parse(dr["id_sorties_audio"].ToString());
+                            if (!dr["id_microphone"].ToString().Trim().Equals("")) varclsmateriel.Id_microphone = int.Parse(dr["id_microphone"].ToString());
+                            if (!dr["id_gain"].ToString().Trim().Equals("")) varclsmateriel.Id_gain = int.Parse(dr["id_gain"].ToString());
+                            if (!dr["id_type_routeur_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_routeur_ap = int.Parse(dr["id_type_routeur_AP"].ToString());
+                            if (!dr["id_version_ios"].ToString().Trim().Equals("")) varclsmateriel.Id_version_ios = int.Parse(dr["id_version_ios"].ToString());
+                            if (!dr["id_gbe"].ToString().Trim().Equals("")) varclsmateriel.Id_gbe = int.Parse(dr["id_gbe"].ToString());
+                            if (!dr["id_fe"].ToString().Trim().Equals("")) varclsmateriel.Id_fe = int.Parse(dr["id_fe"].ToString());
+                            if (!dr["id_fo"].ToString().Trim().Equals("")) varclsmateriel.Id_fo = int.Parse(dr["id_fo"].ToString());
+                            if (!dr["id_serial"].ToString().Trim().Equals("")) varclsmateriel.Id_serial = int.Parse(dr["id_serial"].ToString());
+                            if (!dr["capable_usb"].ToString().Trim().Equals("")) varclsmateriel.Capable_usb = bool.Parse(dr["capable_usb"].ToString());
+                            if (!dr["id_default_pwd"].ToString().Trim().Equals("")) varclsmateriel.Id_default_pwd = int.Parse(dr["id_default_pwd"].ToString());
+                            if (!dr["id_default_ip"].ToString().Trim().Equals("")) varclsmateriel.Id_default_ip = int.Parse(dr["id_default_ip"].ToString());
+                            if (!dr["id_console"].ToString().Trim().Equals("")) varclsmateriel.Id_console = int.Parse(dr["id_console"].ToString());
+                            if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
+                            if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
+                            if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
+                            if (!dr["id_frequence"].ToString().Trim().Equals("")) varclsmateriel.Id_frequence = int.Parse(dr["id_frequence"].ToString());
+                            if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
+                            if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
+                            if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
+                            lstclsmateriel.Add(varclsmateriel);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmateriel;
+        }
+
+        public List<clsmateriel> getAllClsmateriel_MAC2()
+        {
+            List<clsmateriel> lstclsmateriel = new List<clsmateriel>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM materiel where mac_adresse2 is not null");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsmateriel varclsmateriel = null;
+                        while (dr.Read())
+                        {
+                            varclsmateriel = new clsmateriel();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
+                            varclsmateriel.Code_str = dr["code_str"].ToString();
+                            if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
+                            if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
+                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
+                            if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
+                            if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
+                            if (!dr["id_modele"].ToString().Trim().Equals("")) varclsmateriel.Id_modele = int.Parse(dr["id_modele"].ToString());
+                            if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
+                            if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
+                            if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
+                            varclsmateriel.Photo1 = dr["photo1"].ToString();
+                            varclsmateriel.Photo2 = dr["photo2"].ToString();
+                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            varclsmateriel.Label = dr["label"].ToString();
+                            varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
+                            varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
+                            varclsmateriel.Commentaire = dr["commentaire"].ToString();
+                            varclsmateriel.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsmateriel.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsmateriel.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsmateriel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            if (!dr["archiver"].ToString().Trim().Equals("")) varclsmateriel.Archiver = bool.Parse(dr["archiver"].ToString());
+                            if (!dr["id_type_ordinateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ordinateur = int.Parse(dr["id_type_ordinateur"].ToString());
+                            if (!dr["id_type_clavier"].ToString().Trim().Equals("")) varclsmateriel.Id_type_clavier = int.Parse(dr["id_type_clavier"].ToString());
+                            if (!dr["id_OS"].ToString().Trim().Equals("")) varclsmateriel.Id_os = int.Parse(dr["id_OS"].ToString());
+                            if (!dr["id_ram"].ToString().Trim().Equals("")) varclsmateriel.Id_ram = int.Parse(dr["id_ram"].ToString());
+                            if (!dr["id_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_processeur = int.Parse(dr["id_processeur"].ToString());
+                            if (!dr["id_nombre_coeur_processeur"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_coeur_processeur = int.Parse(dr["id_nombre_coeur_processeur"].ToString());
+                            if (!dr["id_type_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_type_hdd = int.Parse(dr["id_type_hdd"].ToString());
+                            if (!dr["id_nombre_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_nombre_hdd = int.Parse(dr["id_nombre_hdd"].ToString());
+                            if (!dr["id_capacite_hdd"].ToString().Trim().Equals("")) varclsmateriel.Id_capacite_hdd = int.Parse(dr["id_capacite_hdd"].ToString());
+                            if (!dr["id_taille_ecran"].ToString().Trim().Equals("")) varclsmateriel.Id_taille_ecran = int.Parse(dr["id_taille_ecran"].ToString());
+                            if (!dr["id_usb2"].ToString().Trim().Equals("")) varclsmateriel.Id_usb2 = int.Parse(dr["id_usb2"].ToString());
+                            if (!dr["id_usb3"].ToString().Trim().Equals("")) varclsmateriel.Id_usb3 = int.Parse(dr["id_usb3"].ToString());
+                            if (!dr["id_hdmi"].ToString().Trim().Equals("")) varclsmateriel.Id_hdmi = int.Parse(dr["id_hdmi"].ToString());
+                            if (!dr["id_vga"].ToString().Trim().Equals("")) varclsmateriel.Id_vga = int.Parse(dr["id_vga"].ToString());
+                            if (!dr["id_tension_batterie"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_batterie = int.Parse(dr["id_tension_batterie"].ToString());
+                            if (!dr["id_tension_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_adaptateur = int.Parse(dr["id_tension_adaptateur"].ToString());
+                            if (!dr["id_puissance_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance_adaptateur = int.Parse(dr["id_puissance_adaptateur"].ToString());
+                            if (!dr["id_intensite_adaptateur"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite_adaptateur = int.Parse(dr["id_intensite_adaptateur"].ToString());
+                            if (!dr["numero_cle"].ToString().Trim().Equals("")) varclsmateriel.Numero_cle = int.Parse(dr["numero_cle"].ToString());
+                            if (!dr["id_type_imprimante"].ToString().Trim().Equals("")) varclsmateriel.Id_type_imprimante = int.Parse(dr["id_type_imprimante"].ToString());
+                            if (!dr["id_puissance"].ToString().Trim().Equals("")) varclsmateriel.Id_puissance = int.Parse(dr["id_puissance"].ToString());
+                            if (!dr["id_intensite"].ToString().Trim().Equals("")) varclsmateriel.Id_intensite = int.Parse(dr["id_intensite"].ToString());
+                            if (!dr["id_page_par_minute"].ToString().Trim().Equals("")) varclsmateriel.Id_page_par_minute = int.Parse(dr["id_page_par_minute"].ToString());
+                            if (!dr["id_type_amplificateur"].ToString().Trim().Equals("")) varclsmateriel.Id_type_amplificateur = int.Parse(dr["id_type_amplificateur"].ToString());
+                            if (!dr["id_tension_alimentation"].ToString().Trim().Equals("")) varclsmateriel.Id_tension_alimentation = int.Parse(dr["id_tension_alimentation"].ToString());
+                            if (!dr["id_usb"].ToString().Trim().Equals("")) varclsmateriel.Id_usb = int.Parse(dr["id_usb"].ToString());
+                            if (!dr["id_memoire"].ToString().Trim().Equals("")) varclsmateriel.Id_memoire = int.Parse(dr["id_memoire"].ToString());
+                            if (!dr["id_sorties_audio"].ToString().Trim().Equals("")) varclsmateriel.Id_sorties_audio = int.Parse(dr["id_sorties_audio"].ToString());
+                            if (!dr["id_microphone"].ToString().Trim().Equals("")) varclsmateriel.Id_microphone = int.Parse(dr["id_microphone"].ToString());
+                            if (!dr["id_gain"].ToString().Trim().Equals("")) varclsmateriel.Id_gain = int.Parse(dr["id_gain"].ToString());
+                            if (!dr["id_type_routeur_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_routeur_ap = int.Parse(dr["id_type_routeur_AP"].ToString());
+                            if (!dr["id_version_ios"].ToString().Trim().Equals("")) varclsmateriel.Id_version_ios = int.Parse(dr["id_version_ios"].ToString());
+                            if (!dr["id_gbe"].ToString().Trim().Equals("")) varclsmateriel.Id_gbe = int.Parse(dr["id_gbe"].ToString());
+                            if (!dr["id_fe"].ToString().Trim().Equals("")) varclsmateriel.Id_fe = int.Parse(dr["id_fe"].ToString());
+                            if (!dr["id_fo"].ToString().Trim().Equals("")) varclsmateriel.Id_fo = int.Parse(dr["id_fo"].ToString());
+                            if (!dr["id_serial"].ToString().Trim().Equals("")) varclsmateriel.Id_serial = int.Parse(dr["id_serial"].ToString());
+                            if (!dr["capable_usb"].ToString().Trim().Equals("")) varclsmateriel.Capable_usb = bool.Parse(dr["capable_usb"].ToString());
+                            if (!dr["id_default_pwd"].ToString().Trim().Equals("")) varclsmateriel.Id_default_pwd = int.Parse(dr["id_default_pwd"].ToString());
+                            if (!dr["id_default_ip"].ToString().Trim().Equals("")) varclsmateriel.Id_default_ip = int.Parse(dr["id_default_ip"].ToString());
+                            if (!dr["id_console"].ToString().Trim().Equals("")) varclsmateriel.Id_console = int.Parse(dr["id_console"].ToString());
+                            if (!dr["id_auxiliaire"].ToString().Trim().Equals("")) varclsmateriel.Id_auxiliaire = int.Parse(dr["id_auxiliaire"].ToString());
+                            if (!dr["id_type_AP"].ToString().Trim().Equals("")) varclsmateriel.Id_type_ap = int.Parse(dr["id_type_AP"].ToString());
+                            if (!dr["id_type_switch"].ToString().Trim().Equals("")) varclsmateriel.Id_type_switch = int.Parse(dr["id_type_switch"].ToString());
+                            if (!dr["id_frequence"].ToString().Trim().Equals("")) varclsmateriel.Id_frequence = int.Parse(dr["id_frequence"].ToString());
+                            if (!dr["id_antenne"].ToString().Trim().Equals("")) varclsmateriel.Id_antenne = int.Parse(dr["id_antenne"].ToString());
+                            if (!dr["id_netette"].ToString().Trim().Equals("")) varclsmateriel.Id_netette = int.Parse(dr["id_netette"].ToString());
+                            if (!dr["compatible_wifi"].ToString().Trim().Equals("")) varclsmateriel.Compatible_wifi = bool.Parse(dr["compatible_wifi"].ToString());
+                            lstclsmateriel.Add(varclsmateriel);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsmateriel;
+        }
+
+        #region Verification validation MAC
+        private string ValidateMacAddress(string mac_address)
+        {
+            if (string.IsNullOrEmpty(mac_address))
+            {
+                mac_address = null;
+            }
+            else
+            {
+                if (mac_address.Length != 12)
+                    throw new Exception(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères svp !!!", mac_address));
+                else
+                {
+                    System.Text.StringBuilder strMAC = new System.Text.StringBuilder();
+
+                    foreach (char c in mac_address)
+                    {
+                        if (!Char.IsLetterOrDigit(c))
+                            throw new Exception(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
+                        else
+                        {
+                            if (c > 'f')
+                                throw new Exception(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
+                            else
+                                strMAC.Append(c);
+                        }
+                    }
+
+                    mac_address = strMAC.ToString().ToUpper();
+                }
+            }
+            return mac_address;
+        }
+
+        private string ValidateMacRegex(string mac_address)
+        {
+            if (string.IsNullOrEmpty(mac_address))
+            {
+                mac_address = null;
+            }
+            else
+            {
+                //Match match = Regex.Match(mac_address);
+                if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[1-9a-fA-F][1-9a-fA-F]{11}$"))
+                    return mac_address.ToUpper();
+                else
+                    throw new Exception(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères et utilise les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", mac_address));
+            }
+            return mac_address;
+        }
+        #endregion
+
         public int insertClsmateriel(clsmateriel varclsmateriel)
         {
             int i = 0;
@@ -7941,9 +8199,9 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, varclsmateriel.Mac_adresse1));
+                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, varclsmateriel.Mac_adresse2));
+                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Commentaire != null) cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, varclsmateriel.Commentaire));
                     else cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, DBNull.Value));
@@ -8097,9 +8355,9 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, varclsmateriel.Mac_adresse1));
+                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, varclsmateriel.Mac_adresse2));
+                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Commentaire != null) cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, varclsmateriel.Commentaire));
                     else cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, DBNull.Value));

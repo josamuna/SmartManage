@@ -155,6 +155,7 @@
             this.rdLstDateAcquisition.TabStop = true;
             this.rdLstDateAcquisition.Text = "Par date";
             this.rdLstDateAcquisition.UseVisualStyleBackColor = true;
+            this.rdLstDateAcquisition.CheckedChanged += new System.EventHandler(this.rdLstDateAcquisition_CheckedChanged);
             // 
             // label8
             // 
@@ -195,6 +196,7 @@
             this.rdLstIdentifiant.TabStop = true;
             this.rdLstIdentifiant.Text = "Par Identifiant";
             this.rdLstIdentifiant.UseVisualStyleBackColor = true;
+            this.rdLstIdentifiant.CheckedChanged += new System.EventHandler(this.rdLstIdentifiant_CheckedChanged);
             // 
             // label6
             // 
@@ -308,6 +310,7 @@
             // 
             this.cboItems.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboItems.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboItems.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboItems.DropDownWidth = 250;
             this.cboItems.FormattingEnabled = true;
             this.cboItems.Location = new System.Drawing.Point(162, 34);
