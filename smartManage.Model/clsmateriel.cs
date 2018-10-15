@@ -11,7 +11,7 @@ namespace smartManage.Model
         private string code_str;
         private int id_categorie_materiel;
         private int id_compte;
-        private string qrcode;
+        private Byte[] qrcode;
         private DateTime? date_acquisition;
         private int? id_garantie;
         private int id_marque;
@@ -19,9 +19,9 @@ namespace smartManage.Model
         private int id_couleur;
         private int id_poids;
         private int id_etat_materiel;
-        private string photo1;
-        private string photo2;
-        private string photo3;
+        private Byte[] photo1;
+        private Byte[] photo2;
+        private Byte[] photo3;
         private string label;
         private string mac_adresse1;
         private string mac_adresse2;
@@ -134,7 +134,7 @@ namespace smartManage.Model
             get { return id_compte; }
             set { id_compte = value; }
         }  //***Accesseur de qrcode***
-        public string Qrcode
+        public Byte[] Qrcode
         {
             get { return qrcode; }
             set { qrcode = value; }
@@ -174,21 +174,21 @@ namespace smartManage.Model
             get { return id_etat_materiel; }
             set { id_etat_materiel = value; }
         }  //***Accesseur de photo1***
-        public string Photo1
+        public Byte[] Photo1
         {
             get { return photo1; }
             set { photo1 = value; }
         }  //***Accesseur de photo2***
-        public string Photo2
+        public Byte[] Photo2
         {
             get { return photo2; }
             set { photo2 = value; }
         }  //***Accesseur de photo3***
-        public string Photo3
+        public Byte[] Photo3
         {
             get { return photo3; }
             set { photo3 = value; }
-        }  //***Accesseur de label***
+        }//***Accesseur de label***
         public string Label
         {
             get { return label; }

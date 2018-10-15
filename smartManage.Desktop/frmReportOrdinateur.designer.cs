@@ -54,6 +54,7 @@
             this.cboEtat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmdView = new System.Windows.Forms.Button();
+            this.chkArchiver = new System.Windows.Forms.CheckBox();
             this.crvReport = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -73,6 +74,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.chkArchiver);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label5);
@@ -332,11 +334,11 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 38);
+            this.label1.Location = new System.Drawing.Point(81, 38);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(157, 13);
+            this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Selection élément pour rapport :";
+            this.label1.Text = "Selection item :";
             // 
             // cmdView
             // 
@@ -352,6 +354,18 @@
             this.cmdView.Text = "Afficher";
             this.cmdView.UseVisualStyleBackColor = false;
             this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
+            // 
+            // chkArchiver
+            // 
+            this.chkArchiver.AutoSize = true;
+            this.chkArchiver.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.chkArchiver.Location = new System.Drawing.Point(5, 38);
+            this.chkArchiver.Name = "chkArchiver";
+            this.chkArchiver.Size = new System.Drawing.Size(62, 17);
+            this.chkArchiver.TabIndex = 158;
+            this.chkArchiver.TabStop = false;
+            this.chkArchiver.Text = "Archivé";
+            this.chkArchiver.UseVisualStyleBackColor = true;
             // 
             // crvReport
             // 
@@ -385,7 +399,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crvReport;
         private System.Windows.Forms.Button cmdView;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboItems;
@@ -411,5 +424,7 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.CheckBox chkArchiver;
+        private CrystalDecisions.Windows.Forms.CrystalReportViewer crvReport;
     }
 }

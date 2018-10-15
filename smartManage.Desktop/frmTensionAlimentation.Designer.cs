@@ -466,7 +466,7 @@
             this.ClientSize = new System.Drawing.Size(589, 323);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bdNav);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmTensionAlimentation";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Tension d\'alimentation";

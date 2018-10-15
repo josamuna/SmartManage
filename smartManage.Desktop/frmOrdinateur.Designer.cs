@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
             this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -111,7 +111,6 @@
             this.lblAddGuaratie = new System.Windows.Forms.LinkLabel();
             this.cboMarque = new System.Windows.Forms.ComboBox();
             this.txtDateModifie = new System.Windows.Forms.TextBox();
-            this.txtQRCode = new System.Windows.Forms.RichTextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.txtModifieBy = new System.Windows.Forms.TextBox();
             this.label18 = new System.Windows.Forms.Label();
@@ -149,7 +148,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.txtDateAcquisition = new System.Windows.Forms.DateTimePicker();
             this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.lblAddNumCompte = new System.Windows.Forms.LinkLabel();
             this.cboNumCompte = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -217,7 +215,7 @@
             this.label28 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
             this.lblAddOS = new System.Windows.Forms.LinkLabel();
-            this.cboTypeOS = new System.Windows.Forms.ComboBox();
+            this.cboOS = new System.Windows.Forms.ComboBox();
             this.label30 = new System.Windows.Forms.Label();
             this.label31 = new System.Windows.Forms.Label();
             this.label32 = new System.Windows.Forms.Label();
@@ -326,14 +324,14 @@
             this.colId_antenne,
             this.colId_netette,
             this.colCompatible_wifi});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgv.Location = new System.Drawing.Point(3, 19);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
@@ -873,7 +871,6 @@
             this.groupBox2.Controls.Add(this.lblAddGuaratie);
             this.groupBox2.Controls.Add(this.cboMarque);
             this.groupBox2.Controls.Add(this.txtDateModifie);
-            this.groupBox2.Controls.Add(this.txtQRCode);
             this.groupBox2.Controls.Add(this.label17);
             this.groupBox2.Controls.Add(this.txtModifieBy);
             this.groupBox2.Controls.Add(this.label18);
@@ -905,7 +902,6 @@
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.txtDateAcquisition);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.lblAddNumCompte);
             this.groupBox2.Controls.Add(this.cboNumCompte);
             this.groupBox2.Controls.Add(this.label4);
@@ -926,12 +922,12 @@
             // 
             this.chkArchiver.AutoSize = true;
             this.chkArchiver.ForeColor = System.Drawing.Color.MediumVioletRed;
-            this.chkArchiver.Location = new System.Drawing.Point(247, 91);
+            this.chkArchiver.Location = new System.Drawing.Point(101, 115);
             this.chkArchiver.Name = "chkArchiver";
-            this.chkArchiver.Size = new System.Drawing.Size(65, 17);
+            this.chkArchiver.Size = new System.Drawing.Size(115, 17);
             this.chkArchiver.TabIndex = 157;
             this.chkArchiver.TabStop = false;
-            this.chkArchiver.Text = "Archiver";
+            this.chkArchiver.Text = "Archiver le matériel";
             this.chkArchiver.UseVisualStyleBackColor = true;
             // 
             // cmdArchiver
@@ -991,16 +987,6 @@
             this.txtDateModifie.Size = new System.Drawing.Size(109, 20);
             this.txtDateModifie.TabIndex = 156;
             this.txtDateModifie.TabStop = false;
-            // 
-            // txtQRCode
-            // 
-            this.txtQRCode.Location = new System.Drawing.Point(101, 112);
-            this.txtQRCode.Name = "txtQRCode";
-            this.txtQRCode.ReadOnly = true;
-            this.txtQRCode.Size = new System.Drawing.Size(109, 22);
-            this.txtQRCode.TabIndex = 152;
-            this.txtQRCode.TabStop = false;
-            this.txtQRCode.Text = "";
             // 
             // label17
             // 
@@ -1378,15 +1364,6 @@
             this.label6.TabIndex = 14;
             this.label6.Text = "Date acquisition : ";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 115);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(90, 13);
-            this.label5.TabIndex = 12;
-            this.label5.Text = "QR Code Texte : ";
-            // 
             // lblAddNumCompte
             // 
             this.lblAddNumCompte.AutoSize = true;
@@ -1569,7 +1546,7 @@
             this.groupBox4.Controls.Add(this.label28);
             this.groupBox4.Controls.Add(this.label29);
             this.groupBox4.Controls.Add(this.lblAddOS);
-            this.groupBox4.Controls.Add(this.cboTypeOS);
+            this.groupBox4.Controls.Add(this.cboOS);
             this.groupBox4.Controls.Add(this.label30);
             this.groupBox4.Controls.Add(this.label31);
             this.groupBox4.Controls.Add(this.label32);
@@ -2165,16 +2142,17 @@
             this.lblAddOS.VisitedLinkColor = System.Drawing.Color.Blue;
             this.lblAddOS.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddOS_LinkClicked);
             // 
-            // cboTypeOS
+            // cboOS
             // 
-            this.cboTypeOS.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.cboTypeOS.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.cboTypeOS.FormattingEnabled = true;
-            this.cboTypeOS.Location = new System.Drawing.Point(109, 60);
-            this.cboTypeOS.Name = "cboTypeOS";
-            this.cboTypeOS.Size = new System.Drawing.Size(109, 21);
-            this.cboTypeOS.TabIndex = 24;
-            this.cboTypeOS.DropDown += new System.EventHandler(this.cboTypeOS_DropDown);
+            this.cboOS.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.cboOS.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboOS.DropDownWidth = 200;
+            this.cboOS.FormattingEnabled = true;
+            this.cboOS.Location = new System.Drawing.Point(109, 60);
+            this.cboOS.Name = "cboOS";
+            this.cboOS.Size = new System.Drawing.Size(109, 21);
+            this.cboOS.TabIndex = 24;
+            this.cboOS.DropDown += new System.EventHandler(this.cboOS_DropDown);
             // 
             // label30
             // 
@@ -2296,7 +2274,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.PictureBox pbQRCode;
         private System.Windows.Forms.GroupBox groupBox4;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.LinkLabel lblAddNumCompte;
         private System.Windows.Forms.ComboBox cboNumCompte;
         private System.Windows.Forms.Label label4;
@@ -2354,7 +2331,7 @@
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label29;
         private System.Windows.Forms.LinkLabel lblAddOS;
-        private System.Windows.Forms.ComboBox cboTypeOS;
+        private System.Windows.Forms.ComboBox cboOS;
         private System.Windows.Forms.Label label30;
         private System.Windows.Forms.Label label31;
         private System.Windows.Forms.Label label32;
@@ -2365,7 +2342,6 @@
         private System.Windows.Forms.LinkLabel lblAddTypeClavier;
         private System.Windows.Forms.ComboBox cboTypeClavier;
         private System.Windows.Forms.ComboBox cboCapaciteHDD;
-        private System.Windows.Forms.RichTextBox txtQRCode;
         private System.Windows.Forms.ComboBox cboUSB3;
         private System.Windows.Forms.ComboBox cboUSB2;
         private System.Windows.Forms.ComboBox cboNbrHDMI;

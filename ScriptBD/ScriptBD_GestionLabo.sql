@@ -739,7 +739,7 @@ create table materiel
 	code_str varchar(10) not null,--Auto generate id+id_categorie_materiel
 	id_categorie_materiel int not null,
 	id_compte int not null,
-	qrcode text not null,
+	qrcode image not null,
 	date_acquisition smalldatetime,
 	id_garantie int,
 	id_marque int not null,
@@ -747,9 +747,9 @@ create table materiel
 	id_couleur int not null,
 	id_poids int not null,
 	id_etat_materiel int not null,
-	photo1 text,
-	photo2 text,
-	photo3 text,
+	photo1 image,
+	photo2 image,
+	photo3 image,
 	label varchar(20),
 	mac_adresse1 varchar(20),
 	mac_adresse2 varchar(20),
@@ -1167,14 +1167,14 @@ insert into architecture_OS(id,designation,user_created,date_created,user_modifi
 (1,'32Bits','sa',GETDATE(),null,null),(2,'64Bits','sa',GETDATE(),null,null)
 
 insert into OS(id,id_type_OS,id_architecture_OS,designation,user_created,date_created,user_modified,date_modified) values
-(1,1,1,'Windows 7 SP1 Professionnel','sa',GETDATE(),null,null),(2,1,2,'Windows 7 SP1 Professionnel','sa',GETDATE(),null,null),
-(3,1,1,'Windows 7 SP2 Professionnel','sa',GETDATE(),null,null),(4,1,2,'Windows 7 SP2 Professionnel','sa',GETDATE(),null,null),
-(5,1,1,'Windows 7 SP1 Intégral','sa',GETDATE(),null,null),(6,1,2,'Windows 7 SP1 Intégral','sa',GETDATE(),null,null),
-(7,1,1,'Windows 7 SP2 Intégral','sa',GETDATE(),null,null),(8,1,2,'Windows 7 SP2 Intégral','sa',GETDATE(),null,null),
-(9,1,1,'Windows 8 Professionnel','sa',GETDATE(),null,null),(10,1,2,'Windows 8 Professionnel','sa',GETDATE(),null,null),
-(11,1,1,'Windows 8.1 Professionnel','sa',GETDATE(),null,null),(12,1,2,'Windows 8.1 Professionnel','sa',GETDATE(),null,null),
-(13,1,2,'Windows 10 Professionnel','sa',GETDATE(),null,null),(14,1,2,'Windows Server 2008 R2 Entreprise','sa',GETDATE(),null,null),
-(15,1,2,'Windows Server 2008','sa',GETDATE(),null,null),(16,2,2,'Ubuntu 14.04','sa',GETDATE(),null,null),
+(1,1,1,'7 SP1 Professionnel','sa',GETDATE(),null,null),(2,1,2,'7 SP1 Professionnel','sa',GETDATE(),null,null),
+(3,1,1,'7 SP2 Professionnel','sa',GETDATE(),null,null),(4,1,2,'7 SP2 Professionnel','sa',GETDATE(),null,null),
+(5,1,1,'7 SP1 Intégral','sa',GETDATE(),null,null),(6,1,2,'7 SP1 Intégral','sa',GETDATE(),null,null),
+(7,1,1,'7 SP2 Intégral','sa',GETDATE(),null,null),(8,1,2,'7 SP2 Intégral','sa',GETDATE(),null,null),
+(9,1,1,'8 Professionnel','sa',GETDATE(),null,null),(10,1,2,'8 Professionnel','sa',GETDATE(),null,null),
+(11,1,1,'8.1 Professionnel','sa',GETDATE(),null,null),(12,1,2,'8.1 Professionnel','sa',GETDATE(),null,null),
+(13,1,2,'10 Professionnel','sa',GETDATE(),null,null),(14,1,2,'Server 2008 R2 Entreprise','sa',GETDATE(),null,null),
+(15,1,2,'Server 2008','sa',GETDATE(),null,null),(16,2,2,'Ubuntu 14.04','sa',GETDATE(),null,null),
 (17,2,2,'Ubuntu 16.04','sa',GETDATE(),null,null)
 
 insert into netette(id,designation,user_created,date_created,user_modified,date_modified) values

@@ -32,7 +32,7 @@ namespace smartManage.Desktop
 
                 string fileName = clsTools.Instance.SaveTempImage(pbox);
                 //Chaine string
-                txtText.Text = clsTools.Instance.ImageToString64(clsTools.Instance.GetImageFromByte(fileName));
+                txtText.Text = clsTools.Instance.GetByteFromFile(fileName).ToString();
 
                 //Tableau Bytes
                 //lstImg.DataSource = outils.PictureBoxImageToBytes(outils.getImageFromByte(fileName));

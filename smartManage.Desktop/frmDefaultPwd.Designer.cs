@@ -466,7 +466,7 @@
             this.ClientSize = new System.Drawing.Size(589, 323);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bdNav);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmDefaultPwd";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Mot de passe par defaut équipement";

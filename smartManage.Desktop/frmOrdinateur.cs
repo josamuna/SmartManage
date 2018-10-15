@@ -46,6 +46,9 @@ namespace smartManage.Desktop
         Thread tGenerateQrCode = null;
         Thread tStopWaitCursor = null;
 
+        //ariable that contain Byte image for QrCode
+        Byte[] tmpQrCode = null;
+
         //Boolean variables for photo
         bool blnPhoto1 = false;
         bool blnPhoto2 = false;
@@ -131,8 +134,8 @@ namespace smartManage.Desktop
                 this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
                 cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
                 this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
-                cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
-                this.setMembersallcbo(cboTypeOS, "Designation", "Id");
+                cboOS.DataSource = clsMetier.GetInstance().getAllClsOS();
+                this.setMembersallcbo(cboOS, "Designation", "Id");
                 cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
                 this.setMembersallcbo(cboRAM, "Valeur", "Id");
                 cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
@@ -152,7 +155,7 @@ namespace smartManage.Desktop
                 cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb3();
                 this.setMembersallcbo(cboUSB3, "Valeur", "Id");
 
-                List<ComboBox> lstCombo = new List<ComboBox>() { cboTypeOrdi, cboTypeClavier, cboTypeOS, cboRAM, cboProcesseur, cboNbrCoeurProcesseur,
+                List<ComboBox> lstCombo = new List<ComboBox>() { cboTypeOrdi, cboTypeClavier, cboOS, cboRAM, cboProcesseur, cboNbrCoeurProcesseur,
                 cboTypeHDD, cboCapaciteHDD, cboNbrHDD, cboTailleEcran, cboUSB2, cboUSB3 };
 
                 SetSelectedIndexComboBox(lstCombo);
@@ -265,11 +268,11 @@ namespace smartManage.Desktop
                 System.Drawing.Image img = QRCodeImage.GetGenerateQRCode(txtIdentidiant.Text, "L", "", 0);//L, M ou Q
                 pbQRCode.Image = img;
 
-                //Convert PictureBox image to Base64 text
+                //Convert PictureBox image to Byte[]
                 //Save a temp image file
                 string fileName = clsTools.Instance.SaveTempImage(pbQRCode);
-                txtQRCode.Text = clsTools.Instance.ImageToString64_(clsTools.Instance.GetImageFromByte(fileName));
-
+                tmpQrCode = clsTools.Instance.GetByteFromFile(fileName);
+                //txtQRCode.Text = Convert.ToString(tmpQrCode);
                 //Remove the temp image created
                 clsTools.Instance.RemoveTempImage(fileName);
             }
@@ -323,7 +326,7 @@ namespace smartManage.Desktop
 
                 //Affiche QrCode from rtfTextBox
                 pbQRCode.Image = null;
-                pbQRCode.Image = clsTools.Instance.LoadImage(txtQRCode.Text);
+                pbQRCode.Image = clsTools.Instance.GetImageFromByte(((clsmateriel)bdsrc.Current).Qrcode);
             }
             catch (Exception ex)
             {
@@ -371,141 +374,141 @@ namespace smartManage.Desktop
             //Actualisation des combobox si modification
             try
             {
-                if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifie))
+                if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur))
                 {
-                    if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCategorieMateriel.ToString()))
+                    if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmCategorieMateriel.ToString()))
                     {
                         cboCatMateriel.DataSource = clsMetier.GetInstance().getAllClscategorie_materiel();
                         this.setMembersallcbo(cboCatMateriel, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNumeroCompte.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNumeroCompte.ToString()))
                     {
                         cboNumCompte.DataSource = clsMetier.GetInstance().getAllClscompte();
                         this.setMembersallcbo(cboNumCompte, "Numero", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmMarque.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmMarque.ToString()))
                     {
                         cboMarque.DataSource = clsMetier.GetInstance().getAllClsmarque();
                         this.setMembersallcbo(cboMarque, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmModele.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmModele.ToString()))
                     {
                         cboModele.DataSource = clsMetier.GetInstance().getAllClsmodele();
                         this.setMembersallcbo(cboModele, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCouleur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmCouleur.ToString()))
                     {
                         cboCouleur.DataSource = clsMetier.GetInstance().getAllClscouleur();
                         this.setMembersallcbo(cboCouleur, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmPoids.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmPoids.ToString()))
                     {
                         cboPoids.DataSource = clsMetier.GetInstance().getAllClspoids();
                         this.setMembersallcbo(cboPoids, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmEtatMateriel.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmEtatMateriel.ToString()))
                     {
                         cboEtat.DataSource = clsMetier.GetInstance().getAllClsetat_materiel();
                         this.setMembersallcbo(cboEtat, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeOrdinateur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTypeOrdinateur.ToString()))
                     {
                         cboTypeOrdi.DataSource = clsMetier.GetInstance().getAllClstype_ordinateur();
                         this.setMembersallcbo(cboTypeOrdi, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeClavier.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTypeClavier.ToString()))
                     {
                         cboTypeClavier.DataSource = clsMetier.GetInstance().getAllClstype_clavier();
                         this.setMembersallcbo(cboTypeClavier, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeOS.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmOS.ToString()))
                     {
-                        cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
-                        this.setMembersallcbo(cboTypeOS, "Designation", "Id");
+                        cboOS.DataSource = clsMetier.GetInstance().getAllClsOS();
+                        this.setMembersallcbo(cboOS, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmGarantie.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmGarantie.ToString()))
                     {
                         cboGarantie.DataSource = clsMetier.GetInstance().getAllClsgarantie();
                         this.setMembersallcbo(cboGarantie, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmRAM.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmRAM.ToString()))
                     {
                         cboRAM.DataSource = clsMetier.GetInstance().getAllClsram();
                         this.setMembersallcbo(cboRAM, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmProcesseur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmProcesseur.ToString()))
                     {
                         cboProcesseur.DataSource = clsMetier.GetInstance().getAllClsprocesseur();
                         this.setMembersallcbo(cboProcesseur, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrCoeurProcesseur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrCoeurProcesseur.ToString()))
                     {
                         cboNbrCoeurProcesseur.DataSource = clsMetier.GetInstance().getAllClsnombre_coeur_processeur();
                         this.setMembersallcbo(cboNbrCoeurProcesseur, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTypeHDD.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTypeHDD.ToString()))
                     {
                         cboTypeHDD.DataSource = clsMetier.GetInstance().getAllClstype_hdd();
                         this.setMembersallcbo(cboTypeHDD, "Designation", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmCapaciteHDD.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmCapaciteHDD.ToString()))
                     {
                         cboCapaciteHDD.DataSource = clsMetier.GetInstance().getAllClscapacite_hdd();
                         this.setMembersallcbo(cboCapaciteHDD, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDD.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrHDD.ToString()))
                     {
                         cboNbrHDD.DataSource = clsMetier.GetInstance().getAllClsnombre_hdd();
                         this.setMembersallcbo(cboNbrHDD, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTailleEcran.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTailleEcran.ToString()))
                     {
                         cboTailleEcran.DataSource = clsMetier.GetInstance().getAllClstaille_ecran();
                         this.setMembersallcbo(cboTailleEcran, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB2.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrUSB2.ToString()))
                     {
                         cboUSB2.DataSource = clsMetier.GetInstance().getAllClsusb2();
                         this.setMembersallcbo(cboUSB2, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrUSB3.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrUSB3.ToString()))
                     {
                         cboUSB3.DataSource = clsMetier.GetInstance().getAllClsusb3();
                         this.setMembersallcbo(cboUSB3, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrHDMI.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrHDMI.ToString()))
                     {
                         cboNbrHDMI.DataSource = clsMetier.GetInstance().getAllClshdmi();
                         this.setMembersallcbo(cboNbrHDMI, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmNbrVGA.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmNbrVGA.ToString()))
                     {
                         cboNbrVGA.DataSource = clsMetier.GetInstance().getAllClsvga();
                         this.setMembersallcbo(cboNbrVGA, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionBatterie.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTensionBatterie.ToString()))
                     {
                         cboTensionBatt.DataSource = clsMetier.GetInstance().getAllClstension_batterie();
                         this.setMembersallcbo(cboTensionBatt, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmTensionAdaptateur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmTensionAdaptateur.ToString()))
                     {
                         cboTensionAdap.DataSource = clsMetier.GetInstance().getAllClstension_adaptateur();
                         this.setMembersallcbo(cboTensionAdap, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmPuissanceAdaptateur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmPuissanceAdaptateur.ToString()))
                     {
                         cboPuissanceAdap.DataSource = clsMetier.GetInstance().getAllClspuissance_adaptateur();
                         this.setMembersallcbo(cboPuissanceAdap, "Valeur", "Id");
                     }
-                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifie.Equals(FormActualisation.frmIntensiteAdaptateur.ToString()))
+                    else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur.Equals(FormActualisation.frmIntensiteAdaptateur.ToString()))
                     {
                         cboIntensiteAdap.DataSource = clsMetier.GetInstance().getAllClsintensite_adaptateur();
                         this.setMembersallcbo(cboIntensiteAdap, "Valeur", "Id");
                     }
                 }
 
-                smartManage.Desktop.Properties.Settings.Default.strFormModifie = "";
+                smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = "";
             }
             catch (Exception ex)
             {
@@ -762,7 +765,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto1.Image));
+                else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto1.Image));
             }
             catch { }
         }
@@ -772,7 +775,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto2.Image));
+                else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto2.Image));
             }
             catch { }
         }
@@ -782,7 +785,7 @@ namespace smartManage.Desktop
             try
             {
                 if (e.Value == null) e = null;
-                else e.Value = (clsTools.Instance.ImageToString64(pbPhoto3.Image));
+                else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto3.Image));
             }
             catch { }
         }
@@ -801,7 +804,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
             catch { }
@@ -822,7 +825,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
             catch { }
@@ -843,7 +846,7 @@ namespace smartManage.Desktop
                 else
                 {
                     string imagestr = e.Value.ToString();
-                    e.Value = (clsTools.Instance.LoadImage(e.Value.ToString()));
+                    e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
             catch { }
@@ -882,7 +885,7 @@ namespace smartManage.Desktop
             SetBindingControls(txtIdentidiant, "Text", materiel, "Code_str");
             SetBindingControls(cboCatMateriel, "SelectedValue", materiel, "Id_categorie_materiel");
             SetBindingControls(cboNumCompte, "SelectedValue", materiel, "Id_compte");
-            SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
+            //SetBindingControls(txtQRCode, "Text", materiel, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", materiel, "Date_acquisition");
             SetBindingControls(cboGarantie, "SelectedValue", materiel, "Id_garantie");
             SetBindingControls(cboMarque, "SelectedValue", materiel, "Id_marque");
@@ -905,7 +908,7 @@ namespace smartManage.Desktop
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", materiel, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", materiel, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedValue", materiel, "Id_os");
+            SetBindingControls(cboOS, "SelectedValue", materiel, "Id_os");
             SetBindingControls(cboRAM, "SelectedValue", materiel, "Id_ram");
             SetBindingControls(cboProcesseur, "SelectedValue", materiel, "Id_processeur");
             SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", materiel, "Id_nombre_coeur_processeur");
@@ -930,7 +933,7 @@ namespace smartManage.Desktop
             SetBindingControls(txtIdentidiant, "Text", bdsrc, "Code_str");
             SetBindingControls(cboCatMateriel, "SelectedValue", bdsrc, "Id_categorie_materiel");
             SetBindingControls(cboNumCompte, "SelectedValue", bdsrc, "Id_compte");
-            SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
+            //SetBindingControls(txtQRCode, "Text", bdsrc, "Qrcode");
             SetBindingControls(txtDateAcquisition, "Text", bdsrc, "Date_acquisition");
             SetBindingControls(cboGarantie, "SelectedValue", bdsrc, "Id_garantie");
             SetBindingControls(cboMarque, "SelectedValue", bdsrc, "Id_marque");
@@ -953,7 +956,7 @@ namespace smartManage.Desktop
             //Partie pour ordinateur
             SetBindingControls(cboTypeOrdi, "SelectedValue", bdsrc, "Id_type_ordinateur");
             SetBindingControls(cboTypeClavier, "SelectedValue", bdsrc, "Id_type_clavier");
-            SetBindingControls(cboTypeOS, "SelectedValue", bdsrc, "Id_os");
+            SetBindingControls(cboOS, "SelectedValue", bdsrc, "Id_os");
             SetBindingControls(cboRAM, "SelectedValue", bdsrc, "Id_ram");
             SetBindingControls(cboProcesseur, "SelectedValue", bdsrc, "Id_processeur");
             SetBindingControls(cboNbrCoeurProcesseur, "SelectedValue", bdsrc, "Id_nombre_coeur_processeur");
@@ -1152,7 +1155,9 @@ namespace smartManage.Desktop
                     if (chkArchiver.Checked)
                         throw new Exception("Vous ne pouvez archiver un enregistrement non encore sauvegardé !!! Réessayer svp !!!");
 
+                    materiel.Qrcode = tmpQrCode;
                     int record = materiel.inserts();
+                    tmpQrCode = null;
                     MessageBox.Show("Enregistrement éffectué : " + record + " Affecté", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
@@ -1330,11 +1335,6 @@ namespace smartManage.Desktop
             DoActualiseDropDown();
         }
 
-        private void cboTypeOS_DropDown(object sender, EventArgs e)
-        {
-            DoActualiseDropDown();
-        }
-
         private void cboNbrCoeurProcesseur_DropDown(object sender, EventArgs e)
         {
             DoActualiseDropDown();
@@ -1432,7 +1432,7 @@ namespace smartManage.Desktop
 
         private void lblAddOS_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmTypeOS frm = new frmTypeOS();
+            frmOS frm = new frmOS();
             frm.Icon = this.Icon;
             frm.ShowDialog();
         }
@@ -1483,7 +1483,7 @@ namespace smartManage.Desktop
                 {
                     pbPhoto1.Load(open.FileName);
                     blnPhoto1 = true;
-                    materiel.Photo1 = clsTools.Instance.ImageToString64(open.FileName);
+                    materiel.Photo1 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
             }
         }
@@ -1520,7 +1520,7 @@ namespace smartManage.Desktop
                 {
                     pbPhoto2.Load(open.FileName);
                     blnPhoto2 = true;
-                    materiel.Photo2 = clsTools.Instance.ImageToString64(open.FileName);
+                    materiel.Photo2 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
             }
         }
@@ -1549,7 +1549,7 @@ namespace smartManage.Desktop
                 {
                     pbPhoto3.Load(open.FileName);
                     blnPhoto3 = true;
-                    materiel.Photo3 = clsTools.Instance.ImageToString64(open.FileName);
+                    materiel.Photo3 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
             }
         }
@@ -1743,6 +1743,11 @@ namespace smartManage.Desktop
             {
                 MessageBox.Show("Echec d'archivage, " + ex.Message, "Archivage enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        private void cboOS_DropDown(object sender, EventArgs e)
+        {
+            DoActualiseDropDown();
         }
 
         private void smnCtxPhoto1_Click(object sender, EventArgs e)

@@ -6,6 +6,7 @@ D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Model\obj\Debug\sma
 D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Model\obj\Debug\smartManage.Model.dll
 D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Model\obj\Debug\smartManage.Model.pdb
 D:\DOC\CODES\GestionLaboratoire\GestionMateriels\smartManage.Model\bin\Debug\smartManage.Model.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\smartManage.Model.dll.config
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\smartManage.Model.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\smartManage.Model.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\ManageUtilities.dll
@@ -14,4 +15,3 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\smartManage.Tools.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\obj\Debug\smartManage.Model.csprojResolveAssemblyReference.cache
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\obj\Debug\smartManage.Model.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Model\obj\Debug\smartManage.Model.pdb
-D:\DOC\GitHub\SmartManageClone\smartManage.Model\bin\Debug\smartManage.Model.dll.config

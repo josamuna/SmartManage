@@ -304,9 +304,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(7, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(72, 13);
             this.label2.TabIndex = 61;
-            this.label2.Text = "Valeur :";
+            this.label2.Text = "Valeur (Mhz) :";
             // 
             // label17
             // 
@@ -431,7 +431,7 @@
             // colDesignation
             // 
             this.colDesignation.DataPropertyName = "Designation";
-            this.colDesignation.HeaderText = "Valeur";
+            this.colDesignation.HeaderText = "Valeur (Mhz)";
             this.colDesignation.Name = "colDesignation";
             this.colDesignation.Width = 155;
             // 
@@ -466,7 +466,7 @@
             this.ClientSize = new System.Drawing.Size(589, 323);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bdNav);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmFrequence";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Fréquence de fonctionnement de l\'équipement";

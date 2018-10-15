@@ -34,6 +34,7 @@ namespace smartManage.Tools
         {
         }
 
+        #region Good Convertion string and Image
         public string ImageToString64_(string path)
         {
             string strValu = "";
@@ -134,6 +135,23 @@ namespace smartManage.Tools
             }
             return strValu;
         }
+
+        public Image LoadImage(string strImage)
+        {
+            if (strImage.Trim().Equals("")) return null;
+            byte[] bytes = Convert.FromBase64String(strImage);
+
+            Image image;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                ////image = Image.FromStream(ms);
+                //image = new Bitmap(Image.FromStream(ms), 120, 120);
+                image = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+            }
+
+            return image;
+        }
+        #endregion
         public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide)
         {
             byte[] ReturnedThumbnail;
@@ -209,23 +227,8 @@ namespace smartManage.Tools
             return resizedImage;
         }
 
-        public Image LoadImage(string strImage)
-        {
-            if (strImage.Trim().Equals("")) return null;
-            byte[] bytes = Convert.FromBase64String(strImage);
-
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                ////image = Image.FromStream(ms);
-                //image = new Bitmap(Image.FromStream(ms), 120, 120);
-                image = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
-            }
-
-            return image;
-        }
         //load image from bytes
-        public Bitmap GetImageFromByte(byte[] byteArray)
+        public Bitmap GetBitmapFromByte(byte[] byteArray)
         {
             Bitmap image;
             try
@@ -251,18 +254,8 @@ namespace smartManage.Tools
             }
             return fpath;
         }
-        public byte[] GetFileToByte(string file)
-        {
-            byte[] b;
-            using (System.IO.FileStream f = System.IO.File.OpenRead(file))
-            {
-                int size = Convert.ToInt32(f.Length);
-                b = new byte[size];
-                f.Read(b, 0, size);
-            }
-            return b;
-        }
-        public Image GetImageFromByte(string file)
+        
+        public Image GetImageFromFile(string file)
         {
             Image image;
             using (FileStream fs = new FileStream(file, FileMode.Open))
@@ -273,25 +266,41 @@ namespace smartManage.Tools
         }
         public byte[] PictureBoxImageToBytes(System.Drawing.Image imageIn)
         {
-            //**bonne fonction pour convertir imag en byte Avec ou sans les deux lignes en commentaire
-            MemoryStream ms = new MemoryStream();
-            ////Bitmap bitm = new Bitmap(imageIn);
-            ////bitm.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-            imageIn.Save(ms, imageIn.RawFormat);
-            byte[] buff = ms.ToArray();
-            ms.Close();
-            ms.Dispose();
-            return buff;
+            //**bonne fonction pour convertir imag en byte sans utiliser la methode Save()
+            byte[] imageBytes = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Image newImage = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+                imageBytes = ms.ToArray();
+            }
+            return imageBytes;
         }
 
-        public static byte[] GetBytesFromImage(Image img)
+        #region Good Convert for type Byte[] and Image
+        public byte[] GetByteFromFile(string path)
         {
-            MemoryStream ms = new MemoryStream();
-            img.Save(ms, img.RawFormat);
-            return ms.ToArray();
+            byte[] b;
+            using (System.IO.FileStream f = System.IO.File.OpenRead(path))
+            {
+                int size = Convert.ToInt32(f.Length);
+                b = new byte[size];
+                f.Read(b, 0, size);
+            }
+            return b;
         }
 
-        public Image ByteArrayToImage(byte[] byteArrayIn)
+        public byte[] GetBytesFromImage(Image img)
+        {
+            byte[] imageBytes = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                Bitmap bm = new Bitmap(Image.FromStream(ms));
+                imageBytes = ms.ToArray();
+            }
+            return imageBytes;
+        }
+
+        public Image GetImageFromByte(byte[] byteArrayIn)
         {
             MemoryStream ms = new MemoryStream(byteArrayIn);
             //Image returnImage = Image.FromStream(ms);
@@ -299,6 +308,7 @@ namespace smartManage.Tools
             ms.Close();
             return bmp;
         }
+        #endregion
 
         public string SaveTempImage(System.Windows.Forms.PictureBox pbox)
         {

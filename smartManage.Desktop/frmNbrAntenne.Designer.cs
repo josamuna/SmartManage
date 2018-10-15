@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNbrAuxiliaire));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNbrAntenne));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bdNav = new System.Windows.Forms.BindingNavigator(this.components);
             this.bdNew = new System.Windows.Forms.ToolStripButton();
@@ -459,15 +459,15 @@
             this.colDate_modified.HeaderText = "Date modified";
             this.colDate_modified.Name = "colDate_modified";
             // 
-            // frmAuxiliaire
+            // frmNbrAntenne
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(589, 323);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bdNav);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
-            this.Name = "frmAuxiliaire";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Name = "frmNbrAntenne";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Nombre de port Auxiliaire";
             this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);

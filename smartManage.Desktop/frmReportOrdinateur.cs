@@ -79,42 +79,187 @@ namespace smartManage.Desktop
                     if (rdLstIdentifiant.Checked)
                     {
                         //par identifiant equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',
-                        tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.essence_principale_autre as 'Autre essence',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                        tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                        tbl_fiche_pr.localisation as 'Coordonnées géographiques',tbl_fiche_pr.bailleur as 'Bailleur'
-                        from tbl_fiche_pr 
-                        where tbl_fiche_pr.saison='{0}'", cboIdentifiant.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where materiel.code_str='{0}' and materiel.archiver={1}", cboIdentifiant.SelectedValue, chkArchiver.Checked ? 1 : 0);
                     }
                     else if (rdLstEtat.Checked)
                     {
                         //par etat de l'equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',
-                        tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.essence_principale_autre as 'Autre essence',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                        tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                        tbl_fiche_pr.localisation as 'Coordonnées géographiques',tbl_fiche_pr.bailleur as 'Bailleur' 
-                        from tbl_fiche_pr 
-                        where tbl_fiche_pr.saison='{0}'", cboEtat.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where etat_materiel.designation='{0}' and materiel.archiver={1}", cboEtat.SelectedValue, chkArchiver.Checked ? 1 : 0);
                     }
                     else if (rdLstEndGarantie.Checked)
                     {
                         //par délais de garantie de l'equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',tbl_fiche_pr.n_plantation as 'Nombre plantation',
-                        tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                        tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                        tbl_fiche_pr.localisation as 'Coordonnées géographiques', (select n_visite as n_visite from tbl_fiche_pr union select n_visite_2 as n_visite from tbl_fiche_pr union select n_viste_3 as n_visite from tbl_fiche_pr) as n_visite, tbl_fiche_pr.nom_agent as 'Agent' 
-                        from tbl_fiche_pr 
-                        where (tbl_fiche_pr.n_visite='{0}'", cboDelais.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where garantie.valeur={0} and materiel.archiver={1}", cboDelais.SelectedValue, chkArchiver.Checked ? 1 : 0);
                     }
                     else if (rdLstMAC.Checked)
                     {
                         //par MAC Wifi de l'equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',tbl_fiche_pr.n_plantation as 'Nombre plantation',
-                        tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                        tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                        tbl_fiche_pr.localisation as 'Coordonnées géographiques', (select n_visite as n_visite from tbl_fiche_pr union select n_visite_2 as n_visite from tbl_fiche_pr union select n_viste_3 as n_visite from tbl_fiche_pr) as n_visite, tbl_fiche_pr.nom_agent as 'Agent' 
-                        from tbl_fiche_pr 
-                        where (tbl_fiche_pr.n_visite='{0}'", cboMacWifi.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where materiel.mac_adresse1='{0}' and materiel.archiver={1}", cboMacWifi.SelectedValue, chkArchiver.Checked ? 1 : 0);
+                    }
+                    else if (rdLstDateAcquisition.Checked)
+                    {
+                        //par date acquisition de l'equipement
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where (materiel.date_acquisition between '{0}' and '{1}') and materiel.archiver={2}", txtDateAcquisitionDebut.Text, txtDateAcquisitionFin.Text, chkArchiver.Checked ? 1 : 0);
                     }
 
                     break;
@@ -122,12 +267,39 @@ namespace smartManage.Desktop
                     if (rdLstMAC.Checked)
                     {
                         //par MAC LAN de l'equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',tbl_fiche_pr.n_plantation as 'Nombre plantation',
-                        tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                        tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                        tbl_fiche_pr.localisation as 'Coordonnées géographiques', (select n_visite as n_visite from tbl_fiche_pr union select n_visite_2 as n_visite from tbl_fiche_pr union select n_viste_3 as n_visite from tbl_fiche_pr) as n_visite, tbl_fiche_pr.nom_agent as 'Agent' 
-                        from tbl_fiche_pr 
-                        where (tbl_fiche_pr.n_visite='{0}'", cboMacLAN.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where materiel.mac_adresse2='{0}' and materiel.archiver={1}", cboMacLAN.SelectedValue, chkArchiver.Checked ? 1 : 0);
                     }
 
                     break;
@@ -135,12 +307,39 @@ namespace smartManage.Desktop
                     if (rdLstMAC.Checked)
                     {
                         //par MAC Wifi ou LAN de l'equipement
-                        query = string.Format(@"select tbl_fiche_pr.uuid as 'Identifiant unique',ISNULL(tbl_fiche_pr.nom,'') + '' + ISNULL(tbl_fiche_pr.post_nom,'') + ' ' + ISNULL(tbl_fiche_pr.prenom,'') AS 'Noms planteur',tbl_fiche_pr.association as 'Association',tbl_fiche_pr.n_plantation as 'Nombre plantation',
-                            tbl_fiche_pr.superficie as 'Hectares réalisé',tbl_fiche_pr.saison as 'Saison',tbl_fiche_pr.essence_principale as 'Essence principale',tbl_fiche_pr.ecartement_dim_1 as 'Ecartement 1',
-                            tbl_fiche_pr.ecartement_dim_2 as 'Ecartement2',tbl_fiche_pr.regarnissage as 'Regarnissage',tbl_fiche_pr.entretien as 'Entretien',tbl_fiche_pr.etat as 'Etat plantation',tbl_fiche_pr.croissance_arbres as 'Croissance arbre',
-                            tbl_fiche_pr.localisation as 'Coordonnées géographiques', (select n_visite as n_visite from tbl_fiche_pr union select n_visite_2 as n_visite from tbl_fiche_pr union select n_viste_3 as n_visite from tbl_fiche_pr) as n_visite, tbl_fiche_pr.nom_agent as 'Agent' 
-                            from tbl_fiche_pr 
-                            where (tbl_fiche_pr.n_visite='{0}' or tbl_fiche_pr.n_visite_2='{1}'", cboMacWifi.SelectedValue, cboMacLAN.SelectedValue);
+                        query = string.Format(@"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
+                        modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                        materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
+                        nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
+                        vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+                        materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver' from materiel 
+                        left outer join garantie on garantie.id=materiel.id_garantie
+                        left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+                        inner join compte on compte.id=materiel.id_compte
+                        inner join marque on marque.id=materiel.id_marque
+                        inner join modele on modele.id=materiel.id_modele
+                        inner join couleur on couleur.id=materiel.id_couleur
+                        inner join poids on poids.id=materiel.id_poids
+                        inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
+                        left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
+                        left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
+                        left outer join OS on OS.id=materiel.id_OS
+                        left outer join ram on ram.id=materiel.id_ram
+                        left outer join processeur on processeur.id=materiel.id_processeur
+                        left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
+                        left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
+                        left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
+                        left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
+                        left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
+                        left outer join usb2 on usb2.id=materiel.id_usb2
+                        left outer join usb3 on usb3.id=materiel.id_usb3
+                        left outer join hdmi on hdmi.id=materiel.id_hdmi
+                        left outer join vga on vga.id=materiel.id_vga
+                        left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
+                        left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
+                        left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
+                        left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
+                        where (materiel.mac_adresse1='{0}' or materiel.mac_adresse2='{1}') and materiel.archiver={2}", cboMacWifi.SelectedValue, cboMacLAN.SelectedValue, chkArchiver.Checked ? 1 : 0);
                     }
 
                     break;
@@ -279,6 +478,8 @@ namespace smartManage.Desktop
             cboMacLAN.Enabled = false;
             txtDateAcquisitionDebut.Enabled = false;
             txtDateAcquisitionFin.Enabled = false;
+
+            chkArchiver.Checked = false;
         }
 
         private void rdLstEndGarantie_CheckedChanged(object sender, EventArgs e)
@@ -295,6 +496,8 @@ namespace smartManage.Desktop
             cboMacLAN.Enabled = false;
             txtDateAcquisitionDebut.Enabled = false;
             txtDateAcquisitionFin.Enabled = false;
+
+            chkArchiver.Checked = false;
         }
 
         private void rdLstMAC_CheckedChanged(object sender, EventArgs e)
@@ -313,6 +516,8 @@ namespace smartManage.Desktop
             cboMacLAN.Enabled = true;
             txtDateAcquisitionDebut.Enabled = false;
             txtDateAcquisitionFin.Enabled = false;
+
+            chkArchiver.Checked = false;
         }
 
         private void frmReportOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
@@ -360,6 +565,8 @@ namespace smartManage.Desktop
             cboMacLAN.Enabled = false;
             txtDateAcquisitionDebut.Enabled = false;
             txtDateAcquisitionFin.Enabled = false;
+
+            chkArchiver.Checked = false;
         }
 
         private void rdLstDateAcquisition_CheckedChanged(object sender, EventArgs e)
@@ -376,6 +583,8 @@ namespace smartManage.Desktop
             cboMacLAN.Enabled = false;
             txtDateAcquisitionDebut.Enabled = true;
             txtDateAcquisitionFin.Enabled = true;
+
+            chkArchiver.Checked = false;
         }
     }
 }

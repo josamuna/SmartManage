@@ -5220,7 +5220,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM OS WHERE id={0}", intid);
+                    cmd.CommandText = string.Format(@"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
+                    INNER JOIN architecture_OS ON architecture_OS.id = OS.id_architecture_OS
+                    INNER JOIN type_OS ON type_OS.id = OS.id_type_OS WHERE OS.id={0}", intid);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -5257,10 +5259,12 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM OS  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    string sql = @"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
+                    INNER JOIN architecture_OS ON architecture_OS.id=OS.id_architecture_OS 
+                    INNER JOIN type_OS ON type_OS.id=OS.id_type_OS WHERE";
+                    sql += "  OS.designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   OS.user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   OS.user_modified LIKE '%" + criteria + "%' ORDER BY OS.designation ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5302,7 +5306,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM OS ORDER BY designation ASC");
+                    cmd.CommandText = string.Format(@"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
+                    INNER JOIN architecture_OS ON architecture_OS.id=OS.id_architecture_OS 
+                    INNER JOIN type_OS ON type_OS.id=OS.id_type_OS ORDER BY OS.designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -7606,7 +7612,7 @@ namespace smartManage.Model
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
-                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["qrcode"].ToString().Trim().Equals("")) varclsmateriel.Qrcode = (Byte[])dr["qrcode"];
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
                             if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
@@ -7614,9 +7620,9 @@ namespace smartManage.Model
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
                             if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
                             if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
-                            varclsmateriel.Photo1 = dr["photo1"].ToString();
-                            varclsmateriel.Photo2 = dr["photo2"].ToString();
-                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            if (!dr["photo1"].ToString().Trim().Equals("")) varclsmateriel.Photo1 = (Byte[])dr["photo1"];
+                            if (!dr["photo2"].ToString().Trim().Equals("")) varclsmateriel.Photo2 = (Byte[])dr["photo2"];
+                            if (!dr["photo3"].ToString().Trim().Equals("")) varclsmateriel.Photo3 = (Byte[])dr["photo3"];
                             varclsmateriel.Label = dr["label"].ToString();
                             varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
                             varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
@@ -7721,7 +7727,7 @@ namespace smartManage.Model
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
-                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["qrcode"].ToString().Trim().Equals("")) varclsmateriel.Qrcode = (Byte[])dr["qrcode"];
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
                             if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
@@ -7729,9 +7735,9 @@ namespace smartManage.Model
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
                             if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
                             if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
-                            varclsmateriel.Photo1 = dr["photo1"].ToString();
-                            varclsmateriel.Photo2 = dr["photo2"].ToString();
-                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            if (!dr["photo1"].ToString().Trim().Equals("")) varclsmateriel.Photo1 = (Byte[])dr["photo1"];
+                            if (!dr["photo2"].ToString().Trim().Equals("")) varclsmateriel.Photo2 = (Byte[])dr["photo2"];
+                            if (!dr["photo3"].ToString().Trim().Equals("")) varclsmateriel.Photo3 = (Byte[])dr["photo3"];
                             varclsmateriel.Label = dr["label"].ToString();
                             varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
                             varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
@@ -7825,7 +7831,7 @@ namespace smartManage.Model
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
-                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["qrcode"].ToString().Trim().Equals("")) varclsmateriel.Qrcode = (Byte[])dr["qrcode"];
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
                             if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
@@ -7833,9 +7839,9 @@ namespace smartManage.Model
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
                             if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
                             if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
-                            varclsmateriel.Photo1 = dr["photo1"].ToString();
-                            varclsmateriel.Photo2 = dr["photo2"].ToString();
-                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            if (!dr["photo1"].ToString().Trim().Equals("")) varclsmateriel.Photo1 = (Byte[])dr["photo1"];
+                            if (!dr["photo2"].ToString().Trim().Equals("")) varclsmateriel.Photo2 = (Byte[])dr["photo2"];
+                            if (!dr["photo3"].ToString().Trim().Equals("")) varclsmateriel.Photo3 = (Byte[])dr["photo3"];
                             varclsmateriel.Label = dr["label"].ToString();
                             varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
                             varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
@@ -7928,7 +7934,7 @@ namespace smartManage.Model
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
-                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["qrcode"].ToString().Trim().Equals("")) varclsmateriel.Qrcode = (Byte[])dr["qrcode"];
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
                             if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
@@ -7936,9 +7942,9 @@ namespace smartManage.Model
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
                             if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
                             if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
-                            varclsmateriel.Photo1 = dr["photo1"].ToString();
-                            varclsmateriel.Photo2 = dr["photo2"].ToString();
-                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            if (!dr["photo1"].ToString().Trim().Equals("")) varclsmateriel.Photo1 = (Byte[])dr["photo1"];
+                            if (!dr["photo2"].ToString().Trim().Equals("")) varclsmateriel.Photo2 = (Byte[])dr["photo2"];
+                            if (!dr["photo3"].ToString().Trim().Equals("")) varclsmateriel.Photo3 = (Byte[])dr["photo3"];
                             varclsmateriel.Label = dr["label"].ToString();
                             varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
                             varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
@@ -8031,7 +8037,7 @@ namespace smartManage.Model
                             varclsmateriel.Code_str = dr["code_str"].ToString();
                             if (!dr["id_categorie_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_categorie_materiel = int.Parse(dr["id_categorie_materiel"].ToString());
                             if (!dr["id_compte"].ToString().Trim().Equals("")) varclsmateriel.Id_compte = int.Parse(dr["id_compte"].ToString());
-                            varclsmateriel.Qrcode = dr["qrcode"].ToString();
+                            if (!dr["qrcode"].ToString().Trim().Equals("")) varclsmateriel.Qrcode = (Byte[])dr["qrcode"];
                             if (!dr["date_acquisition"].ToString().Trim().Equals("")) varclsmateriel.Date_acquisition = DateTime.Parse(dr["date_acquisition"].ToString());
                             if (!dr["id_garantie"].ToString().Trim().Equals("")) varclsmateriel.Id_garantie = int.Parse(dr["id_garantie"].ToString());
                             if (!dr["id_marque"].ToString().Trim().Equals("")) varclsmateriel.Id_marque = int.Parse(dr["id_marque"].ToString());
@@ -8039,9 +8045,9 @@ namespace smartManage.Model
                             if (!dr["id_couleur"].ToString().Trim().Equals("")) varclsmateriel.Id_couleur = int.Parse(dr["id_couleur"].ToString());
                             if (!dr["id_poids"].ToString().Trim().Equals("")) varclsmateriel.Id_poids = int.Parse(dr["id_poids"].ToString());
                             if (!dr["id_etat_materiel"].ToString().Trim().Equals("")) varclsmateriel.Id_etat_materiel = int.Parse(dr["id_etat_materiel"].ToString());
-                            varclsmateriel.Photo1 = dr["photo1"].ToString();
-                            varclsmateriel.Photo2 = dr["photo2"].ToString();
-                            varclsmateriel.Photo3 = dr["photo3"].ToString();
+                            if (!dr["photo1"].ToString().Trim().Equals("")) varclsmateriel.Photo1 = (Byte[])dr["photo1"];
+                            if (!dr["photo2"].ToString().Trim().Equals("")) varclsmateriel.Photo2 = (Byte[])dr["photo2"];
+                            if (!dr["photo3"].ToString().Trim().Equals("")) varclsmateriel.Photo3 = (Byte[])dr["photo3"];
                             varclsmateriel.Label = dr["label"].ToString();
                             varclsmateriel.Mac_adresse1 = dr["mac_adresse1"].ToString();
                             varclsmateriel.Mac_adresse2 = dr["mac_adresse2"].ToString();
@@ -8157,7 +8163,7 @@ namespace smartManage.Model
             else
             {
                 //Match match = Regex.Match(mac_address);
-                if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[1-9a-fA-F][1-9a-fA-F]{11}$"))
+                if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[1-9a-fA-F][0-9a-fA-F]{11}$"))
                     return mac_address.ToUpper();
                 else
                     throw new Exception(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères et utilise les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", mac_address));
@@ -8180,8 +8186,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_categorie_materiel", DbType.Int32, 4, varclsmateriel.Id_categorie_materiel));
                     cmd.Parameters.Add(getParameter(cmd, "@id_compte", DbType.Int32, 4, varclsmateriel.Id_compte));
-                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, varclsmateriel.Qrcode));
-                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Binary, Int32.MaxValue, varclsmateriel.Qrcode));
+                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclsmateriel.Date_acquisition.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, varclsmateriel.Date_acquisition));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, DBNull.Value));
                     if (varclsmateriel.Id_garantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, varclsmateriel.Id_garantie));
@@ -8191,17 +8197,17 @@ namespace smartManage.Model
                     cmd.Parameters.Add(getParameter(cmd, "@id_couleur", DbType.Int32, 4, varclsmateriel.Id_couleur));
                     cmd.Parameters.Add(getParameter(cmd, "@id_poids", DbType.Int32, 4, varclsmateriel.Id_poids));
                     cmd.Parameters.Add(getParameter(cmd, "@id_etat_materiel", DbType.Int32, 4, varclsmateriel.Id_etat_materiel));
-                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, varclsmateriel.Photo1));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, varclsmateriel.Photo2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, varclsmateriel.Photo3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo1));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Binary, Int32.MaxValue, DBNull.Value));
+                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Binary, Int32.MaxValue, DBNull.Value));
+                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
+                    if (!string.IsNullOrEmpty(varclsmateriel.Mac_adresse1)) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
+                    if (!string.IsNullOrEmpty(varclsmateriel.Mac_adresse2)) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Commentaire != null) cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, varclsmateriel.Commentaire));
                     else cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, DBNull.Value));
@@ -8336,8 +8342,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@code_str", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_categorie_materiel", DbType.Int32, 4, varclsmateriel.Id_categorie_materiel));
                     cmd.Parameters.Add(getParameter(cmd, "@id_compte", DbType.Int32, 4, varclsmateriel.Id_compte));
-                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, varclsmateriel.Qrcode));
-                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Qrcode != null) cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Binary, Int32.MaxValue, varclsmateriel.Qrcode));
+                    else cmd.Parameters.Add(getParameter(cmd, "@qrcode", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclsmateriel.Date_acquisition.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, varclsmateriel.Date_acquisition));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_acquisition", DbType.DateTime, 8, DBNull.Value));
                     if (varclsmateriel.Id_garantie.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_garantie", DbType.Int32, 4, varclsmateriel.Id_garantie));
@@ -8347,17 +8353,17 @@ namespace smartManage.Model
                     cmd.Parameters.Add(getParameter(cmd, "@id_couleur", DbType.Int32, 4, varclsmateriel.Id_couleur));
                     cmd.Parameters.Add(getParameter(cmd, "@id_poids", DbType.Int32, 4, varclsmateriel.Id_poids));
                     cmd.Parameters.Add(getParameter(cmd, "@id_etat_materiel", DbType.Int32, 4, varclsmateriel.Id_etat_materiel));
-                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, varclsmateriel.Photo1));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.String, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, varclsmateriel.Photo2));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.String, 2147483647, DBNull.Value));
-                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, varclsmateriel.Photo3));
-                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.String, 2147483647, DBNull.Value));
+                    if (varclsmateriel.Photo1 != null) cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo1));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo1", DbType.Binary, Int32.MaxValue, DBNull.Value));
+                    if (varclsmateriel.Photo2 != null) cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo2));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo2", DbType.Binary, Int32.MaxValue, DBNull.Value));
+                    if (varclsmateriel.Photo3 != null) cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Binary, Int32.MaxValue, varclsmateriel.Photo3));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo3", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclsmateriel.Label != null) cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, varclsmateriel.Label));
                     else cmd.Parameters.Add(getParameter(cmd, "@label", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse1 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
+                    if (!string.IsNullOrEmpty(varclsmateriel.Mac_adresse1)) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse1)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse1", DbType.String, 20, DBNull.Value));
-                    if (varclsmateriel.Mac_adresse2 != null) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
+                    if (!string.IsNullOrEmpty(varclsmateriel.Mac_adresse2)) cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, ValidateMacRegex(varclsmateriel.Mac_adresse2)));
                     else cmd.Parameters.Add(getParameter(cmd, "@mac_adresse2", DbType.String, 20, DBNull.Value));
                     if (varclsmateriel.Commentaire != null) cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, varclsmateriel.Commentaire));
                     else cmd.Parameters.Add(getParameter(cmd, "@commentaire", DbType.String, 400, DBNull.Value));

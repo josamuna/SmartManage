@@ -4,6 +4,7 @@ namespace smartManage.Desktop
 {
     public enum FormActualisation
     {
+        //Partie pour ordinateur
         frmCategorieMateriel,
         frmNumeroCompte,
         frmMarque,
@@ -13,7 +14,7 @@ namespace smartManage.Desktop
         frmEtatMateriel,
         frmTypeOrdinateur,
         frmTypeClavier,
-        frmTypeOS,
+        frmOS,
         frmGarantie,
         frmRAM,
         frmProcesseur,
@@ -48,6 +49,10 @@ namespace smartManage.Desktop
         frmNbrConsole,
         frmNbrAuxiliaire,
         frmFrequence,
-        frmNbrAntenne
+        frmNbrAntenne,
+
+        //Partie pour OS
+        frmArchitectureOS,
+        frmTypeOS
     }
 }

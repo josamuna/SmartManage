@@ -466,7 +466,7 @@
             this.ClientSize = new System.Drawing.Size(589, 323);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.bdNav);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmDefaultIP";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Adresse IP par defaut";
