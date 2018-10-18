@@ -469,7 +469,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmNbrAntenne";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Nombre de port Auxiliaire";
+            this.Text = "Nombre d\'antennes de l\'équipement";
             this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);

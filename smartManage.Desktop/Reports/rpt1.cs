@@ -16,14 +16,14 @@ namespace smartManage.Desktop.Reports {
     using CrystalDecisions.CrystalReports.Engine;
     
     
-    public class LstOrdinateurIdentifiant : ReportClass {
+    public class rpt1 : ReportClass {
         
-        public LstOrdinateurIdentifiant() {
+        public rpt1() {
         }
         
         public override string ResourceName {
             get {
-                return "LstOrdinateurIdentifiant.rpt";
+                return "rpt1.rpt";
             }
             set {
                 // Do nothing
@@ -41,7 +41,7 @@ namespace smartManage.Desktop.Reports {
         
         public override string FullResourceName {
             get {
-                return "smartManage.Desktop.Reports.LstOrdinateurIdentifiant.rpt";
+                return "smartManage.Desktop.Reports.rpt1.rpt";
             }
             set {
                 // Do nothing
@@ -90,9 +90,9 @@ namespace smartManage.Desktop.Reports {
     }
     
     [System.Drawing.ToolboxBitmapAttribute(typeof(CrystalDecisions.Shared.ExportOptions), "report.bmp")]
-    public class CachedLstOrdinateurIdentifiant : Component, ICachedReport {
+    public class Cachedrpt1 : Component, ICachedReport {
         
-        public CachedLstOrdinateurIdentifiant() {
+        public Cachedrpt1() {
         }
         
         [Browsable(false)]
@@ -129,7 +129,7 @@ namespace smartManage.Desktop.Reports {
         }
         
         public virtual CrystalDecisions.CrystalReports.Engine.ReportDocument CreateReport() {
-            LstOrdinateurIdentifiant rpt = new LstOrdinateurIdentifiant();
+            rpt1 rpt = new rpt1();
             rpt.Site = this.Site;
             return rpt;
         }

@@ -156,6 +156,19 @@ create table type_AP
 )
 go
 
+create table portee
+(
+	id int,
+	valeur float not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_portee primary key(id),
+	constraint uk_portee unique(valeur)
+)
+go
+
 create table type_switch
 (
 	id int,
@@ -807,9 +820,10 @@ create table materiel
 	id_console int,
 	id_auxiliaire int,
 	--AP
-	id_type_AP int,
-	--tension_alimentation
-	id_type_switch int,
+	id_type_AP int, --utiliser id_tension_alimentation pour Amplificateur  
+	id_portee int,
+	--Switch
+	id_type_switch int,--, utiliser id_tension_alimentation pour Amplificateur
 	--Emetteur
 	id_frequence int,
 	--alimentation varchar(20), utiliser id_tension_alimentation pour Amplificateur
@@ -831,6 +845,7 @@ create table materiel
 	constraint fk_materiel_netette foreign key(id_netette) references netette(id),
 	constraint fk_materiel_type_switch foreign key(id_type_switch) references type_switch(id),
 	constraint fk_materiel_typeAP foreign key(id_type_AP) references type_AP(id),
+	constraint fk_materiel_portee foreign key(id_portee) references portee(id),
 	constraint fk_materiel_id_type_routeur_AP foreign key(id_type_routeur_AP) references type_routeur_AP(id),
 	constraint fk_materiel_version_ios foreign key(id_version_ios) references version_ios(id),
 	constraint fk_materiel_type_amplificateur foreign key(id_type_amplificateur) references type_amplificateur(id),
@@ -1132,7 +1147,8 @@ insert into categorie_materiel(id,designation,user_created,date_created,user_mod
 (1,'Ordinateur','sa',GETDATE(),null,null),(2,'Switch','sa',GETDATE(),null,null),
 (3,'Imprimante','sa',GETDATE(),null,null),(4,'Emetteur','sa',GETDATE(),null,null),
 (5,'Amplificateur','sa',GETDATE(),null,null),(6,'Retroprojecteur','sa',GETDATE(),null,null),
-(7,'Routeur_Access Point','sa',GETDATE(),null,null),(8,'Access Point','sa',GETDATE(),null,null)
+(7,'Routeur_Access Point','sa',GETDATE(),null,null),(8,'Access Point','sa',GETDATE(),null,null),
+(9,'Autre','sa',GETDATE(),null,null)
 
 insert into type_amplificateur(id,designation,user_created,date_created,user_modified,date_modified) values
 (1,'Avec baffle','sa',GETDATE(),null,null),(2,'Sans baffle','sa',GETDATE(),null,null)
@@ -1403,3 +1419,21 @@ insert into lieu_affectation(id,code_AC,id_type_lieu_affectation,id_personne,id_
 --insert into signataire(id,id_personne,code_AC,signature_specimen,user_created,date_created,user_modified,date_modified) values
 --(1,4,'2014-2015',null,'sa',GETDATE(),null,null),(2,4,'2015-2016',null,'sa',GETDATE(),null,null),
 --(3,4,'2016-2017',null,'sa',GETDATE(),null,null),(4,4,'2017-2018',null,'sa',GETDATE(),null,null)
+
+--Differentes categories des materiel qui ne devra pas etre change
+--Ordinateur
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=1 ORDER BY materiel.id ASC
+--Switch
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=2 ORDER BY materiel.id ASC
+--Imprimante
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=3 ORDER BY materiel.id ASC
+--Emetteur
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=4 ORDER BY materiel.id ASC
+--Amplificateur
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=5 ORDER BY materiel.id ASC
+--Retroprojecteur
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=6 ORDER BY materiel.id ASC
+--Routeur_Access Point
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=7 ORDER BY materiel.id ASC
+--Access Point
+SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=8 ORDER BY materiel.id ASC

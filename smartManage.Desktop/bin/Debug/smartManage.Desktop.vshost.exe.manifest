@@ -202,7 +202,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>bakbK5+Cn5XYLmWOFcGoXE5uD78=</dsig:DigestValue>
+        <dsig:DigestValue>XqUFpyKrjNtVrX9IA3pQZpCLhNc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -267,26 +267,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="2962432">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="3335680">
       <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>JLbMRkniXhtKzopWkrPtzWcjb1o=</dsig:DigestValue>
+        <dsig:DigestValue>HUncHBE/VYAcvqSxC4g8xr9J9e8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="675328">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="735744">
       <assemblyIdentity name="smartManage.Model" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Ef5owPv7TpiDckD4JFDZt/mh3eo=</dsig:DigestValue>
+        <dsig:DigestValue>ka/tw5I3rwY1aHxARktUjReUlns=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -298,7 +298,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>wM9U4IV4WEiTO47+xVzdKuJaazM=</dsig:DigestValue>
+        <dsig:DigestValue>qtYaFxqou7W3I/rP3DsVNQPbbAU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -383,13 +383,13 @@
       <dsig:DigestValue>S21hfgI2t+vpgbIsxXVtGCr43pA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="smartManage.Desktop.exe.config" size="1128">
+  <file name="smartManage.Desktop.exe.config" size="1006">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>e/o5h/YXRymBVDiC4d8u+v6SJL0=</dsig:DigestValue>
+      <dsig:DigestValue>gyVUURX7ZEw54qdyQ77M+8POmSA=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

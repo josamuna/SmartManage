@@ -30,6 +30,7 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkArchiver = new System.Windows.Forms.CheckBox();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.cboEtat = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cmdView = new System.Windows.Forms.Button();
-            this.chkArchiver = new System.Windows.Forms.CheckBox();
             this.crvReport = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -103,6 +103,18 @@
             this.groupBox1.Size = new System.Drawing.Size(1189, 63);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
+            // 
+            // chkArchiver
+            // 
+            this.chkArchiver.AutoSize = true;
+            this.chkArchiver.ForeColor = System.Drawing.Color.MediumVioletRed;
+            this.chkArchiver.Location = new System.Drawing.Point(5, 38);
+            this.chkArchiver.Name = "chkArchiver";
+            this.chkArchiver.Size = new System.Drawing.Size(62, 17);
+            this.chkArchiver.TabIndex = 158;
+            this.chkArchiver.TabStop = false;
+            this.chkArchiver.Text = "Archivé";
+            this.chkArchiver.UseVisualStyleBackColor = true;
             // 
             // label10
             // 
@@ -180,6 +192,7 @@
             // 
             this.cboIdentifiant.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.cboIdentifiant.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
+            this.cboIdentifiant.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboIdentifiant.DropDownWidth = 150;
             this.cboIdentifiant.FormattingEnabled = true;
             this.cboIdentifiant.Location = new System.Drawing.Point(472, 34);
@@ -354,18 +367,6 @@
             this.cmdView.Text = "Afficher";
             this.cmdView.UseVisualStyleBackColor = false;
             this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
-            // 
-            // chkArchiver
-            // 
-            this.chkArchiver.AutoSize = true;
-            this.chkArchiver.ForeColor = System.Drawing.Color.MediumVioletRed;
-            this.chkArchiver.Location = new System.Drawing.Point(5, 38);
-            this.chkArchiver.Name = "chkArchiver";
-            this.chkArchiver.Size = new System.Drawing.Size(62, 17);
-            this.chkArchiver.TabIndex = 158;
-            this.chkArchiver.TabStop = false;
-            this.chkArchiver.Text = "Archivé";
-            this.chkArchiver.UseVisualStyleBackColor = true;
             // 
             // crvReport
             // 

@@ -59,7 +59,7 @@ namespace smartManage.Desktop
         private void frmCategorieMateriel_Load(object sender, EventArgs e)
         {
             this.bdNav.Enabled = true;
-            smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = "";
+            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
 
             try
             {
@@ -154,7 +154,7 @@ namespace smartManage.Desktop
                     MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     newID = null;
-                    smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = this.Name;
+                    smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = this.Name;
                     RefreshData();
                 }
                 else
@@ -254,7 +254,7 @@ namespace smartManage.Desktop
             try
             {
                 this.Save();
-                smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = this.Name;
+                smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = this.Name;
                 newID = null;
                 RefreshData();
             }

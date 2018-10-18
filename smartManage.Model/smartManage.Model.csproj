@@ -85,6 +85,7 @@
     <Compile Include="clspage_par_minute.cs" />
     <Compile Include="clspersonne.cs" />
     <Compile Include="clspoids.cs" />
+    <Compile Include="clsportee.cs" />
     <Compile Include="clsprocesseur.cs" />
     <Compile Include="clspromotion.cs" />
     <Compile Include="clspuissance.cs" />

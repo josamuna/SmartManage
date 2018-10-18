@@ -63,7 +63,7 @@ namespace smartManage.Desktop
         private void frmCategorieMateriel_Load(object sender, EventArgs e)
         {
             this.bdNav.Enabled = true;
-            smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = "";
+            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
 
             try
             {
@@ -85,20 +85,20 @@ namespace smartManage.Desktop
         private void CallActualiseComboBoxModification()
         {
             //Actualisation des combobox si modification
-            if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifieOS))
+            if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm))
             {
-                if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOS.Equals(FormActualisation.frmTypeOS.ToString()))
+                if (smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm.Equals(FormActualisation.frmTypeOS.ToString()))
                 {
                     cboTypeOS.DataSource = clsMetier.GetInstance().getAllClstype_OS();
                     this.setMembersallcbo(cboTypeOS, "Designation", "Id");
                 }
-                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieOS.Equals(FormActualisation.frmArchitectureOS.ToString()))
+                else if (smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm.Equals(FormActualisation.frmArchitectureOS.ToString()))
                 {
                     cboArchitectureOS.DataSource = clsMetier.GetInstance().getAllClsarchitecture_OS();
                     this.setMembersallcbo(cboArchitectureOS, "Designation", "Id");
                 }
 
-                smartManage.Desktop.Properties.Settings.Default.strFormModifieOS = "";
+                smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
             }
         }
 
@@ -194,7 +194,7 @@ namespace smartManage.Desktop
                     MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     newID = null;
-                    smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = this.Name;
+                    smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = this.Name;
                     RefreshData();
                 }
                 else
@@ -292,7 +292,7 @@ namespace smartManage.Desktop
             try
             {
                 this.Save();
-                smartManage.Desktop.Properties.Settings.Default.strFormModifieOrdinateur = this.Name;
+                smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = this.Name;
                 newID = null;
                 RefreshData();
             }

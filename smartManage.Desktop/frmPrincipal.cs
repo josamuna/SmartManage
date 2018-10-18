@@ -458,15 +458,74 @@ namespace smartManage.Desktop
 
         private void ssmEmetteur_Click(object sender, EventArgs e)
         {
-            TestQRCode frm = new TestQRCode();
+            frmEmetteur frm = new frmEmetteur();
+            frm.Principal = this;
+            frm.MdiParent = this;
             frm.Icon = this.Icon;
+            frmCurrent = frm;
             frm.Show();
+            this.bdNav.Enabled = true;
         }
 
         private void bdDelete_Click(object sender, EventArgs e)
         {
             if (frmCurrent != null)
                 frmCurrent.Delete();
+        }
+
+        private void ssmRouter_Click(object sender, EventArgs e)
+        {
+            frmRouteurAP frm = new frmRouteurAP();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmAmplifie_Click(object sender, EventArgs e)
+        {
+            frmAmplificateur frm = new frmAmplificateur();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmSwitch_Click(object sender, EventArgs e)
+        {
+            frmSwitch frm = new frmSwitch();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmAP_Click(object sender, EventArgs e)
+        {
+            frmAccessPoint frm = new frmAccessPoint();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmProjector_Click(object sender, EventArgs e)
+        {
+            frmRetroprojecteur frm = new frmRetroprojecteur();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
         }
     }
 }

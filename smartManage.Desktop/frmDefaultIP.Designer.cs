@@ -304,9 +304,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(7, 55);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(69, 13);
             this.label2.TabIndex = 61;
-            this.label2.Text = "Valeur :";
+            this.label2.Text = "Désignation :";
             // 
             // label17
             // 
@@ -431,7 +431,7 @@
             // colDesignation
             // 
             this.colDesignation.DataPropertyName = "Designation";
-            this.colDesignation.HeaderText = "Valeur";
+            this.colDesignation.HeaderText = "Désignation";
             this.colDesignation.Name = "colDesignation";
             this.colDesignation.Width = 155;
             // 

@@ -38,24 +38,12 @@ namespace smartManage.Desktop.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string strFormModifieOrdinateur {
+        public string strFormModifieSubForm {
             get {
-                return ((string)(this["strFormModifieOrdinateur"]));
+                return ((string)(this["strFormModifieSubForm"]));
             }
             set {
-                this["strFormModifieOrdinateur"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string strFormModifieOS {
-            get {
-                return ((string)(this["strFormModifieOS"]));
-            }
-            set {
-                this["strFormModifieOS"] = value;
+                this["strFormModifieSubForm"] = value;
             }
         }
     }

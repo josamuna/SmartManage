@@ -30,7 +30,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>12</ApplicationRevision>
+    <ApplicationRevision>14</ApplicationRevision>
     <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -126,11 +126,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormActualisation.cs" />
-    <Compile Include="frmAccessPoint.cs">
+    <Compile Include="frmNetete.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmAccessPoint.Designer.cs">
-      <DependentUpon>frmAccessPoint.cs</DependentUpon>
+    <Compile Include="frmNetete.Designer.cs">
+      <DependentUpon>frmNetete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRetroprojecteur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRetroprojecteur.Designer.cs">
+      <DependentUpon>frmRetroprojecteur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmetteur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmetteur.Designer.cs">
+      <DependentUpon>frmEmetteur.cs</DependentUpon>
     </Compile>
     <Compile Include="frmAffectationMateriel.cs">
       <SubType>Form</SubType>
@@ -149,6 +161,60 @@
     </Compile>
     <Compile Include="frmAmplificateur.Designer.cs">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAccessPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAccessPoint.Designer.cs">
+      <DependentUpon>frmAccessPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPortee.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPortee.Designer.cs">
+      <DependentUpon>frmPortee.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportAmplificateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportAmplificateur.Designer.cs">
+      <DependentUpon>frmReportAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportRouteurAP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportRouteurAP.Designer.cs">
+      <DependentUpon>frmReportRouteurAP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSwitch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSwitch.Designer.cs">
+      <DependentUpon>frmSwitch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeAmplificateur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeAmplificateur.Designer.cs">
+      <DependentUpon>frmTypeAmplificateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeAccessPoint.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeAccessPoint.Designer.cs">
+      <DependentUpon>frmTypeAccessPoint.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeRouteurAP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeRouteurAP.Designer.cs">
+      <DependentUpon>frmTypeRouteurAP.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmVersionIOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmVersionIOS.Designer.cs">
+      <DependentUpon>frmVersionIOS.cs</DependentUpon>
     </Compile>
     <Compile Include="frmFrequence.cs">
       <SubType>Form</SubType>
@@ -252,6 +318,18 @@
     <Compile Include="frmNbrUSB.Designer.cs">
       <DependentUpon>frmNbrUSB.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmImprimante.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImprimante.Designer.cs">
+      <DependentUpon>frmImprimante.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmRouteurAP.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmRouteurAP.Designer.cs">
+      <DependentUpon>frmRouteurAP.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmPageParMinute.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -293,6 +371,12 @@
     </Compile>
     <Compile Include="frmPuissanceAdaptateur.Designer.cs">
       <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportImprimante.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportImprimante.Designer.cs">
+      <DependentUpon>frmReportImprimante.cs</DependentUpon>
     </Compile>
     <Compile Include="frmReportOrdinateur.cs">
       <SubType>Form</SubType>
@@ -438,18 +522,6 @@
     <Compile Include="frmCategorieMateriel.Designer.cs">
       <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmEmetteur.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmEmetteur.Designer.cs">
-      <DependentUpon>frmEmetteur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmImprimante.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmImprimante.Designer.cs">
-      <DependentUpon>frmImprimante.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmAdminRadiusDataView.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -480,18 +552,6 @@
     <Compile Include="frmReport.Designer.cs">
       <DependentUpon>frmReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRetroprojecteur.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRetroprojecteur.Designer.cs">
-      <DependentUpon>frmRetroprojecteur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmRouteurAP.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRouteurAP.Designer.cs">
-      <DependentUpon>frmRouteurAP.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmRptAffectationMateriel.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -516,12 +576,6 @@
     <Compile Include="frmStudentRadiusDataView.Designer.cs">
       <DependentUpon>frmStudentRadiusDataView.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmSwitch.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSwitch.Designer.cs">
-      <DependentUpon>frmSwitch.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmUtilisateur.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -543,10 +597,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\LstOrdinateurIdentifiant.cs">
+    <Compile Include="Reports\rpt1.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>LstOrdinateurIdentifiant.rpt</DependentUpon>
+      <DependentUpon>rpt1.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="TestQRCode.cs">
@@ -555,9 +609,42 @@
     <Compile Include="TestQRCode.Designer.cs">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmNetete.resx">
+      <DependentUpon>frmNetete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRetroprojecteur.resx">
+      <DependentUpon>frmRetroprojecteur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEmetteur.resx">
+      <DependentUpon>frmEmetteur.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmAdminRadiusDataView.resx">
       <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAmplificateur.resx">
+      <DependentUpon>frmAmplificateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAccessPoint.resx">
+      <DependentUpon>frmAccessPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPortee.resx">
+      <DependentUpon>frmPortee.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSwitch.resx">
+      <DependentUpon>frmSwitch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeAmplificateur.resx">
+      <DependentUpon>frmTypeAmplificateur.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeAccessPoint.resx">
+      <DependentUpon>frmTypeAccessPoint.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeRouteurAP.resx">
+      <DependentUpon>frmTypeRouteurAP.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmVersionIOS.resx">
+      <DependentUpon>frmVersionIOS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFrequence.resx">
       <DependentUpon>frmFrequence.cs</DependentUpon>
@@ -609,6 +696,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmNbrUSB.resx">
       <DependentUpon>frmNbrUSB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImprimante.resx">
+      <DependentUpon>frmImprimante.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmRouteurAP.resx">
+      <DependentUpon>frmRouteurAP.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmPageParMinute.resx">
       <DependentUpon>frmPageParMinute.cs</DependentUpon>
@@ -703,9 +796,6 @@
     <EmbeddedResource Include="frmCategorieMateriel.resx">
       <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmImprimante.resx">
-      <DependentUpon>frmImprimante.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmOrdinateur.resx">
       <DependentUpon>frmOrdinateur.cs</DependentUpon>
     </EmbeddedResource>
@@ -726,9 +816,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\LstOrdinateurIdentifiant.rpt">
+    <EmbeddedResource Include="Reports\rpt1.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>LstOrdinateurIdentifiant.cs</LastGenOutput>
+      <LastGenOutput>rpt1.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>

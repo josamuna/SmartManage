@@ -50,9 +50,14 @@ namespace smartManage.Desktop
         frmNbrAuxiliaire,
         frmFrequence,
         frmNbrAntenne,
-
-        //Partie pour OS
+        frmTypeImprimante,
+        frmVersionIOS,
+        frmTypeRouteurAP,
+        frmTypeAmplificateur,
         frmArchitectureOS,
-        frmTypeOS
+        frmTypeOS,
+        frmPortee,
+        frmTypeAccessPoint,
+        frmNetete
     }
 }

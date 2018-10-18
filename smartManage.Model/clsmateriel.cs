@@ -78,6 +78,7 @@ namespace smartManage.Model
         private int? id_antenne;
         private int? id_netette;
         private bool? compatible_wifi;
+        private int? id_portee;
         //***Listes***
         public List<clsmateriel> listes()
         {
@@ -468,6 +469,11 @@ namespace smartManage.Model
         {
             get { return compatible_wifi; }
             set { compatible_wifi = value; }
-        }
-    } //***fin class
+        }//***Accesseur de id_portee***
+        public int? Id_portee
+        {
+            get { return id_portee; }
+            set { id_portee = value; }
+        } //***fin class
+    }
 } //***fin namespace

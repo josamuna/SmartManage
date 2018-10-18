@@ -136,12 +136,12 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(140, 6);
             // 
             // smCloseAllForms
             // 
             this.smCloseAllForms.Name = "smCloseAllForms";
-            this.smCloseAllForms.Size = new System.Drawing.Size(152, 22);
+            this.smCloseAllForms.Size = new System.Drawing.Size(143, 22);
             this.smCloseAllForms.Text = "&Fermer tous";
             this.smCloseAllForms.Click += new System.EventHandler(this.smCloseAllForms_Click);
             // 
@@ -472,7 +472,7 @@
             // 
             this.smConnection.Image = global::smartManage.Desktop.Properties.Resources.password_lock;
             this.smConnection.Name = "smConnection";
-            this.smConnection.Size = new System.Drawing.Size(152, 22);
+            this.smConnection.Size = new System.Drawing.Size(143, 22);
             this.smConnection.Text = "Conne&xion";
             this.smConnection.Click += new System.EventHandler(this.smConnection_Click);
             // 
@@ -480,7 +480,7 @@
             // 
             this.smDeconnection.Image = global::smartManage.Desktop.Properties.Resources.verouiller;
             this.smDeconnection.Name = "smDeconnection";
-            this.smDeconnection.Size = new System.Drawing.Size(152, 22);
+            this.smDeconnection.Size = new System.Drawing.Size(143, 22);
             this.smDeconnection.Text = "Déconnexion";
             this.smDeconnection.Click += new System.EventHandler(this.smDeconnection_Click);
             // 
@@ -488,7 +488,7 @@
             // 
             this.smQuit.Image = global::smartManage.Desktop.Properties.Resources.Arrêter;
             this.smQuit.Name = "smQuit";
-            this.smQuit.Size = new System.Drawing.Size(152, 22);
+            this.smQuit.Size = new System.Drawing.Size(143, 22);
             this.smQuit.Text = "&Quitter";
             this.smQuit.Click += new System.EventHandler(this.smQuit_Click);
             // 
@@ -514,6 +514,7 @@
             this.ssmAmplifie.Name = "ssmAmplifie";
             this.ssmAmplifie.Size = new System.Drawing.Size(189, 22);
             this.ssmAmplifie.Text = "Amplificateur";
+            this.ssmAmplifie.Click += new System.EventHandler(this.ssmAmplifie_Click);
             // 
             // ssmAP
             // 
@@ -521,6 +522,7 @@
             this.ssmAP.Name = "ssmAP";
             this.ssmAP.Size = new System.Drawing.Size(189, 22);
             this.ssmAP.Text = "Accès Point";
+            this.ssmAP.Click += new System.EventHandler(this.ssmAP_Click);
             // 
             // ssmEmetteur
             // 
@@ -552,6 +554,7 @@
             this.ssmRouter.Name = "ssmRouter";
             this.ssmRouter.Size = new System.Drawing.Size(189, 22);
             this.ssmRouter.Text = "Routeur-Acces Point";
+            this.ssmRouter.Click += new System.EventHandler(this.ssmRouter_Click);
             // 
             // ssmProjector
             // 
@@ -559,6 +562,7 @@
             this.ssmProjector.Name = "ssmProjector";
             this.ssmProjector.Size = new System.Drawing.Size(189, 22);
             this.ssmProjector.Text = "Retroprojecteurs";
+            this.ssmProjector.Click += new System.EventHandler(this.ssmProjector_Click);
             // 
             // ssmSwitch
             // 
@@ -566,6 +570,7 @@
             this.ssmSwitch.Name = "ssmSwitch";
             this.ssmSwitch.Size = new System.Drawing.Size(189, 22);
             this.ssmSwitch.Text = "Switch-Commutateur";
+            this.ssmSwitch.Click += new System.EventHandler(this.ssmSwitch_Click);
             // 
             // smPerson
             // 
@@ -613,14 +618,14 @@
             // 
             this.ssmRptAffectationPerson.Image = ((System.Drawing.Image)(resources.GetObject("ssmRptAffectationPerson.Image")));
             this.ssmRptAffectationPerson.Name = "ssmRptAffectationPerson";
-            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(126, 22);
             this.ssmRptAffectationPerson.Text = "Personnel";
             // 
             // ssmRptAffectationMateriels
             // 
             this.ssmRptAffectationMateriels.Image = global::smartManage.Desktop.Properties.Resources.report13;
             this.ssmRptAffectationMateriels.Name = "ssmRptAffectationMateriels";
-            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(126, 22);
             this.ssmRptAffectationMateriels.Text = "Matériels";
             // 
             // smManageUsers

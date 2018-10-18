@@ -5,10 +5,7 @@
     <Setting Name="UserConnected" Type="System.String" Scope="User">
       <Value Profile="(Default)">Aucun utilisateur n'est encore connecté</Value>
     </Setting>
-    <Setting Name="strFormModifieOrdinateur" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="strFormModifieOS" Type="System.String" Scope="User">
+    <Setting Name="strFormModifieSubForm" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>
