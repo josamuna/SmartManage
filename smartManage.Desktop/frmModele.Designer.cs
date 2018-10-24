@@ -470,7 +470,7 @@
             this.Name = "frmModele";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Modèle des matériels";
-            this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
+            this.Load += new System.EventHandler(this.frmModele_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();

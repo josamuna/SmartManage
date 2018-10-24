@@ -58,6 +58,17 @@ namespace smartManage.Desktop
         frmTypeOS,
         frmPortee,
         frmTypeAccessPoint,
-        frmNetete
+        frmNetete,
+
+        //Personne
+        frmGrade,
+
+        frmAC,
+        frmOption,
+        frmPromotion,
+        frmSection,
+        frmSalle,
+        frmFonction,
+        frmTypeLieuAffectation
     }
 }

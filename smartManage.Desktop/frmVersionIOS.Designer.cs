@@ -470,7 +470,7 @@
             this.Name = "frmVersionIOS";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Version Internet Operating Software (IOS)";
-            this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
+            this.Load += new System.EventHandler(this.frmVersionIOS_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();

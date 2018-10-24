@@ -470,7 +470,7 @@
             this.Name = "frmNetete";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Netété de l\'équipement";
-            this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
+            this.Load += new System.EventHandler(this.frmNetete_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();

@@ -470,7 +470,7 @@
             this.Name = "frmIntensite";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Intensité de courant d\'alimentation";
-            this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
+            this.Load += new System.EventHandler(this.frmIntensite_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();

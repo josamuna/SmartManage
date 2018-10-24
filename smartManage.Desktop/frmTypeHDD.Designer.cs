@@ -470,7 +470,7 @@
             this.Name = "frmTypeHDD";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Type de Disque dur (HDD)";
-            this.Load += new System.EventHandler(this.frmCategorieMateriel_Load);
+            this.Load += new System.EventHandler(this.frmTypeHDD_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();

@@ -10,7 +10,7 @@ namespace smartManage.Model
         private int id;
         private int id_personne;
         private string code_ac;
-        private string signature_specimen;
+        private Byte[] signature_specimen;
         private string user_created;
         private DateTime? date_created;
         private string user_modified;
@@ -57,6 +57,7 @@ namespace smartManage.Model
         }  //***Accesseur de id_personne***
         public int Id_personne
         {
+
             get { return id_personne; }
             set { id_personne = value; }
         }  //***Accesseur de code_ac***
@@ -65,8 +66,9 @@ namespace smartManage.Model
             get { return code_ac; }
             set { code_ac = value; }
         }  //***Accesseur de signature_specimen***
-        public string Signature_specimen
+        public Byte[] Signature_specimen
         {
+
             get { return signature_specimen; }
             set { signature_specimen = value; }
         }  //***Accesseur de user_created***

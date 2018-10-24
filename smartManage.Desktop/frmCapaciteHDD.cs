@@ -58,17 +58,7 @@ namespace smartManage.Desktop
 
         private void frmCategorieMateriel_Load(object sender, EventArgs e)
         {
-            this.bdNav.Enabled = true;
-            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
-
-            try
-            {
-                RefreshData();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            
         }
 
         private void RefreshData()
@@ -273,6 +263,21 @@ namespace smartManage.Desktop
             catch (Exception ex)
             {
                 MessageBox.Show("Echec de la suppression, " + ex.Message, "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void frmCapaciteHDD_Load(object sender, EventArgs e)
+        {
+            this.bdNav.Enabled = true;
+            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
+
+            try
+            {
+                RefreshData();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

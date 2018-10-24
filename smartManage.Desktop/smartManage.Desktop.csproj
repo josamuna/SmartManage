@@ -30,8 +30,8 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>14</ApplicationRevision>
-    <ApplicationVersion>1.4.0.%2a</ApplicationVersion>
+    <ApplicationRevision>16</ApplicationRevision>
+    <ApplicationVersion>1.5.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -126,6 +126,120 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormActualisation.cs" />
+    <Compile Include="frmFonction.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmFonction.Designer.cs">
+      <DependentUpon>frmFonction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAffectationMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAffectationMateriel.Designer.cs">
+      <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmLieuAffectationPersonneMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmLieuAffectationPersonneMateriel.Designer.cs">
+      <DependentUpon>frmLieuAffectationPersonneMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportLieuAffectation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportLieuAffectation.Designer.cs">
+      <DependentUpon>frmReportLieuAffectation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTypeLieuAffectation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTypeLieuAffectation.Designer.cs">
+      <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportSignataire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportSignataire.Designer.cs">
+      <DependentUpon>frmReportSignataire.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSignataire.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSignataire.Designer.cs">
+      <DependentUpon>frmSignataire.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSalle.Designer.cs">
+      <DependentUpon>frmSalle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSection.Designer.cs">
+      <DependentUpon>frmSection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAdresse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAdresse.designer.cs">
+      <DependentUpon>frmAdresse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAC.Designer.cs">
+      <DependentUpon>frmAC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPromotion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPromotion.designer.cs">
+      <DependentUpon>frmPromotion.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmOption.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOption.designer.cs">
+      <DependentUpon>frmOption.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmEmail.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEmail.designer.cs">
+      <DependentUpon>frmEmail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGrade.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGrade.designer.cs">
+      <DependentUpon>frmGrade.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDefaultPwd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDefaultPwd.designer.cs">
+      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportPersonne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportPersonne.Designer.cs">
+      <DependentUpon>frmReportPersonne.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmTelephone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmTelephone.Designer.cs">
+      <DependentUpon>frmTelephone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPersonne.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPersonne.Designer.cs">
+      <DependentUpon>frmPersonne.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmNetete.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,18 +257,6 @@
     </Compile>
     <Compile Include="frmEmetteur.Designer.cs">
       <DependentUpon>frmEmetteur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmAffectationMateriel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAffectationMateriel.Designer.cs">
-      <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmAffectationPersonne.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAffectationPersonne.Designer.cs">
-      <DependentUpon>frmAffectationPersonne.cs</DependentUpon>
     </Compile>
     <Compile Include="frmAmplificateur.cs">
       <SubType>Form</SubType>
@@ -221,12 +323,6 @@
     </Compile>
     <Compile Include="frmFrequence.Designer.cs">
       <DependentUpon>frmFrequence.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmDefaultPwd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmDefaultPwd.Designer.cs">
-      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
     </Compile>
     <Compile Include="frmNbrAntenne.cs">
       <SubType>Form</SubType>
@@ -534,23 +630,11 @@
     <Compile Include="frmOrdinateur.Designer.cs">
       <DependentUpon>frmOrdinateur.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmPersonne.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmPersonne.Designer.cs">
-      <DependentUpon>frmPersonne.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmPrincipal.Designer.cs">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReport.Designer.cs">
-      <DependentUpon>frmReport.cs</DependentUpon>
     </Compile>
     <Compile Include="frmRptAffectationMateriel.cs">
       <SubType>Form</SubType>
@@ -563,12 +647,6 @@
     </Compile>
     <Compile Include="frmRptAffectationPersonne.Designer.cs">
       <DependentUpon>frmRptAffectationPersonne.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmSignataire.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSignataire.Designer.cs">
-      <DependentUpon>frmSignataire.cs</DependentUpon>
     </Compile>
     <Compile Include="frmStudentRadiusDataView.cs">
       <SubType>Form</SubType>
@@ -609,6 +687,54 @@
     <Compile Include="TestQRCode.Designer.cs">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="frmFonction.resx">
+      <DependentUpon>frmFonction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAffectationMateriel.resx">
+      <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmLieuAffectationPersonneMateriel.resx">
+      <DependentUpon>frmLieuAffectationPersonneMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTypeLieuAffectation.resx">
+      <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSignataire.resx">
+      <DependentUpon>frmSignataire.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSalle.resx">
+      <DependentUpon>frmSalle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSection.resx">
+      <DependentUpon>frmSection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAdresse.resx">
+      <DependentUpon>frmAdresse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAC.resx">
+      <DependentUpon>frmAC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPromotion.resx">
+      <DependentUpon>frmPromotion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOption.resx">
+      <DependentUpon>frmOption.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEmail.resx">
+      <DependentUpon>frmEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGrade.resx">
+      <DependentUpon>frmGrade.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDefaultPwd.resx">
+      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmTelephone.resx">
+      <DependentUpon>frmTelephone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPersonne.resx">
+      <DependentUpon>frmPersonne.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmNetete.resx">
       <DependentUpon>frmNetete.cs</DependentUpon>
     </EmbeddedResource>
@@ -648,9 +774,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmFrequence.resx">
       <DependentUpon>frmFrequence.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmDefaultPwd.resx">
-      <DependentUpon>frmDefaultPwd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmNbrAntenne.resx">
       <DependentUpon>frmNbrAntenne.cs</DependentUpon>
@@ -801,9 +924,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmPrincipal.resx">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmReport.resx">
-      <DependentUpon>frmReport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUtilisateur.resx">
       <DependentUpon>frmUtilisateur.cs</DependentUpon>

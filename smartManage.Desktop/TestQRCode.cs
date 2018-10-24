@@ -4,7 +4,9 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Text;
+using smartManage.Model;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace smartManage.Desktop
 {
@@ -75,7 +77,7 @@ namespace smartManage.Desktop
             sv.ShowDialog();
             if (!string.IsNullOrEmpty(sv.FileName))
             {
-                using (System.IO.FileStream fs = (System.IO.FileStream) sv.OpenFile())
+                using (System.IO.FileStream fs = (System.IO.FileStream)sv.OpenFile())
                 {
                     System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
                     pbox.Image.Save(fs, imageFormat);
@@ -164,9 +166,31 @@ namespace smartManage.Desktop
                 //foreach (string str in tb)
                 //    sb.Append(str);
                 //MessageBox.Show(sb.ToString());
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Erreur de conversion du QRCode + " + ex.Message, "Conversion QRCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void cmd1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Dictionary<string, string> dico = new Dictionary<string, string>();
+                dico.Add("M", "Masculin");
+                dico.Add("F", "Féminin");
+
+                cboData.DataSource = new BindingSource(dico, null);
+                cboData.ValueMember = "Key";
+                cboData.DisplayMember = "Value";
+                cboData.SelectedIndex = 0;
+
+                MessageBox.Show(string.Format("Value = {0} and Display = {1}", cboData.SelectedValue.ToString(), cboData.DisplayMember));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
     }

@@ -19,6 +19,10 @@ namespace smartManage.Model
         private DateTime? date_created;
         private string user_modified;
         private DateTime? date_modified;
+        private string sexe;
+        private string etatcivil;
+        private DateTime? datenaissance;
+        private Byte[] photo;
         //***Listes***
         public List<clspersonne> listes()
         {
@@ -113,13 +117,31 @@ namespace smartManage.Model
         {
             get { return date_modified; }
             set { date_modified = value; }
+        }  //***Accesseur de sexe***
+        public string Sexe
+        {
+            get { return sexe; }
+            set { sexe = value; }
+        }  //***Accesseur de etatcivil***
+        public string Etatcivil
+        {
+            get { return etatcivil; }
+            set { etatcivil = value; }
+        }  //***Accesseur de datenaissance***
+        public DateTime? Datenaissance
+        {
+            get { return datenaissance; }
+            set { datenaissance = value; }
+        }  //***Accesseur de photo***
+        public Byte[] Photo
+        {
+            get { return photo; }
+            set { photo = value; }
         }
+
         public string NomComplet
         {
-            get
-            {
-                return string.Format("{0} {1} {2}".Trim(), Nom, Postnom, Prenom);
-            }
+            get { return string.Format("{0} {1} {2}".Trim(), nom, postnom, prenom); }
         }
     } //***fin class
 } //***fin namespace

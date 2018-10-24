@@ -35,6 +35,21 @@ namespace smartManage.Desktop
             this.AfficherPropertySetForm(this.GetValuesLabel());
         }
 
+        public void ActivateMainBindingSource(Form formMDI)
+        {
+            if (formMDI.IsMdiContainer)
+            {
+                if ((formMDI.MdiChildren.Length > 1))
+                    this.bdNav.Enabled = true;
+                else if ((formMDI.MdiChildren.Length == 0))
+                    this.bdNav.Enabled = false;
+                else
+                    this.bdNav.Enabled = false;
+            }
+            else
+                return;
+        }
+
         /// <summary>
         /// Allow to set values for label applying to Status bar
         /// </summary>
@@ -520,6 +535,50 @@ namespace smartManage.Desktop
         private void ssmProjector_Click(object sender, EventArgs e)
         {
             frmRetroprojecteur frm = new frmRetroprojecteur();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void smSignataire_Click(object sender, EventArgs e)
+        {
+            frmSignataire frm = new frmSignataire();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void smPerson_Click(object sender, EventArgs e)
+        {
+            frmPersonne frm = new frmPersonne();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmAffectationPerson_Click(object sender, EventArgs e)
+        {
+            frmLieuAffectationPersonneMateriel frm = new frmLieuAffectationPersonneMateriel();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
+
+        private void ssmAffectationMaterials_Click(object sender, EventArgs e)
+        {
+            frmAffectationMateriel frm = new frmAffectationMateriel();
             frm.Principal = this;
             frm.MdiParent = this;
             frm.Icon = this.Icon;

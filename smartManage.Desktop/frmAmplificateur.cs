@@ -120,7 +120,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Erreur lorss du chargement des listes déroulantes left, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Erreur lors du chargement des listes déroulantes left, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -165,7 +165,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Erreur lorss du chargement des listes déroulantes middle, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Erreur lors du chargement des listes déroulantes middle, {0}", ex.Message), "Chargement listes déroulantes", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -196,7 +196,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Erreur lorss du chargement de la zone d'affichage, {0}", ex.Message), "Chargement zone d'affichage", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Erreur lors du chargement de la zone d'affichage, {0}", ex.Message), "Chargement zone d'affichage", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -241,7 +241,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Erreur lorss de la génération du QrCode, {0}", ex.Message), "Génération QrCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Erreur lors de la génération du QrCode, {0}", ex.Message), "Génération QrCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -311,10 +311,7 @@ namespace smartManage.Desktop
             {
                 this.Invoke(defaultCurs, "DoSetDefaultCursor");
             }
-            catch(Exception ex)
-            {
-                MessageBox.Show(string.Format("Error occur when change cursor, {0}", ex.Message), "Default Cursor", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
+            catch { }
         }
 
         #region Actualise value in ComboBox
@@ -420,7 +417,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Erreur lorss de l'actuaisation de la liste deroulante, {0}", ex.Message), "Actuelisation liste deroulante", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Erreur lors de l'actuaisation de la liste deroulante, {0}", ex.Message), "Actuelisation liste deroulante", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -1031,7 +1028,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur lorss de l'actualisation, " + ex.Message, "Actualisation des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur lors de l'actualisation, " + ex.Message, "Actualisation des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
@@ -1516,6 +1513,8 @@ namespace smartManage.Desktop
             catch { }
 
             Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
+            //Affecte Activate BindingNavigator
+            Principal.ActivateMainBindingSource(Principal);
         }
 
         private void frmAmplificateur_Activated(object sender, EventArgs e)

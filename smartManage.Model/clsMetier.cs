@@ -3101,6 +3101,314 @@ namespace smartManage.Model
         }
 
         #endregion CLSAUXILIAIRE 
+        #region  CLSTELEPHONE
+        public clstelephone getClstelephone(object intid)
+        {
+            clstelephone varclstelephone = new clstelephone();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM telephone WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstelephone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclstelephone.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclstelephone.Code = dr["code"].ToString();
+                            varclstelephone.Numero = dr["numero"].ToString();
+                            varclstelephone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstelephone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstelephone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstelephone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclstelephone;
+        }
+
+        public List<clstelephone> getAllClstelephone(string criteria)
+        {
+            List<clstelephone> lstclstelephone = new List<clstelephone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM telephone  WHERE 1=1";
+                    sql += "  OR   code LIKE '%" + criteria + "%'";
+                    sql += "  OR   numero LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clstelephone varclstelephone = null;
+                        while (dr.Read())
+                        {
+                            varclstelephone = new clstelephone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstelephone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclstelephone.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclstelephone.Code = dr["code"].ToString();
+                            varclstelephone.Numero = dr["numero"].ToString();
+                            varclstelephone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstelephone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstelephone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstelephone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstelephone.Add(varclstelephone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstelephone;
+        }
+
+        public List<clstelephone> getAllClstelephone(string criteria, int id_personne)
+        {
+            List<clstelephone> lstclstelephone = new List<clstelephone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM telephone INNER JOIN personne ON personne.id=telephone.id_personne WHERE personne.id=@id";
+                    sql += "  OR   code LIKE '%" + criteria + "%'";
+                    sql += "  OR   numero LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
+                    cmd.CommandText = string.Format(sql);
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clstelephone varclstelephone = null;
+                        while (dr.Read())
+                        {
+                            varclstelephone = new clstelephone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstelephone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclstelephone.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclstelephone.Code = dr["code"].ToString();
+                            varclstelephone.Numero = dr["numero"].ToString();
+                            varclstelephone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstelephone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstelephone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstelephone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstelephone.Add(varclstelephone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstelephone;
+        }
+
+        public List<clstelephone> getAllClstelephone()
+        {
+            List<clstelephone> lstclstelephone = new List<clstelephone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM telephone ORDER BY numero ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstelephone varclstelephone = null;
+                        while (dr.Read())
+                        {
+                            varclstelephone = new clstelephone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstelephone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclstelephone.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclstelephone.Code = dr["code"].ToString();
+                            varclstelephone.Numero = dr["numero"].ToString();
+                            varclstelephone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstelephone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstelephone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstelephone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstelephone.Add(varclstelephone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstelephone;
+        }
+
+        public List<clstelephone> getAllClstelephone(int id_personne)
+        {
+            List<clstelephone> lstclstelephone = new List<clstelephone>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM telephone INNER JOIN personne ON personne.id=telephone.id_personne WHERE personne.id=@id ORDER BY numero ASC");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clstelephone varclstelephone = null;
+                        while (dr.Read())
+                        {
+                            varclstelephone = new clstelephone();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclstelephone.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclstelephone.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclstelephone.Code = dr["code"].ToString();
+                            varclstelephone.Numero = dr["numero"].ToString();
+                            varclstelephone.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclstelephone.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclstelephone.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclstelephone.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclstelephone.Add(varclstelephone);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclstelephone;
+        }
+
+        public int insertClstelephone(clstelephone varclstelephone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO telephone ( id,id_personne,code,numero,user_created,date_created,user_modified,date_modified ) VALUES (@id,@id_personne,@code,@numero,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstelephone.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclstelephone.Id_personne));
+                    if (varclstelephone.Code != null) cmd.Parameters.Add(getParameter(cmd, "@code", DbType.String, 4, varclstelephone.Code));
+                    else cmd.Parameters.Add(getParameter(cmd, "@code", DbType.String, 4, DBNull.Value));
+                    if (varclstelephone.Numero != null) cmd.Parameters.Add(getParameter(cmd, "@numero", DbType.String, 9, varclstelephone.Numero));
+                    else cmd.Parameters.Add(getParameter(cmd, "@numero", DbType.String, 9, DBNull.Value));
+                    if (varclstelephone.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstelephone.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstelephone.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstelephone.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstelephone.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstelephone.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstelephone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstelephone.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClstelephone(clstelephone varclstelephone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE telephone  SET id_personne=@id_personne,code=@code,numero=@numero,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclstelephone.Id_personne));
+                    if (varclstelephone.Code != null) cmd.Parameters.Add(getParameter(cmd, "@code", DbType.String, 4, varclstelephone.Code));
+                    else cmd.Parameters.Add(getParameter(cmd, "@code", DbType.String, 4, DBNull.Value));
+                    if (varclstelephone.Numero != null) cmd.Parameters.Add(getParameter(cmd, "@numero", DbType.String, 9, varclstelephone.Numero));
+                    else cmd.Parameters.Add(getParameter(cmd, "@numero", DbType.String, 9, DBNull.Value));
+                    if (varclstelephone.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstelephone.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclstelephone.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstelephone.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclstelephone.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclstelephone.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclstelephone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstelephone.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstelephone.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClstelephone(clstelephone varclstelephone)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM telephone  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstelephone.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSTELEPHONE 
         #region  CLSTYPE_IMPRIMANTE
         public clstype_imprimante getClstype_imprimante(object intid)
         {
@@ -3938,6 +4246,302 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_AMPLIFICATEUR 
+        #region  CLSEMAIL
+        public clsemail getClsemail(object intid)
+        {
+            clsemail varclsemail = new clsemail();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM email WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsemail.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsemail.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsemail.Designation = dr["designation"].ToString();
+                            varclsemail.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsemail.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsemail.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsemail.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsemail;
+        }
+
+        public List<clsemail> getAllClsemail(string criteria)
+        {
+            List<clsemail> lstclsemail = new List<clsemail>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM email  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsemail varclsemail = null;
+                        while (dr.Read())
+                        {
+                            varclsemail = new clsemail();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsemail.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsemail.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsemail.Designation = dr["designation"].ToString();
+                            varclsemail.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsemail.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsemail.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsemail.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsemail.Add(varclsemail);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsemail;
+        }
+
+        public List<clsemail> getAllClsemail(string criteria, int id_personne)
+        {
+            List<clsemail> lstclsemail = new List<clsemail>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM email INNER JOIN personne ON personne.id=email.id_personne WHERE personne.id=@id";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsemail varclsemail = null;
+                        while (dr.Read())
+                        {
+                            varclsemail = new clsemail();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsemail.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsemail.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsemail.Designation = dr["designation"].ToString();
+                            varclsemail.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsemail.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsemail.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsemail.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsemail.Add(varclsemail);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsemail;
+        }
+
+        public List<clsemail> getAllClsemail()
+        {
+            List<clsemail> lstclsemail = new List<clsemail>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM email ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsemail varclsemail = null;
+                        while (dr.Read())
+                        {
+                            varclsemail = new clsemail();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsemail.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsemail.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsemail.Designation = dr["designation"].ToString();
+                            varclsemail.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsemail.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsemail.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsemail.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsemail.Add(varclsemail);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsemail;
+        }
+
+        public List<clsemail> getAllClsemail(int id_personne)
+        {
+            List<clsemail> lstclsemail = new List<clsemail>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM email INNER JOIN personne ON personne.id=email.id_personne WHERE personne.id=@id ORDER BY designation ASC");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsemail varclsemail = null;
+                        while (dr.Read())
+                        {
+                            varclsemail = new clsemail();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsemail.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsemail.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsemail.Designation = dr["designation"].ToString();
+                            varclsemail.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsemail.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsemail.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsemail.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsemail.Add(varclsemail);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsemail;
+        }
+
+        public int insertClsemail(clsemail varclsemail)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO email ( id,id_personne,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@id_personne,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsemail.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsemail.Id_personne));
+                    if (varclsemail.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclsemail.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsemail.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsemail.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsemail.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsemail.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsemail.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsemail(clsemail varclsemail)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE email  SET id_personne=@id_personne,designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsemail.Id_personne));
+                    if (varclsemail.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, varclsemail.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsemail.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsemail.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsemail.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsemail.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsemail.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsemail.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsemail.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsemail(clsemail varclsemail)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM email  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsemail.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSEMAIL 
         #region  CLSTYPE_ROUTEUR_AP
         public clstype_routeur_AP getClstype_routeur_AP(object intid)
         {
@@ -4149,6 +4753,302 @@ namespace smartManage.Model
         }
 
         #endregion CLSTYPE_ROUTEUR_AP 
+        #region  CLSADRESSE
+        public clsadresse getClsadresse(object intid)
+        {
+            clsadresse varclsadresse = new clsadresse();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM adresse WHERE id={0}", intid);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        if (dr.Read())
+                        {
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsadresse.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsadresse.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsadresse.Designation = dr["designation"].ToString();
+                            varclsadresse.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsadresse.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsadresse.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsadresse.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return varclsadresse;
+        }
+
+        public List<clsadresse> getAllClsadresse(string criteria)
+        {
+            List<clsadresse> lstclsadresse = new List<clsadresse>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM adresse  WHERE 1=1";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsadresse varclsadresse = null;
+                        while (dr.Read())
+                        {
+                            varclsadresse = new clsadresse();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsadresse.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsadresse.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsadresse.Designation = dr["designation"].ToString();
+                            varclsadresse.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsadresse.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsadresse.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsadresse.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsadresse.Add(varclsadresse);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsadresse;
+        }
+
+        public List<clsadresse> getAllClsadresse(string criteria, int id_personne)
+        {
+            List<clsadresse> lstclsadresse = new List<clsadresse>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    string sql = "SELECT *  FROM adresse INNER JOIN personne ON personne.id=adresse.id_personne WHERE personne.id=@id";
+                    sql += "  OR   designation LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
+                    cmd.CommandText = string.Format(sql);
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsadresse varclsadresse = null;
+                        while (dr.Read())
+                        {
+                            varclsadresse = new clsadresse();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsadresse.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsadresse.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsadresse.Designation = dr["designation"].ToString();
+                            varclsadresse.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsadresse.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsadresse.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsadresse.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsadresse.Add(varclsadresse);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsadresse;
+        }
+
+        public List<clsadresse> getAllClsadresse()
+        {
+            List<clsadresse> lstclsadresse = new List<clsadresse>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM adresse ORDER BY designation ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsadresse varclsadresse = null;
+                        while (dr.Read())
+                        {
+                            varclsadresse = new clsadresse();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsadresse.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsadresse.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsadresse.Designation = dr["designation"].ToString();
+                            varclsadresse.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsadresse.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsadresse.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsadresse.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsadresse.Add(varclsadresse);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsadresse;
+        }
+
+        public List<clsadresse> getAllClsadresse(int id_personne)
+        {
+            List<clsadresse> lstclsadresse = new List<clsadresse>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM adresse INNER JOIN personne ON personne.id=adresse.id_personne WHERE personne.id=@id ORDER BY designation ASC");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        clsadresse varclsadresse = null;
+                        while (dr.Read())
+                        {
+                            varclsadresse = new clsadresse();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsadresse.Id = int.Parse(dr["id"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclsadresse.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            varclsadresse.Designation = dr["designation"].ToString();
+                            varclsadresse.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsadresse.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsadresse.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsadresse.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsadresse.Add(varclsadresse);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsadresse;
+        } 
+
+        public int insertClsadresse(clsadresse varclsadresse)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO adresse ( id,id_personne,designation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@id_personne,@designation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsadresse.Id));
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsadresse.Id_personne));
+                    if (varclsadresse.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 300, varclsadresse.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 300, DBNull.Value));
+                    if (varclsadresse.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsadresse.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsadresse.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsadresse.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsadresse.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsadresse.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsadresse.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsadresse.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int updateClsadresse(clsadresse varclsadresse)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE adresse  SET id_personne=@id_personne,designation=@designation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsadresse.Id_personne));
+                    if (varclsadresse.Designation != null) cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 300, varclsadresse.Designation));
+                    else cmd.Parameters.Add(getParameter(cmd, "@designation", DbType.String, 300, DBNull.Value));
+                    if (varclsadresse.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsadresse.User_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
+                    if (varclsadresse.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsadresse.Date_created));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, DBNull.Value));
+                    if (varclsadresse.User_modified != null) cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, varclsadresse.User_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
+                    if (varclsadresse.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsadresse.Date_modified));
+                    else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsadresse.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsadresse(clsadresse varclsadresse)
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM adresse  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsadresse.Id));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        #endregion CLSADRESSE 
         #region  CLSTYPE_AP
         public clstype_AP getClstype_AP(object intid)
         {
@@ -10155,7 +11055,6 @@ namespace smartManage.Model
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspersonne.Id = int.Parse(dr["id"].ToString());
                             varclspersonne.Nom = dr["nom"].ToString();
                             varclspersonne.Postnom = dr["postnom"].ToString();
@@ -10168,6 +11067,10 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclspersonne.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclspersonne.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclspersonne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            varclspersonne.Sexe = dr["sexe"].ToString();
+                            varclspersonne.Etatcivil = dr["etatcivil"].ToString();
+                            if (!dr["datenaissance"].ToString().Trim().Equals("")) varclspersonne.Datenaissance = DateTime.Parse(dr["datenaissance"].ToString());
+                            if (!dr["photo"].ToString().Trim().Equals("")) varclspersonne.Photo = (Byte[])dr["photo"];
                         }
                     }
                 }
@@ -10191,20 +11094,20 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM personne  WHERE";
-                    sql += "   nom LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM personne  WHERE 1=1";
+                    sql += "  OR   nom LIKE '%" + criteria + "%'";
                     sql += "  OR   postnom LIKE '%" + criteria + "%'";
                     sql += "  OR   prenom LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY nom ASC";
+                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
+                    sql += "  OR   sexe LIKE '%" + criteria + "%'";
+                    sql += "  OR   etatcivil LIKE '%" + criteria + "%' ORDER BY nom ASC";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspersonne varclspersonne = null;
                         while (dr.Read())
                         {
-
                             varclspersonne = new clspersonne();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspersonne.Id = int.Parse(dr["id"].ToString());
                             varclspersonne.Nom = dr["nom"].ToString();
@@ -10218,6 +11121,10 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclspersonne.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclspersonne.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclspersonne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            varclspersonne.Sexe = dr["sexe"].ToString();
+                            varclspersonne.Etatcivil = dr["etatcivil"].ToString();
+                            if (!dr["datenaissance"].ToString().Trim().Equals("")) varclspersonne.Datenaissance = DateTime.Parse(dr["datenaissance"].ToString());
+                            if (!dr["photo"].ToString().Trim().Equals("")) varclspersonne.Photo = (Byte[])dr["photo"];
                             lstclspersonne.Add(varclspersonne);
                         }
                     }
@@ -10245,6 +11152,7 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM personne ORDER BY nom ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
+
                         clspersonne varclspersonne = null;
                         while (dr.Read())
                         {
@@ -10261,6 +11169,60 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclspersonne.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclspersonne.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclspersonne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            varclspersonne.Sexe = dr["sexe"].ToString();
+                            varclspersonne.Etatcivil = dr["etatcivil"].ToString();
+                            if (!dr["datenaissance"].ToString().Trim().Equals("")) varclspersonne.Datenaissance = DateTime.Parse(dr["datenaissance"].ToString());
+                            if (!dr["photo"].ToString().Trim().Equals("")) varclspersonne.Photo = (Byte[])dr["photo"];
+                            lstclspersonne.Add(varclspersonne);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclspersonne;
+        }
+
+        public List<clspersonne> getAllClspersonne_unique(int id_personne)
+        {
+            List<clspersonne> lstclspersonne = new List<clspersonne>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM personne WHERE id=@id");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clspersonne varclspersonne = null;
+                        while (dr.Read())
+                        {
+                            varclspersonne = new clspersonne();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclspersonne.Id = int.Parse(dr["id"].ToString());
+                            varclspersonne.Nom = dr["nom"].ToString();
+                            varclspersonne.Postnom = dr["postnom"].ToString();
+                            varclspersonne.Prenom = dr["prenom"].ToString();
+                            if (!dr["id_grade"].ToString().Trim().Equals("")) varclspersonne.Id_grade = int.Parse(dr["id_grade"].ToString());
+                            if (!dr["isenseignant"].ToString().Trim().Equals("")) varclspersonne.Isenseignant = bool.Parse(dr["isenseignant"].ToString());
+                            if (!dr["isagent"].ToString().Trim().Equals("")) varclspersonne.Isagent = bool.Parse(dr["isagent"].ToString());
+                            if (!dr["isetudiant"].ToString().Trim().Equals("")) varclspersonne.Isetudiant = bool.Parse(dr["isetudiant"].ToString());
+                            varclspersonne.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclspersonne.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclspersonne.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclspersonne.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            varclspersonne.Sexe = dr["sexe"].ToString();
+                            varclspersonne.Etatcivil = dr["etatcivil"].ToString();
+                            if (!dr["datenaissance"].ToString().Trim().Equals("")) varclspersonne.Datenaissance = DateTime.Parse(dr["datenaissance"].ToString());
+                            if (!dr["photo"].ToString().Trim().Equals("")) varclspersonne.Photo = (Byte[])dr["photo"];
                             lstclspersonne.Add(varclspersonne);
                         }
                     }
@@ -10285,7 +11247,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("INSERT INTO personne ( id,nom,postnom,prenom,id_grade,isenseignant,isagent,isetudiant,user_created,date_created,user_modified,date_modified ) VALUES (@id,@nom,@postnom,@prenom,@id_grade,@isenseignant,@isagent,@isetudiant,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.CommandText = string.Format("INSERT INTO personne ( id,nom,postnom,prenom,id_grade,isenseignant,isagent,isetudiant,user_created,date_created,user_modified,date_modified,sexe,etatcivil,datenaissance,photo ) VALUES (@id,@nom,@postnom,@prenom,@id_grade,@isenseignant,@isagent,@isetudiant,@user_created,@date_created,@user_modified,@date_modified,@sexe,@etatcivil,@datenaissance,@photo  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspersonne.Id));
                     if (varclspersonne.Nom != null) cmd.Parameters.Add(getParameter(cmd, "@nom", DbType.String, 50, varclspersonne.Nom));
                     else cmd.Parameters.Add(getParameter(cmd, "@nom", DbType.String, 50, DBNull.Value));
@@ -10308,6 +11270,14 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
                     if (varclspersonne.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspersonne.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspersonne.Sexe != null) cmd.Parameters.Add(getParameter(cmd, "@sexe", DbType.String, 1, varclspersonne.Sexe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@sexe", DbType.String, 1, DBNull.Value));
+                    if (varclspersonne.Etatcivil != null) cmd.Parameters.Add(getParameter(cmd, "@etatcivil", DbType.String, 20, varclspersonne.Etatcivil));
+                    else cmd.Parameters.Add(getParameter(cmd, "@etatcivil", DbType.String, 20, DBNull.Value));
+                    if (varclspersonne.Datenaissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@datenaissance", DbType.DateTime, 8, varclspersonne.Datenaissance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@datenaissance", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspersonne.Photo != null) cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, varclspersonne.Photo));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
                 }
@@ -10330,7 +11300,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE personne  SET nom=@nom,postnom=@postnom,prenom=@prenom,id_grade=@id_grade,isenseignant=@isenseignant,isagent=@isagent,isetudiant=@isetudiant,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.CommandText = string.Format("UPDATE personne  SET nom=@nom,postnom=@postnom,prenom=@prenom,id_grade=@id_grade,isenseignant=@isenseignant,isagent=@isagent,isetudiant=@isetudiant,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,sexe=@sexe,etatcivil=@etatcivil,datenaissance=@datenaissance,photo=@photo  WHERE 1=1  AND id=@id ");
                     if (varclspersonne.Nom != null) cmd.Parameters.Add(getParameter(cmd, "@nom", DbType.String, 50, varclspersonne.Nom));
                     else cmd.Parameters.Add(getParameter(cmd, "@nom", DbType.String, 50, DBNull.Value));
                     if (varclspersonne.Postnom != null) cmd.Parameters.Add(getParameter(cmd, "@postnom", DbType.String, 30, varclspersonne.Postnom));
@@ -10352,6 +11322,14 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
                     if (varclspersonne.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspersonne.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspersonne.Sexe != null) cmd.Parameters.Add(getParameter(cmd, "@sexe", DbType.String, 1, varclspersonne.Sexe));
+                    else cmd.Parameters.Add(getParameter(cmd, "@sexe", DbType.String, 1, DBNull.Value));
+                    if (varclspersonne.Etatcivil != null) cmd.Parameters.Add(getParameter(cmd, "@etatcivil", DbType.String, 20, varclspersonne.Etatcivil));
+                    else cmd.Parameters.Add(getParameter(cmd, "@etatcivil", DbType.String, 20, DBNull.Value));
+                    if (varclspersonne.Datenaissance.HasValue) cmd.Parameters.Add(getParameter(cmd, "@datenaissance", DbType.DateTime, 8, varclspersonne.Datenaissance));
+                    else cmd.Parameters.Add(getParameter(cmd, "@datenaissance", DbType.DateTime, 8, DBNull.Value));
+                    if (varclspersonne.Photo != null) cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, varclspersonne.Photo));
+                    else cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspersonne.Id));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
@@ -10390,6 +11368,40 @@ namespace smartManage.Model
             }
             return i;
         }
+
+        #region VALIDATING E-MAIL AND PHONE NUMBER
+        private string ValidateEmailRegex(string email_address)
+        {
+            if (string.IsNullOrEmpty(email_address))
+            {
+                email_address = null;
+            }
+            else
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(email_address, "^[_a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)@[a-zA-Z0-9-]+(.[a-zA-Z0-9-]+)*(.[a-zA-Z]{2,4})$"))
+                    return email_address.ToUpper();
+                else
+                    throw new Exception(string.Format("L'Adresse E-mail {0} n'est pas valide\nUne adresse E-mail valide doit respecter le format suivant : nom@domain.xx et n'utiliser que des lesttres A à Z ou a à z et les chiffres 0 à 9 !!!", email_address));
+            }
+            return email_address;
+        }
+
+        private string ValidatePhoneNumberRegex(string phone_number)
+        {
+            if (string.IsNullOrEmpty(phone_number))
+            {
+                phone_number = null;
+            }
+            else
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(phone_number, "^[+][0-9]{0,3}[7-9]{1,2}[0-9]{0,7}$"))
+                    return phone_number.ToUpper();
+                else
+                    throw new Exception(string.Format("Le numéro de téléphone {0} n'est pas valide\nUne numéro de téléphone valide doit respecter le format suivant : +243972727527 et n'utiliser que des chiffres 0 à 9 et et le + au début pour le code !!!", phone_number));
+            }
+            return phone_number;
+        }
+        #endregion
 
         #endregion CLSPERSONNE 
         #region  CLSUSB3
@@ -14024,11 +15036,10 @@ namespace smartManage.Model
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclssignataire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclssignataire.Id_personne = int.Parse(dr["id_personne"].ToString());
                             varclssignataire.Code_ac = dr["code_AC"].ToString();
-                            varclssignataire.Signature_specimen = dr["signature_specimen"].ToString();
+                            if (!dr["signature_specimen"].ToString().Trim().Equals("")) varclssignataire.Signature_specimen = (Byte[])dr["signature_specimen"];
                             varclssignataire.User_created = dr["user_created"].ToString();
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclssignataire.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclssignataire.User_modified = dr["user_modified"].ToString();
@@ -14056,24 +15067,21 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM signataire  WHERE";
-                    sql += "  code_AC LIKE '%" + criteria + "%'";
-                    sql += "  OR   signature_specimen LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM signataire  WHERE 1=1";
+                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
                     sql += "  OR   user_created LIKE '%" + criteria + "%'";
                     sql += "  OR   user_modified LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssignataire varclssignataire = null;
                         while (dr.Read())
                         {
-
                             varclssignataire = new clssignataire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssignataire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclssignataire.Id_personne = int.Parse(dr["id_personne"].ToString());
                             varclssignataire.Code_ac = dr["code_AC"].ToString();
-                            varclssignataire.Signature_specimen = dr["signature_specimen"].ToString();
+                            if (!dr["signature_specimen"].ToString().Trim().Equals("")) varclssignataire.Signature_specimen = (Byte[])dr["signature_specimen"];
                             varclssignataire.User_created = dr["user_created"].ToString();
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclssignataire.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclssignataire.User_modified = dr["user_modified"].ToString();
@@ -14109,12 +15117,11 @@ namespace smartManage.Model
                         clssignataire varclssignataire = null;
                         while (dr.Read())
                         {
-
                             varclssignataire = new clssignataire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssignataire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclssignataire.Id_personne = int.Parse(dr["id_personne"].ToString());
                             varclssignataire.Code_ac = dr["code_AC"].ToString();
-                            varclssignataire.Signature_specimen = dr["signature_specimen"].ToString();
+                            if (!dr["signature_specimen"].ToString().Trim().Equals("")) varclssignataire.Signature_specimen = (Byte[])dr["signature_specimen"];
                             varclssignataire.User_created = dr["user_created"].ToString();
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclssignataire.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclssignataire.User_modified = dr["user_modified"].ToString();
@@ -14148,8 +15155,8 @@ namespace smartManage.Model
                     cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclssignataire.Id_personne));
                     if (varclssignataire.Code_ac != null) cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, varclssignataire.Code_ac));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, DBNull.Value));
-                    if (varclssignataire.Signature_specimen != null) cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Object, 2147483647, varclssignataire.Signature_specimen));
-                    else cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclssignataire.Signature_specimen != null) cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Binary, Int32.MaxValue, varclssignataire.Signature_specimen));
+                    else cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclssignataire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclssignataire.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclssignataire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclssignataire.Date_created));
@@ -14184,8 +15191,8 @@ namespace smartManage.Model
                     cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclssignataire.Id_personne));
                     if (varclssignataire.Code_ac != null) cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, varclssignataire.Code_ac));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, DBNull.Value));
-                    if (varclssignataire.Signature_specimen != null) cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Object, 2147483647, varclssignataire.Signature_specimen));
-                    else cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Object, 2147483647, DBNull.Value));
+                    if (varclssignataire.Signature_specimen != null) cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Binary, Int32.MaxValue, varclssignataire.Signature_specimen));
+                    else cmd.Parameters.Add(getParameter(cmd, "@signature_specimen", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     if (varclssignataire.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclssignataire.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclssignataire.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclssignataire.Date_created));
@@ -15414,6 +16421,52 @@ namespace smartManage.Model
             return lstclslieu_affectation;
         }
 
+        public List<clslieu_affectation> getAllClslieu_affectation_AC(string AnneeAcad)
+        {
+            List<clslieu_affectation> lstclslieu_affectation = new List<clslieu_affectation>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM lieu_affectation WHERE code_AC=@code_AC ORDER BY designation ASC");
+                    cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, AnneeAcad));
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clslieu_affectation varclslieu_affectation = null;
+                        while (dr.Read())
+                        {
+
+                            varclslieu_affectation = new clslieu_affectation();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclslieu_affectation.Id = int.Parse(dr["id"].ToString());
+                            varclslieu_affectation.Code_ac = dr["code_AC"].ToString();
+                            if (!dr["id_type_lieu_affectation"].ToString().Trim().Equals("")) varclslieu_affectation.Id_type_lieu_affectation = int.Parse(dr["id_type_lieu_affectation"].ToString());
+                            if (!dr["id_personne"].ToString().Trim().Equals("")) varclslieu_affectation.Id_personne = int.Parse(dr["id_personne"].ToString());
+                            if (!dr["id_fonction"].ToString().Trim().Equals("")) varclslieu_affectation.Id_fonction = int.Parse(dr["id_fonction"].ToString());
+                            varclslieu_affectation.Designation = dr["designation"].ToString();
+                            if (!dr["date_affectation"].ToString().Trim().Equals("")) varclslieu_affectation.Date_affectation = DateTime.Parse(dr["date_affectation"].ToString());
+                            varclslieu_affectation.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclslieu_affectation.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclslieu_affectation.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclslieu_affectation.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclslieu_affectation.Add(varclslieu_affectation);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclslieu_affectation;
+        }
+
         public int insertClslieu_affectation(clslieu_affectation varclslieu_affectation)
         {
             int i = 0;
@@ -16035,6 +17088,51 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("SELECT *  FROM affectation_materiel ");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clsaffectation_materiel varclsaffectation_materiel = null;
+                        while (dr.Read())
+                        {
+
+                            varclsaffectation_materiel = new clsaffectation_materiel();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id = int.Parse(dr["id"].ToString());
+                            varclsaffectation_materiel.Code_ac = dr["code_AC"].ToString();
+                            if (!dr["id_lieu_affectation"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id_lieu_affectation = int.Parse(dr["id_lieu_affectation"].ToString());
+                            if (!dr["id_materiel"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id_materiel = int.Parse(dr["id_materiel"].ToString());
+                            if (!dr["id_salle"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id_salle = int.Parse(dr["id_salle"].ToString());
+                            if (!dr["date_affectation"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_affectation = DateTime.Parse(dr["date_affectation"].ToString());
+                            varclsaffectation_materiel.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclsaffectation_materiel.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclsaffectation_materiel.Add(varclsaffectation_materiel);
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsaffectation_materiel;
+        }
+
+        public List<clsaffectation_materiel> getAllClsaffectation_materiel_AC(string annee_academique)
+        {
+            List<clsaffectation_materiel> lstclsaffectation_materiel = new List<clsaffectation_materiel>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM affectation_materiel WHERE code_AC=@code_AC ORDER BY id ASC");
+                    cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, annee_academique));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 

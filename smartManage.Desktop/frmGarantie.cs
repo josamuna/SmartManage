@@ -56,21 +56,6 @@ namespace smartManage.Desktop
             this.bdNav.BindingSource = bdsrc;
         }
 
-        private void frmCategorieMateriel_Load(object sender, EventArgs e)
-        {
-            this.bdNav.Enabled = true;
-            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
-
-            try
-            {
-                RefreshData();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
         private void RefreshData()
         {
             bdsrc.DataSource = clsMetier.GetInstance().getAllClsgarantie();
@@ -273,6 +258,21 @@ namespace smartManage.Desktop
             catch (Exception ex)
             {
                 MessageBox.Show("Echec de la suppression, " + ex.Message, "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void frmGarantie_Load(object sender, EventArgs e)
+        {
+            this.bdNav.Enabled = true;
+            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
+
+            try
+            {
+                RefreshData();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

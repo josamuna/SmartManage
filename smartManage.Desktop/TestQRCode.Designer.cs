@@ -42,6 +42,8 @@
             this.cmdDo = new System.Windows.Forms.Button();
             this.pbox1 = new System.Windows.Forms.PictureBox();
             this.pbox = new System.Windows.Forms.PictureBox();
+            this.cmd1 = new System.Windows.Forms.Button();
+            this.cboData = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbox)).BeginInit();
             this.SuspendLayout();
@@ -168,11 +170,31 @@
             this.pbox.TabIndex = 1;
             this.pbox.TabStop = false;
             // 
+            // cmd1
+            // 
+            this.cmd1.Location = new System.Drawing.Point(180, 40);
+            this.cmd1.Name = "cmd1";
+            this.cmd1.Size = new System.Drawing.Size(75, 23);
+            this.cmd1.TabIndex = 16;
+            this.cmd1.Text = "button1";
+            this.cmd1.UseVisualStyleBackColor = true;
+            this.cmd1.Click += new System.EventHandler(this.cmd1_Click);
+            // 
+            // cboData
+            // 
+            this.cboData.FormattingEnabled = true;
+            this.cboData.Location = new System.Drawing.Point(272, 40);
+            this.cboData.Name = "cboData";
+            this.cboData.Size = new System.Drawing.Size(121, 21);
+            this.cboData.TabIndex = 17;
+            // 
             // TestQRCode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(491, 436);
+            this.Controls.Add(this.cboData);
+            this.Controls.Add(this.cmd1);
             this.Controls.Add(this.cmdDo);
             this.Controls.Add(this.txtText);
             this.Controls.Add(this.txtImgTxt);
@@ -210,5 +232,7 @@
         private System.Windows.Forms.RichTextBox txtImgTxt;
         private System.Windows.Forms.RichTextBox txtText;
         private System.Windows.Forms.Button cmdDo;
+        private System.Windows.Forms.Button cmd1;
+        private System.Windows.Forms.ComboBox cboData;
     }
 }

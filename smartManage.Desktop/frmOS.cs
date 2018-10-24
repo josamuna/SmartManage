@@ -60,21 +60,6 @@ namespace smartManage.Desktop
             this.bdNav.BindingSource = bdsrc;
         }
 
-        private void frmCategorieMateriel_Load(object sender, EventArgs e)
-        {
-            this.bdNav.Enabled = true;
-            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
-
-            try
-            {
-                RefreshData();
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            }
-        }
-
         private void SetSelectedIndexComboBox(List<ComboBox> cbo)
         {
             foreach (ComboBox cmb in cbo)
@@ -349,6 +334,21 @@ namespace smartManage.Desktop
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Echec d'actualisation de la liste déroulante, {0}", ex.Message), "Actualisation liste déroulante", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void frmOS_Load(object sender, EventArgs e)
+        {
+            this.bdNav.Enabled = true;
+            smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
+
+            try
+            {
+                RefreshData();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Erreur lors du chargement des données", "Erreur de chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }

@@ -908,10 +908,14 @@ create table personne
 	nom varchar(50) not null,
 	postnom varchar(30),
 	prenom varchar(30),
+	sexe varchar(1) not null default 'M',
+	etatcivil varchar(20) not null default 'Célibataire',
+	datenaissance smalldatetime,
 	id_grade int not null,
 	isenseignant bit,
 	isagent bit,
 	isetudiant bit,	
+	photo image,
 	user_created varchar(50),
 	date_created smalldatetime,
 	user_modified varchar(50),
@@ -919,6 +923,52 @@ create table personne
 	constraint pk_personne primary key(id),
 	constraint fk_personne_grade foreign key(id_grade) references grade(id),
 	constraint uk_nom unique(nom,postnom,prenom)
+)
+go
+
+create table telephone
+(
+	id int,
+	id_personne int not null,
+	code varchar(4) not null,
+	numero varchar(9) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_telephone primary key(id),
+	constraint fk_telephone_personne foreign key(id_personne) references personne(id),
+	constraint uk_telephone unique(numero)
+)
+go
+
+create table email
+(
+	id int,
+	id_personne int not null,
+	designation varchar(50) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_email primary key(id),
+	constraint fk_email_personne foreign key(id_personne) references personne(id),
+	constraint uk_email unique(designation)
+)
+go
+
+create table adresse
+(
+	id int,
+	id_personne int not null,
+	designation varchar(300) not null,
+	user_created varchar(50),
+	date_created smalldatetime,
+	user_modified varchar(50),
+	date_modified smalldatetime
+	constraint pk_adresse primary key(id),
+	constraint fk_adresse_personne foreign key(id_personne) references personne(id),
+	constraint uk_adresse unique(designation)
 )
 go
 
@@ -1033,7 +1083,7 @@ create table signataire
 	id int,
 	id_personne int not null,
 	code_AC varchar(50) not null,
-	signature_specimen text not null,
+	signature_specimen image not null,
 	user_created varchar(50),
 	date_created smalldatetime,
 	user_modified varchar(50),
@@ -1075,8 +1125,8 @@ create table lieu_affectation
 	code_AC varchar(50) not null,
 	id_type_lieu_affectation int not null,
 	id_personne int,
-	id_fonction int,
-	designation varchar(50),
+	id_fonction int, 
+	designation varchar(50) not null,
 	date_affectation smalldatetime not null,
 	user_created varchar(50),
 	date_created smalldatetime,
@@ -1086,8 +1136,8 @@ create table lieu_affectation
 	constraint fk_lieu_affectation_AC foreign key(code_AC) references AC(code_str),
 	constraint fk_lieu_affectation_type_lieu_affectation foreign key(id_type_lieu_affectation) references type_lieu_affectation(id),
 	constraint fk_lieu_affectation_personne foreign key(id_personne) references personne(id),
-	constraint fk_lieu_affectation_fonction foreign key(id_fonction) references fonction(id),
-	constraint uk_lieu_affectation unique(code_AC,id_type_lieu_affectation,id_fonction)
+	constraint fk_lieu_affectation_fonction foreign key(id_fonction) references fonction(id), 
+	constraint uk_lieu_affectation unique(code_AC,id_type_lieu_affectation,id_fonction,designation)
 )
 go
 
@@ -1108,7 +1158,7 @@ create table affectation_materiel
 	constraint fk_affectation_materiel_lieu_affectation foreign key(id_lieu_affectation) references lieu_affectation(id),
 	constraint fk_affectation_materiel_materiel foreign key(id_materiel) references materiel(id),
 	constraint fk_affectation_materiel_salle foreign key(id_salle) references salle(id),
-	constraint uk_affectation_materiel unique(code_AC,id_lieu_affectation,id_salle)
+	constraint uk_affectation_materiel unique(code_AC,id_lieu_affectation,id_materiel,id_salle)
 )
 go
 

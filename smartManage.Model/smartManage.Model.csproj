@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsAC.cs" />
+    <Compile Include="clsadresse.cs" />
     <Compile Include="clsaffectation_materiel.cs" />
     <Compile Include="clsantenne.cs" />
     <Compile Include="clsarchitecture_OS.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="clsdefault_ip.cs" />
     <Compile Include="clsdefault_pwd.cs" />
     <Compile Include="clsdetail_retrait_materiel.cs" />
+    <Compile Include="clsemail.cs" />
     <Compile Include="clsetat_materiel.cs" />
     <Compile Include="clsfe.cs" />
     <Compile Include="clsfo.cs" />
@@ -98,6 +100,7 @@
     <Compile Include="clssignataire.cs" />
     <Compile Include="clssorties_audio.cs" />
     <Compile Include="clstaille_ecran.cs" />
+    <Compile Include="clstelephone.cs" />
     <Compile Include="clstension_adaptateur.cs" />
     <Compile Include="clstension_alimentation.cs" />
     <Compile Include="clstension_batterie.cs" />
@@ -117,12 +120,14 @@
     <Compile Include="clsutilisateur.cs" />
     <Compile Include="clsversion_ios.cs" />
     <Compile Include="clsvga.cs" />
+    <Compile Include="EtatCivil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Sex.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\smartManage.Tools\smartManage.Tools.csproj">
