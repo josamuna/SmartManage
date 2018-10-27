@@ -9,9 +9,9 @@ using System.Windows.Forms;
 
 namespace smartManage.Desktop
 {
-    public partial class frmStudentRadiusDataView : Form
+    public partial class frmReportAffectationMateriel : Form
     {
-        public frmStudentRadiusDataView()
+        public frmReportAffectationMateriel()
         {
             InitializeComponent();
         }

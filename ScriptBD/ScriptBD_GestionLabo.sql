@@ -1185,6 +1185,138 @@ create table groupe
 	constraint pk_groupe primary key(id)
 )
 go
+ 
+ 
+ 
+-----------TABLES POUR RADIUS-----------------------
+----------------------------------------------------
+
+
+create table nas 
+(
+  id int not null identity,
+  nasname varchar(128) not null,
+  shortname varchar(32),
+  type varchar(30) default 'other',
+  ports int,
+  secret varchar(60) not null default 'secret',
+  server varchar(64),
+  community varchar(50),
+  description varchar(200) default 'RADIUS Client',
+  primary key (id),
+  constraint nas_nasname unique(nasname)
+) 
+go
+
+create table radacct 
+(
+  radacctid bigint not null identity,
+  acctsessionid varchar(64) not null default '',
+  acctuniqueid varchar(32) not null default '',
+  username varchar(64) not null default '',
+  groupname varchar(64) not null default '',
+  realm varchar(64) default '',
+  nasipaddress varchar(15) not null default '',
+  nasportid varchar(15),
+  nasporttype varchar(32),
+  acctstarttime datetime,
+  acctstoptime datetime,
+  acctsessiontime int,
+  acctauthentic varchar(32),
+  connectinfo_start varchar(50),
+  connectinfo_stop varchar(50),
+  acctinputoctets bigint,
+  acctoutputoctets bigint,
+  calledstationid varchar(50) not null default '',
+  callingstationid varchar(50) not null default '',
+  acctterminatecause varchar(32) not null default '',
+  servicetype varchar(32),
+  framedprotocol varchar(32),
+  framedipaddress varchar(15) not null default '',
+  acctstartdelay int,
+  acctstopdelay int,
+  xascendsessionsvrunique varchar(10),
+  primary key (radacctid),
+  constraint radacct_username unique(username),
+  constraint radacct_framedipaddress unique(framedipaddress),
+  constraint radacct_acctsessionid unique(acctsessionid),
+  constraint radacct_acctsessiontime unique(acctsessiontime),
+  constraint radacct_acctuniqueid unique(acctuniqueid),
+  constraint radacct_acctstarttime unique(acctstarttime),
+  constraint radacct_acctstoptime unique(acctstoptime),
+  constraint radacct_nasipaddress unique(nasipaddress)
+) 
+go
+
+create table radcheck 
+(
+  id int not null identity,
+  username varchar(64) not null default '',
+  attribute varchar(64) not null default '',
+  op varchar(2) not null default '==',
+  value varchar(253) not null default '',
+  primary key (id),
+  constraint radcheck_username unique(username)
+) 
+go
+
+create table radgroupcheck 
+(
+  id int not null identity,
+  groupname varchar(64) not null default '',
+  attribute varchar(64) not null default '',
+  op varchar(2) not null default '==',
+  value varchar(253) not null default '',
+  primary key (id),
+  constraint radgroupcheck_groupname unique(groupname)
+) 
+go
+
+create table radgroupreply 
+(
+  id int not null identity,
+  groupname varchar(64) not null default '',
+  attribute varchar(64) not null default '',
+  op varchar(2) not null default '=',
+  value varchar(253) not null default '',
+  primary key (id),
+  constraint radgroupreply_groupname unique(groupname)
+) 
+go
+
+create table radpostauth 
+(
+  id int not null identity,
+  username varchar(64) not null default '',
+  pass varchar(64) not null default '',
+  reply varchar(32) not null default '',
+  authdate smalldatetime not null default GETDATE(),
+  primary key (id)
+) 
+go
+
+create table radreply 
+(
+  id int not null identity,
+  username varchar(64) not null default '',
+  attribute varchar(64) not null default '',
+  op varchar(2) not null default '=',
+  value varchar(253) not null default '',
+  primary key (id),
+  constraint radreply_username unique(username)
+) 
+go
+
+create table radusergroup 
+(
+  username varchar(64) not null default '',
+  groupname varchar(64) not null default '',
+  priority int not null default '1',
+  constraint radusergroup_username unique(username)
+) 
+go
+
+
 
 --Insertion des data de base
 insert into groupe(id,designation,niveau) values

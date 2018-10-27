@@ -586,5 +586,25 @@ namespace smartManage.Desktop
             frm.Show();
             this.bdNav.Enabled = true;
         }
+
+        private void ssmParamServer_Click(object sender, EventArgs e)
+        {
+            frmParametersServeur frm = new frmParametersServeur();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frm.Show();
+        }
+
+        private void sssmVueDataAdministration_Click(object sender, EventArgs e)
+        {
+            frmDataViewAdministration frm = new frmDataViewAdministration();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+            this.bdNav.Enabled = true;
+        }
     }
 }

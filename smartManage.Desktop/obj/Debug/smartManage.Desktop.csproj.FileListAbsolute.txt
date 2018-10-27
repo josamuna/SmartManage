@@ -123,3 +123,7 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.application
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.exe
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmParametersServeur.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmDataViewAdministration.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\ManageConnexion.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\MySql.Data.dll

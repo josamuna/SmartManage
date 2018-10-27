@@ -1,6 +1,6 @@
 ﻿namespace smartManage.Desktop
 {
-    partial class frmStudentRadiusDataView
+    partial class frmReportAffectationMateriel
     {
         /// <summary>
         /// Required designer variable.
@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Text = "frmStudentRadiusDataView";
+            this.Text = "frmReportAffectationMateriel";
         }
 
         #endregion

@@ -30,7 +30,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>16</ApplicationRevision>
+    <ApplicationRevision>17</ApplicationRevision>
     <ApplicationVersion>1.5.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -96,6 +96,10 @@
     <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="ManageConnexion, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Libraries\ManageConnexion.dll</HintPath>
+    </Reference>
     <Reference Include="ManageUtilities, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Libraries\ManageUtilities.dll</HintPath>
@@ -104,6 +108,9 @@
     <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
+    <Reference Include="MySql.Data">
+      <HintPath>Libraries\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -126,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormActualisation.cs" />
+    <Compile Include="frmDataViewAdministration.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataViewAdministration.Designer.cs">
+      <DependentUpon>frmDataViewAdministration.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmFonction.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -143,6 +156,18 @@
     </Compile>
     <Compile Include="frmLieuAffectationPersonneMateriel.Designer.cs">
       <DependentUpon>frmLieuAffectationPersonneMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmParametersServeur.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmParametersServeur.Designer.cs">
+      <DependentUpon>frmParametersServeur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReportAffectationMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportAffectationMateriel.Designer.cs">
+      <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
     </Compile>
     <Compile Include="frmReportLieuAffectation.cs">
       <SubType>Form</SubType>
@@ -648,12 +673,6 @@
     <Compile Include="frmRptAffectationPersonne.Designer.cs">
       <DependentUpon>frmRptAffectationPersonne.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmStudentRadiusDataView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmStudentRadiusDataView.Designer.cs">
-      <DependentUpon>frmStudentRadiusDataView.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmUtilisateur.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -687,6 +706,10 @@
     <Compile Include="TestQRCode.Designer.cs">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="TypeServeur.cs" />
+    <EmbeddedResource Include="frmDataViewAdministration.resx">
+      <DependentUpon>frmDataViewAdministration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmFonction.resx">
       <DependentUpon>frmFonction.cs</DependentUpon>
     </EmbeddedResource>
@@ -695,6 +718,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmLieuAffectationPersonneMateriel.resx">
       <DependentUpon>frmLieuAffectationPersonneMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmParametersServeur.resx">
+      <DependentUpon>frmParametersServeur.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTypeLieuAffectation.resx">
       <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>

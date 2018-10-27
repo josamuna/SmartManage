@@ -424,6 +424,7 @@
             this.sssmVueDataAdministration.Name = "sssmVueDataAdministration";
             this.sssmVueDataAdministration.Size = new System.Drawing.Size(163, 22);
             this.sssmVueDataAdministration.Text = "Vue des données";
+            this.sssmVueDataAdministration.Click += new System.EventHandler(this.sssmVueDataAdministration_Click);
             // 
             // ssmRadiusServerStudent
             // 
@@ -452,6 +453,7 @@
             this.ssmParamServer.Name = "ssmParamServer";
             this.ssmParamServer.Size = new System.Drawing.Size(230, 22);
             this.ssmParamServer.Text = "Parametrage accès au serveur";
+            this.ssmParamServer.Click += new System.EventHandler(this.ssmParamServer_Click);
             // 
             // toolStripSeparator2
             // 

@@ -33,6 +33,9 @@
     <Reference Include="ManageUtilities">
       <HintPath>..\smartManage.Desktop\Libraries\ManageUtilities.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data">
+      <HintPath>..\smartManage.Desktop\Libraries\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -76,9 +79,11 @@
     <Compile Include="clsmarque.cs" />
     <Compile Include="clsmateriel.cs" />
     <Compile Include="clsmemoire.cs" />
+    <Compile Include="clsMetier1.cs" />
     <Compile Include="clsMetier.cs" />
     <Compile Include="clsmicrophone.cs" />
     <Compile Include="clsmodele.cs" />
+    <Compile Include="clsnas.cs" />
     <Compile Include="clsnetette.cs" />
     <Compile Include="clsnombre_coeur_processeur.cs" />
     <Compile Include="clsnombre_hdd.cs" />
@@ -92,6 +97,13 @@
     <Compile Include="clspromotion.cs" />
     <Compile Include="clspuissance.cs" />
     <Compile Include="clspuissance_adaptateur.cs" />
+    <Compile Include="clsradacct.cs" />
+    <Compile Include="clsradcheck.cs" />
+    <Compile Include="clsradgroupcheck.cs" />
+    <Compile Include="clsradgroupreply.cs" />
+    <Compile Include="clsradpostauth.cs" />
+    <Compile Include="clsradreply.cs" />
+    <Compile Include="clsradusergroup.cs" />
     <Compile Include="clsram.cs" />
     <Compile Include="clsretrait_materiel.cs" />
     <Compile Include="clssalle.cs" />
@@ -120,14 +132,12 @@
     <Compile Include="clsutilisateur.cs" />
     <Compile Include="clsversion_ios.cs" />
     <Compile Include="clsvga.cs" />
-    <Compile Include="EtatCivil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Sex.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\smartManage.Tools\smartManage.Tools.csproj">
