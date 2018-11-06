@@ -50,6 +50,11 @@ namespace smartManage.Desktop
                 return;
         }
 
+        public void ActivateMainBindingSource(bool value)
+        {
+            this.bdNav.Enabled = value;
+        }
+
         /// <summary>
         /// Allow to set values for label applying to Status bar
         /// </summary>
@@ -142,6 +147,11 @@ namespace smartManage.Desktop
         {
             bdDelete.Enabled = blnStatus;
             bdSave.Enabled = blnStatus;
+        }
+
+        public void ActivateOnNewSelectionChangeDgvCommandButtons1(bool blnStatus)
+        {
+            bdDelete.Enabled = blnStatus;
         }
 
         public void ActivateOnSelectionChangeDgvExceptionCommandButtons(bool blnStatus)
@@ -604,7 +614,7 @@ namespace smartManage.Desktop
             frm.Icon = this.Icon;
             frmCurrent = frm;
             frm.Show();
-            this.bdNav.Enabled = true;
+            //this.bdNav.Enabled = true;
         }
     }
 }

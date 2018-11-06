@@ -3268,6 +3268,36 @@ namespace smartManage.Model
             return lstclstelephone;
         }
 
+        public List<string> getTelephonePersonne()
+        {
+            List<string> lsttelephonepersonne = new List<string>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format(@"SELECT personne.nom + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') + ' =>' + telephone.code + telephone.numero AS Tel FROM personne 
+                    inner join telephone ON personne.id = telephone.id_personne");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        while (dr.Read())
+                        {
+                            lsttelephonepersonne.Add(dr["Tel"].ToString());
+                        }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                throw new Exception(exc.Message);
+            }
+            return lsttelephonepersonne;
+        }
+
         public List<clstelephone> getAllClstelephone(int id_personne)
         {
             List<clstelephone> lstclstelephone = new List<clstelephone>();

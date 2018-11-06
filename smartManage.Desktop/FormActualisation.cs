@@ -69,6 +69,8 @@ namespace smartManage.Desktop
         frmSection,
         frmSalle,
         frmFonction,
-        frmTypeLieuAffectation
+        frmTypeLieuAffectation,
+        frmGroupUserAdmin,
+        frmGroupUserEtudiant
     }
 }

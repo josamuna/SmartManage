@@ -30,11 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GSMCommunication, Version=1.10.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\smartManage.Desktop\Libraries\GSMCommunication.dll</HintPath>
+    </Reference>
     <Reference Include="ManageUtilities">
       <HintPath>..\smartManage.Desktop\Libraries\ManageUtilities.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\smartManage.Desktop\Libraries\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="PDUConverter, Version=1.10.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\smartManage.Desktop\Libraries\PDUConverter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

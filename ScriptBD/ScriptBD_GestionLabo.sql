@@ -1235,7 +1235,7 @@ create table radacct
   framedipaddress varchar(15) not null default '',
   acctstartdelay int,
   acctstopdelay int,
-  xascendsessionsvrunique varchar(10),
+  xascendsessionsvrkey varchar(10),
   primary key (radacctid),
   constraint radacct_username unique(username),
   constraint radacct_framedipaddress unique(framedipaddress),

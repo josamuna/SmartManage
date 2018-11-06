@@ -10,6 +10,7 @@ namespace smartManage.Model
         private string username;
         private string groupname;
         private int priority;
+        private long nombre_enregistrement;
         //***Listes***
         public List<clsradusergroup> listes()
         {
@@ -60,5 +61,10 @@ namespace smartManage.Model
             get { return priority; }
             set { priority = value; }
         }
+        public long Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

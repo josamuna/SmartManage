@@ -195,6 +195,30 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GSMCommShared.dll" size="16384">
+      <assemblyIdentity name="GSMCommShared" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>oDwg9qG5fZphesiKS6G/g6FFXmI=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GSMCommunication.dll" size="98304">
+      <assemblyIdentity name="GSMCommunication" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>/2KHgEpfhZGtlPT7bfYtVt3llDY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageConnexion.dll" size="8192">
       <assemblyIdentity name="ManageConnexion" version="2.1.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -214,7 +238,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>3RcG0Fb/91yD6E9MuAR96/XiQuY=</dsig:DigestValue>
+        <dsig:DigestValue>OX5/GBJnuao/KFDwCu6k+CeJkaQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -279,6 +303,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PDUConverter.dll" size="65536">
+      <assemblyIdentity name="PDUConverter" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>zSmijYH/GILK5EezTKf5A6LO0eU=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ShockwaveFlashObjects.dll" size="32768">
       <assemblyIdentity name="ShockwaveFlashObjects" version="1.0.0.0" publicKeyToken="692FBEA5521E1304" language="neutral" />
       <hash>
@@ -291,26 +327,26 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="3560448">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="3619840">
       <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>txj0s+3176xHnLVzifvvloTdSng=</dsig:DigestValue>
+        <dsig:DigestValue>cRI0a1mZsPD5f+X5Q0pzX+JVXs4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="847360">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="859136">
       <assemblyIdentity name="smartManage.Model" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>zwznI57Dw6K/L8fLUf0yVgKTIhA=</dsig:DigestValue>
+        <dsig:DigestValue>GxZoQj/lZ6PcZSRUQdVQL8/Kivw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -322,7 +358,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>OLqKh0WZIidBhlYWQafKD281ivs=</dsig:DigestValue>
+        <dsig:DigestValue>T539mIArMKjjKPYgLaq3soI0q+Y=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -371,6 +407,33 @@
       <dsig:DigestValue>ecmivlRmnBLp/aIfhPrkqiDKToQ=</dsig:DigestValue>
     </hash>
   </file>
+  <file name="Libraries\GSMCommServer.dll" size="24576">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>ahvEv8H0k67KF/PWAhkOLKeAbAA=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Libraries\GSMCommShared.dll" size="16384">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>oDwg9qG5fZphesiKS6G/g6FFXmI=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Libraries\GSMCommunication.dll" size="98304">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>/2KHgEpfhZGtlPT7bfYtVt3llDY=</dsig:DigestValue>
+    </hash>
+  </file>
   <file name="Libraries\ManageConnexion.dll" size="8192">
     <hash>
       <dsig:Transforms>
@@ -387,6 +450,15 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>jcpkp9+mzdHFtkuRBhuDSPCnR8c=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Libraries\PDUConverter.dll" size="65536">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>zSmijYH/GILK5EezTKf5A6LO0eU=</dsig:DigestValue>
     </hash>
   </file>
   <file name="LogoSmartManage.ico" size="21895">

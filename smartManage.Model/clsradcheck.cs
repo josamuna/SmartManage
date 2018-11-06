@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace smartManage.Model
 {
-    public class clsradcheck
+    public class clsradcheck:clsradusergroup
     {
         //***Les variables globales***
         //****private string schaine_conn*****
@@ -12,32 +13,37 @@ namespace smartManage.Model
         private string attribute;
         private string op;
         private string _value;
+        private long nombre_enregistrement;
         //***Listes***
-        public List<clsradcheck> listes()
+        public new List<clsradcheck> listes()
         {
             return clsMetier1.GetInstance().getAllClsradcheck();
         }
-        public List<clsradcheck> listes(string criteria)
+        public new List<clsradcheck> listes(string criteria)
         {
             return clsMetier1.GetInstance().getAllClsradcheck(criteria);
         }
-        public int inserts()
+        public new int inserts()
         {
             return clsMetier1.GetInstance().insertClsradcheck(this);
         }
-        public int update(clsradcheck varscls)
+        public int inserts(DataRowView varscls)
         {
-            return clsMetier1.GetInstance().updateClsradcheck(varscls);
+            return clsMetier1.GetInstance().insertClsradcheck_dtrowv(varscls);
         }
-        public int update()
+        public int update(DataRowView varscls)
+        {
+            return clsMetier1.GetInstance().updateClsradcheck_dtrowv(varscls);
+        }
+        public new int update()
         {
             return clsMetier1.GetInstance().updateClsradcheck(this);
         }
-        public int delete(clsradcheck varscls)
+        public int delete(DataRowView varscls)
         {
-            return clsMetier1.GetInstance().deleteClsradcheck(varscls);
+            return clsMetier1.GetInstance().deleteClsradcheck_dtrowv(varscls);
         }
-        public int delete()
+        public new int delete()
         {
             return clsMetier1.GetInstance().deleteClsradcheck(this);
         }
@@ -52,7 +58,7 @@ namespace smartManage.Model
             get { return id; }
             set { id = value; }
         }  //***Accesseur de username***
-        public string Username
+        public new string Username
         {
             get { return username; }
             set { username = value; }
@@ -72,5 +78,10 @@ namespace smartManage.Model
             get { return _value; }
             set { _value = value; }
         }
+        public new long Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

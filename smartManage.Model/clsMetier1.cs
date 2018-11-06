@@ -1,9 +1,11 @@
+using GsmComm.GsmCommunication;
+using GsmComm.PduConverter;
 using ManageUtilities;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
-using MySql.Data.MySqlClient;
+using System.IO.Ports;
 
 namespace smartManage.Model
 {
@@ -13,6 +15,7 @@ namespace smartManage.Model
         private static string _ConnectionString, _host, _db, _user, _pwd;
         private static clsMetier1 Fact;
         private MySqlConnection conn;
+        private static GsmCommMain comm;
         #region prerecquis
         public static clsMetier1 GetInstance()
         {
@@ -128,6 +131,43 @@ namespace smartManage.Model
                 throw new Exception(exc.Message);
             }
         }
+
+        public int GenerateLastID(string table_name)
+        {
+            int lastID = 0;
+            try
+            {
+                if (conn.State == ConnectionState.Closed)
+                    conn.Open();
+
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT MAX(id) AS lastID From {0}", table_name);
+                    IDataReader rd = cmd.ExecuteReader();
+
+                    if (rd.Read())
+                    {
+                        if (rd["lastID"] == DBNull.Value)
+                            lastID = 1;
+                        else if (Convert.ToInt32(rd["lastID"].ToString()) == 0)
+                            lastID = 1;
+                        else
+                            lastID = Convert.ToInt32(rd["lastID"].ToString()) + 1;
+                    }
+
+                    rd.Dispose();
+                }
+            }
+            catch (Exception exc)
+            {
+                throw new Exception(exc.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return lastID;
+        }
         #endregion prerecquis
         //POUR RADIUS
         #region  CLSNAS
@@ -176,8 +216,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM nas  WHERE 1=1";
-                    sql += "  OR   nasname LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM nas  WHERE";
+                    sql += "  nasname LIKE '%" + criteria + "%'";
                     sql += "  OR   shortname LIKE '%" + criteria + "%'";
                     sql += "  OR   type LIKE '%" + criteria + "%'";
                     sql += "  OR   secret LIKE '%" + criteria + "%'";
@@ -224,7 +264,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM nas ");
+                    cmd.CommandText = string.Format("SELECT nas.*,(SELECT COUNT(id) FROM nas) AS nbr_enreg FROM nas ORDER BY nasname ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -241,6 +281,7 @@ namespace smartManage.Model
                             varclsnas.Server = dr["server"].ToString();
                             varclsnas.Community = dr["community"].ToString();
                             varclsnas.Description = dr["description"].ToString();
+                            varclsnas.Nombre_enregistrement = int.Parse(dr["nbr_enreg"].ToString());
                             lstclsnas.Add(varclsnas);
                         }
                     }
@@ -400,7 +441,7 @@ namespace smartManage.Model
                             varclsradacct.Framedipaddress = dr["framedipaddress"].ToString();
                             if (!dr["acctstartdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstartdelay = int.Parse(dr["acctstartdelay"].ToString());
                             if (!dr["acctstopdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstopdelay = int.Parse(dr["acctstopdelay"].ToString());
-                            varclsradacct.Xascendsessionsvrunique = dr["xascendsessionsvrunique"].ToString();
+                            varclsradacct.Xascendsessionsvrkey = dr["xascendsessionsvrkey"].ToString();
                         }
                     }
                 }
@@ -424,8 +465,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radacct  WHERE 1=1";
-                    sql += "  OR   acctsessionid LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radacct  WHERE ";
+                    sql += "  acctsessionid LIKE '%" + criteria + "%'";
                     sql += "  OR   acctuniqueid LIKE '%" + criteria + "%'";
                     sql += "  OR   username LIKE '%" + criteria + "%'";
                     sql += "  OR   groupname LIKE '%" + criteria + "%'";
@@ -442,7 +483,7 @@ namespace smartManage.Model
                     sql += "  OR   servicetype LIKE '%" + criteria + "%'";
                     sql += "  OR   framedprotocol LIKE '%" + criteria + "%'";
                     sql += "  OR   framedipaddress LIKE '%" + criteria + "%'";
-                    sql += "  OR   xascendsessionsvrunique LIKE '%" + criteria + "%'";
+                    sql += "  OR   xascendsessionsvrkey LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -475,7 +516,7 @@ namespace smartManage.Model
                             varclsradacct.Framedipaddress = dr["framedipaddress"].ToString();
                             if (!dr["acctstartdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstartdelay = int.Parse(dr["acctstartdelay"].ToString());
                             if (!dr["acctstopdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstopdelay = int.Parse(dr["acctstopdelay"].ToString());
-                            varclsradacct.Xascendsessionsvrunique = dr["xascendsessionsvrunique"].ToString();
+                            varclsradacct.Xascendsessionsvrkey = dr["xascendsessionsvrkey"].ToString();
                             lstclsradacct.Add(varclsradacct);
                         }
                     }
@@ -500,14 +541,14 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radacct ");
+                    cmd.CommandText = string.Format("SELECT radacct.*,(SELECT COUNT(radacctid) FROM radacct) AS nbr_enreg FROM radacct ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
                         clsradacct varclsradacct = null;
                         while (dr.Read())
                         {
-                            varclsradacct = new clsradacct();
+                            varclsradacct = new clsradacct(); 
                             if (!dr["radacctid"].ToString().Trim().Equals("")) varclsradacct.Radacctid = long.Parse(dr["radacctid"].ToString());
                             varclsradacct.Acctsessionid = dr["acctsessionid"].ToString();
                             varclsradacct.Acctuniqueid = dr["acctuniqueid"].ToString();
@@ -533,7 +574,8 @@ namespace smartManage.Model
                             varclsradacct.Framedipaddress = dr["framedipaddress"].ToString();
                             if (!dr["acctstartdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstartdelay = int.Parse(dr["acctstartdelay"].ToString());
                             if (!dr["acctstopdelay"].ToString().Trim().Equals("")) varclsradacct.Acctstopdelay = int.Parse(dr["acctstopdelay"].ToString());
-                            varclsradacct.Xascendsessionsvrunique = dr["xascendsessionsvrunique"].ToString();
+                            varclsradacct.Xascendsessionsvrkey = dr["xascendsessionsvrkey"].ToString();
+                            varclsradacct.Nombre_enregistrement = long.Parse(dr["nbr_enreg"].ToString());
                             lstclsradacct.Add(varclsradacct);
                         }
                     }
@@ -558,7 +600,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("INSERT INTO radacct ( acctsessionid,acctuniqueid,username,groupname,realm,nasipaddress,nasportid,nasporttype,acctstarttime,acctstoptime,acctsessiontime,acctauthentic,connectinfo_start,connectinfo_stop,acctinputoctets,acctoutputoctets,calledstationid,callingstationid,acctterminatecause,servicetype,framedprotocol,framedipaddress,acctstartdelay,acctstopdelay,xascendsessionsvrunique ) VALUES (@acctsessionid,@acctuniqueid,@username,@groupname,@realm,@nasipaddress,@nasportid,@nasporttype,@acctstarttime,@acctstoptime,@acctsessiontime,@acctauthentic,@connectinfo_start,@connectinfo_stop,@acctinputoctets,@acctoutputoctets,@calledstationid,@callingstationid,@acctterminatecause,@servicetype,@framedprotocol,@framedipaddress,@acctstartdelay,@acctstopdelay,@xascendsessionsvrunique  )");
+                    cmd.CommandText = string.Format("INSERT INTO radacct ( acctsessionid,acctuniqueid,username,groupname,realm,nasipaddress,nasportid,nasporttype,acctstarttime,acctstoptime,acctsessiontime,acctauthentic,connectinfo_start,connectinfo_stop,acctinputoctets,acctoutputoctets,calledstationid,callingstationid,acctterminatecause,servicetype,framedprotocol,framedipaddress,acctstartdelay,acctstopdelay,xascendsessionsvrkey ) VALUES (@acctsessionid,@acctuniqueid,@username,@groupname,@realm,@nasipaddress,@nasportid,@nasporttype,@acctstarttime,@acctstoptime,@acctsessiontime,@acctauthentic,@connectinfo_start,@connectinfo_stop,@acctinputoctets,@acctoutputoctets,@calledstationid,@callingstationid,@acctterminatecause,@servicetype,@framedprotocol,@framedipaddress,@acctstartdelay,@acctstopdelay,@xascendsessionsvrkey  )");
                     if (varclsradacct.Acctsessionid != null) cmd.Parameters.Add(getParameter(cmd, "@acctsessionid", DbType.String, 64, varclsradacct.Acctsessionid));
                     else cmd.Parameters.Add(getParameter(cmd, "@acctsessionid", DbType.String, 64, DBNull.Value));
                     if (varclsradacct.Acctuniqueid != null) cmd.Parameters.Add(getParameter(cmd, "@acctuniqueid", DbType.String, 32, varclsradacct.Acctuniqueid));
@@ -607,8 +649,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@acctstartdelay", DbType.Int32, 4, DBNull.Value));
                     if (varclsradacct.Acctstopdelay.HasValue) cmd.Parameters.Add(getParameter(cmd, "@acctstopdelay", DbType.Int32, 4, varclsradacct.Acctstopdelay));
                     else cmd.Parameters.Add(getParameter(cmd, "@acctstopdelay", DbType.Int32, 4, DBNull.Value));
-                    if (varclsradacct.Xascendsessionsvrunique != null) cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrunique", DbType.String, 10, varclsradacct.Xascendsessionsvrunique));
-                    else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrunique", DbType.String, 10, DBNull.Value));
+                    if (varclsradacct.Xascendsessionsvrkey != null) cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, varclsradacct.Xascendsessionsvrkey));
+                    else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
                 }
@@ -631,7 +673,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE radacct  SET acctsessionid=@acctsessionid,acctuniqueid=@acctuniqueid,username=@username,groupname=@groupname,realm=@realm,nasipaddress=@nasipaddress,nasportid=@nasportid,nasporttype=@nasporttype,acctstarttime=@acctstarttime,acctstoptime=@acctstoptime,acctsessiontime=@acctsessiontime,acctauthentic=@acctauthentic,connectinfo_start=@connectinfo_start,connectinfo_stop=@connectinfo_stop,acctinputoctets=@acctinputoctets,acctoutputoctets=@acctoutputoctets,calledstationid=@calledstationid,callingstationid=@callingstationid,acctterminatecause=@acctterminatecause,servicetype=@servicetype,framedprotocol=@framedprotocol,framedipaddress=@framedipaddress,acctstartdelay=@acctstartdelay,acctstopdelay=@acctstopdelay,xascendsessionsvrunique=@xascendsessionsvrunique  WHERE 1=1  AND radacctid=@radacctid ");
+                    cmd.CommandText = string.Format("UPDATE radacct  SET acctsessionid=@acctsessionid,acctuniqueid=@acctuniqueid,username=@username,groupname=@groupname,realm=@realm,nasipaddress=@nasipaddress,nasportid=@nasportid,nasporttype=@nasporttype,acctstarttime=@acctstarttime,acctstoptime=@acctstoptime,acctsessiontime=@acctsessiontime,acctauthentic=@acctauthentic,connectinfo_start=@connectinfo_start,connectinfo_stop=@connectinfo_stop,acctinputoctets=@acctinputoctets,acctoutputoctets=@acctoutputoctets,calledstationid=@calledstationid,callingstationid=@callingstationid,acctterminatecause=@acctterminatecause,servicetype=@servicetype,framedprotocol=@framedprotocol,framedipaddress=@framedipaddress,acctstartdelay=@acctstartdelay,acctstopdelay=@acctstopdelay,xascendsessionsvrkey=@xascendsessionsvrkey  WHERE 1=1  AND radacctid=@radacctid ");
                     if (varclsradacct.Acctsessionid != null) cmd.Parameters.Add(getParameter(cmd, "@acctsessionid", DbType.String, 64, varclsradacct.Acctsessionid));
                     else cmd.Parameters.Add(getParameter(cmd, "@acctsessionid", DbType.String, 64, DBNull.Value));
                     if (varclsradacct.Acctuniqueid != null) cmd.Parameters.Add(getParameter(cmd, "@acctuniqueid", DbType.String, 32, varclsradacct.Acctuniqueid));
@@ -680,8 +722,8 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@acctstartdelay", DbType.Int32, 4, DBNull.Value));
                     if (varclsradacct.Acctstopdelay.HasValue) cmd.Parameters.Add(getParameter(cmd, "@acctstopdelay", DbType.Int32, 4, varclsradacct.Acctstopdelay));
                     else cmd.Parameters.Add(getParameter(cmd, "@acctstopdelay", DbType.Int32, 4, DBNull.Value));
-                    if (varclsradacct.Xascendsessionsvrunique != null) cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrunique", DbType.String, 10, varclsradacct.Xascendsessionsvrunique));
-                    else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrunique", DbType.String, 10, DBNull.Value));
+                    if (varclsradacct.Xascendsessionsvrkey != null) cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, varclsradacct.Xascendsessionsvrkey));
+                    else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@radacctid", DbType.Int64, 8, varclsradacct.Radacctid));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
@@ -707,6 +749,29 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("DELETE FROM radacct  WHERE  1=1  AND radacctid=@radacctid ");
                     cmd.Parameters.Add(getParameter(cmd, "@radacctid", DbType.Int64, 8, varclsradacct.Radacctid));
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
+        public int deleteClsradacct()
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM radacct");
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
                 }
@@ -764,8 +829,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radcheck  WHERE 1=1";
-                    sql += "  OR   username LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radcheck  WHERE";
+                    sql += "  username LIKE '%" + criteria + "%'";
                     sql += "  OR   attribute LIKE '%" + criteria + "%'";
                     sql += "  OR   op LIKE '%" + criteria + "%'";
                     sql += "  OR   value LIKE '%" + criteria + "%'";
@@ -805,7 +870,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radcheck ");
+                    cmd.CommandText = string.Format("SELECT radcheck.*,(SELECT COUNT(id) FROM radcheck) AS nbr_enreg FROM radcheck ORDER BY username ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -818,8 +883,39 @@ namespace smartManage.Model
                             varclsradcheck.Attribute = dr["attribute"].ToString();
                             varclsradcheck.Op = dr["op"].ToString();
                             varclsradcheck.Value = dr["value"].ToString();
+                            varclsradcheck.Nombre_enregistrement = long.Parse(dr["nbr_enreg"].ToString());
                             lstclsradcheck.Add(varclsradcheck);
                         }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsradcheck;
+        }
+
+        public DataTable getAllClsradcheck_dt()
+        {
+            DataTable lstclsradcheck = new DataTable();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format(@"SELECT radcheck.id,radcheck.username,radcheck.attribute,radcheck.op,radcheck.value,radusergroup.priority,(SELECT COUNT(radcheck.id) FROM radcheck) AS nbr_enreg,radgroupcheck.id AS id_gp,radusergroup.groupname FROM radcheck
+                    INNER JOIN radusergroup ON radcheck.username = radusergroup.username
+                    INNER JOIN radgroupcheck ON radusergroup.groupname = radgroupcheck.groupname ORDER BY radcheck.username ASC");
+
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        lstclsradcheck.Load(dr);
                     }
                 }
                 conn.Close();
@@ -837,9 +933,14 @@ namespace smartManage.Model
         public int insertClsradcheck(clsradcheck varclsradcheck)
         {
             int i = 0;
+            IDbTransaction transaction = null;
+
             try
             {
                 if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction(IsolationLevel.Serializable);
+
+                //Insert in radcheck
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("INSERT INTO radcheck ( username,attribute,op,value ) VALUES (@username,@attribute,@op,@value  )");
@@ -851,16 +952,37 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@op", DbType.String, 2, DBNull.Value));
                     if (varclsradcheck.Value != null) cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradcheck.Value));
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
+                    cmd.Transaction = transaction;
                     i = cmd.ExecuteNonQuery();
+                }
+
+                using (IDbCommand cmd1 = conn.CreateCommand())
+                {
+                    cmd1.CommandText = string.Format("INSERT INTO radusergroup (username,groupname,priority ) VALUES (@username,@groupname,@priority  )");
+                    if (varclsradcheck.Username != null) cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, varclsradcheck.Username));
+                    else cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, DBNull.Value));
+                    if (varclsradcheck.Groupname != null) cmd1.Parameters.Add(getParameter(cmd1, "@groupname", DbType.String, 64, varclsradcheck.Groupname));
+                    else cmd1.Parameters.Add(getParameter(cmd1, "@groupname", DbType.String, 64, DBNull.Value));
+                    cmd1.Parameters.Add(getParameter(cmd1, "@priority", DbType.Int32, 4, varclsradcheck.Priority));
+                    cmd1.Transaction = transaction;
+                    i = cmd1.ExecuteNonQuery();
+
+                    transaction.Commit();
                     conn.Close();
+                    transaction.Dispose();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
-                throw new Exception(exc.Message);
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    conn.Close();
+                    transaction.Dispose();
+                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                    throw new Exception(exc.Message);
+                }
             }
             return i;
         }
@@ -921,6 +1043,160 @@ namespace smartManage.Model
             return i;
         }
 
+        #region USING DATAROWVIEW
+        public int insertClsradcheck_dtrowv(DataRowView varclsradcheck)
+        {
+            int i = 0;
+            IDbTransaction transaction = null;
+
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction(IsolationLevel.Serializable);
+
+                //Insert in radcheck
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("INSERT INTO radcheck ( username,attribute,op,value ) VALUES (@username,@attribute,@op,@value  )");
+                    cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, varclsradcheck["username"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@attribute", DbType.String, 64, varclsradcheck["attribute"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@op", DbType.String, 2, varclsradcheck["op"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradcheck["value"]));
+                    cmd.Transaction = transaction;
+                    i = cmd.ExecuteNonQuery();
+                }
+
+                //Insert in radusergroup
+                using (IDbCommand cmd1 = conn.CreateCommand())
+                {
+                    cmd1.CommandText = string.Format("INSERT INTO radusergroup (username,groupname,priority ) VALUES (@username,@groupname,@priority  )");
+                    cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, varclsradcheck["username"]));
+                    cmd1.Parameters.Add(getParameter(cmd1, "@groupname", DbType.String, 64, varclsradcheck["groupname"]));
+                    cmd1.Parameters.Add(getParameter(cmd1, "@priority", DbType.Int32, 4, varclsradcheck["priority"]));
+                    cmd1.Transaction = transaction;
+                    i = cmd1.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    conn.Close();
+                    transaction.Dispose();
+                }
+            }
+            catch (Exception exc)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    conn.Close();
+                    transaction.Dispose();
+                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                    throw new Exception(exc.Message);
+                }
+            }
+            return i;
+        }
+
+        public int updateClsradcheck_dtrowv(DataRowView varclsradcheck)
+        {
+            int i = 0;
+            IDbTransaction transaction = null;
+
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction(IsolationLevel.Serializable);
+
+                //Update in radcheck
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("UPDATE radcheck  SET username=@username,attribute=@attribute,op=@op,value=@value  WHERE id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, varclsradcheck["username"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@attribute", DbType.String, 64, varclsradcheck["attribute"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@op", DbType.String, 2, varclsradcheck["op"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradcheck["value"]));
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradcheck["id"]));
+                    cmd.Transaction = transaction;
+                    i = cmd.ExecuteNonQuery();
+                }
+
+                //Update in radusergroup
+                using (IDbCommand cmd1 = conn.CreateCommand())
+                {
+                    cmd1.CommandText = string.Format("UPDATE radusergroup  SET groupname=@groupname,priority=@priority  WHERE username=@username  ");
+                    cmd1.Parameters.Add(getParameter(cmd1, "@groupname", DbType.String, 64, varclsradcheck["groupname"]));
+                    cmd1.Parameters.Add(getParameter(cmd1, "@priority", DbType.Int32, 4, varclsradcheck["priority"]));
+                    cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, varclsradcheck["username"]));
+                    cmd1.Transaction = transaction;
+                    i = cmd1.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    conn.Close();
+                    transaction.Dispose();
+                }
+            }
+            catch (Exception exc)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    conn.Close();
+                    transaction.Dispose();
+                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                    throw new Exception(exc.Message);
+                }
+            }
+            return i;
+        }
+
+        public int deleteClsradcheck_dtrowv(DataRowView varclsradcheck)
+        {
+            int i = 0;
+            IDbTransaction transaction = null;
+
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction(IsolationLevel.Serializable);
+
+                //Delete in radcheck
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM radcheck  WHERE  1=1  AND id=@id ");
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradcheck["id"]));
+                    cmd.Transaction = transaction;
+                    i = cmd.ExecuteNonQuery();
+                }
+
+                //Delete in radusergroup
+                using (IDbCommand cmd1 = conn.CreateCommand())
+                {
+                    cmd1.CommandText = string.Format("DELETE FROM radusergroup WHERE username=@username  ");
+                    cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, varclsradcheck["username"]));
+                    cmd1.Transaction = transaction;
+                    i = cmd1.ExecuteNonQuery();
+
+                    transaction.Commit();
+                    conn.Close();
+                    transaction.Dispose();
+                }
+            }
+            catch (Exception exc)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    conn.Close();
+                    transaction.Dispose();
+                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                    throw new Exception(exc.Message);
+                }
+            }
+            return i;
+        }
+        #endregion
+
         #endregion CLSRADCHECK 
         #region  CLSRADGROUPCHECK
         public clsradgroupcheck getClsradgroupcheck(object intid)
@@ -964,8 +1240,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radgroupcheck  WHERE 1=1";
-                    sql += "  OR   groupname LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radgroupcheck  WHERE";
+                    sql += "  groupname LIKE '%" + criteria + "%'";
                     sql += "  OR   attribute LIKE '%" + criteria + "%'";
                     sql += "  OR   op LIKE '%" + criteria + "%'";
                     sql += "  OR   value LIKE '%" + criteria + "%'";
@@ -1005,7 +1281,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radgroupcheck ");
+                    cmd.CommandText = string.Format("SELECT radgroupcheck.*,(SELECT COUNT(id) FROM radgroupcheck) AS nbr_enreg FROM radgroupcheck ORDER BY groupname ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1018,8 +1294,35 @@ namespace smartManage.Model
                             varclsradgroupcheck.Attribute = dr["attribute"].ToString();
                             varclsradgroupcheck.Op = dr["op"].ToString();
                             varclsradgroupcheck.Value = dr["value"].ToString();
+                            varclsradgroupcheck.Nombre_enregistrement = int.Parse(dr["nbr_enreg"].ToString());
                             lstclsradgroupcheck.Add(varclsradgroupcheck);
                         }
+                    }
+                }
+                conn.Close();
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                throw new Exception(exc.Message);
+            }
+            return lstclsradgroupcheck;
+        }
+
+        public DataTable getAllClsradgroupcheck_dt()
+        {
+            DataTable lstclsradgroupcheck = new DataTable();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT radgroupcheck.id AS id_gp,radgroupcheck.groupname,radgroupcheck.attribute,radgroupcheck.op,radgroupcheck.value,(SELECT COUNT(radgroupcheck.id) FROM radgroupcheck) AS nbr_enreg FROM radgroupcheck ORDER BY groupname ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+                        lstclsradgroupcheck.Load(dr);
                     }
                 }
                 conn.Close();
@@ -1164,8 +1467,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radgroupreply  WHERE 1=1";
-                    sql += "  OR   groupname LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radgroupreply  WHERE";
+                    sql += "  groupname LIKE '%" + criteria + "%'";
                     sql += "  OR   attribute LIKE '%" + criteria + "%'";
                     sql += "  OR   op LIKE '%" + criteria + "%'";
                     sql += "  OR   value LIKE '%" + criteria + "%'";
@@ -1364,8 +1667,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radpostauth  WHERE 1=1";
-                    sql += "  OR   username LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radpostauth  WHERE";
+                    sql += "  username LIKE '%" + criteria + "%'";
                     sql += "  OR   pass LIKE '%" + criteria + "%'";
                     sql += "  OR   reply LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
@@ -1404,7 +1707,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radpostauth ");
+                    cmd.CommandText = string.Format("SELECT radpostauth.*,(SELECT COUNT(id) FROM radpostauth) AS nbr_enreg FROM radpostauth ORDER BY id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1417,6 +1720,7 @@ namespace smartManage.Model
                             varclsradpostauth.Pass = dr["pass"].ToString();
                             varclsradpostauth.Reply = dr["reply"].ToString();
                             if (!dr["authdate"].ToString().Trim().Equals("")) varclsradpostauth.Authdate = DateTime.Parse(dr["authdate"].ToString());
+                            varclsradpostauth.Nombre_enregistrement = long.Parse(dr["nbr_enreg"].ToString());
                             lstclsradpostauth.Add(varclsradpostauth);
                         }
                     }
@@ -1518,6 +1822,29 @@ namespace smartManage.Model
             return i;
         }
 
+        public int deleteClsradpostauth()
+        {
+            int i = 0;
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("DELETE FROM radpostauth");
+                    i = cmd.ExecuteNonQuery();
+                    conn.Close();
+                }
+            }
+            catch (Exception exc)
+            {
+                conn.Close();
+                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadius.txt");
+                throw new Exception(exc.Message);
+            }
+            return i;
+        }
+
         #endregion CLSRADPOSTAUTH 
         #region  CLSRADREPLY
         public clsradreply getClsradreply(object intid)
@@ -1561,8 +1888,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radreply  WHERE 1=1";
-                    sql += "  OR   username LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radreply  WHERE";
+                    sql += "  username LIKE '%" + criteria + "%'";
                     sql += "  OR   attribute LIKE '%" + criteria + "%'";
                     sql += "  OR   op LIKE '%" + criteria + "%'";
                     sql += "  OR   value LIKE '%" + criteria + "%'";
@@ -1759,8 +2086,8 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radusergroup  WHERE 1=1";
-                    sql += "  OR   username LIKE '%" + criteria + "%'";
+                    string sql = "SELECT *  FROM radusergroup  WHERE";
+                    sql += "  username LIKE '%" + criteria + "%'";
                     sql += "  OR   groupname LIKE '%" + criteria + "%'";
                     cmd.CommandText = string.Format(sql);
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -1796,7 +2123,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radusergroup ");
+                    cmd.CommandText = string.Format("SELECT radusergroup.*,(SELECT COUNT(username) FROM radusergroup) AS nbr_enreg FROM radusergroup ORDER BY username ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -1807,6 +2134,7 @@ namespace smartManage.Model
                             varclsradusergroup.Username = dr["username"].ToString();
                             varclsradusergroup.Groupname = dr["groupname"].ToString();
                             if (!dr["priority"].ToString().Trim().Equals("")) varclsradusergroup.Priority = int.Parse(dr["priority"].ToString());
+                            varclsradusergroup.Nombre_enregistrement = long.Parse(dr["nbr_enreg"].ToString());
                             lstclsradusergroup.Add(varclsradusergroup);
                         }
                     }
@@ -1859,7 +2187,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE radusergroup  SET username=@username,groupname=@groupname,priority=@priority  WHERE 1=1  ");
+                    cmd.CommandText = string.Format("UPDATE radusergroup  SET username=@username,groupname=@groupname,priority=@priority  WHERE username=@username  ");
                     if (varclsradusergroup.Username != null) cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, varclsradusergroup.Username));
                     else cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, DBNull.Value));
                     if (varclsradusergroup.Groupname != null) cmd.Parameters.Add(getParameter(cmd, "@groupname", DbType.String, 64, varclsradusergroup.Groupname));
@@ -1887,7 +2215,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("DELETE FROM radusergroup  WHERE  1=1  ");
+                    cmd.CommandText = string.Format("DELETE FROM radusergroup  WHERE  username=@username  ");
+                    if (varclsradusergroup.Username != null) cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, varclsradusergroup.Username));
+                    else cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
                     conn.Close();
                 }
@@ -1903,5 +2233,179 @@ namespace smartManage.Model
         }
 
         #endregion CLSRADUSERGROUP 
+
+        #region GESTION SMS
+        /// <summary>
+        /// Permet l'ouverture de la connection au port passé en premier paramètre, avec comme vitesse 
+        /// du port le second paramètre et comme troisième paramètre le temps de reponse avant ré - connection
+        /// </summary>
+        /// <param name="port">Numéro de port</param>
+        /// <param name="baud">Vitesse de transfère du port</param>
+        /// <param name="timeout">Temps de réponse avant réconnection</param>
+        public void OpenConnection(int port, int baud, int timeout)
+        {
+            comm = new GsmCommMain(port, baud, timeout);
+            int inc = 0;
+            try
+            {
+                comm.Open();
+
+                while (!comm.IsConnected())
+                {
+                    if (inc > 0)
+                    {
+                        comm.Close();
+                        return;
+                    }
+                    inc++;
+                    throw new Exception("");
+                }
+
+                //comm.Close();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Echec de l'ouverture du port choisi");
+            }
+        }
+
+        /// <summary>
+        /// Permet de retourner le statut de la connection au modem
+        /// True =>Si elle est ouverte et False dans le cas contraire
+        /// </summary>
+        /// <returns></returns>
+        public bool GetStatusConnectionModem()
+        {
+            if (comm.IsOpen()) return true;
+            else return false;
+        }
+
+        public void CloseModemConnection()
+        {
+            if (comm != null || comm.IsOpen() || comm.IsConnected()) comm.Close();
+            else { }
+        }
+
+        /// <summary>
+        /// Permet l'envoie d'un SMS à un seul destinataire en passant en paramètre  
+        /// le message à envoyé ainsi que le N°Tél du destinataire
+        /// </summary>
+        /// <param name="message">Message à envoyer</param>
+        /// <param name="destinataires">N° du destinataire</param>
+        public void SendOneSMS(string message, string destinataire)
+        {
+            SmsSubmitPdu pdu;
+
+            pdu = new SmsSubmitPdu(message, destinataire, "");
+            if (comm.IsOpen()) { }
+            else comm.Open();
+            comm.SendMessage(pdu);
+            //comm.Close();
+        }
+
+        /// <summary>
+        /// Permet l'envoie d'un SMS à plusieurs destinataires en passant en paramètre le message à envoyer  
+        /// et toutes les adresses des destinataires (N° de Tél) séparés par des point virgules
+        /// </summary>
+        /// <param name="message">Message à envoyer</param>
+        /// <param name="destinataires">N° du destinataire</param>
+        public void SendManySMS(string message, string destinataires)
+        {
+            SmsSubmitPdu pdu;
+            string[] tbDestinataires;
+
+            tbDestinataires = destinataires.Split(';');
+
+            if (comm.IsOpen()) { }
+            else comm.Open();
+
+            for (int i = 0; i < tbDestinataires.Length; i++)
+            {
+                pdu = new SmsSubmitPdu(message, tbDestinataires[i], "");
+                comm.SendMessage(pdu);
+            }
+        }
+
+        /// <summary>
+        /// Permet de retourner le numéro de port sous forme quasi entière en ométant la désignation COM
+        /// et retourne un entier tout en prennant en paramètre le string contenant les deux valeur concaténées
+        /// Ex: COM2 -> 2
+        /// </summary>
+        /// <param name="valeur"></param>
+        /// <returns></returns>
+        public int RecupNumeroPort(string valeur)
+        {
+            try
+            {
+                int numPort = 0;
+                numPort = Convert.ToInt32(valeur.Substring(3, valeur.Length - 3));
+                return numPort;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Erreur lors de la récupération du numéro de port");
+            }
+        }
+
+        /// <summary>
+        /// Chargement du Baut Rate ou vitesse de transfère du port du modem qui retourne un tableau des entiers
+        /// </summary>
+        /// <returns>Tableau des entiers</returns>
+        public int[] LoadBaudPorts()
+        {
+            int[] baud = new int[] { 300, 1200, 2400, 4800, 9600, 19200, 38400, 57600, 115200, 460800, 921600 };
+            return baud;
+        }
+
+        /// <summary>
+        /// Chargement des valeurs pour le bit des données du modem et qui retourne un tableau des entiers
+        /// </summary>
+        /// <returns>Tableau des entiers</returns>
+        public int[] LoadDataBit()
+        {
+            int[] dataBit = new int[] { 4, 5, 6, 7, 8 };
+            return dataBit;
+        }
+
+        /// <summary>
+        /// Chargement des valeurs pour le bit de parité du modem et qui retourne un tableau des strings
+        /// </summary>
+        /// <returns>Tableau des strings</returns>
+        public string[] LoadParityBit()
+        {
+            string[] parityBit = new string[] { "Aucun", "Pair", "Impair", "Marque", "Espace" };
+            return parityBit;
+        }
+
+        /// <summary>
+        /// Chargement des valeurs pour le delais de connection du Modem et retourne un tableau des entiers
+        /// </summary>
+        /// <returns>Tableau des entiers</returns>
+        public int[] LoadTimeOut()
+        {
+            int[] timeOut = new int[] { 150, 300, 600, 900, 1200, 1500, 1800, 2000 };
+            return timeOut;
+        }
+
+        /// <summary>
+        /// Permet d'avoir une liste contenant tous les ports series disponibles
+        /// </summary>
+        /// <returns>Liste des ports</returns>
+        public List<string> GetAllports()
+        {
+            try
+            {
+                List<string> liste = new List<string>();
+
+                foreach (string portSerie in SerialPort.GetPortNames())
+                    liste.Add(portSerie);
+                return liste;
+            }
+            catch (Exception)
+            {
+                throw new Exception("Impossible de charger tous les ports series");
+            }
+        }
+        #endregion
     } //***fin class 
 } //***fin namespace 

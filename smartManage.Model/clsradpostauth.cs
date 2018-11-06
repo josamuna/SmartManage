@@ -12,6 +12,7 @@ namespace smartManage.Model
         private string pass;
         private string reply;
         private DateTime authdate;
+        private long nombre_enregistrement;
         //***Listes***
         public List<clsradpostauth> listes()
         {
@@ -40,6 +41,10 @@ namespace smartManage.Model
         public int delete()
         {
             return clsMetier1.GetInstance().deleteClsradpostauth(this);
+        }
+        public int delete_all()
+        {
+            return clsMetier1.GetInstance().deleteClsradpostauth();
         }
         //***Le constructeur par defaut***
         public clsradpostauth()
@@ -72,5 +77,10 @@ namespace smartManage.Model
             get { return authdate; }
             set { authdate = value; }
         }
+        public long Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

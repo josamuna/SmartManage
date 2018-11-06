@@ -32,7 +32,8 @@ namespace smartManage.Model
         private string framedipaddress;
         private int? acctstartdelay;
         private int? acctstopdelay;
-        private string xascendsessionsvrunique;
+        private string xascendsessionsvrkey;
+        private long nombre_enregistrement;
         //***Listes***
         public List<clsradacct> listes()
         {
@@ -61,6 +62,10 @@ namespace smartManage.Model
         public int delete()
         {
             return clsMetier1.GetInstance().deleteClsradacct(this);
+        }
+        public int delete_all()
+        {
+            return clsMetier1.GetInstance().deleteClsradacct();
         }
         //***Le constructeur par defaut***
         public clsradacct()
@@ -193,10 +198,15 @@ namespace smartManage.Model
             get { return acctstopdelay; }
             set { acctstopdelay = value; }
         }  //***Accesseur de xascendsessionsvrunique***
-        public string Xascendsessionsvrunique
+        public string Xascendsessionsvrkey
         {
-            get { return xascendsessionsvrunique; }
-            set { xascendsessionsvrunique = value; }
+            get { return xascendsessionsvrkey; }
+            set { xascendsessionsvrkey = value; }
         }
+        public long Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

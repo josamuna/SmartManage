@@ -12,6 +12,7 @@ namespace smartManage.Model
         private string attribute;
         private string op;
         private string _value;
+        private int nombre_enregistrement;
         //***Listes***
         public List<clsradgroupcheck> listes()
         {
@@ -72,5 +73,10 @@ namespace smartManage.Model
             get { return _value; }
             set { _value = value; }
         }
+        public int Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

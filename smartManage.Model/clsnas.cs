@@ -16,6 +16,7 @@ namespace smartManage.Model
         private string server;
         private string community;
         private string description;
+        private int nombre_enregistrement;
         //***Listes***
         public List<clsnas> listes()
         {
@@ -96,5 +97,11 @@ namespace smartManage.Model
             get { return description; }
             set { description = value; }
         }
+
+        public int Nombre_enregistrement
+        {
+            get { return nombre_enregistrement; }
+            set { nombre_enregistrement = value; }
+        } //***Accesseur de nombre_enregistrement***
     } //***fin class
 } //***fin namespace

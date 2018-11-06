@@ -175,6 +175,12 @@
     <Compile Include="frmReportLieuAffectation.Designer.cs">
       <DependentUpon>frmReportLieuAffectation.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmGroupUserAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroupUserAdmin.Designer.cs">
+      <DependentUpon>frmGroupUserAdmin.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTypeLieuAffectation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -722,6 +728,9 @@
     <EmbeddedResource Include="frmParametersServeur.resx">
       <DependentUpon>frmParametersServeur.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmGroupUserAdmin.resx">
+      <DependentUpon>frmGroupUserAdmin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmTypeLieuAffectation.resx">
       <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
     </EmbeddedResource>
@@ -1038,8 +1047,12 @@
     <None Include="Images\report2.png" />
     <None Include="Images\report1.png" />
     <None Include="Images\switch2.png" />
+    <Content Include="Libraries\GSMCommServer.dll" />
+    <Content Include="Libraries\GSMCommShared.dll" />
+    <Content Include="Libraries\GSMCommunication.dll" />
     <Content Include="Libraries\ManageConnexion.dll" />
     <Content Include="Libraries\ManageUtilities.dll" />
+    <Content Include="Libraries\PDUConverter.dll" />
     <Content Include="LogoSmartManage.ico" />
     <Content Include="LogoSmartManage_setup.ico" />
     <None Include="Resources\LogoSmartManage_setup1.ico" />
