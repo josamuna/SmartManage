@@ -71,6 +71,6 @@ namespace smartManage.Desktop
         frmFonction,
         frmTypeLieuAffectation,
         frmGroupUserAdmin,
-        frmGroupUserEtudiant
+        frmGroupUserStudent
     }
 }

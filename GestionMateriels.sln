@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smartManage.Tools", "smartM
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ManageQRCode", "ManageQRCode\ManageQRCode.csproj", "{E76178CC-759B-4932-9B7B-61DF8302395A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smartManage.RadiusAdminModel", "smartManage.RadiusAdminModel\smartManage.RadiusAdminModel.csproj", "{697FF67A-7646-4458-86A6-5F19697106DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "smartManage.RadiusStudentsModel", "smartManage.RadiusStudentsModel\smartManage.RadiusStudentsModel.csproj", "{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -60,6 +64,26 @@ Global
 		{E76178CC-759B-4932-9B7B-61DF8302395A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E76178CC-759B-4932-9B7B-61DF8302395A}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{E76178CC-759B-4932-9B7B-61DF8302395A}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{697FF67A-7646-4458-86A6-5F19697106DC}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.CD_ROM|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.CD_ROM|Any CPU.Build.0 = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.DVD-5|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.DVD-5|Any CPU.Build.0 = Debug|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
+		{C3A2F688-CF2C-432C-9D5E-40BD8DB7ABD0}.SingleImage|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

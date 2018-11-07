@@ -30,8 +30,8 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>17</ApplicationRevision>
-    <ApplicationVersion>1.5.0.%2a</ApplicationVersion>
+    <ApplicationRevision>23</ApplicationRevision>
+    <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -133,6 +133,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FormActualisation.cs" />
+    <Compile Include="frmDataViewEtudiant.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataViewEtudiant.Designer.cs">
+      <DependentUpon>frmDataViewEtudiant.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDataViewAdministration.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,12 @@
     </Compile>
     <Compile Include="frmAffectationMateriel.Designer.cs">
       <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmGroupUserStudent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmGroupUserStudent.Designer.cs">
+      <DependentUpon>frmGroupUserStudent.cs</DependentUpon>
     </Compile>
     <Compile Include="frmLieuAffectationPersonneMateriel.cs">
       <SubType>Form</SubType>
@@ -713,6 +725,9 @@
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </Compile>
     <Compile Include="TypeServeur.cs" />
+    <EmbeddedResource Include="frmDataViewEtudiant.resx">
+      <DependentUpon>frmDataViewEtudiant.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDataViewAdministration.resx">
       <DependentUpon>frmDataViewAdministration.cs</DependentUpon>
     </EmbeddedResource>
@@ -721,6 +736,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmAffectationMateriel.resx">
       <DependentUpon>frmAffectationMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmGroupUserStudent.resx">
+      <DependentUpon>frmGroupUserStudent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmLieuAffectationPersonneMateriel.resx">
       <DependentUpon>frmLieuAffectationPersonneMateriel.cs</DependentUpon>
@@ -998,6 +1016,14 @@
     <ProjectReference Include="..\smartManage.Model\smartManage.Model.csproj">
       <Project>{646de8b7-ebfb-4b29-a7ae-6be2945ba5e7}</Project>
       <Name>smartManage.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\smartManage.RadiusAdminModel\smartManage.RadiusAdminModel.csproj">
+      <Project>{697ff67a-7646-4458-86a6-5f19697106dc}</Project>
+      <Name>smartManage.RadiusAdminModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\smartManage.RadiusStudentsModel\smartManage.RadiusStudentsModel.csproj">
+      <Project>{c3a2f688-cf2c-432c-9d5e-40bd8db7abd0}</Project>
+      <Name>smartManage.RadiusStudentsModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\smartManage.Tools\smartManage.Tools.csproj">
       <Project>{789999be-c16c-459f-9bc7-91d88e0ba275}</Project>

@@ -195,7 +195,7 @@
             this.ssmSwitch});
             this.matérielToolStripMenuItem.Image = global::smartManage.Desktop.Properties.Resources.materielInfo1;
             this.matérielToolStripMenuItem.Name = "matérielToolStripMenuItem";
-            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.matérielToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.matérielToolStripMenuItem.Text = "Matériel";
             // 
             // ssmAmplifie
@@ -265,13 +265,13 @@
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(130, 6);
             // 
             // smPerson
             // 
             this.smPerson.Image = global::smartManage.Desktop.Properties.Resources.Utilisateurs;
             this.smPerson.Name = "smPerson";
-            this.smPerson.Size = new System.Drawing.Size(152, 22);
+            this.smPerson.Size = new System.Drawing.Size(133, 22);
             this.smPerson.Text = "Personne";
             this.smPerson.Click += new System.EventHandler(this.smPerson_Click);
             // 
@@ -279,14 +279,14 @@
             // 
             this.smSignataire.Image = global::smartManage.Desktop.Properties.Resources.personne5;
             this.smSignataire.Name = "smSignataire";
-            this.smSignataire.Size = new System.Drawing.Size(152, 22);
+            this.smSignataire.Size = new System.Drawing.Size(133, 22);
             this.smSignataire.Text = "Signataire";
             this.smSignataire.Click += new System.EventHandler(this.smSignataire_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(130, 6);
             // 
             // affectationToolStripMenuItem
             // 
@@ -294,7 +294,7 @@
             this.ssmAffectationPerson,
             this.ssmAffectationMaterials});
             this.affectationToolStripMenuItem.Name = "affectationToolStripMenuItem";
-            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.affectationToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.affectationToolStripMenuItem.Text = "Affectation";
             // 
             // ssmAffectationPerson
@@ -441,6 +441,7 @@
             this.sssmVueDataStudent.Name = "sssmVueDataStudent";
             this.sssmVueDataStudent.Size = new System.Drawing.Size(163, 22);
             this.sssmVueDataStudent.Text = "Vue des données";
+            this.sssmVueDataStudent.Click += new System.EventHandler(this.sssmVueDataStudent_Click);
             // 
             // toolStripSeparator5
             // 

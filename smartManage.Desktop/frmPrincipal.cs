@@ -616,5 +616,15 @@ namespace smartManage.Desktop
             frm.Show();
             //this.bdNav.Enabled = true;
         }
+
+        private void sssmVueDataStudent_Click(object sender, EventArgs e)
+        {
+            frmDataViewEtudiant frm = new frmDataViewEtudiant();
+            frm.Principal = this;
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frmCurrent = frm;
+            frm.Show();
+        }
     }
 }

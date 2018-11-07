@@ -14,7 +14,7 @@ namespace smartManage.Desktop
         //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Adminitration
         private const string FileRadAdmin = "UserRadAdmin.txt";
         //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Etudiant
-        private const string FileRadEtu = "UserRadEtu.txt";
+        private const string FileRadStudent = "UserRadStudent.txt";
 
         public frmParametersServeur()
         {
@@ -77,7 +77,7 @@ namespace smartManage.Desktop
                     if (cboServerType.SelectedValue.ToString().Equals(TypeServeur.Administration.ToString()))
                         paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadAdmin, '\n', txtChipherKey.Text, true);
                     else
-                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadEtu, '\n', txtChipherKey.Text, true);
+                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadStudent, '\n', txtChipherKey.Text, true);
 
                     if (paramServeur.Count > 0)
                     {
@@ -110,7 +110,7 @@ namespace smartManage.Desktop
                 if (cboServerType.SelectedValue.ToString().Equals(TypeServeur.Administration.ToString()))
                     ImplementUtilities.Instance.SaveParameters(MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), DirectoryUtilConn, FileRadAdmin);
                 else
-                    ImplementUtilities.Instance.SaveParameters(MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), DirectoryUtilConn, FileRadEtu);
+                    ImplementUtilities.Instance.SaveParameters(MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), DirectoryUtilConn, FileRadStudent);
 
                 MessageBox.Show("Enregistrement effectué avec succès", "Enregistrement des données", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }

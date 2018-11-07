@@ -30,19 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GSMCommunication, Version=1.10.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\smartManage.Desktop\Libraries\GSMCommunication.dll</HintPath>
-    </Reference>
     <Reference Include="ManageUtilities">
       <HintPath>..\smartManage.Desktop\Libraries\ManageUtilities.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data">
-      <HintPath>..\smartManage.Desktop\Libraries\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="PDUConverter, Version=1.10.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\smartManage.Desktop\Libraries\PDUConverter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -87,11 +76,9 @@
     <Compile Include="clsmarque.cs" />
     <Compile Include="clsmateriel.cs" />
     <Compile Include="clsmemoire.cs" />
-    <Compile Include="clsMetier1.cs" />
     <Compile Include="clsMetier.cs" />
     <Compile Include="clsmicrophone.cs" />
     <Compile Include="clsmodele.cs" />
-    <Compile Include="clsnas.cs" />
     <Compile Include="clsnetette.cs" />
     <Compile Include="clsnombre_coeur_processeur.cs" />
     <Compile Include="clsnombre_hdd.cs" />
@@ -105,13 +92,6 @@
     <Compile Include="clspromotion.cs" />
     <Compile Include="clspuissance.cs" />
     <Compile Include="clspuissance_adaptateur.cs" />
-    <Compile Include="clsradacct.cs" />
-    <Compile Include="clsradcheck.cs" />
-    <Compile Include="clsradgroupcheck.cs" />
-    <Compile Include="clsradgroupreply.cs" />
-    <Compile Include="clsradpostauth.cs" />
-    <Compile Include="clsradreply.cs" />
-    <Compile Include="clsradusergroup.cs" />
     <Compile Include="clsram.cs" />
     <Compile Include="clsretrait_materiel.cs" />
     <Compile Include="clssalle.cs" />

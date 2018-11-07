@@ -231,6 +231,7 @@
             this.label50 = new System.Windows.Forms.Label();
             this.tblReply = new System.Windows.Forms.TabPage();
             this.gpReply = new System.Windows.Forms.GroupBox();
+            this.lblGeneratePassword = new System.Windows.Forms.LinkLabel();
             this.tblMain.SuspendLayout();
             this.tblLogin.SuspendLayout();
             this.gpLogin.SuspendLayout();
@@ -667,6 +668,7 @@
             // 
             // gpUser
             // 
+            this.gpUser.Controls.Add(this.lblGeneratePassword);
             this.gpUser.Controls.Add(this.tbSMS);
             this.gpUser.Controls.Add(this.chkSMS);
             this.gpUser.Controls.Add(this.tbModem);
@@ -2265,6 +2267,19 @@
             this.gpReply.TabIndex = 4;
             this.gpReply.TabStop = false;
             // 
+            // lblGeneratePassword
+            // 
+            this.lblGeneratePassword.AutoSize = true;
+            this.lblGeneratePassword.LinkColor = System.Drawing.Color.Crimson;
+            this.lblGeneratePassword.Location = new System.Drawing.Point(505, 41);
+            this.lblGeneratePassword.Name = "lblGeneratePassword";
+            this.lblGeneratePassword.Size = new System.Drawing.Size(21, 13);
+            this.lblGeneratePassword.TabIndex = 572;
+            this.lblGeneratePassword.TabStop = true;
+            this.lblGeneratePassword.Text = "Go";
+            this.lblGeneratePassword.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblGeneratePassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblGeneratePassword_LinkClicked);
+            // 
             // frmDataViewAdministration
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2511,5 +2526,6 @@
         private System.Windows.Forms.Label label57;
         private System.Windows.Forms.TextBox txtMsgSend;
         private System.Windows.Forms.ListBox lstPersonneTel;
+        private System.Windows.Forms.LinkLabel lblGeneratePassword;
     }
 }

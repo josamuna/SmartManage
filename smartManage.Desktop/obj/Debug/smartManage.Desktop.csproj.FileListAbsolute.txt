@@ -131,3 +131,9 @@ D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\GSMCommunication.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\PDUConverter.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\GSMCommShared.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmDataViewEtudiant.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\obj\Debug\smartManage.Desktop.frmGroupUserStudent.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.RadiusAdminModel.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.RadiusStudentsModel.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.RadiusAdminModel.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\bin\Debug\smartManage.RadiusStudentsModel.pdb

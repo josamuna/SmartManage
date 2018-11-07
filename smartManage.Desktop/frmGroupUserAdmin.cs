@@ -1,4 +1,4 @@
-﻿using smartManage.Model;
+﻿using smartManage.RadiusAdminModel;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;

@@ -1,0 +1,13 @@
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\smartManage.RadiusAdminModel.dll.config
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\smartManage.RadiusAdminModel.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\smartManage.RadiusAdminModel.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\GSMCommunication.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\ManageUtilities.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\MySql.Data.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\PDUConverter.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\bin\Debug\GSMCommShared.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\obj\Debug\smartManage.RadiusAdminModel.csprojResolveAssemblyReference.cache
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\obj\Debug\smartManage.RadiusAdminModel.Properties.Resources.resources
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\obj\Debug\smartManage.RadiusAdminModel.csproj.GenerateResource.Cache
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\obj\Debug\smartManage.RadiusAdminModel.dll
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusAdminModel\obj\Debug\smartManage.RadiusAdminModel.pdb

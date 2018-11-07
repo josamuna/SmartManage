@@ -159,32 +159,6 @@ namespace smartManage.Desktop
                 BindingList();
                 blnModifie = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
-                int id_materiel = -1;
-
-                //if (bdsrc.Count > 0)
-                //{
-                //    pbQrCode.Image = pbPhoto1.Image = pbPhoto2.Image = pbPhoto3.Image = null;
-
-                //    if (!string.IsNullOrEmpty(cboMateriel.Text))
-                //    {
-                //        id_materiel = (int)((clsaffectation_materiel)bdsrc.Current).Id_materiel;
-                //        clsmateriel obj_materiel = new clsmateriel();
-                //        List<clsmateriel> lstMateriel = new List<clsmateriel>();
-
-                //        obj_materiel = clsMetier.GetInstance().getClsmateriel(id_materiel);
-                //        lstMateriel.Add(obj_materiel);
-
-                //        dgv1.DataSource = lstMateriel;
-
-                //        //Load QrCode of material here   
-                //        pbQrCode.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Qrcode);
-
-                //        //Load Picture of material here                      
-                //        pbPhoto1.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Photo1);
-                //        pbPhoto2.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Photo2);
-                //        pbPhoto3.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Photo3);
-                //    }
-                //}
             }
             catch (Exception ex)
             {

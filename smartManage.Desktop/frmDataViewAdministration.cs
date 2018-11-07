@@ -1,5 +1,5 @@
 ﻿using ManageUtilities;
-using smartManage.Model;
+using smartManage.RadiusAdminModel;
 using smartManage.Tools;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace smartManage.Desktop
         //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Adminitration
         private const string FileRadAdmin = "UserRadAdmin.txt";
 
-        clsConnexion connection = new clsConnexion();
+        clsConnexion1 connection = new clsConnexion1();
 
         //Object des classes
         private clsnas nas = new clsnas();
@@ -79,7 +79,7 @@ namespace smartManage.Desktop
             ctr.DataBindings.Add(ctr_prop, objsrce, obj_prop, true, DataSourceUpdateMode.OnPropertyChanged);
         }
 
-        #region GESTION NAS
+        #region GESTION LOAD
         private void BindingCls_Nas()
         {
             SetBindingControls(txtCodeNas, "Text", nas, "Id");
@@ -385,12 +385,6 @@ namespace smartManage.Desktop
                 {
                     if (tLoadDataGrid != null)
                         lstThread.Add(tLoadDataGrid);
-                    //else if (tSelectionChangeDataGrid != null)
-                    //    lstThread.Add(tSelectionChangeDataGrid);
-                    //else if (tLeftCombo != null)
-                    //    lstThread.Add(tLeftCombo);
-                    //else if (tActualiseComb != null)
-                    //    lstThread.Add(tActualiseComb);
 
                     bool[] tb = { };
                     int count = 1;
@@ -482,8 +476,6 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                txtPwdBd.Clear();
-                txtChipherKey.Clear();
                 txtPwdBd.Focus();
                 MessageBox.Show(string.Format("Echec de l'authentification de l'utilisateur, {0}", ex.Message), "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
@@ -501,6 +493,8 @@ namespace smartManage.Desktop
         {
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des utilisateurs Radius de l'Administration");
             Principal.SetCurrentICRUDChildForm(this);
+
+            RefreshData();
         }
 
         private void frmDataViewAdministration_FormClosed(object sender, FormClosedEventArgs e)
@@ -563,7 +557,7 @@ namespace smartManage.Desktop
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 Principal.ActivateOnNewCommandButtons(false);
             }
@@ -597,8 +591,10 @@ namespace smartManage.Desktop
                         }
                         else
                         {
-                            List<clsradcheck> lstItemSearch = new List<clsradcheck>();
-                            lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck(criteria);
+                            //List<clsradcheck> lstItemSearch = new List<clsradcheck>();
+                            //lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck(criteria);
+                            DataTable lstItemSearch = new DataTable();
+                            lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
 
                             dgvUser.DataSource = lstItemSearch;
                         }
@@ -947,7 +943,7 @@ namespace smartManage.Desktop
                 {
                     lstPersonneTel.Items.Clear();
                     List<string> lst = new List<string>();
-                    lst = clsMetier.GetInstance().getTelephonePersonne();
+                    lst = smartManage.Model.clsMetier.GetInstance().getTelephonePersonne();
                     foreach (string str in lst)
                         lstPersonneTel.Items.Add(str);
                 }
@@ -1037,6 +1033,18 @@ namespace smartManage.Desktop
             catch(Exception ex)
             {
                 MessageBox.Show(string.Format("Echec de sélection, {0}", ex.Message), "Sélection destinataire", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void lblGeneratePassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                txtPasswordUser.Text = clsMetier1.GetInstance().GeneratePassword(txtNomUser.Text);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(string.Format("Echec de génération du mot de passe, {0}", ex.Message), "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
     }
