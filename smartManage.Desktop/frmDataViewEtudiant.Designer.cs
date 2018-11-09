@@ -234,35 +234,34 @@
             this.label50 = new System.Windows.Forms.Label();
             this.tblUsersMultiple = new System.Windows.Forms.TabPage();
             this.gpReply = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
-            this.rdBD = new System.Windows.Forms.RadioButton();
-            this.rdFile = new System.Windows.Forms.RadioButton();
-            this.gpFile = new System.Windows.Forms.GroupBox();
-            this.txtFile = new System.Windows.Forms.TextBox();
-            this.cmdLoadFile = new System.Windows.Forms.Button();
-            this.cmdView = new System.Windows.Forms.Button();
+            this.groupBox8 = new System.Windows.Forms.GroupBox();
+            this.dgvUserMulti = new System.Windows.Forms.DataGridView();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.lblRecord = new System.Windows.Forms.Label();
+            this.label62 = new System.Windows.Forms.Label();
+            this.cmdExport = new System.Windows.Forms.Button();
+            this.cmdSave = new System.Windows.Forms.Button();
+            this.cmdGenerate = new System.Windows.Forms.Button();
+            this.txtChipherKeyMultiple = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
             this.lblAddGroup = new System.Windows.Forms.LinkLabel();
             this.cboGroupe = new System.Windows.Forms.ComboBox();
             this.label59 = new System.Windows.Forms.Label();
-            this.groupBox8 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label60 = new System.Windows.Forms.Label();
-            this.txtChipherKeyMultiple = new System.Windows.Forms.TextBox();
-            this.cmdSave = new System.Windows.Forms.Button();
-            this.cmdGenerate = new System.Windows.Forms.Button();
-            this.cmdExport = new System.Windows.Forms.Button();
-            this.lblRecord = new System.Windows.Forms.Label();
-            this.label62 = new System.Windows.Forms.Label();
+            this.cmdView = new System.Windows.Forms.Button();
+            this.gpFile = new System.Windows.Forms.GroupBox();
+            this.cmdLoadFile = new System.Windows.Forms.Button();
+            this.txtFile = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.rdFile = new System.Windows.Forms.RadioButton();
+            this.rdBD = new System.Windows.Forms.RadioButton();
+            this.colid5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colusername5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colgroupname5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colattribute5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colop5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colvalue5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPriority5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNbrRecord = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tblMain.SuspendLayout();
             this.tblLogin.SuspendLayout();
             this.gpLogin.SuspendLayout();
@@ -286,11 +285,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvPostAuth)).BeginInit();
             this.tblUsersMultiple.SuspendLayout();
             this.gpReply.SuspendLayout();
-            this.groupBox5.SuspendLayout();
-            this.gpFile.SuspendLayout();
-            this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvUserMulti)).BeginInit();
+            this.groupBox7.SuspendLayout();
+            this.gpFile.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tblMain
@@ -341,6 +340,7 @@
             this.txtChipherKey.PasswordChar = '*';
             this.txtChipherKey.Size = new System.Drawing.Size(170, 20);
             this.txtChipherKey.TabIndex = 1;
+            this.txtChipherKey.Text = "s";
             this.txtChipherKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtChipherKey_KeyDown);
             // 
             // label3
@@ -2332,81 +2332,55 @@
             this.gpReply.TabIndex = 4;
             this.gpReply.TabStop = false;
             // 
-            // groupBox5
+            // groupBox8
             // 
-            this.groupBox5.Controls.Add(this.rdFile);
-            this.groupBox5.Controls.Add(this.rdBD);
-            this.groupBox5.Location = new System.Drawing.Point(6, 12);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(224, 51);
-            this.groupBox5.TabIndex = 0;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Choix de la source des données";
+            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox8.Controls.Add(this.dgvUserMulti);
+            this.groupBox8.Location = new System.Drawing.Point(6, 117);
+            this.groupBox8.Name = "groupBox8";
+            this.groupBox8.Size = new System.Drawing.Size(997, 261);
+            this.groupBox8.TabIndex = 562;
+            this.groupBox8.TabStop = false;
+            this.groupBox8.Text = "Affichage des données manipulées";
             // 
-            // rdBD
+            // dgvUserMulti
             // 
-            this.rdBD.AutoSize = true;
-            this.rdBD.Location = new System.Drawing.Point(6, 20);
-            this.rdBD.Name = "rdBD";
-            this.rdBD.Size = new System.Drawing.Size(108, 17);
-            this.rdBD.TabIndex = 32;
-            this.rdBD.TabStop = true;
-            this.rdBD.Text = "Base de données";
-            this.rdBD.UseVisualStyleBackColor = true;
-            // 
-            // rdFile
-            // 
-            this.rdFile.AutoSize = true;
-            this.rdFile.Location = new System.Drawing.Point(129, 20);
-            this.rdFile.Name = "rdFile";
-            this.rdFile.Size = new System.Drawing.Size(86, 17);
-            this.rdFile.TabIndex = 33;
-            this.rdFile.TabStop = true;
-            this.rdFile.Text = "Fichier Texte";
-            this.rdFile.UseVisualStyleBackColor = true;
-            // 
-            // gpFile
-            // 
-            this.gpFile.Controls.Add(this.cmdLoadFile);
-            this.gpFile.Controls.Add(this.txtFile);
-            this.gpFile.Location = new System.Drawing.Point(236, 12);
-            this.gpFile.Name = "gpFile";
-            this.gpFile.Size = new System.Drawing.Size(677, 51);
-            this.gpFile.TabIndex = 1;
-            this.gpFile.TabStop = false;
-            this.gpFile.Text = "Charger un fichier texte";
-            // 
-            // txtFile
-            // 
-            this.txtFile.Location = new System.Drawing.Point(6, 20);
-            this.txtFile.Name = "txtFile";
-            this.txtFile.Size = new System.Drawing.Size(575, 20);
-            this.txtFile.TabIndex = 34;
-            // 
-            // cmdLoadFile
-            // 
-            this.cmdLoadFile.BackColor = System.Drawing.Color.Snow;
-            this.cmdLoadFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdLoadFile.ForeColor = System.Drawing.Color.DarkGreen;
-            this.cmdLoadFile.Location = new System.Drawing.Point(587, 18);
-            this.cmdLoadFile.Name = "cmdLoadFile";
-            this.cmdLoadFile.Size = new System.Drawing.Size(82, 23);
-            this.cmdLoadFile.TabIndex = 35;
-            this.cmdLoadFile.Text = "C&harger........";
-            this.cmdLoadFile.UseVisualStyleBackColor = false;
-            // 
-            // cmdView
-            // 
-            this.cmdView.BackColor = System.Drawing.Color.LavenderBlush;
-            this.cmdView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdView.ForeColor = System.Drawing.Color.Maroon;
-            this.cmdView.Location = new System.Drawing.Point(921, 30);
-            this.cmdView.Name = "cmdView";
-            this.cmdView.Size = new System.Drawing.Size(82, 24);
-            this.cmdView.TabIndex = 36;
-            this.cmdView.Text = "Af&ficher";
-            this.cmdView.UseVisualStyleBackColor = false;
-            this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
+            this.dgvUserMulti.AllowUserToAddRows = false;
+            this.dgvUserMulti.AllowUserToDeleteRows = false;
+            this.dgvUserMulti.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dgvUserMulti.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dgvUserMulti.BackgroundColor = System.Drawing.Color.White;
+            this.dgvUserMulti.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvUserMulti.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colid5,
+            this.colusername5,
+            this.colgroupname5,
+            this.colattribute5,
+            this.colop5,
+            this.colvalue5,
+            this.colPriority5,
+            this.colNbrRecord});
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUserMulti.DefaultCellStyle = dataGridViewCellStyle10;
+            this.dgvUserMulti.Location = new System.Drawing.Point(3, 19);
+            this.dgvUserMulti.MultiSelect = false;
+            this.dgvUserMulti.Name = "dgvUserMulti";
+            this.dgvUserMulti.RowHeadersVisible = false;
+            this.dgvUserMulti.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dgvUserMulti.Size = new System.Drawing.Size(991, 239);
+            this.dgvUserMulti.TabIndex = 200;
+            this.dgvUserMulti.TabStop = false;
+            this.dgvUserMulti.SelectionChanged += new System.EventHandler(this.dgvUserMulti_SelectionChanged);
             // 
             // groupBox7
             // 
@@ -2425,204 +2399,6 @@
             this.groupBox7.Size = new System.Drawing.Size(997, 46);
             this.groupBox7.TabIndex = 27;
             this.groupBox7.TabStop = false;
-            // 
-            // lblAddGroup
-            // 
-            this.lblAddGroup.AutoSize = true;
-            this.lblAddGroup.Location = new System.Drawing.Point(233, 19);
-            this.lblAddGroup.Name = "lblAddGroup";
-            this.lblAddGroup.Size = new System.Drawing.Size(29, 13);
-            this.lblAddGroup.TabIndex = 38;
-            this.lblAddGroup.TabStop = true;
-            this.lblAddGroup.Text = "New";
-            this.lblAddGroup.VisitedLinkColor = System.Drawing.Color.Blue;
-            // 
-            // cboGroupe
-            // 
-            this.cboGroupe.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboGroupe.DropDownWidth = 109;
-            this.cboGroupe.FormattingEnabled = true;
-            this.cboGroupe.Location = new System.Drawing.Point(99, 15);
-            this.cboGroupe.Name = "cboGroupe";
-            this.cboGroupe.Size = new System.Drawing.Size(132, 21);
-            this.cboGroupe.TabIndex = 37;
-            // 
-            // label59
-            // 
-            this.label59.AutoSize = true;
-            this.label59.Location = new System.Drawing.Point(5, 19);
-            this.label59.Name = "label59";
-            this.label59.Size = new System.Drawing.Size(98, 13);
-            this.label59.TabIndex = 556;
-            this.label59.Text = "Groupe utilisateur : ";
-            // 
-            // groupBox8
-            // 
-            this.groupBox8.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox8.Controls.Add(this.dataGridView1);
-            this.groupBox8.Location = new System.Drawing.Point(6, 117);
-            this.groupBox8.Name = "groupBox8";
-            this.groupBox8.Size = new System.Drawing.Size(997, 261);
-            this.groupBox8.TabIndex = 562;
-            this.groupBox8.TabStop = false;
-            this.groupBox8.Text = "Affichage des données manipulées";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.dataGridView1.BackgroundColor = System.Drawing.Color.White;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn6,
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn8,
-            this.dataGridViewTextBoxColumn9});
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle10;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 19);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(991, 239);
-            this.dataGridView1.TabIndex = 200;
-            this.dataGridView1.TabStop = false;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "id";
-            this.dataGridViewTextBoxColumn1.HeaderText = "Code";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "username";
-            this.dataGridViewTextBoxColumn2.HeaderText = "Nom d\'utilisateur";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.Width = 170;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "groupname";
-            this.dataGridViewTextBoxColumn3.HeaderText = "Groupe";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.Width = 120;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "attribute";
-            this.dataGridViewTextBoxColumn4.HeaderText = "Attribut";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.Width = 130;
-            // 
-            // dataGridViewTextBoxColumn5
-            // 
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "op";
-            this.dataGridViewTextBoxColumn5.HeaderText = "Option user";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.Width = 150;
-            // 
-            // dataGridViewTextBoxColumn6
-            // 
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "value";
-            this.dataGridViewTextBoxColumn6.HeaderText = "Mot de passe";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.Width = 170;
-            // 
-            // dataGridViewTextBoxColumn7
-            // 
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "groupname";
-            this.dataGridViewTextBoxColumn7.HeaderText = "Groupe utilisateur";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.Visible = false;
-            this.dataGridViewTextBoxColumn7.Width = 150;
-            // 
-            // dataGridViewTextBoxColumn8
-            // 
-            this.dataGridViewTextBoxColumn8.DataPropertyName = "priority";
-            this.dataGridViewTextBoxColumn8.HeaderText = "Priorité user";
-            this.dataGridViewTextBoxColumn8.Name = "dataGridViewTextBoxColumn8";
-            this.dataGridViewTextBoxColumn8.Width = 125;
-            // 
-            // dataGridViewTextBoxColumn9
-            // 
-            this.dataGridViewTextBoxColumn9.DataPropertyName = "nbr_enreg";
-            this.dataGridViewTextBoxColumn9.HeaderText = "Nbr. Enregistrement";
-            this.dataGridViewTextBoxColumn9.Name = "dataGridViewTextBoxColumn9";
-            this.dataGridViewTextBoxColumn9.Visible = false;
-            // 
-            // label60
-            // 
-            this.label60.AutoSize = true;
-            this.label60.Location = new System.Drawing.Point(268, 20);
-            this.label60.Name = "label60";
-            this.label60.Size = new System.Drawing.Size(98, 13);
-            this.label60.TabIndex = 557;
-            this.label60.Text = "Clé de chiffrement :";
-            // 
-            // txtChipherKeyMultiple
-            // 
-            this.txtChipherKeyMultiple.Location = new System.Drawing.Point(366, 16);
-            this.txtChipherKeyMultiple.Name = "txtChipherKeyMultiple";
-            this.txtChipherKeyMultiple.Size = new System.Drawing.Size(132, 20);
-            this.txtChipherKeyMultiple.TabIndex = 39;
-            // 
-            // cmdSave
-            // 
-            this.cmdSave.BackColor = System.Drawing.Color.SeaShell;
-            this.cmdSave.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdSave.ForeColor = System.Drawing.Color.Olive;
-            this.cmdSave.Location = new System.Drawing.Point(600, 14);
-            this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(82, 24);
-            this.cmdSave.TabIndex = 41;
-            this.cmdSave.Text = "Enregis&trer";
-            this.cmdSave.UseVisualStyleBackColor = false;
-            // 
-            // cmdGenerate
-            // 
-            this.cmdGenerate.BackColor = System.Drawing.Color.Linen;
-            this.cmdGenerate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdGenerate.ForeColor = System.Drawing.Color.DarkCyan;
-            this.cmdGenerate.Location = new System.Drawing.Point(510, 14);
-            this.cmdGenerate.Name = "cmdGenerate";
-            this.cmdGenerate.Size = new System.Drawing.Size(82, 24);
-            this.cmdGenerate.TabIndex = 40;
-            this.cmdGenerate.Text = "&Générer Mdp";
-            this.cmdGenerate.UseVisualStyleBackColor = false;
-            // 
-            // cmdExport
-            // 
-            this.cmdExport.BackColor = System.Drawing.Color.LavenderBlush;
-            this.cmdExport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cmdExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cmdExport.ForeColor = System.Drawing.Color.DarkOliveGreen;
-            this.cmdExport.Location = new System.Drawing.Point(690, 14);
-            this.cmdExport.Name = "cmdExport";
-            this.cmdExport.Size = new System.Drawing.Size(80, 24);
-            this.cmdExport.TabIndex = 42;
-            this.cmdExport.Text = "&Exporter";
-            this.cmdExport.UseVisualStyleBackColor = false;
             // 
             // lblRecord
             // 
@@ -2643,6 +2419,230 @@
             this.label62.Size = new System.Drawing.Size(70, 13);
             this.label62.TabIndex = 558;
             this.label62.Text = "Nbr. Enreg. : ";
+            // 
+            // cmdExport
+            // 
+            this.cmdExport.BackColor = System.Drawing.Color.LavenderBlush;
+            this.cmdExport.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdExport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdExport.ForeColor = System.Drawing.Color.DarkOliveGreen;
+            this.cmdExport.Location = new System.Drawing.Point(690, 14);
+            this.cmdExport.Name = "cmdExport";
+            this.cmdExport.Size = new System.Drawing.Size(80, 24);
+            this.cmdExport.TabIndex = 42;
+            this.cmdExport.Text = "&Exporter";
+            this.cmdExport.UseVisualStyleBackColor = false;
+            this.cmdExport.Click += new System.EventHandler(this.cmdExport_Click);
+            // 
+            // cmdSave
+            // 
+            this.cmdSave.BackColor = System.Drawing.Color.SeaShell;
+            this.cmdSave.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdSave.ForeColor = System.Drawing.Color.Olive;
+            this.cmdSave.Location = new System.Drawing.Point(600, 14);
+            this.cmdSave.Name = "cmdSave";
+            this.cmdSave.Size = new System.Drawing.Size(82, 24);
+            this.cmdSave.TabIndex = 41;
+            this.cmdSave.Text = "Enregis&trer";
+            this.cmdSave.UseVisualStyleBackColor = false;
+            this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
+            // 
+            // cmdGenerate
+            // 
+            this.cmdGenerate.BackColor = System.Drawing.Color.Linen;
+            this.cmdGenerate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cmdGenerate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdGenerate.ForeColor = System.Drawing.Color.DarkCyan;
+            this.cmdGenerate.Location = new System.Drawing.Point(510, 14);
+            this.cmdGenerate.Name = "cmdGenerate";
+            this.cmdGenerate.Size = new System.Drawing.Size(82, 24);
+            this.cmdGenerate.TabIndex = 40;
+            this.cmdGenerate.Text = "&Générer Mdp";
+            this.cmdGenerate.UseVisualStyleBackColor = false;
+            this.cmdGenerate.Click += new System.EventHandler(this.cmdGenerate_Click);
+            // 
+            // txtChipherKeyMultiple
+            // 
+            this.txtChipherKeyMultiple.Location = new System.Drawing.Point(366, 16);
+            this.txtChipherKeyMultiple.Name = "txtChipherKeyMultiple";
+            this.txtChipherKeyMultiple.Size = new System.Drawing.Size(132, 20);
+            this.txtChipherKeyMultiple.TabIndex = 39;
+            this.txtChipherKeyMultiple.Text = "peste";
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(268, 20);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(98, 13);
+            this.label60.TabIndex = 557;
+            this.label60.Text = "Clé de chiffrement :";
+            // 
+            // lblAddGroup
+            // 
+            this.lblAddGroup.AutoSize = true;
+            this.lblAddGroup.Location = new System.Drawing.Point(233, 19);
+            this.lblAddGroup.Name = "lblAddGroup";
+            this.lblAddGroup.Size = new System.Drawing.Size(29, 13);
+            this.lblAddGroup.TabIndex = 38;
+            this.lblAddGroup.TabStop = true;
+            this.lblAddGroup.Text = "New";
+            this.lblAddGroup.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblAddGroup.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblAddGroup_LinkClicked);
+            // 
+            // cboGroupe
+            // 
+            this.cboGroupe.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboGroupe.DropDownWidth = 109;
+            this.cboGroupe.FormattingEnabled = true;
+            this.cboGroupe.Location = new System.Drawing.Point(99, 15);
+            this.cboGroupe.Name = "cboGroupe";
+            this.cboGroupe.Size = new System.Drawing.Size(132, 21);
+            this.cboGroupe.TabIndex = 37;
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(5, 19);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(98, 13);
+            this.label59.TabIndex = 556;
+            this.label59.Text = "Groupe utilisateur : ";
+            // 
+            // cmdView
+            // 
+            this.cmdView.BackColor = System.Drawing.Color.LavenderBlush;
+            this.cmdView.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdView.ForeColor = System.Drawing.Color.Maroon;
+            this.cmdView.Location = new System.Drawing.Point(921, 30);
+            this.cmdView.Name = "cmdView";
+            this.cmdView.Size = new System.Drawing.Size(82, 24);
+            this.cmdView.TabIndex = 36;
+            this.cmdView.Text = "Af&ficher";
+            this.cmdView.UseVisualStyleBackColor = false;
+            this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
+            // 
+            // gpFile
+            // 
+            this.gpFile.Controls.Add(this.cmdLoadFile);
+            this.gpFile.Controls.Add(this.txtFile);
+            this.gpFile.Location = new System.Drawing.Point(236, 12);
+            this.gpFile.Name = "gpFile";
+            this.gpFile.Size = new System.Drawing.Size(677, 51);
+            this.gpFile.TabIndex = 1;
+            this.gpFile.TabStop = false;
+            this.gpFile.Text = "Charger un fichier texte";
+            // 
+            // cmdLoadFile
+            // 
+            this.cmdLoadFile.BackColor = System.Drawing.Color.Snow;
+            this.cmdLoadFile.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cmdLoadFile.ForeColor = System.Drawing.Color.DarkGreen;
+            this.cmdLoadFile.Location = new System.Drawing.Point(587, 18);
+            this.cmdLoadFile.Name = "cmdLoadFile";
+            this.cmdLoadFile.Size = new System.Drawing.Size(82, 23);
+            this.cmdLoadFile.TabIndex = 35;
+            this.cmdLoadFile.Text = "C&harger........";
+            this.cmdLoadFile.UseVisualStyleBackColor = false;
+            this.cmdLoadFile.Click += new System.EventHandler(this.cmdLoadFile_Click);
+            // 
+            // txtFile
+            // 
+            this.txtFile.Location = new System.Drawing.Point(6, 20);
+            this.txtFile.Name = "txtFile";
+            this.txtFile.Size = new System.Drawing.Size(575, 20);
+            this.txtFile.TabIndex = 34;
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.rdFile);
+            this.groupBox5.Controls.Add(this.rdBD);
+            this.groupBox5.Location = new System.Drawing.Point(6, 12);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(224, 51);
+            this.groupBox5.TabIndex = 0;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Choix de la source des données";
+            // 
+            // rdFile
+            // 
+            this.rdFile.AutoSize = true;
+            this.rdFile.Location = new System.Drawing.Point(129, 20);
+            this.rdFile.Name = "rdFile";
+            this.rdFile.Size = new System.Drawing.Size(86, 17);
+            this.rdFile.TabIndex = 33;
+            this.rdFile.TabStop = true;
+            this.rdFile.Text = "Fichier Texte";
+            this.rdFile.UseVisualStyleBackColor = true;
+            this.rdFile.CheckedChanged += new System.EventHandler(this.rdFile_CheckedChanged);
+            // 
+            // rdBD
+            // 
+            this.rdBD.AutoSize = true;
+            this.rdBD.Location = new System.Drawing.Point(6, 20);
+            this.rdBD.Name = "rdBD";
+            this.rdBD.Size = new System.Drawing.Size(108, 17);
+            this.rdBD.TabIndex = 32;
+            this.rdBD.TabStop = true;
+            this.rdBD.Text = "Base de données";
+            this.rdBD.UseVisualStyleBackColor = true;
+            this.rdBD.CheckedChanged += new System.EventHandler(this.rdBD_CheckedChanged);
+            // 
+            // colid5
+            // 
+            this.colid5.DataPropertyName = "id";
+            this.colid5.HeaderText = "Code";
+            this.colid5.Name = "colid5";
+            // 
+            // colusername5
+            // 
+            this.colusername5.DataPropertyName = "username";
+            this.colusername5.HeaderText = "Nom d\'utilisateur";
+            this.colusername5.Name = "colusername5";
+            this.colusername5.Width = 170;
+            // 
+            // colgroupname5
+            // 
+            this.colgroupname5.DataPropertyName = "groupname";
+            this.colgroupname5.HeaderText = "Groupe utilisateur";
+            this.colgroupname5.Name = "colgroupname5";
+            this.colgroupname5.Width = 130;
+            // 
+            // colattribute5
+            // 
+            this.colattribute5.DataPropertyName = "attribute";
+            this.colattribute5.HeaderText = "Attribut";
+            this.colattribute5.Name = "colattribute5";
+            this.colattribute5.Width = 125;
+            // 
+            // colop5
+            // 
+            this.colop5.DataPropertyName = "op";
+            this.colop5.HeaderText = "Option user";
+            this.colop5.Name = "colop5";
+            this.colop5.Width = 150;
+            // 
+            // colvalue5
+            // 
+            this.colvalue5.DataPropertyName = "value";
+            this.colvalue5.HeaderText = "Mot de passe";
+            this.colvalue5.Name = "colvalue5";
+            this.colvalue5.Width = 170;
+            // 
+            // colPriority5
+            // 
+            this.colPriority5.DataPropertyName = "priority";
+            this.colPriority5.HeaderText = "Priorité user";
+            this.colPriority5.Name = "colPriority5";
+            this.colPriority5.Width = 125;
+            // 
+            // colNbrRecord
+            // 
+            this.colNbrRecord.DataPropertyName = "nbr_enreg";
+            this.colNbrRecord.HeaderText = "Nbr. Enregistrement";
+            this.colNbrRecord.Name = "colNbrRecord";
+            this.colNbrRecord.Visible = false;
             // 
             // frmDataViewEtudiant
             // 
@@ -2686,14 +2686,14 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvPostAuth)).EndInit();
             this.tblUsersMultiple.ResumeLayout(false);
             this.gpReply.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
-            this.gpFile.ResumeLayout(false);
-            this.gpFile.PerformLayout();
+            this.groupBox8.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvUserMulti)).EndInit();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
-            this.groupBox8.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.gpFile.ResumeLayout(false);
+            this.gpFile.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -2913,16 +2913,7 @@
         private System.Windows.Forms.ComboBox cboGroupe;
         private System.Windows.Forms.Label label59;
         private System.Windows.Forms.GroupBox groupBox8;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn5;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
+        private System.Windows.Forms.DataGridView dgvUserMulti;
         private System.Windows.Forms.TextBox txtChipherKeyMultiple;
         private System.Windows.Forms.Label label60;
         private System.Windows.Forms.Button cmdSave;
@@ -2930,5 +2921,13 @@
         private System.Windows.Forms.Button cmdExport;
         private System.Windows.Forms.Label lblRecord;
         private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colusername5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colgroupname5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colattribute5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colop5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colvalue5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colPriority5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNbrRecord;
     }
 }

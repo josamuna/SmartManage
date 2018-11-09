@@ -574,8 +574,8 @@ namespace smartManage.Desktop
                     tStopWaitCursor.Abort();
                     tStopWaitCursor = null;
 
-                    tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
-                    tStopWaitCursor.Start();
+                        tStopWaitCursor = new Thread(new ThreadStart(ExecuteDefaultCursor));
+                        tStopWaitCursor.Start();
                 }
             }
             catch { }
