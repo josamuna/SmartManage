@@ -251,6 +251,13 @@ namespace smartManage.Desktop
                         dgvPostAuth.DataSource = bdsrc_postauth;
                         break;
                 }
+
+                //Here we sotp waitCursor if there are not records in BindinSource
+                if (bdsrc_nas.Count == 0 || bdsrc_nas.Count == 0 || bdsrc_user.Count == 0 
+                    || bdsrc_accounting.Count == 0 || bdsrc_postauth.Count == 0)
+                {
+                    ExecuteThreadStopWaitCursor();
+                }
             }
             catch (Exception ex)
             {

@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tblMain = new System.Windows.Forms.TabControl();
             this.tblLogin = new System.Windows.Forms.TabPage();
             this.gpLogin = new System.Windows.Forms.GroupBox();
@@ -340,7 +340,6 @@
             this.txtChipherKey.PasswordChar = '*';
             this.txtChipherKey.Size = new System.Drawing.Size(170, 20);
             this.txtChipherKey.TabIndex = 1;
-            this.txtChipherKey.Text = "s";
             this.txtChipherKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtChipherKey_KeyDown);
             // 
             // label3
@@ -429,14 +428,14 @@
             this.colCommunity,
             this.colDescription,
             this.colNombre_enregistrement1});
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvNAS.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvNAS.DefaultCellStyle = dataGridViewCellStyle16;
             this.dgvNAS.Location = new System.Drawing.Point(3, 19);
             this.dgvNAS.MultiSelect = false;
             this.dgvNAS.Name = "dgvNAS";
@@ -740,6 +739,7 @@
             // 
             this.txtChipherStudent.Location = new System.Drawing.Point(732, 13);
             this.txtChipherStudent.Name = "txtChipherStudent";
+            this.txtChipherStudent.PasswordChar = '*';
             this.txtChipherStudent.Size = new System.Drawing.Size(65, 20);
             this.txtChipherStudent.TabIndex = 17;
             // 
@@ -1074,14 +1074,14 @@
             this.colGroupe,
             this.colPriority,
             this.colNombre_enregistrement2});
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUser.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUser.DefaultCellStyle = dataGridViewCellStyle17;
             this.dgvUser.Location = new System.Drawing.Point(3, 19);
             this.dgvUser.MultiSelect = false;
             this.dgvUser.Name = "dgvUser";
@@ -1404,14 +1404,14 @@
             this.colAcctstopdelay,
             this.colXascendsessionsvrunique,
             this.colNombre_enregistrement3});
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAccounting.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle18.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAccounting.DefaultCellStyle = dataGridViewCellStyle18;
             this.dgvAccounting.Location = new System.Drawing.Point(3, 19);
             this.dgvAccounting.MultiSelect = false;
             this.dgvAccounting.Name = "dgvAccounting";
@@ -2157,14 +2157,14 @@
             this.colReply,
             this.colAuthdate,
             this.colNombre_enregistrement4});
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPostAuth.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPostAuth.DefaultCellStyle = dataGridViewCellStyle19;
             this.dgvPostAuth.Location = new System.Drawing.Point(3, 19);
             this.dgvPostAuth.MultiSelect = false;
             this.dgvPostAuth.Name = "dgvPostAuth";
@@ -2364,14 +2364,14 @@
             this.colvalue5,
             this.colPriority5,
             this.colNbrRecord});
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUserMulti.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUserMulti.DefaultCellStyle = dataGridViewCellStyle20;
             this.dgvUserMulti.Location = new System.Drawing.Point(3, 19);
             this.dgvUserMulti.MultiSelect = false;
             this.dgvUserMulti.Name = "dgvUserMulti";
@@ -2466,9 +2466,9 @@
             // 
             this.txtChipherKeyMultiple.Location = new System.Drawing.Point(366, 16);
             this.txtChipherKeyMultiple.Name = "txtChipherKeyMultiple";
+            this.txtChipherKeyMultiple.PasswordChar = '*';
             this.txtChipherKeyMultiple.Size = new System.Drawing.Size(132, 20);
             this.txtChipherKeyMultiple.TabIndex = 39;
-            this.txtChipherKeyMultiple.Text = "peste";
             // 
             // label60
             // 

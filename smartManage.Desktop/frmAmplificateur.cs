@@ -179,6 +179,12 @@ namespace smartManage.Desktop
                 Principal.SetDataSource(bdsrc);
 
                 dgv.DataSource = bdsrc;
+
+                //Here we sotp waitCursor if there are not records in BindinSource
+                if (bdsrc.Count == 0)
+                {
+                    ExecuteThreadStopWaitCursor();
+                }
             }
             catch (Exception ex)
             {

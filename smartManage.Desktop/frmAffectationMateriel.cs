@@ -127,8 +127,12 @@ namespace smartManage.Desktop
 
                 dgv.DataSource = bdsrc;
 
-                if (dgv.RowCount == 0)
+                //Here we sotp waitCursor if there are not records in BindinSource
+                if (bdsrc.Count == 0)
+                {
+                    ExecuteThreadStopWaitCursor();
                     MessageBox.Show("Il n'ya rien à afficher !!!", "Chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }                    
             }
             catch (Exception ex)
             {
