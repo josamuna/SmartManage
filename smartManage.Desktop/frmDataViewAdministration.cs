@@ -1,10 +1,12 @@
 ﻿using ManageUtilities;
 using smartManage.RadiusAdminModel;
-using smartManage.Tools;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -13,13 +15,6 @@ namespace smartManage.Desktop
 {
     public partial class frmDataViewAdministration : Form, ICallMainForm, ICRUDGeneral
     {
-        //Repertoire pour le Log
-        private const string MasterDirectory = "SmartManage";
-        //Nom du repertoire qui contiendra la chaine de connexion a la BD
-        private const string DirectoryUtilConn = "ConnectionStringRaduis";
-        //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Adminitration
-        private const string FileRadAdmin = "UserRadAdmin.txt";
-
         clsConnexion1 connection = new clsConnexion1();
 
         //Object des classes
@@ -55,9 +50,14 @@ namespace smartManage.Desktop
         Thread tLoadDataGrid = null;
         Thread tStopWaitCursor = null;
 
+        ResourceManager stringManager = null;
+
         public frmDataViewAdministration()
         {
             InitializeComponent();
+            //Initialisation des Resources
+            Assembly _assembly = Assembly.Load("ResourcesData");
+            stringManager = new ResourceManager("ResourcesData.Resource", _assembly);
         }
 
         public frmPrincipal Principal
@@ -129,7 +129,7 @@ namespace smartManage.Desktop
             SetBindingControls(cboOpUser, "SelectedValue", bdsrc_user, "op");
             SetBindingControls(txtPasswordUser, "Text", bdsrc_user, "value");
             SetBindingControls(lblNbrRecordUser, "Text", bdsrc_user, "nbr_enreg");
-            SetBindingControls(txtPriorityUser, "Text", bdsrc_user, "priority"); 
+            SetBindingControls(txtPriorityUser, "Text", bdsrc_user, "priority");
             SetBindingControls(cboGroupeUser, "SelectedValue", bdsrc_user, "groupname");
         }
         #endregion
@@ -191,9 +191,17 @@ namespace smartManage.Desktop
 
                 this.Invoke(loadDt, "tLoadDataGrid");
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(string.Format("Erreur lors du chargement de la zone d'affichage, {0}", ex.Message), "Chargement zone d'affichage", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -253,15 +261,23 @@ namespace smartManage.Desktop
                 }
 
                 //Here we sotp waitCursor if there are not records in BindinSource
-                if (bdsrc_nas.Count == 0 || bdsrc_nas.Count == 0 || bdsrc_user.Count == 0 
+                if (bdsrc_nas.Count == 0 || bdsrc_nas.Count == 0 || bdsrc_user.Count == 0
                     || bdsrc_accounting.Count == 0 || bdsrc_postauth.Count == 0)
                 {
                     ExecuteThreadStopWaitCursor();
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(string.Format("Erreur lors du chargement de la zone d'affichage, {0}", ex.Message), "Chargement zone d'affichage", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -283,11 +299,11 @@ namespace smartManage.Desktop
 
         private void ExecuteThreadStopWaitCursor()
         {
-                tempsStopWaitCursor.Enabled = true;
-                tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
+            tempsStopWaitCursor.Enabled = true;
+            tempsStopWaitCursor.Elapsed += TempsStopWaitCursor_Elapsed;
             try
             {
-                
+
 
                 if (tStopWaitCursor == null)
                 {
@@ -321,9 +337,16 @@ namespace smartManage.Desktop
 
                     try
                     {
-                        clsTools.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, -1, -1);
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
                     }
-                    catch { }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+                    }
                 }
             }
         }
@@ -455,7 +478,7 @@ namespace smartManage.Desktop
                     MySql.Data.MySqlClient.MySqlConnection con = new MySql.Data.MySqlClient.MySqlConnection();
                     List<string> paramServeur = new List<string>();
 
-                    paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadAdmin, '\n', txtChipherKey.Text, true);
+                    paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileRadAdmin, '\n', txtChipherKey.Text, true);
 
                     if (paramServeur.Count > 0)
                     {
@@ -471,7 +494,7 @@ namespace smartManage.Desktop
                     if (clsMetier1.GetInstance().isConnect())
                     {
                         this.ActivateTabs(true);
-                        MessageBox.Show("Connexion réussie", "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Connexion réussie", "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
                         txtPwdBd.Clear();
                         txtChipherKey.Clear();
@@ -484,7 +507,7 @@ namespace smartManage.Desktop
             catch (Exception ex)
             {
                 txtPwdBd.Focus();
-                MessageBox.Show(string.Format("Echec de l'authentification de l'utilisateur, {0}", ex.Message), "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de l'authentification de l'utilisateur, {0}", ex.Message), "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -557,16 +580,30 @@ namespace smartManage.Desktop
                         txtCodeUser.Text = newID_user.ToString();
                         break;
                     case 3:
-                        MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                     case 4:
-                        MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                 }
             }
-            catch (Exception)
+            catch (ArgumentException ex)
             {
                 Principal.ActivateOnNewCommandButtons(false);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors de la création d'un nouvel enregistrement : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (NullReferenceException ex)
+            {
+                Principal.ActivateOnNewCommandButtons(false);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors de la création d'un nouvel enregistrement : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin); 
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                Principal.ActivateOnNewCommandButtons(false);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors de la création d'un nouvel enregistrement : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -577,68 +614,90 @@ namespace smartManage.Desktop
                 switch (tblMain.SelectedIndex)
                 {
                     case 1:
-                        if (string.IsNullOrEmpty(criteria))
-                        {
-                            this.RefreshRec();
+                        if (dgvNAS.RowCount == 0)
                             return;
-                        }
                         else
                         {
-                            List<clsnas> lstItemSearch = new List<clsnas>();
-                            lstItemSearch = clsMetier1.GetInstance().getAllClsnas(criteria);
+                            if (string.IsNullOrEmpty(criteria))
+                            {
+                                this.RefreshRec();
+                                return;
+                            }
+                            else
+                            {
+                                List<clsnas> lstItemSearch = new List<clsnas>();
+                                lstItemSearch = clsMetier1.GetInstance().getAllClsnas(criteria);
 
-                            dgvNAS.DataSource = lstItemSearch;
+                                dgvNAS.DataSource = lstItemSearch;
+                            }
                         }
                         break;
                     case 2:
-                        if (string.IsNullOrEmpty(criteria))
-                        {
-                            this.RefreshRec();
+                        if (dgvUser.RowCount == 0)
                             return;
-                        }
                         else
                         {
-                            //List<clsradcheck> lstItemSearch = new List<clsradcheck>();
-                            //lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck(criteria);
-                            DataTable lstItemSearch = new DataTable();
-                            lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
+                            if (string.IsNullOrEmpty(criteria))
+                            {
+                                this.RefreshRec();
+                                return;
+                            }
+                            else
+                            {
+                                //List<clsradcheck> lstItemSearch = new List<clsradcheck>();
+                                //lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck(criteria);
+                                DataTable lstItemSearch = new DataTable();
+                                lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
 
-                            dgvUser.DataSource = lstItemSearch;
+                                dgvUser.DataSource = lstItemSearch;
+                            }
                         }
                         break;
                     case 3:
-                        if (string.IsNullOrEmpty(criteria))
-                        {
-                            this.RefreshRec();
+                        if (dgvAccounting.RowCount == 0)
                             return;
-                        }
                         else
                         {
-                            List<clsradacct> lstItemSearch = new List<clsradacct>();
-                            lstItemSearch = clsMetier1.GetInstance().getAllClsradacct(criteria);
+                            if (string.IsNullOrEmpty(criteria))
+                            {
+                                this.RefreshRec();
+                                return;
+                            }
+                            else
+                            {
+                                List<clsradacct> lstItemSearch = new List<clsradacct>();
+                                lstItemSearch = clsMetier1.GetInstance().getAllClsradacct(criteria);
 
-                            dgvAccounting.DataSource = lstItemSearch;
+                                dgvAccounting.DataSource = lstItemSearch;
+                            }
                         }
                         break;
                     case 4:
-                        if (string.IsNullOrEmpty(criteria))
-                        {
-                            this.RefreshRec();
+                        if (dgvPostAuth.RowCount == 0)
                             return;
-                        }
                         else
                         {
-                            List<clsradpostauth> lstItemSearch = new List<clsradpostauth>();
-                            lstItemSearch = clsMetier1.GetInstance().getAllClsradpostauth(criteria);
+                            if (string.IsNullOrEmpty(criteria))
+                            {
+                                this.RefreshRec();
+                                return;
+                            }
+                            else
+                            {
+                                List<clsradpostauth> lstItemSearch = new List<clsradpostauth>();
+                                lstItemSearch = clsMetier1.GetInstance().getAllClsradpostauth(criteria);
 
-                            dgvPostAuth.DataSource = lstItemSearch;
+                                dgvPostAuth.DataSource = lstItemSearch;
+                            }
                         }
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (System.Data.SqlClient.SqlException ex)
             {
-                MessageBox.Show("Erreur lors de la recherche, " + ex.Message, "Recherche élément", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedSearchMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSearchCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la recherche : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -653,7 +712,10 @@ namespace smartManage.Desktop
                         if (!blnModifie_nas)
                         {
                             int record = nas.inserts();
-                            MessageBox.Show("Enregistrement éffectué : " + record + " Affecté", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (record == 0)
+                                throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                            else
+                                MessageBox.Show(stringManager.GetString("StringSuccessSaveMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessSaveCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         else
                         {
@@ -665,7 +727,10 @@ namespace smartManage.Desktop
                         if (!blnModifie_user)
                         {
                             int record = radcheck.inserts();
-                            MessageBox.Show("Enregistrement éffectué : " + record + " Affecté", "Enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            if (record == 0)
+                                throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                            else
+                                MessageBox.Show(stringManager.GetString("StringSuccessSaveMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessSaveCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         else
                         {
@@ -674,18 +739,34 @@ namespace smartManage.Desktop
                         newID_user = null;
                         break;
                     case 3:
-                        MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                     case 4:
-                        MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                 }
 
                 RefreshData();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show("Echec de la mise à jour, " + ex.Message, "Mise à jour", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedSaveUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (CustomException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedSaveUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -695,17 +776,17 @@ namespace smartManage.Desktop
             {
                 case 1:
                     int record1 = nas.update(((clsnas)bdsrc_nas.Current));
-                    MessageBox.Show("Modification éffectuée : " + record1 + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Modification éffectuée : " + record1 + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     break;
                 case 2:
                     int record2 = radcheck.update(((DataRowView)bdsrc_user.Current));
-                    MessageBox.Show("Modification éffectuée : " + record2 + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Modification éffectuée : " + record2 + " Modifié", "Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     break;
                 case 3:
-                    MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     break;
                 case 4:
-                    MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     break;
             }
         }
@@ -714,7 +795,7 @@ namespace smartManage.Desktop
         {
             try
             {
-                DialogResult dr = MessageBox.Show("Voulez-vous supprimer cet enrgistrement ?", "Suppression enregistrement", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult dr = MessageBox.Show(stringManager.GetString("StringPromptDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringPromptDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
                 switch (tblMain.SelectedIndex)
                 {
@@ -726,11 +807,13 @@ namespace smartManage.Desktop
                             if (dr == DialogResult.Yes)
                             {
                                 record = nas.delete(((clsnas)bdsrc_nas.Current));
-                                MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                newID_nas = null;
+                                if (record == 0)
+                                    throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                                else
+                                    MessageBox.Show(stringManager.GetString("StringSuccessDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly); newID_nas = null;
                             }
                             else
-                                MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show(stringManager.GetString("StringCancelDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringCancelDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         break;
                     case 2:
@@ -741,11 +824,13 @@ namespace smartManage.Desktop
                             if (dr == DialogResult.Yes)
                             {
                                 record = radcheck.delete(((DataRowView)bdsrc_user.Current));
-                                MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                                newID_user = null;
+                                if (record == 0)
+                                    throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                                else
+                                    MessageBox.Show(stringManager.GetString("StringSuccessDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly); newID_user = null;
                             }
                             else
-                                MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show(stringManager.GetString("StringCancelDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringCancelDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         break;
                     case 3:
@@ -755,14 +840,17 @@ namespace smartManage.Desktop
 
                             if (dr == DialogResult.Yes)
                             {
-                                if(chkDeleteAllAccounting.Checked)
+                                if (chkDeleteAllAccounting.Checked)
                                     record = accounting.delete_all();
                                 else
                                     record = accounting.delete(((clsradacct)bdsrc_accounting.Current));
-                                MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (record == 0)
+                                    throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                                else
+                                    MessageBox.Show(stringManager.GetString("StringSuccessDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                             }
                             else
-                                MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show(stringManager.GetString("StringCancelDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringCancelDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         chkDeleteAllAccounting.Checked = false;
                         break;
@@ -777,10 +865,13 @@ namespace smartManage.Desktop
                                     record = postauth.delete_all();
                                 else
                                     record = postauth.delete(((clsradpostauth)bdsrc_postauth.Current));
-                                MessageBox.Show("Suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (record == 0)
+                                    throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                                else
+                                    MessageBox.Show(stringManager.GetString("StringSuccessDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                             }
                             else
-                                MessageBox.Show("Aucune suppression éffectuée : " + record + " Supprimé", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                MessageBox.Show(stringManager.GetString("StringCancelDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringCancelDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         }
                         chkDeleteAllPostAuth.Checked = false;
                         break;
@@ -788,9 +879,25 @@ namespace smartManage.Desktop
 
                 RefreshData();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show("Echec de la suppression, " + ex.Message, "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la suppression : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (CustomException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la suppression  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedDeleteMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedDeleteCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la suppression : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -800,20 +907,28 @@ namespace smartManage.Desktop
             {
                 RefreshData();
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show("Erreur lors de l'actualisation, " + ex.Message, "Actualisation des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedRefreshMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedRefreshCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors de l'actualisation : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedRefreshMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedRefreshCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors de l'actualisation : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
         public void Preview()
         {
-            MessageBox.Show("The Reports has not been set, please ask the Administrator", "Reports", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("The Reports has not been set, please ask the Administrator", "Reports", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
 
         private void tblMain_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(tblMain.SelectedIndex != 0)
+            if (tblMain.SelectedIndex != 0)
             {
                 RefreshData();
             }
@@ -827,11 +942,14 @@ namespace smartManage.Desktop
                 blnModifie_nas = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 blnModifie_nas = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
-                MessageBox.Show(string.Format("Erreur lors de la sélection d'un enregistrement, {0}", ex.Message), "Sélection enegistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show(stringManager.GetString("StringFailedSelectRecordDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectRecordDtgvCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélection dans le DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -843,16 +961,19 @@ namespace smartManage.Desktop
                 blnModifie_user = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
 
-                if(chkSMS.Checked)
+                if (chkSMS.Checked)
                 {
                     txtMsgSend.Text = string.Format("Votre login pour accès au réseau de l'ISIG \nUsername:{0} \net mot de passe:{1}", txtNomUser.Text, txtPasswordUser.Text);
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 blnModifie_user = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
-                MessageBox.Show(string.Format("Erreur lors de la sélection d'un enregistrement, {0}", ex.Message), "Sélection enegistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show(stringManager.GetString("StringFailedSelectRecordDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectRecordDtgvCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélection dans le DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -864,11 +985,14 @@ namespace smartManage.Desktop
                 blnModifie_accounting = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons1(true);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 blnModifie_accounting = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
-                MessageBox.Show(string.Format("Erreur lors de la sélection d'un enregistrement, {0}", ex.Message), "Sélection enegistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show(stringManager.GetString("StringFailedSelectRecordDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectRecordDtgvCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélection dans le DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -880,11 +1004,14 @@ namespace smartManage.Desktop
                 blnModifie_postauth = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons1(true);
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
                 blnModifie_postauth = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
-                MessageBox.Show(string.Format("Erreur lors de la sélection d'un enregistrement, {0}", ex.Message), "Sélection enegistrement", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+
+                MessageBox.Show(stringManager.GetString("StringFailedSelectRecordDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectRecordDtgvCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélection dans le DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -910,20 +1037,28 @@ namespace smartManage.Desktop
             //Actualisation des combobox si modification
             try
             {
-                if (!string.IsNullOrEmpty(smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm))
+                if (!string.IsNullOrEmpty(Properties.Settings.Default.strFormModifieSubForm))
                 {
-                    if (smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm.Equals(FormActualisation.frmGroupUserAdmin.ToString()))
+                    if (Properties.Settings.Default.strFormModifieSubForm.Equals(FormActualisation.frmGroupUserAdmin.ToString()))
                     {
                         cboGroupeUser.DataSource = clsMetier1.GetInstance().getAllClsradgroupcheck_dt();
                         this.setMembersallcbo(cboGroupeUser, "groupname", "groupname");
                     }
                 }
 
-                smartManage.Desktop.Properties.Settings.Default.strFormModifieSubForm = "";
+                Properties.Settings.Default.strFormModifieSubForm = "";
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(string.Format("Echec d'actualisation de la liste déroulante, {0}", ex.Message), "Actualisation liste déroulante", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(stringManager.GetString("StringFailedRefreshLoadComboMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedRefreshLoadComboCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec d'actualisation de la liste déroulante : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedRefreshLoadComboMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedRefreshLoadComboCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec d'actualisation de la liste déroulante : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusAdmin);
             }
         }
 
@@ -956,7 +1091,7 @@ namespace smartManage.Desktop
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(string.Format("Echec de chargement des destinataires, {0}", ex.Message), "Chargement destinataires", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show(string.Format("Echec de chargement des destinataires, {0}", ex.Message), "Chargement destinataires", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 }
             }
             else
@@ -974,11 +1109,11 @@ namespace smartManage.Desktop
 
                 cmdDisconnect.Enabled = false;
                 cmdConnect.Enabled = true;
-                MessageBox.Show("Port du Modem déconnecté", "Déconnexion", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Port du Modem déconnecté", "Déconnexion", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de la déconnexion, {0}", ex.Message), "Déconnexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de la déconnexion, {0}", ex.Message), "Déconnexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -991,11 +1126,11 @@ namespace smartManage.Desktop
                 cmdConnect.Enabled = false;
                 cmdDisconnect.Enabled = true;
 
-                MessageBox.Show("Connexion réussie", "Connexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Connexion réussie", "Connexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de la connexion, {0}", ex.Message), "Connexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de la connexion, {0}", ex.Message), "Connexion Modem", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -1005,17 +1140,17 @@ namespace smartManage.Desktop
 
             try
             {
-                if(txtDestinataire.Text.Split(';').Length > 1)
+                if (txtDestinataire.Text.Split(';').Length > 1)
                     //Envoie multiple
                     clsMetier1.GetInstance().SendManySMS(txtMsgSend.Text, txtDestinataire.Text);
                 else
                     clsMetier1.GetInstance().SendOneSMS(txtMsgSend.Text, txtDestinataire.Text);
 
-                MessageBox.Show("Message envoyé", "Envoie SMS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Message envoyé", "Envoie SMS", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             catch (Exception)
             {
-                MessageBox.Show("Echec de l'envoie du SMS", "Envoie SMS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Echec de l'envoie du SMS", "Envoie SMS", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -1025,7 +1160,7 @@ namespace smartManage.Desktop
             {
                 StringBuilder sb = new StringBuilder();
                 sb.Append(txtDestinataire.Text);
-                if(string.IsNullOrEmpty(txtDestinataire.Text))
+                if (string.IsNullOrEmpty(txtDestinataire.Text))
                 {
                     sb.Append(lstPersonneTel.SelectedItem.ToString().Split('>')[1]);
                 }
@@ -1037,9 +1172,9 @@ namespace smartManage.Desktop
 
                 txtDestinataire.Text = sb.ToString();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de sélection, {0}", ex.Message), "Sélection destinataire", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de sélection, {0}", ex.Message), "Sélection destinataire", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -1049,9 +1184,9 @@ namespace smartManage.Desktop
             {
                 txtPasswordUser.Text = clsMetier1.GetInstance().GeneratePassword(txtNomUser.Text);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de génération du mot de passe, {0}", ex.Message), "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de génération du mot de passe, {0}", ex.Message), "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
     }

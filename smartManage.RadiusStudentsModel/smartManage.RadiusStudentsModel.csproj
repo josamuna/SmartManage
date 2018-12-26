@@ -11,6 +11,7 @@
     <AssemblyName>smartManage.RadiusStudentsModel</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,25 +30,32 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>smartManage.RadiusStudentsModelKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GSMCommunication">
-      <HintPath>..\smartManage.Desktop\Libraries\GSMCommunication.dll</HintPath>
+    <Reference Include="GSMCommunication, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SmartManage_2008\GestionMateriels\smartManage.Desktop\Libraries\Old_GSM\GSMCommunication.dll</HintPath>
     </Reference>
     <Reference Include="ManageUtilities">
-      <HintPath>..\smartManage.Desktop\Libraries\ManageUtilities.dll</HintPath>
+      <HintPath>..\..\..\CODES\ProjetUltraManage\ManageUtilities\bin\Release\ManageUtilities.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data">
       <HintPath>..\smartManage.Desktop\Libraries\MySql.Data.dll</HintPath>
     </Reference>
-    <Reference Include="PDUConverter">
-      <HintPath>..\smartManage.Desktop\Libraries\PDUConverter.dll</HintPath>
+    <Reference Include="PDUConverter, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>E:\SmartManage_2008\GestionMateriels\smartManage.Desktop\Libraries\Old_GSM\PDUConverter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -62,6 +70,7 @@
     <Compile Include="clsradpostauth.cs" />
     <Compile Include="clsradreply.cs" />
     <Compile Include="clsradusergroup.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -75,6 +84,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="smartManage.RadiusStudentsModelKey.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -9,9 +9,9 @@ using System.IO.Ports;
 
 namespace smartManage.RadiusAdminModel
 {
-    public class clsMetier1
+    public class clsMetier1: IDisposable
     {
-        const string DirectoryUtilLog = "Log"; //***Les variables globales***
+        //***Les variables globales***
         private static string _ConnectionString, _host, _db, _user, _pwd;
         private static clsMetier1 Fact;
         private MySqlConnection conn;
@@ -77,15 +77,17 @@ namespace smartManage.RadiusAdminModel
             try
             {
                 if (conn.State != ConnectionState.Open) conn.Open();
-                conn.Close();
             }
             catch (Exception exc)
             {
                 bl = false;
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat de la connexion à la BD sans paramètre : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusStudent.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat de la connexion à la BD sans paramètre : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + "LogFileRadiusStudent.txt");
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return bl;
         }
@@ -101,16 +103,18 @@ namespace smartManage.RadiusAdminModel
             try
             {
                 if (conn.State != ConnectionState.Open) conn.Open();
-                conn.Close();
             }
             catch (Exception exc)
             {
                 sch = string.Format("server={0}; database={1};id user={2}; pwd={3}", _host, _db, _user, _pwd);
                 bl = false;
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat connexion à la BD avec paramètre : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat connexion à la BD avec paramètre : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return bl;
         }
@@ -126,9 +130,8 @@ namespace smartManage.RadiusAdminModel
             }
             catch (Exception exc)
             {
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
         }
 
@@ -154,17 +157,17 @@ namespace smartManage.RadiusAdminModel
                         else
                             lastID = Convert.ToInt32(rd["lastID"].ToString()) + 1;
                     }
-
-                    rd.Dispose();
                 }
             }
             catch (Exception exc)
             {
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la modification de l'utilisateur : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
             finally
             {
-                conn.Close();
+                if (conn != null)
+                    conn.Close();
             }
             return lastID;
         }
@@ -179,7 +182,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM nas WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM nas WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -196,14 +201,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsnas;
         }
@@ -216,15 +223,18 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM nas  WHERE";
-                    sql += "  nasname LIKE '%" + criteria + "%'";
-                    sql += "  OR   shortname LIKE '%" + criteria + "%'";
-                    sql += "  OR   type LIKE '%" + criteria + "%'";
-                    sql += "  OR   secret LIKE '%" + criteria + "%'";
-                    sql += "  OR   server LIKE '%" + criteria + "%'";
-                    sql += "  OR   community LIKE '%" + criteria + "%'";
-                    sql += "  OR   description LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = @"SELECT *  FROM nas  WHERE nasname LIKE @criteria1 OR shortname LIKE @criteria2 OR
+                    type LIKE @criteria3 OR secret LIKE @criteria4 OR server LIKE @criteria5 OR community LIKE @criteria6
+                    OR description LIKE @criteria7";
+
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsnas varclsnas = null;
@@ -244,14 +254,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nas' avec la classe 'clsnas' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nas' avec la classe 'clsnas' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnas;
         }
@@ -267,7 +279,6 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("SELECT nas.*,(SELECT COUNT(id) FROM nas) AS nbr_enreg FROM nas ORDER BY nasname ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnas varclsnas = null;
                         while (dr.Read())
                         {
@@ -286,14 +297,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nas' avec la classe 'clsnas' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nas' avec la classe 'clsnas' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnas;
         }
@@ -324,15 +337,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsnas.Description != null) cmd.Parameters.Add(getParameter(cmd, "@description", DbType.String, 200, varclsnas.Description));
                     else cmd.Parameters.Add(getParameter(cmd, "@description", DbType.String, 200, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -364,15 +379,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@description", DbType.String, 200, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnas.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -388,15 +405,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM nas  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnas.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nas' avec la classe 'clsnas' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -411,7 +430,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radacct WHERE radacctid={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radacct WHERE radacctid=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -445,14 +466,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradacct;
         }
@@ -465,26 +488,29 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radacct  WHERE ";
-                    sql += "  acctsessionid LIKE '%" + criteria + "%'";
-                    sql += "  OR   acctuniqueid LIKE '%" + criteria + "%'";
-                    sql += "  OR   username LIKE '%" + criteria + "%'";
-                    sql += "  OR   groupname LIKE '%" + criteria + "%'";
-                    sql += "  OR   realm LIKE '%" + criteria + "%'";
-                    sql += "  OR   nasipaddress LIKE '%" + criteria + "%'";
-                    sql += "  OR   nasportid LIKE '%" + criteria + "%'";
-                    sql += "  OR   nasporttype LIKE '%" + criteria + "%'";
-                    sql += "  OR   acctauthentic LIKE '%" + criteria + "%'";
-                    sql += "  OR   connectinfo_start LIKE '%" + criteria + "%'";
-                    sql += "  OR   connectinfo_stop LIKE '%" + criteria + "%'";
-                    sql += "  OR   calledstationid LIKE '%" + criteria + "%'";
-                    sql += "  OR   callingstationid LIKE '%" + criteria + "%'";
-                    sql += "  OR   acctterminatecause LIKE '%" + criteria + "%'";
-                    sql += "  OR   servicetype LIKE '%" + criteria + "%'";
-                    sql += "  OR   framedprotocol LIKE '%" + criteria + "%'";
-                    sql += "  OR   framedipaddress LIKE '%" + criteria + "%'";
-                    sql += "  OR   xascendsessionsvrkey LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = @"SELECT *  FROM radacct  WHERE acctsessionid LIKE @criteria1 OR acctuniqueid LIKE @criteria2 OR username LIKE @criteria3 OR groupname LIKE @criteria4 OR realm LIKE @criteria5 
+                    OR nasipaddress LIKE @criteria6 OR nasportid LIKE @criteria7 OR nasporttype LIKE @criteria8 OR acctauthentic LIKE @criteria9 OR connectinfo_start LIKE @criteria10 OR connectinfo_stop LIKE @criteria11 
+                    OR calledstationid LIKE @criteria12 OR callingstationid LIKE @criteria13 OR acctterminatecause LIKE @criteria14 OR servicetype LIKE @criteria15 OR framedprotocol LIKE @criteria16 OR 
+                    framedipaddress LIKE @criteria17 OR xascendsessionsvrkey LIKE @criteria18";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria8", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria9", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria10", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria11", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria12", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria13", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria14", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria15", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria16", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria17", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria18", DbType.String, 50, criteria));
+                    
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradacct varclsradacct = null;
@@ -521,14 +547,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radacct' avec la classe 'clsradacct' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radacct' avec la classe 'clsradacct' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradacct;
         }
@@ -580,14 +608,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradacct;
         }
@@ -652,15 +682,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsradacct.Xascendsessionsvrkey != null) cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, varclsradacct.Xascendsessionsvrkey));
                     else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -726,15 +758,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@xascendsessionsvrkey", DbType.String, 10, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@radacctid", DbType.Int64, 8, varclsradacct.Radacctid));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -750,15 +784,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radacct  WHERE  1=1  AND radacctid=@radacctid ");
                     cmd.Parameters.Add(getParameter(cmd, "@radacctid", DbType.Int64, 8, varclsradacct.Radacctid));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -773,15 +809,17 @@ namespace smartManage.RadiusAdminModel
                 {
                     cmd.CommandText = string.Format("DELETE FROM radacct");
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radacct' avec la classe 'clsradacct' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -796,7 +834,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radcheck WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radcheck WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -809,14 +849,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradcheck;
         }
@@ -829,12 +871,12 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radcheck  WHERE";
-                    sql += "  username LIKE '%" + criteria + "%'";
-                    sql += "  OR   attribute LIKE '%" + criteria + "%'";
-                    sql += "  OR   op LIKE '%" + criteria + "%'";
-                    sql += "  OR   value LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "SELECT *  FROM radcheck  WHERE username LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradcheck varclsradcheck = null;
@@ -850,14 +892,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradcheck;
         }
@@ -888,14 +932,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradcheck;
         }
@@ -918,14 +964,16 @@ namespace smartManage.RadiusAdminModel
                         lstclsradcheck.Load(dr);
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradcheck;
         }
@@ -939,24 +987,32 @@ namespace smartManage.RadiusAdminModel
 
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format(@"SELECT radcheck.id,radcheck.username,radcheck.attribute,radcheck.op,radcheck.value,radusergroup.priority,(SELECT COUNT(radcheck.id) FROM radcheck) AS nbr_enreg,radgroupcheck.id AS id_gp,radusergroup.groupname FROM radcheck
+                    cmd.CommandText = @"SELECT radcheck.id,radcheck.username,radcheck.attribute,radcheck.op,radcheck.value,radusergroup.priority,(SELECT COUNT(radcheck.id) FROM radcheck) AS nbr_enreg,radgroupcheck.id AS id_gp,radusergroup.groupname FROM radcheck
                     INNER JOIN radusergroup ON radcheck.username = radusergroup.username
-                    INNER JOIN radgroupcheck ON radusergroup.groupname = radgroupcheck.groupname WHERE radcheck.username LIKE '%" + criteria + "%' OR radcheck.attribute LIKE '%" + criteria + "%' OR radcheck.op LIKE '%" + criteria + "%'" +
-                    " OR radcheck.value LIKE '%" + criteria + "%' OR radusergroup.priority LIKE '%" + criteria + "%' OR radgroupcheck.groupname LIKE '%" + criteria + "%' ORDER BY radcheck.username ASC");
+                    INNER JOIN radgroupcheck ON radusergroup.groupname = radgroupcheck.groupname WHERE radcheck.username LIKE @criteria1 OR radcheck.attribute LIKE @criteria2 OR radcheck.op LIKE @criteria3
+                    OR radcheck.value LIKE @criteria4 OR radusergroup.priority LIKE @criteria5 OR radgroupcheck.groupname LIKE @criteria6 ORDER BY radcheck.username ASC";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         lstclsradcheck.Load(dr);
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradcheck;
         }
@@ -999,7 +1055,6 @@ namespace smartManage.RadiusAdminModel
                     i = cmd1.ExecuteNonQuery();
 
                     transaction.Commit();
-                    conn.Close();
                     transaction.Dispose();
                 }
             }
@@ -1008,12 +1063,14 @@ namespace smartManage.RadiusAdminModel
                 if (transaction != null)
                 {
                     transaction.Rollback();
-                    conn.Close();
-                    transaction.Dispose();
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1037,15 +1094,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradcheck.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1061,15 +1120,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radcheck  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradcheck.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1115,8 +1176,6 @@ namespace smartManage.RadiusAdminModel
                     i = cmd1.ExecuteNonQuery();
 
                     transaction.Commit();
-                    conn.Close();
-                    transaction.Dispose();
                 }
             }
             catch (Exception exc)
@@ -1124,12 +1183,17 @@ namespace smartManage.RadiusAdminModel
                 if (transaction != null)
                 {
                     transaction.Rollback();
-                    conn.Close();
-                    transaction.Dispose();
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+
+                if (transaction != null)
+                    transaction.Dispose();
             }
             return i;
         }
@@ -1184,8 +1248,6 @@ namespace smartManage.RadiusAdminModel
                     i = cmd2.ExecuteNonQuery();
 
                     transaction.Commit();
-                    conn.Close();
-                    transaction.Dispose();
                 }
             }
             catch (Exception exc)
@@ -1193,12 +1255,17 @@ namespace smartManage.RadiusAdminModel
                 if (transaction != null)
                 {
                     transaction.Rollback();
-                    conn.Close();
-                    transaction.Dispose();
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+
+                if (transaction != null)
+                    transaction.Dispose();
             }
             return i;
         }
@@ -1231,8 +1298,6 @@ namespace smartManage.RadiusAdminModel
                     i = cmd1.ExecuteNonQuery();
 
                     transaction.Commit();
-                    conn.Close();
-                    transaction.Dispose();
                 }
             }
             catch (Exception exc)
@@ -1240,12 +1305,17 @@ namespace smartManage.RadiusAdminModel
                 if (transaction != null)
                 {
                     transaction.Rollback();
-                    conn.Close();
-                    transaction.Dispose();
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+
+                if (transaction != null)
+                    transaction.Dispose();
             }
             return i;
         }
@@ -1261,7 +1331,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radgroupcheck WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radgroupcheck WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -1274,14 +1346,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradgroupcheck;
         }
@@ -1294,12 +1368,13 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radgroupcheck  WHERE";
-                    sql += "  groupname LIKE '%" + criteria + "%'";
-                    sql += "  OR   attribute LIKE '%" + criteria + "%'";
-                    sql += "  OR   op LIKE '%" + criteria + "%'";
-                    sql += "  OR   value LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = @"SELECT *  FROM radgroupcheck  WHERE groupname LIKE @criteria1 OR attribute LIKE @criteria2
+                    OR op LIKE @criteria3 OR value LIKE @criteria4";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradgroupcheck varclsradgroupcheck = null;
@@ -1315,14 +1390,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradgroupcheck;
         }
@@ -1353,14 +1430,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradgroupcheck;
         }
@@ -1379,14 +1458,16 @@ namespace smartManage.RadiusAdminModel
                         lstclsradgroupcheck.Load(dr);
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradgroupcheck;
         }
@@ -1409,15 +1490,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsradgroupcheck.Value != null) cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradgroupcheck.Value));
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1441,15 +1524,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradgroupcheck.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1465,15 +1550,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radgroupcheck  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradgroupcheck.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radgroupcheck' avec la classe 'clsradgroupcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1488,7 +1575,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radgroupreply WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radgroupreply WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -1501,14 +1590,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradgroupreply;
         }
@@ -1521,12 +1612,12 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radgroupreply  WHERE";
-                    sql += "  groupname LIKE '%" + criteria + "%'";
-                    sql += "  OR   attribute LIKE '%" + criteria + "%'";
-                    sql += "  OR   op LIKE '%" + criteria + "%'";
-                    sql += "  OR   value LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "SELECT *  FROM radgroupreply  WHERE groupname LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradgroupreply varclsradgroupreply = null;
@@ -1542,14 +1633,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radgroupreply' avec la classe 'clsradgroupreply' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radgroupreply' avec la classe 'clsradgroupreply' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradgroupreply;
         }
@@ -1565,7 +1658,6 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("SELECT *  FROM radgroupreply ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsradgroupreply varclsradgroupreply = null;
                         while (dr.Read())
                         {
@@ -1579,14 +1671,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradgroupreply;
         }
@@ -1609,15 +1703,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsradgroupreply.Value != null) cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradgroupreply.Value));
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1641,15 +1737,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradgroupreply.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1665,15 +1763,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radgroupreply  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradgroupreply.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radgroupreply' avec la classe 'clsradgroupreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1688,7 +1788,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radpostauth WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radpostauth WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -1701,14 +1803,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradpostauth;
         }
@@ -1721,11 +1825,11 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radpostauth  WHERE";
-                    sql += "  username LIKE '%" + criteria + "%'";
-                    sql += "  OR   pass LIKE '%" + criteria + "%'";
-                    sql += "  OR   reply LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "SELECT *  FROM radpostauth  WHERE username LIKE @criteria1 OR pass LIKE @criteria2 OR reply LIKE @criteria3";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradpostauth varclsradpostauth = null;
@@ -1741,14 +1845,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radpostauth' avec la classe 'clsradpostauth' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radpostauth' avec la classe 'clsradpostauth' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradpostauth;
         }
@@ -1779,14 +1885,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradpostauth;
         }
@@ -1808,15 +1916,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@reply", DbType.String, 32, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@authdate", DbType.DateTime, 8, varclsradpostauth.Authdate));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1839,15 +1949,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.Parameters.Add(getParameter(cmd, "@authdate", DbType.DateTime, 8, varclsradpostauth.Authdate));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradpostauth.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1863,15 +1975,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radpostauth  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradpostauth.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1886,15 +2000,17 @@ namespace smartManage.RadiusAdminModel
                 {
                     cmd.CommandText = string.Format("DELETE FROM radpostauth");
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radpostauth' avec la classe 'clsradpostauth' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1909,7 +2025,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radreply WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radreply WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -1922,14 +2040,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradreply;
         }
@@ -1942,12 +2062,12 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radreply  WHERE";
-                    sql += "  username LIKE '%" + criteria + "%'";
-                    sql += "  OR   attribute LIKE '%" + criteria + "%'";
-                    sql += "  OR   op LIKE '%" + criteria + "%'";
-                    sql += "  OR   value LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "SELECT *  FROM radreply  WHERE username LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradreply varclsradreply = null;
@@ -1963,14 +2083,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radreply' avec la classe 'clsradreply' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radreply' avec la classe 'clsradreply' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradreply;
         }
@@ -2000,14 +2122,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radreply' avec la classe 'clsradreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radreply' avec la classe 'clsradreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradreply;
         }
@@ -2030,15 +2154,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsradreply.Value != null) cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, varclsradreply.Value));
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2062,15 +2188,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@value", DbType.String, 253, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradreply.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2086,15 +2214,17 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("DELETE FROM radreply  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsradreply.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radreply' avec la classe 'clsradreply' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2109,7 +2239,9 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM radusergroup WHERE ={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM radusergroup WHERE username=@username";
+                    cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 50, intid));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -2120,14 +2252,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsradusergroup;
         }
@@ -2140,10 +2274,10 @@ namespace smartManage.RadiusAdminModel
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM radusergroup  WHERE";
-                    sql += "  username LIKE '%" + criteria + "%'";
-                    sql += "  OR   groupname LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "SELECT *  FROM radusergroup  WHERE username LIKE @criteria1 OR groupname LIKE @criteria2";
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsradusergroup varclsradusergroup = null;
@@ -2157,14 +2291,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radusergroup' avec la classe 'clsradusergroup' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'radusergroup' avec la classe 'clsradusergroup' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradusergroup;
         }
@@ -2180,7 +2316,6 @@ namespace smartManage.RadiusAdminModel
                     cmd.CommandText = string.Format("SELECT radusergroup.*,(SELECT COUNT(username) FROM radusergroup) AS nbr_enreg FROM radusergroup ORDER BY username ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsradusergroup varclsradusergroup = null;
                         while (dr.Read())
                         {
@@ -2193,14 +2328,16 @@ namespace smartManage.RadiusAdminModel
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsradusergroup;
         }
@@ -2220,15 +2357,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@groupname", DbType.String, 64, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@priority", DbType.Int32, 4, varclsradusergroup.Priority));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2248,15 +2387,17 @@ namespace smartManage.RadiusAdminModel
                     else cmd.Parameters.Add(getParameter(cmd, "@groupname", DbType.String, 64, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@priority", DbType.Int32, 4, varclsradusergroup.Priority));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2273,15 +2414,17 @@ namespace smartManage.RadiusAdminModel
                     if (varclsradusergroup.Username != null) cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, varclsradusergroup.Username));
                     else cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 64, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFileRadiusAdmin.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'radusergroup' avec la classe 'clsradusergroup' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2458,6 +2601,21 @@ namespace smartManage.RadiusAdminModel
             catch (Exception)
             {
                 throw new Exception("Impossible de charger tous les ports series");
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                if (conn != null)
+                    conn.Close();
             }
         }
         #endregion

@@ -124,8 +124,8 @@
   <data name="default_QRCode" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\default_QRCode.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="report12" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="password_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\cle-mot-passe-icone-6615.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dataView1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\dataView.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -136,8 +136,8 @@
   <data name="img31" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\31.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="retro4" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\retro4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="verouiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\verrouillage-droits-securite-icone-7115.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -169,9 +169,6 @@
   <data name="materielInfo1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\materielInfo1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="user_business" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\user_business.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="modifier_bd" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\modifier-la-base-de-donnees-icone-4616-32.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -190,8 +187,8 @@
   <data name="report13" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\14.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Arrêter" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\Arrêter.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="routeur" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\routeur.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="report1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\report1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -211,14 +208,17 @@
   <data name="imprimante" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\imprimante-icone-6110.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="password_lock" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\cle-mot-passe-icone-6615.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="retro4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\retro4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="switch21" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\switch2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="routeur" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\routeur.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="user_business" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\user_business.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Search" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\Search.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,8 +226,11 @@
   <data name="personnes" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\personnes.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="verouiller" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\verrouillage-droits-securite-icone-7115.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Arrêter" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\Arrêter.ico;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="report12" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\12.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="dataView2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\dataView.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -238,7 +241,7 @@
   <data name="radius3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\radius3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="switch21" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Images\switch2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="logoisig1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\logoisig1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

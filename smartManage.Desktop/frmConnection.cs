@@ -5,6 +5,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace smartManage.Desktop
@@ -13,16 +16,8 @@ namespace smartManage.Desktop
     {
         clsConnexion connection = new clsConnexion();
 
-        //Repertoire pour le Log
-        private const string MasterDirectory = "SmartManage";
-        //Nom du repertoire qui contiendra la chaine de connexion a la BD
-        private const string DirectoryUtilConn = "ConnectionString";
-        //Nom du fichier qui contiendra la chaine de connexion connexion a la BD SQLServer
-        private const string FileSQLServer = "UserSQLSever.txt";
-        //Repertoire pour le Log
-        const string DirectoryUtilLog = "Log";
-
         public static string bdEnCours = "";
+        ResourceManager stringManager = null;
 
         public frmPrincipal Principal
         {
@@ -36,7 +31,7 @@ namespace smartManage.Desktop
 
             //Chardement des parametres de connexion 
             //Ici si le fichier est vide ou qu'il n'existe pas,on charge les paramètres par défaut
-            List<string> lstValues = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileSQLServer, '\n');
+            List<string> lstValues = ImplementUtilities.Instance.LoadDatabaseParameters(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileSQLServer, '\n');
 
             if (lstValues.Count > 0)
             {
@@ -53,7 +48,7 @@ namespace smartManage.Desktop
             {
                 //Si le fichier des parametres de la BD ne contient rien on y mets des  parametres par defaut qu'on pourra modifier after
                 //Le nom correct du serveur doit être change s'il arrive que vous devez utiliser une autre machine
-                connection.Serveur = @"JOSAM\SQLEXPRESS";
+                connection.Serveur = @"JOSAM";
                 connection.DB = "gestion_labo_DB";
                 connection.User = txtNomUser.Text;
                 connection.Pwd = txtPwd.Text;
@@ -66,7 +61,9 @@ namespace smartManage.Desktop
         public frmConnection()
         {
             InitializeComponent();
-            ImplementUtilities.Instance.MasterDirectoryConfiguration = MasterDirectory;
+            //Initialisation des Resources
+            Assembly _assembly = Assembly.Load("ResourcesData");
+            stringManager = new ResourceManager("ResourcesData.Resource", _assembly);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -90,16 +87,16 @@ namespace smartManage.Desktop
 
                 if (Convert.ToBoolean(lstValues[3]))
                 {
-                    MessageBox.Show("Connexion réussie", "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Connexion réussie", "Connexion à la base de données", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
                     //Enregistrement des parametres de connexion
-                    ImplementUtilities.Instance.SaveParameters(MasterDirectory,
+                    ImplementUtilities.Instance.SaveParameters(Properties.Settings.Default.MasterDirectory,
                         string.Format("Serveur={0}\nDataBase={1}\nUserBD={2}\nPassword={3}", connection.Serveur, connection.DB, string.Empty, string.Empty),
-                        DirectoryUtilConn, FileSQLServer);
+                        Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileSQLServer);
                 }
                 else
                 {
-                    MessageBox.Show("Echec de l'authentification de l'utilisateur", "Authentification de l'utilisateur", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("Echec de l'authentification de l'utilisateur", "Authentification de l'utilisateur", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                     txtNomUser.Clear();
                     txtPwd.Clear();
                     txtNomUser.Focus();
@@ -136,9 +133,9 @@ namespace smartManage.Desktop
             {
                 this.Cursor = Cursors.Default;
 
-                MessageBox.Show("Echec de l'ouverture de la connexion à la Base de données, " + ex.Message, "connexion à la Base de données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Echec de l'ouverture de la connexion à la Base de données, " + ex.Message, "connexion à la Base de données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                 //On garde chaque fois une trace de l'erreur generee
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de l'ouverture de la connexion à la Base de données : " + ex.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de l'ouverture de la connexion à la Base de données : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
         }
 

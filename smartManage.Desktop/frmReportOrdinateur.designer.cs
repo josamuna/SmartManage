@@ -17,6 +17,10 @@
             {
                 components.Dispose();
             }
+            if(disposing && (conn != null))
+            {
+                conn.Close();
+            }
             base.Dispose(disposing);
         }
 

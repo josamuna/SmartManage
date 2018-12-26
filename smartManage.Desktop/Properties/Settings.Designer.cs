@@ -58,5 +58,149 @@ namespace smartManage.Desktop.Properties {
                 this["IdentifiantPersonne"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StringLogFile {
+            get {
+                return ((string)(this["StringLogFile"]));
+            }
+            set {
+                this["StringLogFile"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("SmartManage")]
+        public string MasterDirectory {
+            get {
+                return ((string)(this["MasterDirectory"]));
+            }
+            set {
+                this["MasterDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Log")]
+        public string DirectoryUtilLog {
+            get {
+                return ((string)(this["DirectoryUtilLog"]));
+            }
+            set {
+                this["DirectoryUtilLog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ConnectionString")]
+        public string DirectoryUtilConn {
+            get {
+                return ((string)(this["DirectoryUtilConn"]));
+            }
+            set {
+                this["DirectoryUtilConn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UserSQLSever.txt")]
+        public string FileSQLServer {
+            get {
+                return ((string)(this["FileSQLServer"]));
+            }
+            set {
+                this["FileSQLServer"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ConnectionStringRadius")]
+        public string DirectoryUtilConnRadAdmin {
+            get {
+                return ((string)(this["DirectoryUtilConnRadAdmin"]));
+            }
+            set {
+                this["DirectoryUtilConnRadAdmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DirectoryUtilConnRadStudent {
+            get {
+                return ((string)(this["DirectoryUtilConnRadStudent"]));
+            }
+            set {
+                this["DirectoryUtilConnRadStudent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UserRadAdmin.txt")]
+        public string FileRadAdmin {
+            get {
+                return ((string)(this["FileRadAdmin"]));
+            }
+            set {
+                this["FileRadAdmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("UserRadStudent.txt")]
+        public string FileRadStudent {
+            get {
+                return ((string)(this["FileRadStudent"]));
+            }
+            set {
+                this["FileRadStudent"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LogFile.txt")]
+        public string LogFileName {
+            get {
+                return ((string)(this["LogFileName"]));
+            }
+            set {
+                this["LogFileName"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LogFileRadiusAdmin.txt")]
+        public string LogFileNameRadiusAdmin {
+            get {
+                return ((string)(this["LogFileNameRadiusAdmin"]));
+            }
+            set {
+                this["LogFileNameRadiusAdmin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LogFileRadiusStudent.txt")]
+        public string LogFileNameRadiusStudent {
+            get {
+                return ((string)(this["LogFileNameRadiusStudent"]));
+            }
+            set {
+                this["LogFileNameRadiusStudent"] = value;
+            }
+        }
     }
 }

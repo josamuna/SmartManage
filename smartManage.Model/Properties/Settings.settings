@@ -5,5 +5,20 @@
     <Setting Name="strChaineConnexion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="MasterDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SmartManage</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilLog" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Log</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilConn" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ConnectionString</Value>
+    </Setting>
+    <Setting Name="FileSQLServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserSQLSever.txt</Value>
+    </Setting>
+    <Setting Name="LogFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFile.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

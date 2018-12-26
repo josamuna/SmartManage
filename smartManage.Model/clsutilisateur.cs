@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace smartManage.Model
 {
@@ -27,22 +28,22 @@ namespace smartManage.Model
         {
             return clsMetier.GetInstance().insertClsutilisateur(this);
         }
-        public int update(clsutilisateur varscls)
+        public int update(DataRowView varscls)
         {
             return clsMetier.GetInstance().updateClsutilisateur(varscls);
         }
-        public new int update()
-        {
-            return clsMetier.GetInstance().updateClsutilisateur(this);
-        }
-        public int delete(clsutilisateur varscls)
+        //public new int update()
+        //{
+        //    return clsMetier.GetInstance().updateClsutilisateur(this);
+        //}
+        public int delete(DataRowView varscls)
         {
             return clsMetier.GetInstance().deleteClsutilisateur(varscls);
         }
-        public new int delete()
-        {
-            return clsMetier.GetInstance().deleteClsutilisateur(this);
-        }
+        //public new int delete()
+        //{
+        //    return clsMetier.GetInstance().deleteClsutilisateur(this);
+        //}
         //***Le constructeur par defaut***
         public clsutilisateur()
         {

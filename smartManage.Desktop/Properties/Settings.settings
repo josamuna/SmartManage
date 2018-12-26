@@ -11,5 +11,41 @@
     <Setting Name="IdentifiantPersonne" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="StringLogFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="MasterDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">SmartManage</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilLog" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Log</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilConn" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ConnectionString</Value>
+    </Setting>
+    <Setting Name="FileSQLServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserSQLSever.txt</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilConnRadAdmin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ConnectionStringRadius</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilConnRadStudent" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FileRadAdmin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserRadAdmin.txt</Value>
+    </Setting>
+    <Setting Name="FileRadStudent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">UserRadStudent.txt</Value>
+    </Setting>
+    <Setting Name="LogFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFile.txt</Value>
+    </Setting>
+    <Setting Name="LogFileNameRadiusAdmin" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFileRadiusAdmin.txt</Value>
+    </Setting>
+    <Setting Name="LogFileNameRadiusStudent" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFileRadiusStudent.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

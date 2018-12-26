@@ -323,7 +323,6 @@ namespace ManageQRCode
             }
         }
 
-
         public class WhatsAppMessage : Payload
         {
             private readonly string message;
@@ -342,7 +341,6 @@ namespace ManageQRCode
                 return ($"whatsapp://send?text={Uri.EscapeDataString(message)}");
             }
         }
-
 
         public class Bookmark : Payload
         {
@@ -383,7 +381,6 @@ namespace ManageQRCode
             private readonly string country;
             private readonly string note;
             private readonly ContactOutputType outputType;
-
 
             /// <summary>
             /// Generates a vCard or meCard contact dataset
@@ -715,20 +712,23 @@ namespace ManageQRCode
                     CreditorReferenceIso11649
                 }
 
+                [Serializable]
                 public class SwissQrCodeReferenceException : Exception
                 {
                     public SwissQrCodeReferenceException()
                     {
                     }
 
-                    public SwissQrCodeReferenceException(string message)
-                        : base(message)
+                    public SwissQrCodeReferenceException(string message) : base(message)
                     {
                     }
 
-                    public SwissQrCodeReferenceException(string message, Exception inner)
-                        : base(message, inner)
+                    public SwissQrCodeReferenceException(string message, Exception inner): base(message, inner)
                     {
+                    }
+                    protected SwissQrCodeReferenceException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                    {
+
                     }
                 }
             }
@@ -769,20 +769,24 @@ namespace ManageQRCode
                     QrIban
                 }
 
+                [Serializable]
                 public class SwissQrCodeIbanException : Exception
                 {
                     public SwissQrCodeIbanException()
                     {
                     }
 
-                    public SwissQrCodeIbanException(string message)
-                        : base(message)
+                    public SwissQrCodeIbanException(string message): base(message)
                     {
                     }
 
-                    public SwissQrCodeIbanException(string message, Exception inner)
-                        : base(message, inner)
+                    public SwissQrCodeIbanException(string message, Exception inner) : base(message, inner)
                     {
+                    }
+
+                    protected SwissQrCodeIbanException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                    {
+
                     }
                 }
             }
@@ -862,20 +866,24 @@ namespace ManageQRCode
                     return contactData;
                 }
 
+                [Serializable]
                 public class SwissQrCodeContactException : Exception
                 {
                     public SwissQrCodeContactException()
                     {
                     }
 
-                    public SwissQrCodeContactException(string message)
-                        : base(message)
+                    public SwissQrCodeContactException(string message) : base(message)
                     {
                     }
 
-                    public SwissQrCodeContactException(string message, Exception inner)
-                        : base(message, inner)
+                    public SwissQrCodeContactException(string message, Exception inner) : base(message, inner)
                     {
+                    }
+
+                    protected SwissQrCodeContactException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                    {
+
                     }
                 }
             }
@@ -927,9 +935,6 @@ namespace ManageQRCode
                 return SwissQrCodePayload;
             }
 
-            
-
-
             /// <summary>
             /// ISO 4217 currency codes 
             /// </summary>
@@ -939,20 +944,24 @@ namespace ManageQRCode
                 EUR = 978
             }
 
+            [Serializable]
             public class SwissQrCodeException : Exception
             {
                 public SwissQrCodeException()
                 {
                 }
 
-                public SwissQrCodeException(string message)
-                    : base(message)
+                public SwissQrCodeException(string message) : base(message)
                 {
                 }
 
-                public SwissQrCodeException(string message, Exception inner)
-                    : base(message, inner)
+                public SwissQrCodeException(string message, Exception inner) : base(message, inner)
                 {
+                }
+
+                protected SwissQrCodeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                {
+
                 }
             }
         }
@@ -1063,20 +1072,24 @@ namespace ManageQRCode
                 ISO_8859_15
             }
 
+            [Serializable]
             public class GirocodeException : Exception
             {
                 public GirocodeException()
                 {
                 }
 
-                public GirocodeException(string message)
-                    : base(message)
+                public GirocodeException(string message) : base(message)
                 {
                 }
 
-                public GirocodeException(string message, Exception inner)
-                    : base(message, inner)
+                public GirocodeException(string message, Exception inner) : base(message, inner)
                 {
+                }
+
+                protected GirocodeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                {
+
                 }
             }
         }
@@ -1092,7 +1105,7 @@ namespace ManageQRCode
             private readonly AuthorityType authority;
             private readonly DateTime executionDate, dateOfSignature, periodicFirstExecutionDate, periodicLastExecutionDate;
 
-
+            [Obsolete]
             /// <summary>
             /// Constructor for contact data
             /// </summary>
@@ -1105,9 +1118,9 @@ namespace ManageQRCode
             /// <param name="reason">Reason (Verwendungszweck)</param>
             public BezahlCode(AuthorityType authority, string name, string account = "", string bnc = "", string iban = "", string bic = "", string reason = "") : this(authority, name, account, bnc, iban, bic, 0, string.Empty, 0, null, null, string.Empty, string.Empty, null, reason, 0, string.Empty, Currency.EUR, null, 1)
             {                                
-            }           
+            }
 
-
+            [Obsolete]
             /// <summary>
             /// Constructor for non-SEPA payments
             /// </summary>
@@ -1128,6 +1141,7 @@ namespace ManageQRCode
             {
             }
 
+            [Obsolete]
             /// <summary>
             /// Constructor for SEPA payments
             /// </summary>
@@ -1152,9 +1166,7 @@ namespace ManageQRCode
             {
             }
 
-
-
-
+            [Obsolete]
             /// <summary>
             /// Generic constructor. Please use specific (non-SEPA or SEPA) constructor
             /// </summary>
@@ -1303,13 +1315,10 @@ namespace ManageQRCode
                         if (periodicLastExecutionDate != null)
                             this.periodicLastExecutionDate = (DateTime)periodicLastExecutionDate;
                     }
-
-                }
-                
-                
-                
+                }             
             }
 
+            #pragma warning disable 612 //Use this line to suppress Warning CS0612
             public override string ToString()
             {
                 var bezahlCodePayload = $"bank://{authority}?";
@@ -1390,6 +1399,8 @@ namespace ManageQRCode
 
                 return bezahlCodePayload.Trim('&');
             }
+
+            #pragma warning restore 612 //Use his line to reenable Warning CS0612
 
             /// <summary>
             /// ISO 4217 currency codes 
@@ -1576,7 +1587,6 @@ namespace ManageQRCode
                 ZWL = 932
             }
 
-
             /// <summary>
             /// Operation modes of the BezahlCode
             /// </summary>
@@ -1619,20 +1629,24 @@ namespace ManageQRCode
                 contact_v2
             }
 
+            [Serializable]
             public class BezahlCodeException : Exception
             {
                 public BezahlCodeException()
                 {
                 }
 
-                public BezahlCodeException(string message)
-                    : base(message)
+                public BezahlCodeException(string message) : base(message)
                 {
                 }
 
-                public BezahlCodeException(string message, Exception inner)
-                    : base(message, inner)
+                public BezahlCodeException(string message, Exception inner) : base(message, inner)
                 {
+                }
+
+                protected BezahlCodeException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                {
+
                 }
             }
         }
@@ -1737,7 +1751,7 @@ namespace ManageQRCode
                     case OneTimePasswordAuthType.HOTP:
                         return HMACToString();
                     default:
-                        throw new ArgumentOutOfRangeException();
+                        return "Invalide argument";// throw new ArgumentOutOfRangeException();
                 }
             }
 
@@ -1929,29 +1943,33 @@ namespace ManageQRCode
                 Table
             }
 
+            [Serializable]
             public class ShadowSocksConfigException : Exception
             {
                 public ShadowSocksConfigException()
                 {
                 }
 
-                public ShadowSocksConfigException(string message)
-                    : base(message)
+                public ShadowSocksConfigException(string message) : base(message)
                 {
                 }
 
-                public ShadowSocksConfigException(string message, Exception inner)
-                    : base(message, inner)
+                public ShadowSocksConfigException(string message, Exception inner) : base(message, inner)
                 {
+                }
+
+                protected ShadowSocksConfigException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                {
+
                 }
             }
         }
-        
+
         public class MoneroTransaction : Payload
         {
             private readonly string address, txPaymentId, recipientName, txDescription;
             private readonly float? txAmount;
-                       
+
             /// <summary>
             /// Creates a monero transaction payload
             /// </summary>
@@ -1978,26 +1996,30 @@ namespace ManageQRCode
                 var moneroUri = $"monero://{address}{(!string.IsNullOrEmpty(txPaymentId) || !string.IsNullOrEmpty(recipientName) || !string.IsNullOrEmpty(txDescription) || txAmount != null ? "?" : string.Empty)}";
                 moneroUri += (!string.IsNullOrEmpty(txPaymentId) ? $"tx_payment_id={Uri.EscapeDataString(txPaymentId)}&" : string.Empty);
                 moneroUri += (!string.IsNullOrEmpty(recipientName) ? $"recipient_name={Uri.EscapeDataString(recipientName)}&" : string.Empty);
-                moneroUri += (txAmount != null ? $"tx_amount={txAmount.ToString().Replace(",",".")}&" : string.Empty);
+                moneroUri += (txAmount != null ? $"tx_amount={txAmount.ToString().Replace(",", ".")}&" : string.Empty);
                 moneroUri += (!string.IsNullOrEmpty(txDescription) ? $"tx_description={Uri.EscapeDataString(txDescription)}" : string.Empty);
                 return moneroUri.TrimEnd('&');
             }
-                        
 
+
+            [Serializable]
             public class MoneroTransactionException : Exception
             {
                 public MoneroTransactionException()
                 {
                 }
 
-                public MoneroTransactionException(string message)
-                    : base(message)
+                public MoneroTransactionException(string message) : base(message)
                 {
                 }
 
-                public MoneroTransactionException(string message, Exception inner)
-                    : base(message, inner)
+                public MoneroTransactionException(string message, Exception inner) : base(message, inner)
                 {
+                }
+
+                protected MoneroTransactionException(System.Runtime.Serialization.SerializationInfo info, System.Runtime.Serialization.StreamingContext context) : base(info, context)
+                {
+
                 }
             }
         }
@@ -2133,9 +2155,7 @@ namespace ManageQRCode
                 inp = inp.Replace(c.ToString(), "\\" + c);
             }
             return inp;
-        }
-
-        
+        }       
 
         public static bool ChecksumMod10(string digits)
         {

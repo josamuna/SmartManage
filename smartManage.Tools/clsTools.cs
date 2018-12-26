@@ -38,21 +38,27 @@ namespace smartManage.Tools
         public string ImageToString64_(string path)
         {
             string strValu = "";
+            Image image = null;
+
             try
             {
-                using (Image image = Image.FromFile(path))
+                image = Image.FromFile(path);
+
+                using (MemoryStream m = new MemoryStream())
                 {
-                    using (MemoryStream m = new MemoryStream())
-                    {
-                        image.Save(m, image.RawFormat);
-                        byte[] imageBytes = m.ToArray();
-                        strValu = Convert.ToBase64String(imageBytes);
-                    }
+                    image.Save(m, image.RawFormat);
+                    byte[] imageBytes = m.ToArray();
+                    strValu = Convert.ToBase64String(imageBytes);
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+            }
+            finally
+            {
+                if (image != null)
+                    image.Dispose();
             }
             return strValu;
         }
@@ -64,8 +70,9 @@ namespace smartManage.Tools
 
             try
             {
-                long size = (new FileInfo(path)).Length;
                 fs = new FileStream(path, FileMode.Open, FileAccess.Read);
+                long size = (new FileInfo(path)).Length;
+
                 byte[] data = new byte[size];
 
                 fs.Read(data, 0, (int)size);
@@ -74,7 +81,7 @@ namespace smartManage.Tools
                 {
                     ms.Write(data, 0, (int)size);
                     byte[] imageBytes = ms.ToArray();
-                    strValu = Convert.ToBase64String(imageBytes);  
+                    strValu = Convert.ToBase64String(imageBytes);
                 }
             }
             catch (Exception ex)
@@ -83,8 +90,8 @@ namespace smartManage.Tools
             }
             finally
             {
-                fs.Close();
-                fs.Dispose();
+                if (fs != null)
+                    fs.Dispose();
             }
             return strValu;
         }
@@ -92,24 +99,27 @@ namespace smartManage.Tools
         public string ImageToString64(Image image)
         {
             string strValu = "";
+            MemoryStream ms = null;
+
             try
             {
-                //using (Image image = Image.FromFile(path))
-                //{
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    Image newImage = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
-                    //image.Save(m, image.RawFormat);
-                    //byte[] imageBytes = m.ToArray();
-                    //byte[] imageBytes = CreateThumbnail(m.ToArray(), 50);
-                    byte[] imageBytes = ms.ToArray();
-                    strValu = Convert.ToBase64String(imageBytes);
-                }
-                //}
+                ms = new MemoryStream();
+
+                Image newImage = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+                //image.Save(m, image.RawFormat);
+                //byte[] imageBytes = m.ToArray();
+                //byte[] imageBytes = CreateThumbnail(m.ToArray(), 50);
+                byte[] imageBytes = ms.ToArray();
+                strValu = Convert.ToBase64String(imageBytes);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (ms != null)
+                    ms.Dispose();
             }
             return strValu;
         }
@@ -117,21 +127,23 @@ namespace smartManage.Tools
         public string ImageToString64_(Image image)
         {
             string strValu = "";
+            MemoryStream ms = null;
+
             try
             {
-                //using (Image image = Image.FromFile(path))
-                //{
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    image.Save(ms, image.RawFormat);
-                    byte[] imageBytes = ms.ToArray();
-                    strValu = Convert.ToBase64String(imageBytes);
-                }
-                //}
+                ms = new MemoryStream();
+                image.Save(ms, image.RawFormat);
+                byte[] imageBytes = ms.ToArray();
+                strValu = Convert.ToBase64String(imageBytes);
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
+            }
+            finally
+            {
+                if (ms != null)
+                    ms.Dispose();
             }
             return strValu;
         }
@@ -141,79 +153,89 @@ namespace smartManage.Tools
             if (strImage.Trim().Equals("")) return null;
             byte[] bytes = Convert.FromBase64String(strImage);
 
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
+            Image image = null;
+            try
             {
-                ////image = Image.FromStream(ms);
-                //image = new Bitmap(Image.FromStream(ms), 120, 120);
-                image = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    ////image = Image.FromStream(ms);
+                    //image = new Bitmap(Image.FromStream(ms), 120, 120);
+                    image = ResizeImage(new Bitmap(Image.FromStream(ms)), 150, 150);
+                }
             }
-
+            finally
+            {
+                if (image != null)
+                    image.Dispose();
+            }
             return image;
         }
         #endregion
         public byte[] CreateThumbnail(byte[] PassedImage, int LargestSide)
         {
-            byte[] ReturnedThumbnail;
+            byte[] returnedThumbnail = null;
+            MemoryStream startMemoryStream = null;
+            MemoryStream newMemoryStream = null;
+
             try
             {
+                startMemoryStream = new MemoryStream();
+                newMemoryStream = new MemoryStream();
 
-                using (MemoryStream StartMemoryStream = new MemoryStream(),
-                                    NewMemoryStream = new MemoryStream())
+                // write the string to the stream  
+                startMemoryStream.Write(PassedImage, 0, PassedImage.Length);
+
+                // create the start Bitmap from the MemoryStream that contains the image  
+                Bitmap startBitmap = new Bitmap(startMemoryStream);
+
+                // set thumbnail height and width proportional to the original image.  
+                int newHeight;
+                int newWidth;
+                double HW_ratio;
+                if (startBitmap.Height > startBitmap.Width)
                 {
-                    // write the string to the stream  
-                    StartMemoryStream.Write(PassedImage, 0, PassedImage.Length);
-
-                    // create the start Bitmap from the MemoryStream that contains the image  
-                    Bitmap startBitmap = new Bitmap(StartMemoryStream);
-
-                    // set thumbnail height and width proportional to the original image.  
-                    int newHeight;
-                    int newWidth;
-                    double HW_ratio;
-                    if (startBitmap.Height > startBitmap.Width)
-                    {
-                        newHeight = LargestSide;
-                        HW_ratio = (double)((double)LargestSide / (double)startBitmap.Height);
-                        newWidth = (int)(HW_ratio * (double)startBitmap.Width);
-                    }
-                    else
-                    {
-                        newWidth = LargestSide;
-                        HW_ratio = (double)((double)LargestSide / (double)startBitmap.Width);
-                        newHeight = (int)(HW_ratio * (double)startBitmap.Height);
-                    }
-
-                    // create a new Bitmap with dimensions for the thumbnail.  
-                    Bitmap newBitmap = new Bitmap(newWidth, newHeight);
-
-                    // Copy the image from the START Bitmap into the NEW Bitmap.  
-                    // This will create a thumnail size of the same image.  
-                    newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
-
-                    // Save this image to the specified stream in the specified format.  
-                    newBitmap.Save(NewMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-
-                    // Fill the byte[] for the thumbnail from the new MemoryStream.
-
-                    ReturnedThumbnail = NewMemoryStream.ToArray();
-                    newBitmap.Dispose();
-                    startBitmap.Dispose();
-                    StartMemoryStream.Close();
-                    StartMemoryStream.Dispose();
+                    newHeight = LargestSide;
+                    HW_ratio = LargestSide / (double)startBitmap.Height;
+                    newWidth = (int)(HW_ratio * startBitmap.Width);
                 }
+                else
+                {
+                    newWidth = LargestSide;
+                    HW_ratio = (double)((double)LargestSide / (double)startBitmap.Width);
+                    newHeight = (int)(HW_ratio * (double)startBitmap.Height);
+                }
+
+                // create a new Bitmap with dimensions for the thumbnail.  
+                Bitmap newBitmap = new Bitmap(newWidth, newHeight);
+
+                // Copy the image from the START Bitmap into the NEW Bitmap.  
+                // This will create a thumnail size of the same image.  
+                newBitmap = ResizeImage(startBitmap, newWidth, newHeight);
+
+                // Save this image to the specified stream in the specified format.  
+                newBitmap.Save(newMemoryStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+
+                // Fill the byte[] for the thumbnail from the new MemoryStream.
+
+                returnedThumbnail = newMemoryStream.ToArray();
+                //newBitmap.Dispose();
+                //startBitmap.Dispose();
+                //StartMemoryStream.Dispose();
             }
             catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
-            //finally
-            //{
-            //    ReturnedThumbnail = null;
-            //}
+            finally
+            {
+                if (startMemoryStream != null)
+                    startMemoryStream.Dispose();
+                if (newMemoryStream != null)
+                    newMemoryStream.Dispose();
+            }
 
             // return the resized image as a string of bytes.  
-            return ReturnedThumbnail;
+            return returnedThumbnail;
         }
         // Resize a Bitmap 
         private Bitmap ResizeImage(Bitmap image, int width, int height)
@@ -254,7 +276,7 @@ namespace smartManage.Tools
             }
             return fpath;
         }
-        
+
         public Image GetImageFromFile(string file)
         {
             Image image;
@@ -302,11 +324,20 @@ namespace smartManage.Tools
 
         public Image GetImageFromByte(byte[] byteArrayIn)
         {
-            MemoryStream ms = new MemoryStream(byteArrayIn);
-            //Image returnImage = Image.FromStream(ms);
-            Bitmap bmp = new Bitmap(ms);
-            ms.Close();
-            return bmp;
+            MemoryStream ms = null;
+
+            try
+            {
+                ms = new MemoryStream(byteArrayIn);
+                //Image returnImage = Image.FromStream(ms);
+                Bitmap bmp = new Bitmap(ms);
+                return bmp;
+            }
+            finally
+            {
+                if (ms != null)
+                    ms.Dispose();
+            }
         }
         #endregion
 
@@ -314,11 +345,10 @@ namespace smartManage.Tools
         {
             string filename = Environment.GetEnvironmentVariables()["TEMP"].ToString() + @"\" + "fTmp" + DateTime.Now.Millisecond.ToString() + ".png";
 
-            using (System.IO.FileStream fs = new System.IO.FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
+            using (FileStream fs = new FileStream(filename, FileMode.Create, FileAccess.ReadWrite))
             {
                 System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
                 pbox.Image.Save(fs, imageFormat);
-                fs.Close();
             }
 
             return filename;
@@ -334,26 +364,16 @@ namespace smartManage.Tools
                 throw new Exception("Le fichier spécifier n'existe pas !!!");
         }
 
-        /// <summary>
-        /// Permet la reduction de l'utilisation de la mémoire vive
-        /// </summary>
-        /// <param name="hProcess">Pointeur</param>
-        /// <param name="dwMinimumWorkingSetSize">Entier</param>
-        /// <param name="dwMaximumWorkingSetSize">Entier</param>
-        /// <returns></returns>
-        [DllImport("kernel32.dll")]
-        public static extern bool SetProcessWorkingSetSize(IntPtr hProcess, int dwMinimumWorkingSetSize, int dwMaximumWorkingSetSize);
-
         public bool LimiteImageSize(string fileName, long byteSize, int heightSize, int widthSize)
         {
             var fileSizeInBytes = new FileInfo(fileName).Length;
             if (fileSizeInBytes > byteSize)
-                throw new Exception(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize/1000000));
+                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
 
             using (var img = new Bitmap(fileName))
             {
                 if (img.Width > widthSize || img.Height > heightSize)
-                    throw new Exception(string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize));
+                    throw new CustomException(string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize));
             }
 
             return true;
@@ -363,7 +383,7 @@ namespace smartManage.Tools
         {
             var fileSizeInBytes = new FileInfo(fileName).Length;
             if (fileSizeInBytes > byteSize)
-                throw new Exception(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
+                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
 
             return true;
         }

@@ -233,6 +233,16 @@ namespace smartManage.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logoisig1 {
+            get {
+                object obj = ResourceManager.GetObject("logoisig1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LogoSmartManage_setup {
             get {
                 object obj = ResourceManager.GetObject("LogoSmartManage_setup", resourceCulture);

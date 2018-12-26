@@ -7,15 +7,19 @@ using System.Windows.Forms;
 using smartManage.Model;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace smartManage.Desktop
 {
     public partial class TestQRCode : Form
     {
         private string path = null;
+        
+
         public TestQRCode()
         {
             InitializeComponent();
+            //NO RESSOURCES HERE
         }
 
         private void cmd_Click(object sender, EventArgs e)
@@ -46,7 +50,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur lors de la création et conversion + " + ex.Message, "Création et Conversion QRCode en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur lors de la création et conversion + " + ex.Message, "Création et Conversion QRCode en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -65,7 +69,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -81,12 +85,10 @@ namespace smartManage.Desktop
                 {
                     System.Drawing.Imaging.ImageFormat imageFormat = System.Drawing.Imaging.ImageFormat.Png;
                     pbox.Image.Save(fs, imageFormat);
-                    fs.Close();
 
                     MessageBox.Show("Saved to " + sv.FileName);
                 }
             }
-
         }
 
         private void cmdConvertToTxt_Click(object sender, EventArgs e)
@@ -103,7 +105,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -153,7 +155,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur lors de la conversion + " + ex.Message, "Conversion image en texte", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -169,7 +171,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Erreur de conversion du QRCode + " + ex.Message, "Conversion QRCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Erreur de conversion du QRCode + " + ex.Message, "Conversion QRCode", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 

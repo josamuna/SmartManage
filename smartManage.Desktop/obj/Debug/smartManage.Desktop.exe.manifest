@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
-  <asmv1:assemblyIdentity name="smartManage.Desktop.exe" version="1.6.0.25" publicKeyToken="0000000000000000" language="fr" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity name="smartManage.Desktop.exe" version="2.6.0.45" publicKeyToken="0000000000000000" language="en-US" processorArchitecture="msil" type="win32" />
   <description asmv2:iconFile="LogoSmartManage.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" publicKeyToken="4F498371B969B64E" language="neutral" processorArchitecture="msil" />
     <commandLine file="smartManage.Desktop.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -48,21 +48,6 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Microsoft.ReportViewer.Common" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Microsoft.ReportViewer.DataVisualization" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
-      <assemblyIdentity name="Microsoft.ReportViewer.ProcessingObjectModel" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="neutral" processorArchitecture="msil" />
-    </dependentAssembly>
-  </dependency>
-  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.CrystalReports.Engine.dll" size="380928">
       <assemblyIdentity name="CrystalDecisions.CrystalReports.Engine" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -71,6 +56,18 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
         <dsig:DigestValue>ZkaDRA6YlbR3XlS/uBLWHycl9lg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.ClientDoc.dll" size="65536">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.ClientDoc" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>7ROhXsRBl1MWLcIvzBc7x+qiVOc=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -87,6 +84,42 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.CommonControls.dll" size="135168">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.CommonControls" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>axBa8jUOZUiAstyQCKgEepicj6Y=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.CommonObjectModel.dll" size="36864">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.CommonObjectModel" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>Ky2aylyQiAQcoRiD6w3WV6xhTsY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.Controllers.dll" size="176128">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.Controllers" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>qwafquLQ/vKLqQd0K7LhHLcO5cg=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.CubeDefModel.dll" size="36864">
       <assemblyIdentity name="CrystalDecisions.ReportAppServer.CubeDefModel" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -95,6 +128,18 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
         <dsig:DigestValue>ry/oCmVTjPygUx5+MygcFcRSpzM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.DataDefModel.dll" size="262144">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.DataDefModel" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>4wBVda6TP314YqhL5qnH8J/vGh4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -143,6 +188,18 @@
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
         <dsig:DigestValue>z9wxsuzhwPEGZWuUQ6MgJezOmug=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CrystalDecisions.ReportAppServer.XmlSerialize.dll" size="15872">
+      <assemblyIdentity name="CrystalDecisions.ReportAppServer.XmlSerialize" version="13.0.3500.0" publicKeyToken="692FBEA5521E1304" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>TXbdpM0tIHPz8H1NaggcC8prUHM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -196,97 +253,61 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GSMCommShared.dll" size="16384">
-      <assemblyIdentity name="GSMCommShared" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="GSMCommShared" version="1.10.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>oDwg9qG5fZphesiKS6G/g6FFXmI=</dsig:DigestValue>
+        <dsig:DigestValue>6fNi4k4fOaTU8f7s9XyUAXUIM2g=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GSMCommunication.dll" size="98304">
-      <assemblyIdentity name="GSMCommunication" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="GSMCommunication.dll" size="94208">
+      <assemblyIdentity name="GSMCommunication" version="1.10.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>/2KHgEpfhZGtlPT7bfYtVt3llDY=</dsig:DigestValue>
+        <dsig:DigestValue>7Zz2+yRu0MXSupD7TYOR65Nfa6U=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageConnexion.dll" size="8192">
-      <assemblyIdentity name="ManageConnexion" version="2.1.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageConnexion.dll" size="8704">
+      <assemblyIdentity name="ManageConnexion" version="2.1.0.0" publicKeyToken="028F113CA8D1428C" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>QC07KjVpnJr2L7KFfkms3BjM2wY=</dsig:DigestValue>
+        <dsig:DigestValue>wvXy7kVD1H1hqI4fpZZ5Ffr67Fs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageQRCode.dll" size="100864">
-      <assemblyIdentity name="ManageQRCode" version="1.3.4.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageQRCode.dll" size="102912">
+      <assemblyIdentity name="ManageQRCode" version="1.3.4.0" publicKeyToken="AADBDF1105BFF964" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>nL0/5QyefPDRWgxLA9nAWjKgpds=</dsig:DigestValue>
+        <dsig:DigestValue>izGSsJwpx/0IDDdmLnfvRtir4Bw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ManageUtilities.dll" size="15872">
-      <assemblyIdentity name="ManageUtilities" version="2.0.0.0" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="ManageUtilities" version="2.0.0.0" publicKeyToken="394A680F8940A604" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>jcpkp9+mzdHFtkuRBhuDSPCnR8c=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.ReportViewer.WinForms.dll" size="563392">
-      <assemblyIdentity name="Microsoft.ReportViewer.WinForms" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>UmcNVB4jTujTK8b+aojaxiiWQBY=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Microsoft.SqlServer.Types.dll" size="392896">
-      <assemblyIdentity name="Microsoft.SqlServer.Types" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="neutral" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>HyDiu7QE/H+wUeZ85QVYLrQgj4U=</dsig:DigestValue>
-      </hash>
-    </dependentAssembly>
-  </dependency>
-  <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="fr\Microsoft.SqlServer.Types.resources.dll" size="48832">
-      <assemblyIdentity name="Microsoft.SqlServer.Types.resources" version="12.0.0.0" publicKeyToken="89845DCD8080CC91" language="fr" processorArchitecture="msil" />
-      <hash>
-        <dsig:Transforms>
-          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-        </dsig:Transforms>
-        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>mS1MpfG9usqKXaRLQpox6QnMkT0=</dsig:DigestValue>
+        <dsig:DigestValue>SIHw1tiGPYZC1DbY6uYfK29nU40=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -303,14 +324,50 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PDUConverter.dll" size="65536">
-      <assemblyIdentity name="PDUConverter" version="1.21.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Npgsql.dll" size="403968">
+      <assemblyIdentity name="Npgsql" version="2.0.11.0" publicKeyToken="5D8B90D52F46FDA7" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>zSmijYH/GILK5EezTKf5A6LO0eU=</dsig:DigestValue>
+        <dsig:DigestValue>WjlcRoXHANwhHx2FRyAom0fKy/s=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="PDUConverter.dll" size="61440">
+      <assemblyIdentity name="PDUConverter" version="1.10.0.0" publicKeyToken="515D87DF384DCC81" language="neutral" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>mvullg2JyulhA4CRahCHWI0ua2g=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="ResourcesData.dll" size="33280">
+      <assemblyIdentity name="ResourcesData" version="1.0.0.0" publicKeyToken="2F8A3B1BF72DC59A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>BFZsXKqIlAMyI2s2wq/gBxZYZXw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="en-US\ResourcesData.resources.dll" size="3584">
+      <assemblyIdentity name="ResourcesData.resources" version="1.0.0.0" publicKeyToken="2F8A3B1BF72DC59A" language="en-US" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>UjSi+soyuZnf/WBKJ5U73y2IeBo=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -327,62 +384,62 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="3687424">
-      <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Desktop.exe" size="16402432">
+      <assemblyIdentity name="smartManage.Desktop" version="1.0.0.0" publicKeyToken="4F498371B969B64E" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>XzKvJjX6WCrY60ZlO3pALE6ICy8=</dsig:DigestValue>
+        <dsig:DigestValue>sCK8HLvV77D4USIotsfPJkYeGz8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="775680">
-      <assemblyIdentity name="smartManage.Model" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Model.dll" size="801792">
+      <assemblyIdentity name="smartManage.Model" version="1.0.0.0" publicKeyToken="ACECF67302C9F101" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>amDeWBaSw0n7B/jbtktaQRRjkYQ=</dsig:DigestValue>
+        <dsig:DigestValue>aqzKhq0IklEBW0Kmidxrzt0PKG0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.RadiusAdminModel.dll" size="97792">
-      <assemblyIdentity name="smartManage.RadiusAdminModel" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.RadiusAdminModel.dll" size="105472">
+      <assemblyIdentity name="smartManage.RadiusAdminModel" version="1.0.0.0" publicKeyToken="42240A2941257783" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>EJoSuxr+5+ytDkkec2CVLgZMVLY=</dsig:DigestValue>
+        <dsig:DigestValue>EAGynO5jjne4oC+3l2ESer60zrE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.RadiusStudentsModel.dll" size="101376">
-      <assemblyIdentity name="smartManage.RadiusStudentsModel" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.RadiusStudentsModel.dll" size="109056">
+      <assemblyIdentity name="smartManage.RadiusStudentsModel" version="1.0.0.0" publicKeyToken="506753E9FC6DA176" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>ENc7pTE3lxx9kfJJWdlQ8S+snaE=</dsig:DigestValue>
+        <dsig:DigestValue>XzkZcTC/YPcSDoxlZbZ6Va7eZYw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Tools.dll" size="12800">
-      <assemblyIdentity name="smartManage.Tools" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="smartManage.Tools.dll" size="14336">
+      <assemblyIdentity name="smartManage.Tools" version="1.0.0.0" publicKeyToken="4E5D84430559D20A" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>9mRoFQY7oCxaLFrILfkwg50fEMQ=</dsig:DigestValue>
+        <dsig:DigestValue>EM5g1mN9UYFkhduJzXqLurO3EmQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -393,6 +450,24 @@
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
       <dsig:DigestValue>CFq+u9jBN4Z2Qcb0hW+T6+sJdGY=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\logoisig.png" size="193292">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>ahpk9fVpbSsBKKXq0khepD/NCwk=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="Images\logoisig1.png" size="181258">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>JUA+k4TNO9hZtrNobZiRtBayXOI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Images\Preview.png" size="10533">
@@ -431,60 +506,6 @@
       <dsig:DigestValue>ecmivlRmnBLp/aIfhPrkqiDKToQ=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="Libraries\GSMCommServer.dll" size="24576">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>ahvEv8H0k67KF/PWAhkOLKeAbAA=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Libraries\GSMCommShared.dll" size="16384">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>oDwg9qG5fZphesiKS6G/g6FFXmI=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Libraries\GSMCommunication.dll" size="98304">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>/2KHgEpfhZGtlPT7bfYtVt3llDY=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Libraries\ManageConnexion.dll" size="8192">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>QC07KjVpnJr2L7KFfkms3BjM2wY=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Libraries\ManageUtilities.dll" size="15872">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>jcpkp9+mzdHFtkuRBhuDSPCnR8c=</dsig:DigestValue>
-    </hash>
-  </file>
-  <file name="Libraries\PDUConverter.dll" size="65536">
-    <hash>
-      <dsig:Transforms>
-        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
-      </dsig:Transforms>
-      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>zSmijYH/GILK5EezTKf5A6LO0eU=</dsig:DigestValue>
-    </hash>
-  </file>
   <file name="LogoSmartManage.ico" size="21895">
     <hash>
       <dsig:Transforms>
@@ -503,13 +524,13 @@
       <dsig:DigestValue>S21hfgI2t+vpgbIsxXVtGCr43pA=</dsig:DigestValue>
     </hash>
   </file>
-  <file name="smartManage.Desktop.exe.config" size="1135">
+  <file name="smartManage.Desktop.exe.config" size="2877">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>IFb0rFP98s0jbES20N43qOod7kw=</dsig:DigestValue>
+      <dsig:DigestValue>jaRP0xf0CTxjYYJBpf3dpHBpx20=</dsig:DigestValue>
     </hash>
   </file>
 </asmv1:assembly>

@@ -34,5 +34,41 @@ namespace smartManage.RadiusAdminModel.Properties {
                 this["strChaineConnexion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ConnectionString")]
+        public string MasterDirectory {
+            get {
+                return ((string)(this["MasterDirectory"]));
+            }
+            set {
+                this["MasterDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Log")]
+        public string DirectoryUtilLog {
+            get {
+                return ((string)(this["DirectoryUtilLog"]));
+            }
+            set {
+                this["DirectoryUtilLog"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("LogFileRadiusAdmin.txt")]
+        public string LogFileName {
+            get {
+                return ((string)(this["LogFileName"]));
+            }
+            set {
+                this["LogFileName"] = value;
+            }
+        }
     }
 }

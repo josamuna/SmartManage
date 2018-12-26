@@ -8,9 +8,9 @@ using smartManage.Tools;
 
 namespace smartManage.Model
 {
-    public class clsMetier
+    public class clsMetier : IDisposable
     {
-        const string DirectoryUtilLog = "Log"; //***Les variables globales***
+        //***Les variables globales***
         private static string _ConnectionString, _host, _db, _user, _pwd;
         private static clsMetier Fact;
         public static string bdEnCours = "";
@@ -22,13 +22,13 @@ namespace smartManage.Model
                 Fact = new clsMetier();
             return Fact;
         }
-        private object getParameter(IDbCommand cmd, string name, DbType type, int size, object value)
+        public object getParameter(IDbCommand cmd, string name, DbType type, int size, object value)
         {
             IDbDataParameter param = cmd.CreateParameter();
             param.Size = size;
             param.DbType = type;
-            param.ParameterName = name;
-            param.Value = value;
+            param.ParameterName = name; 
+             param.Value = value;
             return param;
         }
         public void Initialize(string ConnectionString)
@@ -91,8 +91,8 @@ namespace smartManage.Model
                 bl = false;
                 conn.Close();
                 string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat de la connexion à la BD sans paramètre : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat de la connexion à la BD sans paramètre : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
             return bl;
         }
@@ -115,9 +115,8 @@ namespace smartManage.Model
                 sch = string.Format("server={0}; database={1};id user={2}; pwd={3}", _host, _db, _user, _pwd);
                 bl = false;
                 conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat connexion à la BD avec paramètre : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Etat connexion à la BD avec paramètre : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
             return bl;
         }
@@ -135,15 +134,17 @@ namespace smartManage.Model
                         while (dr.Read())
                             lst.Add(dr["name"].ToString());
                     }
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lst;
         }
@@ -164,15 +165,17 @@ namespace smartManage.Model
                             bd = (dr["bd_encours"].ToString());
                         }
                     }
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return bd;
         }
@@ -188,9 +191,8 @@ namespace smartManage.Model
             }
             catch (Exception exc)
             {
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Récupération de toutes les bases de Données SQLServer : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
         }
         #endregion prerecquis
@@ -203,12 +205,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM compte WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM compte WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.UInt32, 4, intid));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclscompte.Id = int.Parse(dr["id"].ToString());
                             varclscompte.Numero = dr["numero"].ToString();
                             varclscompte.User_created = dr["user_created"].ToString();
@@ -218,14 +221,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclscompte;
         }
@@ -238,18 +243,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM compte  WHERE";
-                    sql += "  numero LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_compte_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clscompte varclscompte = null;
                         while (dr.Read())
                         {
-
                             varclscompte = new clscompte();
                             if (!dr["id"].ToString().Trim().Equals("")) varclscompte.Id = int.Parse(dr["id"].ToString());
                             varclscompte.Numero = dr["numero"].ToString();
@@ -261,14 +263,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'compte' avec la classe 'clscompte' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'compte' avec la classe 'clscompte' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscompte;
         }
@@ -300,14 +304,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'compte' avec la classe 'clscompte' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'compte' avec la classe 'clscompte' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscompte;
         }
@@ -333,15 +339,17 @@ namespace smartManage.Model
                     if (varclscompte.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscompte.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -367,15 +375,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscompte.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -391,15 +401,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM compte  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscompte.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'compte' avec la classe 'clscompte' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -414,7 +426,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM fo WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM fo WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -428,14 +442,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsfo;
         }
@@ -448,17 +464,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM fo  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_fo_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfo varclsfo = null;
                         while (dr.Read())
                         {
-
                             varclsfo = new clsfo();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfo.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsfo.Valeur = int.Parse(dr["valeur"].ToString());
@@ -470,14 +484,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fo' avec la classe 'clsfo' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fo' avec la classe 'clsfo' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfo;
         }
@@ -509,14 +525,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fo' avec la classe 'clsfo' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfo;
         }
@@ -541,15 +559,17 @@ namespace smartManage.Model
                     if (varclsfo.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfo.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -574,15 +594,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfo.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -598,15 +620,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM fo  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfo.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fo' avec la classe 'clsfo' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -621,26 +645,29 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM groupe WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM groupe WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgroupe.Id = int.Parse(dr["id"].ToString());
                             varclsgroupe.Designation = dr["designation"].ToString();
                             if (!dr["niveau"].ToString().Trim().Equals("")) varclsgroupe.Niveau = int.Parse(dr["niveau"].ToString());
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsgroupe;
         }
@@ -653,16 +680,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM groupe  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_groupe_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 30, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgroupe varclsgroupe = null;
                         while (dr.Read())
                         {
-
                             varclsgroupe = new clsgroupe();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgroupe.Id = int.Parse(dr["id"].ToString());
                             varclsgroupe.Designation = dr["designation"].ToString();
@@ -671,14 +697,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'groupe' avec la classe 'clsgroupe' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'groupe' avec la classe 'clsgroupe' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgroupe;
         }
@@ -707,14 +735,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgroupe;
         }
@@ -734,15 +764,17 @@ namespace smartManage.Model
                     if (varclsgroupe.Niveau.HasValue) cmd.Parameters.Add(getParameter(cmd, "@niveau", DbType.Int32, 4, varclsgroupe.Niveau));
                     else cmd.Parameters.Add(getParameter(cmd, "@niveau", DbType.Int32, 4, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -762,15 +794,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@niveau", DbType.Int32, 4, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgroupe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -786,15 +820,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM groupe  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgroupe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'groupe' avec la classe 'clsgroupe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -809,12 +845,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM serial WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM serial WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsserial.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsserial.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsserial.User_created = dr["user_created"].ToString();
@@ -824,14 +861,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsserial;
         }
@@ -844,17 +883,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM serial  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_serial_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsserial varclsserial = null;
                         while (dr.Read())
                         {
-
                             varclsserial = new clsserial();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsserial.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsserial.Valeur = int.Parse(dr["valeur"].ToString());
@@ -866,14 +903,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'serial' avec la classe 'clsserial' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'serial' avec la classe 'clsserial' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsserial;
         }
@@ -905,14 +944,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'serial' avec la classe 'clsserial' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsserial;
         }
@@ -937,15 +978,17 @@ namespace smartManage.Model
                     if (varclsserial.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsserial.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -970,15 +1013,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsserial.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -994,15 +1039,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM serial  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsserial.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'serial' avec la classe 'clsserial' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1017,12 +1064,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM marque WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM marque WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmarque.Id = int.Parse(dr["id"].ToString());
                             varclsmarque.Designation = dr["designation"].ToString();
                             varclsmarque.User_created = dr["user_created"].ToString();
@@ -1032,14 +1080,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsmarque;
         }
@@ -1052,18 +1102,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM marque  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_marque_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmarque varclsmarque = null;
                         while (dr.Read())
                         {
-
                             varclsmarque = new clsmarque();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmarque.Id = int.Parse(dr["id"].ToString());
                             varclsmarque.Designation = dr["designation"].ToString();
@@ -1075,14 +1122,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'marque' avec la classe 'clsmarque' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'marque' avec la classe 'clsmarque' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmarque;
         }
@@ -1098,11 +1147,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM marque ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmarque varclsmarque = null;
                         while (dr.Read())
                         {
-
                             varclsmarque = new clsmarque();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmarque.Id = int.Parse(dr["id"].ToString());
                             varclsmarque.Designation = dr["designation"].ToString();
@@ -1114,14 +1161,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'marque' avec la classe 'clsmarque' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'marque' avec la classe 'clsmarque' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmarque;
         }
@@ -1147,15 +1196,17 @@ namespace smartManage.Model
                     if (varclsmarque.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmarque.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1181,15 +1232,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmarque.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1205,15 +1258,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM marque  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmarque.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
+            { 
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'marque' avec la classe 'clsmarque' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1228,7 +1283,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM modele WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM modele WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -1242,14 +1299,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsmodele;
         }
@@ -1262,18 +1321,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM modele  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_modele_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmodele varclsmodele = null;
                         while (dr.Read())
                         {
-
                             varclsmodele = new clsmodele();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmodele.Id = int.Parse(dr["id"].ToString());
                             varclsmodele.Designation = dr["designation"].ToString();
@@ -1285,14 +1341,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'modele' avec la classe 'clsmodele' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'modele' avec la classe 'clsmodele' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmodele;
         }
@@ -1308,11 +1366,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM modele ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmodele varclsmodele = null;
                         while (dr.Read())
                         {
-
                             varclsmodele = new clsmodele();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmodele.Id = int.Parse(dr["id"].ToString());
                             varclsmodele.Designation = dr["designation"].ToString();
@@ -1324,14 +1380,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'modele' avec la classe 'clsmodele' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'modele' avec la classe 'clsmodele' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmodele;
         }
@@ -1357,15 +1415,17 @@ namespace smartManage.Model
                     if (varclsmodele.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmodele.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1391,15 +1451,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmodele.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1415,15 +1477,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM modele  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmodele.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'modele' avec la classe 'clsmodele' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1438,12 +1502,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM default_ip WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM default_ip WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_ip.Id = int.Parse(dr["id"].ToString());
                             varclsdefault_ip.Designation = dr["designation"].ToString();
                             varclsdefault_ip.User_created = dr["user_created"].ToString();
@@ -1453,14 +1518,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsdefault_ip;
         }
@@ -1473,18 +1540,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM default_ip  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_default_ip_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsdefault_ip varclsdefault_ip = null;
                         while (dr.Read())
                         {
-
                             varclsdefault_ip = new clsdefault_ip();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_ip.Id = int.Parse(dr["id"].ToString());
                             varclsdefault_ip.Designation = dr["designation"].ToString();
@@ -1496,14 +1560,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdefault_ip;
         }
@@ -1535,14 +1601,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdefault_ip;
         }
@@ -1568,15 +1636,17 @@ namespace smartManage.Model
                     if (varclsdefault_ip.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_ip.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1602,15 +1672,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_ip.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1626,15 +1698,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM default_ip  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_ip.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_ip' avec la classe 'clsdefault_ip' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1649,12 +1723,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM couleur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM couleur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclscouleur.Id = int.Parse(dr["id"].ToString());
                             varclscouleur.Designation = dr["designation"].ToString();
                             varclscouleur.User_created = dr["user_created"].ToString();
@@ -1664,14 +1739,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclscouleur;
         }
@@ -1684,18 +1761,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM couleur  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_compte_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clscouleur varclscouleur = null;
                         while (dr.Read())
                         {
-
                             varclscouleur = new clscouleur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclscouleur.Id = int.Parse(dr["id"].ToString());
                             varclscouleur.Designation = dr["designation"].ToString();
@@ -1707,14 +1781,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'couleur' avec la classe 'clscouleur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'couleur' avec la classe 'clscouleur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscouleur;
         }
@@ -1746,14 +1822,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'couleur' avec la classe 'clscouleur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'couleur' avec la classe 'clscouleur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscouleur;
         }
@@ -1779,15 +1857,17 @@ namespace smartManage.Model
                     if (varclscouleur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscouleur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1813,15 +1893,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscouleur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1837,15 +1919,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM couleur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscouleur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'couleur' avec la classe 'clscouleur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -1860,12 +1944,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM default_pwd WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM default_pwd WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
                             varclsdefault_pwd.Designation = dr["designation"].ToString();
                             varclsdefault_pwd.User_created = dr["user_created"].ToString();
@@ -1875,14 +1960,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsdefault_pwd;
         }
@@ -1895,18 +1982,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM default_pwd  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_default_pwd_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsdefault_pwd varclsdefault_pwd = null;
                         while (dr.Read())
                         {
-
                             varclsdefault_pwd = new clsdefault_pwd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
                             varclsdefault_pwd.Designation = dr["designation"].ToString();
@@ -1918,14 +2002,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdefault_pwd;
         }
@@ -1941,11 +2027,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM default_pwd ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsdefault_pwd varclsdefault_pwd = null;
                         while (dr.Read())
                         {
-
                             varclsdefault_pwd = new clsdefault_pwd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdefault_pwd.Id = int.Parse(dr["id"].ToString());
                             varclsdefault_pwd.Designation = dr["designation"].ToString();
@@ -1957,14 +2041,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdefault_pwd;
         }
@@ -1990,15 +2076,17 @@ namespace smartManage.Model
                     if (varclsdefault_pwd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdefault_pwd.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2024,15 +2112,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_pwd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2048,15 +2138,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM default_pwd  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdefault_pwd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'default_pwd' avec la classe 'clsdefault_pwd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2071,7 +2163,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM portee WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM portee WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -2085,14 +2179,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsportee;
         }
@@ -2105,10 +2201,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM portee  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_compte_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsportee varclsportee = null;
@@ -2125,14 +2221,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'portee' avec la classe 'clsportee' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'portee' avec la classe 'clsportee' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsportee;
         }
@@ -2163,14 +2261,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'portee' avec la classe 'clsportee' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'portee' avec la classe 'clsportee' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsportee;
         }
@@ -2195,15 +2295,17 @@ namespace smartManage.Model
                     if (varclsportee.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsportee.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2228,15 +2330,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsportee.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2252,15 +2356,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM portee  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsportee.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'portee' avec la classe 'clsportee' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2275,12 +2381,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM poids WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM poids WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspoids.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspoids.Valeur = double.Parse(dr["valeur"].ToString());
                             varclspoids.User_created = dr["user_created"].ToString();
@@ -2290,14 +2397,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspoids;
         }
@@ -2310,17 +2419,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM poids  WHERE";
-                    sql += "  user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_compte_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspoids varclspoids = null;
                         while (dr.Read())
                         {
-
                             varclspoids = new clspoids();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspoids.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspoids.Valeur = double.Parse(dr["valeur"].ToString());
@@ -2332,14 +2439,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'poids' avec la classe 'clspoids' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'poids' avec la classe 'clspoids' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspoids;
         }
@@ -2355,11 +2464,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM poids ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspoids varclspoids = null;
                         while (dr.Read())
                         {
-
                             varclspoids = new clspoids();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspoids.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspoids.Valeur = double.Parse(dr["valeur"].ToString());
@@ -2371,14 +2478,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'poids' avec la classe 'clspoids' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'poids' avec la classe 'clspoids' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspoids;
         }
@@ -2403,15 +2512,17 @@ namespace smartManage.Model
                     if (varclspoids.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspoids.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2436,15 +2547,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspoids.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2460,15 +2573,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM poids  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspoids.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'poids' avec la classe 'clspoids' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2483,12 +2598,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM console WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM console WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsconsole.User_created = dr["user_created"].ToString();
@@ -2498,14 +2614,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsconsole;
         }
@@ -2518,17 +2636,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM console  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_compte_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsconsole varclsconsole = null;
                         while (dr.Read())
                         {
-
                             varclsconsole = new clsconsole();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
@@ -2540,14 +2656,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'console' avec la classe 'clsconsole' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'console' avec la classe 'clsconsole' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsconsole;
         }
@@ -2567,7 +2685,6 @@ namespace smartManage.Model
                         clsconsole varclsconsole = null;
                         while (dr.Read())
                         {
-
                             varclsconsole = new clsconsole();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsconsole.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsconsole.Valeur = int.Parse(dr["valeur"].ToString());
@@ -2579,14 +2696,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'console' avec la classe 'clsconsole' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsconsole;
         }
@@ -2611,15 +2730,17 @@ namespace smartManage.Model
                     if (varclsconsole.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsconsole.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2644,15 +2765,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsconsole.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2668,15 +2791,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM console  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsconsole.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'console' avec la classe 'clsconsole' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2691,7 +2816,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_ordinateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_ordinateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -2706,14 +2833,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_ordinateur;
         }
@@ -2726,18 +2855,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_ordinateur  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_ordinateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_ordinateur varclstype_ordinateur = null;
                         while (dr.Read())
                         {
-
                             varclstype_ordinateur = new clstype_ordinateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_ordinateur.Id = int.Parse(dr["id"].ToString());
                             varclstype_ordinateur.Designation = dr["designation"].ToString();
@@ -2749,14 +2875,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_ordinateur;
         }
@@ -2772,11 +2900,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_ordinateur ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_ordinateur varclstype_ordinateur = null;
                         while (dr.Read())
                         {
-
                             varclstype_ordinateur = new clstype_ordinateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_ordinateur.Id = int.Parse(dr["id"].ToString());
                             varclstype_ordinateur.Designation = dr["designation"].ToString();
@@ -2788,14 +2914,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_ordinateur;
         }
@@ -2821,15 +2949,17 @@ namespace smartManage.Model
                     if (varclstype_ordinateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_ordinateur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2855,15 +2985,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_ordinateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2879,15 +3011,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_ordinateur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_ordinateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_ordinateur' avec la classe 'clstype_ordinateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -2902,12 +3036,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM auxiliaire WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM auxiliaire WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsauxiliaire.User_created = dr["user_created"].ToString();
@@ -2917,14 +3052,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsauxiliaire;
         }
@@ -2937,17 +3074,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM auxiliaire  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_auxiliaire_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsauxiliaire varclsauxiliaire = null;
                         while (dr.Read())
                         {
-
                             varclsauxiliaire = new clsauxiliaire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
@@ -2959,14 +3094,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsauxiliaire;
         }
@@ -2982,11 +3119,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM auxiliaire ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsauxiliaire varclsauxiliaire = null;
                         while (dr.Read())
                         {
-
                             varclsauxiliaire = new clsauxiliaire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsauxiliaire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsauxiliaire.Valeur = int.Parse(dr["valeur"].ToString());
@@ -2998,14 +3133,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsauxiliaire;
         }
@@ -3030,15 +3167,17 @@ namespace smartManage.Model
                     if (varclsauxiliaire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsauxiliaire.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3063,15 +3202,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsauxiliaire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3087,15 +3228,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM auxiliaire  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsauxiliaire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'auxiliaire' avec la classe 'clsauxiliaire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3110,7 +3253,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM telephone WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM telephone WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -3126,14 +3271,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstelephone;
         }
@@ -3146,12 +3293,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM telephone  WHERE 1=1";
-                    sql += "  OR   code LIKE '%" + criteria + "%'";
-                    sql += "  OR   numero LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_telephone_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clstelephone varclstelephone = null;
@@ -3170,14 +3315,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstelephone;
         }
@@ -3190,12 +3337,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM telephone INNER JOIN personne ON personne.id=telephone.id_personne WHERE personne.id=@id";
-                    sql += "  OR   code LIKE '%" + criteria + "%'";
-                    sql += "  OR   numero LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY numero ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_telephone_personne_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
 
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -3216,14 +3360,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstelephone;
         }
@@ -3256,14 +3402,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstelephone;
         }
@@ -3286,14 +3434,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lsttelephonepersonne;
         }
@@ -3311,7 +3461,6 @@ namespace smartManage.Model
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstelephone varclstelephone = null;
                         while (dr.Read())
                         {
@@ -3328,14 +3477,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstelephone;
         }
@@ -3364,15 +3515,17 @@ namespace smartManage.Model
                     if (varclstelephone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstelephone.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3401,15 +3554,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstelephone.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3425,15 +3580,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM telephone  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstelephone.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'telephone' avec la classe 'clstelephone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3448,12 +3605,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_imprimante WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_imprimante WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_imprimante.Id = int.Parse(dr["id"].ToString());
                             varclstype_imprimante.Designation = dr["designation"].ToString();
                             varclstype_imprimante.User_created = dr["user_created"].ToString();
@@ -3463,14 +3621,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_imprimante;
         }
@@ -3483,18 +3643,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_imprimante  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_imprimante_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_imprimante varclstype_imprimante = null;
                         while (dr.Read())
                         {
-
                             varclstype_imprimante = new clstype_imprimante();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_imprimante.Id = int.Parse(dr["id"].ToString());
                             varclstype_imprimante.Designation = dr["designation"].ToString();
@@ -3506,14 +3663,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_imprimante' avec la classe 'clstype_imprimante' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_imprimante' avec la classe 'clstype_imprimante' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_imprimante;
         }
@@ -3529,11 +3688,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_imprimante ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_imprimante varclstype_imprimante = null;
                         while (dr.Read())
                         {
-
                             varclstype_imprimante = new clstype_imprimante();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_imprimante.Id = int.Parse(dr["id"].ToString());
                             varclstype_imprimante.Designation = dr["designation"].ToString();
@@ -3545,14 +3702,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_imprimante;
         }
@@ -3578,15 +3737,17 @@ namespace smartManage.Model
                     if (varclstype_imprimante.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_imprimante.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3612,15 +3773,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_imprimante.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3636,15 +3799,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_imprimante  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_imprimante.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_imprimante' avec la classe 'clstype_imprimante' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3659,7 +3824,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM frequence WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM frequence WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -3673,14 +3840,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsfrequence;
         }
@@ -3693,11 +3862,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM frequence  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_frequence_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsfrequence varclsfrequence = null;
@@ -3714,14 +3882,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfrequence;
         }
@@ -3737,7 +3907,6 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM frequence ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfrequence varclsfrequence = null;
                         while (dr.Read())
                         {
@@ -3752,14 +3921,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfrequence;
         }
@@ -3785,15 +3956,17 @@ namespace smartManage.Model
                     if (varclsfrequence.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfrequence.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3819,15 +3992,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfrequence.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3843,15 +4018,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM frequence  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfrequence.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'frequence' avec la classe 'clsfrequence' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -3866,12 +4043,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM antenne WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM antenne WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsantenne.User_created = dr["user_created"].ToString();
@@ -3881,14 +4059,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsantenne;
         }
@@ -3901,17 +4081,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM antenne  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_antenne_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsantenne varclsantenne = null;
                         while (dr.Read())
                         {
-
                             varclsantenne = new clsantenne();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
@@ -3923,14 +4101,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsantenne;
         }
@@ -3946,11 +4126,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM antenne ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsantenne varclsantenne = null;
                         while (dr.Read())
                         {
-
                             varclsantenne = new clsantenne();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsantenne.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsantenne.Valeur = int.Parse(dr["valeur"].ToString());
@@ -3962,14 +4140,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'antenne' avec la classe 'clsantenne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsantenne;
         }
@@ -3994,15 +4174,17 @@ namespace smartManage.Model
                     if (varclsantenne.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsantenne.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4027,15 +4209,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsantenne.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4051,15 +4235,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM antenne  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsantenne.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'antenne' avec la classe 'clsantenne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4074,7 +4260,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_amplificateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_amplificateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -4089,14 +4277,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_amplificateur;
         }
@@ -4109,18 +4299,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_amplificateur  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "type_amplificateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_amplificateur varclstype_amplificateur = null;
                         while (dr.Read())
                         {
-
                             varclstype_amplificateur = new clstype_amplificateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_amplificateur.Id = int.Parse(dr["id"].ToString());
                             varclstype_amplificateur.Designation = dr["designation"].ToString();
@@ -4132,14 +4319,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_amplificateur;
         }
@@ -4155,11 +4344,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_amplificateur ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_amplificateur varclstype_amplificateur = null;
                         while (dr.Read())
                         {
-
                             varclstype_amplificateur = new clstype_amplificateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_amplificateur.Id = int.Parse(dr["id"].ToString());
                             varclstype_amplificateur.Designation = dr["designation"].ToString();
@@ -4171,14 +4358,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_amplificateur;
         }
@@ -4204,15 +4393,17 @@ namespace smartManage.Model
                     if (varclstype_amplificateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_amplificateur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4238,15 +4429,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_amplificateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4262,15 +4455,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_amplificateur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_amplificateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_amplificateur' avec la classe 'clstype_amplificateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4285,7 +4480,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM email WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM email WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -4300,14 +4497,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsemail;
         }
@@ -4320,11 +4519,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM email  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_email_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsemail varclsemail = null;
@@ -4342,14 +4540,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsemail;
         }
@@ -4362,11 +4562,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM email INNER JOIN personne ON personne.id=email.id_personne WHERE personne.id=@id";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_email_personne_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
 
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -4386,14 +4584,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'email' avec la classe 'clsemail' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsemail;
         }
@@ -4425,14 +4625,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsemail;
         }
@@ -4465,14 +4667,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsemail;
         }
@@ -4499,15 +4703,17 @@ namespace smartManage.Model
                     if (varclsemail.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsemail.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4534,15 +4740,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsemail.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4558,15 +4766,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM email  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsemail.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'email' avec la classe 'clsemail' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4581,12 +4791,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_routeur_AP WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_routeur_AP WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_routeur_AP.Id = int.Parse(dr["id"].ToString());
                             varclstype_routeur_AP.Designation = dr["designation"].ToString();
                             varclstype_routeur_AP.User_created = dr["user_created"].ToString();
@@ -4596,14 +4807,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_routeur_AP;
         }
@@ -4616,18 +4829,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_routeur_AP  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_routeur_AP_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_routeur_AP varclstype_routeur_AP = null;
                         while (dr.Read())
                         {
-
                             varclstype_routeur_AP = new clstype_routeur_AP();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_routeur_AP.Id = int.Parse(dr["id"].ToString());
                             varclstype_routeur_AP.Designation = dr["designation"].ToString();
@@ -4639,14 +4849,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_routeur_AP;
         }
@@ -4662,11 +4874,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_routeur_AP ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_routeur_AP varclstype_routeur_AP = null;
                         while (dr.Read())
                         {
-
                             varclstype_routeur_AP = new clstype_routeur_AP();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_routeur_AP.Id = int.Parse(dr["id"].ToString());
                             varclstype_routeur_AP.Designation = dr["designation"].ToString();
@@ -4678,14 +4888,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_routeur_AP;
         }
@@ -4711,15 +4923,17 @@ namespace smartManage.Model
                     if (varclstype_routeur_AP.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_routeur_AP.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4745,15 +4959,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_routeur_AP.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4769,15 +4985,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_routeur_AP  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_routeur_AP.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_routeur_AP' avec la classe 'clstype_routeur_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -4792,7 +5010,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM adresse WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM adresse WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -4807,14 +5027,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsadresse;
         }
@@ -4827,11 +5049,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM adresse  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_adresse_AP_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clsadresse varclsadresse = null;
@@ -4849,14 +5070,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsadresse;
         }
@@ -4869,11 +5092,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM adresse INNER JOIN personne ON personne.id=adresse.id_personne WHERE personne.id=@id";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_adresse_personne_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 300, criteria));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
 
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -4893,14 +5114,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsadresse;
         }
@@ -4932,14 +5155,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsadresse;
         }
@@ -4972,14 +5197,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsadresse;
         } 
@@ -5006,15 +5233,17 @@ namespace smartManage.Model
                     if (varclsadresse.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsadresse.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5041,15 +5270,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsadresse.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5065,15 +5296,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM adresse  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsadresse.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'adresse' avec la classe 'clsadresse' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5088,7 +5321,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_AP WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_AP WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -5103,14 +5338,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_AP;
         }
@@ -5123,18 +5360,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_AP  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_AP_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_AP varclstype_AP = null;
                         while (dr.Read())
                         {
-
                             varclstype_AP = new clstype_AP();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_AP.Id = int.Parse(dr["id"].ToString());
                             varclstype_AP.Designation = dr["designation"].ToString();
@@ -5146,14 +5380,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_AP' avec la classe 'clstype_AP' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_AP' avec la classe 'clstype_AP' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_AP;
         }
@@ -5169,11 +5405,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_AP ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_AP varclstype_AP = null;
                         while (dr.Read())
                         {
-
                             varclstype_AP = new clstype_AP();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_AP.Id = int.Parse(dr["id"].ToString());
                             varclstype_AP.Designation = dr["designation"].ToString();
@@ -5185,14 +5419,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_AP;
         }
@@ -5218,15 +5454,17 @@ namespace smartManage.Model
                     if (varclstype_AP.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_AP.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5252,15 +5490,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_AP.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5276,15 +5516,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_AP  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_AP.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_AP' avec la classe 'clstype_AP' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5299,7 +5541,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_switch WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_switch WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -5314,14 +5558,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_switch;
         }
@@ -5334,18 +5580,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_switch  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_switch_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_switch varclstype_switch = null;
                         while (dr.Read())
                         {
-
                             varclstype_switch = new clstype_switch();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_switch.Id = int.Parse(dr["id"].ToString());
                             varclstype_switch.Designation = dr["designation"].ToString();
@@ -5357,14 +5600,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_switch' avec la classe 'clstype_switch' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_switch' avec la classe 'clstype_switch' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_switch;
         }
@@ -5380,11 +5625,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_switch ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_switch varclstype_switch = null;
                         while (dr.Read())
                         {
-
                             varclstype_switch = new clstype_switch();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_switch.Id = int.Parse(dr["id"].ToString());
                             varclstype_switch.Designation = dr["designation"].ToString();
@@ -5396,14 +5639,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_switch;
         }
@@ -5429,15 +5674,17 @@ namespace smartManage.Model
                     if (varclstype_switch.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_switch.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5463,15 +5710,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_switch.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5487,15 +5736,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_switch  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_switch.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_switch' avec la classe 'clstype_switch' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5510,12 +5761,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_clavier WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_clavier WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_clavier.Id = int.Parse(dr["id"].ToString());
                             varclstype_clavier.Designation = dr["designation"].ToString();
                             varclstype_clavier.User_created = dr["user_created"].ToString();
@@ -5525,14 +5777,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_clavier;
         }
@@ -5545,18 +5799,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_clavier  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_clavier_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_clavier varclstype_clavier = null;
                         while (dr.Read())
                         {
-
                             varclstype_clavier = new clstype_clavier();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_clavier.Id = int.Parse(dr["id"].ToString());
                             varclstype_clavier.Designation = dr["designation"].ToString();
@@ -5568,14 +5819,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_clavier' avec la classe 'clstype_clavier' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_clavier' avec la classe 'clstype_clavier' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_clavier;
         }
@@ -5591,11 +5844,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_clavier ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_clavier varclstype_clavier = null;
                         while (dr.Read())
                         {
-
                             varclstype_clavier = new clstype_clavier();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_clavier.Id = int.Parse(dr["id"].ToString());
                             varclstype_clavier.Designation = dr["designation"].ToString();
@@ -5607,14 +5858,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_clavier;
         }
@@ -5640,15 +5893,17 @@ namespace smartManage.Model
                     if (varclstype_clavier.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_clavier.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5674,15 +5929,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_clavier.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5698,15 +5955,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_clavier  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_clavier.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_clavier' avec la classe 'clstype_clavier' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5721,12 +5980,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM etat_materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM etat_materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsetat_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsetat_materiel.Designation = dr["designation"].ToString();
                             varclsetat_materiel.User_created = dr["user_created"].ToString();
@@ -5736,14 +5996,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsetat_materiel;
         }
@@ -5756,18 +6018,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM etat_materiel  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_etat_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsetat_materiel varclsetat_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsetat_materiel = new clsetat_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsetat_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsetat_materiel.Designation = dr["designation"].ToString();
@@ -5779,14 +6038,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'etat_materiel' avec la classe 'clsetat_materiel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'etat_materiel' avec la classe 'clsetat_materiel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsetat_materiel;
         }
@@ -5802,11 +6063,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM etat_materiel ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsetat_materiel varclsetat_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsetat_materiel = new clsetat_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsetat_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsetat_materiel.Designation = dr["designation"].ToString();
@@ -5818,14 +6077,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsetat_materiel;
         }
@@ -5851,15 +6112,17 @@ namespace smartManage.Model
                     if (varclsetat_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsetat_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5885,15 +6148,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsetat_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5909,15 +6174,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM etat_materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsetat_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'etat_materiel' avec la classe 'clsetat_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -5932,12 +6199,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_OS WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_OS WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_OS.Id = int.Parse(dr["id"].ToString());
                             varclstype_OS.Designation = dr["designation"].ToString();
                             varclstype_OS.User_created = dr["user_created"].ToString();
@@ -5947,14 +6215,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_OS;
         }
@@ -5967,18 +6237,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_OS  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_OS_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_OS varclstype_OS = null;
                         while (dr.Read())
                         {
-
                             varclstype_OS = new clstype_OS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_OS.Id = int.Parse(dr["id"].ToString());
                             varclstype_OS.Designation = dr["designation"].ToString();
@@ -5990,14 +6257,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_OS' avec la classe 'clstype_OS' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_OS' avec la classe 'clstype_OS' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_OS;
         }
@@ -6013,11 +6282,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_OS ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_OS varclstype_OS = null;
                         while (dr.Read())
                         {
-
                             varclstype_OS = new clstype_OS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_OS.Id = int.Parse(dr["id"].ToString());
                             varclstype_OS.Designation = dr["designation"].ToString();
@@ -6029,14 +6296,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_OS;
         }
@@ -6062,15 +6331,17 @@ namespace smartManage.Model
                     if (varclstype_OS.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_OS.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6096,15 +6367,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_OS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6120,15 +6393,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_OS  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_OS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_OS' avec la classe 'clstype_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6143,12 +6418,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM architecture_OS WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM architecture_OS WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsarchitecture_OS.Id = int.Parse(dr["id"].ToString());
                             varclsarchitecture_OS.Designation = dr["designation"].ToString();
                             varclsarchitecture_OS.User_created = dr["user_created"].ToString();
@@ -6158,14 +6434,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsarchitecture_OS;
         }
@@ -6178,18 +6456,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM architecture_OS  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_architecture_OS_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsarchitecture_OS varclsarchitecture_OS = null;
                         while (dr.Read())
                         {
-
                             varclsarchitecture_OS = new clsarchitecture_OS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsarchitecture_OS.Id = int.Parse(dr["id"].ToString());
                             varclsarchitecture_OS.Designation = dr["designation"].ToString();
@@ -6201,14 +6476,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsarchitecture_OS;
         }
@@ -6224,11 +6501,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM architecture_OS ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsarchitecture_OS varclsarchitecture_OS = null;
                         while (dr.Read())
                         {
-
                             varclsarchitecture_OS = new clsarchitecture_OS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsarchitecture_OS.Id = int.Parse(dr["id"].ToString());
                             varclsarchitecture_OS.Designation = dr["designation"].ToString();
@@ -6240,14 +6515,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsarchitecture_OS;
         }
@@ -6273,15 +6550,17 @@ namespace smartManage.Model
                     if (varclsarchitecture_OS.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsarchitecture_OS.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6307,15 +6586,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsarchitecture_OS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6331,15 +6612,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM architecture_OS  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsarchitecture_OS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'architecture_OS' avec la classe 'clsarchitecture_OS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6354,14 +6637,16 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format(@"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
+                    cmd.CommandText = @"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
                     INNER JOIN architecture_OS ON architecture_OS.id = OS.id_architecture_OS
-                    INNER JOIN type_OS ON type_OS.id = OS.id_type_OS WHERE OS.id={0}", intid);
+                    INNER JOIN type_OS ON type_OS.id = OS.id_type_OS WHERE OS.id=@id";
+
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsOS.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_type_OS"].ToString().Trim().Equals("")) varclsOS.Id_type_os = int.Parse(dr["id_type_OS"].ToString());
                             if (!dr["id_architecture_OS"].ToString().Trim().Equals("")) varclsOS.Id_architecture_os = int.Parse(dr["id_architecture_OS"].ToString());
@@ -6373,14 +6658,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsOS;
         }
@@ -6393,20 +6680,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = @"SELECT type_OS.designation + ' ' + OS.designation + ' ' + architecture_OS.designation AS designation,OS.*  FROM OS 
-                    INNER JOIN architecture_OS ON architecture_OS.id=OS.id_architecture_OS 
-                    INNER JOIN type_OS ON type_OS.id=OS.id_type_OS WHERE";
-                    sql += "  OS.designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   OS.user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   OS.user_modified LIKE '%" + criteria + "%' ORDER BY OS.designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_OS_architecture_OS_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsOS varclsOS = null;
                         while (dr.Read())
                         {
-
                             varclsOS = new clsOS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsOS.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_type_OS"].ToString().Trim().Equals("")) varclsOS.Id_type_os = int.Parse(dr["id_type_OS"].ToString());
@@ -6420,14 +6702,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'OS' avec la classe 'clsOS' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'OS' avec la classe 'clsOS' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsOS;
         }
@@ -6445,11 +6729,9 @@ namespace smartManage.Model
                     INNER JOIN type_OS ON type_OS.id=OS.id_type_OS ORDER BY OS.designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsOS varclsOS = null;
                         while (dr.Read())
                         {
-
                             varclsOS = new clsOS();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsOS.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_type_OS"].ToString().Trim().Equals("")) varclsOS.Id_type_os = int.Parse(dr["id_type_OS"].ToString());
@@ -6463,14 +6745,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'OS' avec la classe 'clsOS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'OS' avec la classe 'clsOS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsOS;
         }
@@ -6498,15 +6782,17 @@ namespace smartManage.Model
                     if (varclsOS.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsOS.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6534,15 +6820,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsOS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6558,15 +6846,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM OS  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsOS.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'OS' avec la classe 'clsOS' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6581,12 +6871,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM version_ios WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM version_ios WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsversion_ios.Id = int.Parse(dr["id"].ToString());
                             varclsversion_ios.Designation = dr["designation"].ToString();
                             varclsversion_ios.User_created = dr["user_created"].ToString();
@@ -6596,14 +6887,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsversion_ios;
         }
@@ -6616,18 +6909,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM version_ios  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_version_ios_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsversion_ios varclsversion_ios = null;
                         while (dr.Read())
                         {
-
                             varclsversion_ios = new clsversion_ios();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsversion_ios.Id = int.Parse(dr["id"].ToString());
                             varclsversion_ios.Designation = dr["designation"].ToString();
@@ -6639,14 +6929,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'version_ios' avec la classe 'clsversion_ios' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'version_ios' avec la classe 'clsversion_ios' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsversion_ios;
         }
@@ -6662,11 +6954,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM version_ios ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsversion_ios varclsversion_ios = null;
                         while (dr.Read())
                         {
-
                             varclsversion_ios = new clsversion_ios();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsversion_ios.Id = int.Parse(dr["id"].ToString());
                             varclsversion_ios.Designation = dr["designation"].ToString();
@@ -6678,14 +6968,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsversion_ios;
         }
@@ -6711,15 +7003,17 @@ namespace smartManage.Model
                     if (varclsversion_ios.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsversion_ios.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6745,15 +7039,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsversion_ios.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6769,15 +7065,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM version_ios  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsversion_ios.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'version_ios' avec la classe 'clsversion_ios' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6792,12 +7090,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM netette WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM netette WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnetette.Id = int.Parse(dr["id"].ToString());
                             varclsnetette.Designation = dr["designation"].ToString();
                             varclsnetette.User_created = dr["user_created"].ToString();
@@ -6807,14 +7106,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsnetette;
         }
@@ -6827,18 +7128,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM netette  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_netette_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnetette varclsnetette = null;
                         while (dr.Read())
                         {
-
                             varclsnetette = new clsnetette();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnetette.Id = int.Parse(dr["id"].ToString());
                             varclsnetette.Designation = dr["designation"].ToString();
@@ -6850,14 +7148,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'netette' avec la classe 'clsnetette' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'netette' avec la classe 'clsnetette' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnetette;
         }
@@ -6873,11 +7173,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM netette ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnetette varclsnetette = null;
                         while (dr.Read())
                         {
-
                             varclsnetette = new clsnetette();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnetette.Id = int.Parse(dr["id"].ToString());
                             varclsnetette.Designation = dr["designation"].ToString();
@@ -6889,14 +7187,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'netette' avec la classe 'clsnetette' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'netette' avec la classe 'clsnetette' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnetette;
         }
@@ -6922,15 +7222,17 @@ namespace smartManage.Model
                     if (varclsnetette.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnetette.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6956,15 +7258,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnetette.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -6980,15 +7284,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM netette  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnetette.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'netette' avec la classe 'clsnetette' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7003,12 +7309,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM garantie WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM garantie WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsgarantie.User_created = dr["user_created"].ToString();
@@ -7018,14 +7325,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsgarantie;
         }
@@ -7038,17 +7347,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM garantie  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_garantie_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgarantie varclsgarantie = null;
                         while (dr.Read())
                         {
-
                             varclsgarantie = new clsgarantie();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
@@ -7060,14 +7367,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgarantie;
         }
@@ -7083,11 +7392,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM garantie ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgarantie varclsgarantie = null;
                         while (dr.Read())
                         {
-
                             varclsgarantie = new clsgarantie();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgarantie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgarantie.Valeur = int.Parse(dr["valeur"].ToString());
@@ -7099,14 +7406,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgarantie;
         }
@@ -7131,15 +7440,17 @@ namespace smartManage.Model
                     if (varclsgarantie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgarantie.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7164,15 +7475,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgarantie.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7188,15 +7501,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM garantie  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgarantie.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'garantie' avec la classe 'clsgarantie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7211,12 +7526,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM ram WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM ram WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
                             varclsram.User_created = dr["user_created"].ToString();
@@ -7226,14 +7542,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsram;
         }
@@ -7246,17 +7564,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM ram  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_ram_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsram varclsram = null;
                         while (dr.Read())
                         {
-
                             varclsram = new clsram();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
@@ -7268,14 +7584,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'ram' avec la classe 'clsram' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'ram' avec la classe 'clsram' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsram;
         }
@@ -7291,11 +7609,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM ram ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsram varclsram = null;
                         while (dr.Read())
                         {
-
                             varclsram = new clsram();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsram.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsram.Valeur = double.Parse(dr["valeur"].ToString());
@@ -7307,14 +7623,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'ram' avec la classe 'clsram' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsram;
         }
@@ -7339,15 +7657,17 @@ namespace smartManage.Model
                     if (varclsram.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsram.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7372,15 +7692,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7396,15 +7718,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM ram  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'ram' avec la classe 'clsram' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7419,12 +7743,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM processeur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM processeur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
                             varclsprocesseur.User_created = dr["user_created"].ToString();
@@ -7434,14 +7759,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsprocesseur;
         }
@@ -7454,17 +7781,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM processeur  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_processeur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsprocesseur varclsprocesseur = null;
                         while (dr.Read())
                         {
-
                             varclsprocesseur = new clsprocesseur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -7476,14 +7801,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsprocesseur;
         }
@@ -7499,11 +7826,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM processeur ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsprocesseur varclsprocesseur = null;
                         while (dr.Read())
                         {
-
                             varclsprocesseur = new clsprocesseur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsprocesseur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsprocesseur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -7515,14 +7840,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsprocesseur;
         }
@@ -7547,15 +7874,17 @@ namespace smartManage.Model
                     if (varclsprocesseur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsprocesseur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7580,15 +7909,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7604,15 +7935,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM processeur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'processeur' avec la classe 'clsprocesseur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7627,12 +7960,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM nombre_coeur_processeur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM nombre_coeur_processeur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsnombre_coeur_processeur.User_created = dr["user_created"].ToString();
@@ -7642,14 +7976,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsnombre_coeur_processeur;
         }
@@ -7662,17 +7998,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM nombre_coeur_processeur  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_nombre_coeur_processeur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnombre_coeur_processeur varclsnombre_coeur_processeur = null;
                         while (dr.Read())
                         {
-
                             varclsnombre_coeur_processeur = new clsnombre_coeur_processeur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
@@ -7684,14 +8018,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnombre_coeur_processeur;
         }
@@ -7707,11 +8043,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM nombre_coeur_processeur ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnombre_coeur_processeur varclsnombre_coeur_processeur = null;
                         while (dr.Read())
                         {
-
                             varclsnombre_coeur_processeur = new clsnombre_coeur_processeur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_coeur_processeur.Valeur = int.Parse(dr["valeur"].ToString());
@@ -7723,14 +8057,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnombre_coeur_processeur;
         }
@@ -7755,15 +8091,17 @@ namespace smartManage.Model
                     if (varclsnombre_coeur_processeur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_coeur_processeur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7788,15 +8126,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_coeur_processeur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7812,15 +8152,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM nombre_coeur_processeur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_coeur_processeur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_coeur_processeur' avec la classe 'clsnombre_coeur_processeur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7835,12 +8177,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_hdd WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_hdd WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
                             varclstype_hdd.Designation = dr["designation"].ToString();
                             varclstype_hdd.User_created = dr["user_created"].ToString();
@@ -7850,14 +8193,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_hdd;
         }
@@ -7870,18 +8215,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_hdd  WHERE 1=1";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_hdd_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_hdd varclstype_hdd = null;
                         while (dr.Read())
                         {
-
                             varclstype_hdd = new clstype_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
                             varclstype_hdd.Designation = dr["designation"].ToString();
@@ -7893,14 +8235,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_hdd;
         }
@@ -7916,11 +8260,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_hdd ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_hdd varclstype_hdd = null;
                         while (dr.Read())
                         {
-
                             varclstype_hdd = new clstype_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_hdd.Id = int.Parse(dr["id"].ToString());
                             varclstype_hdd.Designation = dr["designation"].ToString();
@@ -7932,14 +8274,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_hdd;
         }
@@ -7965,15 +8309,17 @@ namespace smartManage.Model
                     if (varclstype_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_hdd.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -7999,15 +8345,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8023,15 +8371,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_hdd  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_hdd' avec la classe 'clstype_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8046,12 +8396,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM nombre_hdd WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM nombre_hdd WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsnombre_hdd.User_created = dr["user_created"].ToString();
@@ -8061,14 +8412,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsnombre_hdd;
         }
@@ -8081,17 +8434,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM nombre_hdd  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_nombre_hdd_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnombre_hdd varclsnombre_hdd = null;
                         while (dr.Read())
                         {
-
                             varclsnombre_hdd = new clsnombre_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8103,14 +8454,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnombre_hdd;
         }
@@ -8126,11 +8479,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM nombre_hdd ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsnombre_hdd varclsnombre_hdd = null;
                         while (dr.Read())
                         {
-
                             varclsnombre_hdd = new clsnombre_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsnombre_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsnombre_hdd.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8142,14 +8493,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsnombre_hdd;
         }
@@ -8174,15 +8527,17 @@ namespace smartManage.Model
                     if (varclsnombre_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsnombre_hdd.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8207,15 +8562,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8231,15 +8588,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM nombre_hdd  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsnombre_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'nombre_hdd' avec la classe 'clsnombre_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8254,12 +8613,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM capacite_hdd WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM capacite_hdd WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
                             varclscapacite_hdd.User_created = dr["user_created"].ToString();
@@ -8269,14 +8629,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclscapacite_hdd;
         }
@@ -8289,17 +8651,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM capacite_hdd  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_capacite_hdd_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clscapacite_hdd varclscapacite_hdd = null;
                         while (dr.Read())
                         {
-
                             varclscapacite_hdd = new clscapacite_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8311,14 +8671,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscapacite_hdd;
         }
@@ -8334,11 +8696,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM capacite_hdd ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clscapacite_hdd varclscapacite_hdd = null;
                         while (dr.Read())
                         {
-
                             varclscapacite_hdd = new clscapacite_hdd();
                             if (!dr["id"].ToString().Trim().Equals("")) varclscapacite_hdd.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclscapacite_hdd.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8350,14 +8710,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscapacite_hdd;
         }
@@ -8382,15 +8744,17 @@ namespace smartManage.Model
                     if (varclscapacite_hdd.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscapacite_hdd.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8415,15 +8779,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscapacite_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8439,15 +8805,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM capacite_hdd  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscapacite_hdd.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'capacite_hdd' avec la classe 'clscapacite_hdd' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8462,12 +8830,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM taille_ecran WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM taille_ecran WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
                             varclstaille_ecran.User_created = dr["user_created"].ToString();
@@ -8477,14 +8846,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstaille_ecran;
         }
@@ -8497,17 +8868,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM taille_ecran  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_taille_ecran_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstaille_ecran varclstaille_ecran = null;
                         while (dr.Read())
                         {
-
                             varclstaille_ecran = new clstaille_ecran();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8519,14 +8888,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstaille_ecran;
         }
@@ -8542,11 +8913,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM taille_ecran ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstaille_ecran varclstaille_ecran = null;
                         while (dr.Read())
                         {
-
                             varclstaille_ecran = new clstaille_ecran();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstaille_ecran.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstaille_ecran.Valeur = int.Parse(dr["valeur"].ToString());
@@ -8558,14 +8927,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstaille_ecran;
         }
@@ -8590,15 +8961,17 @@ namespace smartManage.Model
                     if (varclstaille_ecran.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstaille_ecran.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8623,15 +8996,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstaille_ecran.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8647,15 +9022,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM taille_ecran  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstaille_ecran.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'taille_ecran' avec la classe 'clstaille_ecran' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -8747,7 +9124,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -8827,14 +9206,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsmateriel;
         }
@@ -8847,26 +9228,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM materiel  WHERE 1=1";
-                    sql += "  OR   code_str LIKE '%" + criteria + "%'";
-                    sql += "  OR   qrcode LIKE '%" + criteria + "%'";
-                    sql += "  OR   photo1 LIKE '%" + criteria + "%'";
-                    sql += "  OR   photo2 LIKE '%" + criteria + "%'";
-                    sql += "  OR   photo3 LIKE '%" + criteria + "%'";
-                    sql += "  OR   label LIKE '%" + criteria + "%'";
-                    sql += "  OR   mac_adresse1 LIKE '%" + criteria + "%'";
-                    sql += "  OR   mac_adresse2 LIKE '%" + criteria + "%'";
-                    sql += "  OR   commentaire LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY code_str ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -8944,14 +9314,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -8967,11 +9339,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel ORDER BY id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9049,14 +9419,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9072,11 +9444,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=1 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9154,14 +9524,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9177,11 +9549,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=2 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9259,14 +9629,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9282,11 +9654,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=3 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9364,14 +9734,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9387,11 +9759,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=4 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9469,14 +9839,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9492,11 +9864,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=5 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9574,14 +9944,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9597,11 +9969,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=6 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9679,14 +10049,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9702,11 +10074,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=7 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9784,14 +10154,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9807,11 +10179,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=8 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9889,14 +10259,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -9912,11 +10284,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel INNER JOIN categorie_materiel ON categorie_materiel.id=materiel.id_categorie_materiel WHERE categorie_materiel.id=9 ORDER BY materiel.id ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
-
                             varclsmateriel = new clsmateriel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmateriel.Id = int.Parse(dr["id"].ToString());
                             varclsmateriel.Code_str = dr["code_str"].ToString();
@@ -9994,14 +10364,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -10017,7 +10389,6 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel where mac_adresse1 is not null");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
@@ -10098,14 +10469,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -10121,7 +10494,6 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM materiel where mac_adresse2 is not null");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmateriel varclsmateriel = null;
                         while (dr.Read())
                         {
@@ -10202,14 +10574,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmateriel;
         }
@@ -10231,7 +10605,7 @@ namespace smartManage.Model
 
                     foreach (char c in mac_address)
                     {
-                        if (!Char.IsLetterOrDigit(c))
+                        if (!char.IsLetterOrDigit(c))
                             throw new Exception(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
                         else
                         {
@@ -10430,15 +10804,17 @@ namespace smartManage.Model
                     if (varclsmateriel.Id_portee.HasValue) cmd.Parameters.Add(getParameter(cmd, "@id_portee", DbType.Int32, 4, varclsmateriel.Id_portee));
                     else cmd.Parameters.Add(getParameter(cmd, "@id_portee", DbType.Int32, 4, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10589,15 +10965,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@id_portee", DbType.Int32, 4, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10614,15 +10992,17 @@ namespace smartManage.Model
                     cmd.Parameters.Add(getParameter(cmd, "@archiver", DbType.Boolean, 2, varclsmateriel.Archiver));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10638,15 +11018,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmateriel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'materiel' avec la classe 'clsmateriel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10661,12 +11043,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM grade WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM grade WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgrade.Id = int.Parse(dr["id"].ToString());
                             varclsgrade.Designation = dr["designation"].ToString();
                             varclsgrade.User_created = dr["user_created"].ToString();
@@ -10676,14 +11059,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsgrade;
         }
@@ -10696,18 +11081,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM grade  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_grade_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgrade varclsgrade = null;
                         while (dr.Read())
                         {
-
                             varclsgrade = new clsgrade();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgrade.Id = int.Parse(dr["id"].ToString());
                             varclsgrade.Designation = dr["designation"].ToString();
@@ -10719,14 +11101,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'grade' avec la classe 'clsgrade' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'grade' avec la classe 'clsgrade' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgrade;
         }
@@ -10742,11 +11126,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM grade ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgrade varclsgrade = null;
                         while (dr.Read())
                         {
-
                             varclsgrade = new clsgrade();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgrade.Id = int.Parse(dr["id"].ToString());
                             varclsgrade.Designation = dr["designation"].ToString();
@@ -10758,14 +11140,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'grade' avec la classe 'clsgrade' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'grade' avec la classe 'clsgrade' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgrade;
         }
@@ -10791,15 +11175,17 @@ namespace smartManage.Model
                     if (varclsgrade.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgrade.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10825,15 +11211,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgrade.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10849,15 +11237,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM grade  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgrade.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'grade' avec la classe 'clsgrade' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -10872,12 +11262,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM usb2 WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM usb2 WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsusb2.User_created = dr["user_created"].ToString();
@@ -10887,14 +11278,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsusb2;
         }
@@ -10907,17 +11300,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM usb2  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_usb2_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb2 varclsusb2 = null;
                         while (dr.Read())
                         {
-
                             varclsusb2 = new clsusb2();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
@@ -10929,14 +11320,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb2;
         }
@@ -10952,11 +11345,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM usb2 ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb2 varclsusb2 = null;
                         while (dr.Read())
                         {
-
                             varclsusb2 = new clsusb2();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb2.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb2.Valeur = int.Parse(dr["valeur"].ToString());
@@ -10968,14 +11359,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb2' avec la classe 'clsusb2' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb2;
         }
@@ -11000,15 +11393,17 @@ namespace smartManage.Model
                     if (varclsusb2.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb2.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11033,15 +11428,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb2.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11057,15 +11454,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM usb2  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb2.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb2' avec la classe 'clsusb2' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11080,7 +11479,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM personne WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM personne WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -11104,14 +11505,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspersonne;
         }
@@ -11124,15 +11527,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM personne  WHERE 1=1";
-                    sql += "  OR   nom LIKE '%" + criteria + "%'";
-                    sql += "  OR   postnom LIKE '%" + criteria + "%'";
-                    sql += "  OR   prenom LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    sql += "  OR   sexe LIKE '%" + criteria + "%'";
-                    sql += "  OR   etatcivil LIKE '%" + criteria + "%' ORDER BY nom ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_personne_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clspersonne varclspersonne = null;
@@ -11159,14 +11557,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspersonne;
         }
@@ -11182,7 +11582,6 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM personne ORDER BY nom ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspersonne varclspersonne = null;
                         while (dr.Read())
                         {
@@ -11207,14 +11606,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspersonne;
         }
@@ -11232,7 +11633,6 @@ namespace smartManage.Model
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspersonne varclspersonne = null;
                         while (dr.Read())
                         {
@@ -11257,14 +11657,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspersonne;
         }
@@ -11309,15 +11711,17 @@ namespace smartManage.Model
                     if (varclspersonne.Photo != null) cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, varclspersonne.Photo));
                     else cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11362,15 +11766,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@photo", DbType.Binary, Int32.MaxValue, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspersonne.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11386,15 +11792,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM personne  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspersonne.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'personne' avec la classe 'clspersonne' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11443,12 +11851,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM usb3 WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM usb3 WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsusb3.User_created = dr["user_created"].ToString();
@@ -11458,14 +11867,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsusb3;
         }
@@ -11478,17 +11889,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM usb3  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_usb3_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb3 varclsusb3 = null;
                         while (dr.Read())
                         {
-
                             varclsusb3 = new clsusb3();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
@@ -11500,14 +11909,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb3;
         }
@@ -11523,11 +11934,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM usb3 ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb3 varclsusb3 = null;
                         while (dr.Read())
                         {
-
                             varclsusb3 = new clsusb3();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb3.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb3.Valeur = int.Parse(dr["valeur"].ToString());
@@ -11539,14 +11948,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb3' avec la classe 'clsusb3' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb3;
         }
@@ -11571,15 +11982,17 @@ namespace smartManage.Model
                     if (varclsusb3.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb3.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11604,15 +12017,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb3.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11628,15 +12043,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM usb3  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb3.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb3' avec la classe 'clsusb3' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11651,12 +12068,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM type_lieu_affectation WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM type_lieu_affectation WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_lieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclstype_lieu_affectation.Designation = dr["designation"].ToString();
                             varclstype_lieu_affectation.User_created = dr["user_created"].ToString();
@@ -11666,14 +12084,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstype_lieu_affectation;
         }
@@ -11686,18 +12106,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM type_lieu_affectation  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_type_lieu_affectationcriteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_lieu_affectation varclstype_lieu_affectation = null;
                         while (dr.Read())
                         {
-
                             varclstype_lieu_affectation = new clstype_lieu_affectation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_lieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclstype_lieu_affectation.Designation = dr["designation"].ToString();
@@ -11709,14 +12126,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_lieu_affectation;
         }
@@ -11732,11 +12151,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM type_lieu_affectation ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstype_lieu_affectation varclstype_lieu_affectation = null;
                         while (dr.Read())
                         {
-
                             varclstype_lieu_affectation = new clstype_lieu_affectation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstype_lieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclstype_lieu_affectation.Designation = dr["designation"].ToString();
@@ -11748,14 +12165,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstype_lieu_affectation;
         }
@@ -11781,15 +12200,17 @@ namespace smartManage.Model
                     if (varclstype_lieu_affectation.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstype_lieu_affectation.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11815,15 +12236,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_lieu_affectation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11839,15 +12262,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM type_lieu_affectation  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstype_lieu_affectation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'type_lieu_affectation' avec la classe 'clstype_lieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -11862,12 +12287,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM hdmi WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM hdmi WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
                             varclshdmi.User_created = dr["user_created"].ToString();
@@ -11877,14 +12303,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclshdmi;
         }
@@ -11897,17 +12325,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM hdmi  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_hdmi_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clshdmi varclshdmi = null;
                         while (dr.Read())
                         {
-
                             varclshdmi = new clshdmi();
                             if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
@@ -11919,14 +12345,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclshdmi;
         }
@@ -11942,11 +12370,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM hdmi ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clshdmi varclshdmi = null;
                         while (dr.Read())
                         {
-
                             varclshdmi = new clshdmi();
                             if (!dr["id"].ToString().Trim().Equals("")) varclshdmi.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclshdmi.Valeur = int.Parse(dr["valeur"].ToString());
@@ -11958,14 +12384,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclshdmi;
         }
@@ -11990,15 +12418,17 @@ namespace smartManage.Model
                     if (varclshdmi.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclshdmi.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12023,15 +12453,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclshdmi.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12047,15 +12479,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM hdmi  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclshdmi.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'hdmi' avec la classe 'clshdmi' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12070,12 +12504,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM AC WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM AC WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsAC.Id = int.Parse(dr["id"].ToString());
                             varclsAC.Code_str = dr["code_str"].ToString();
                             varclsAC.Designation = dr["designation"].ToString();
@@ -12086,14 +12521,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsAC;
         }
@@ -12106,19 +12543,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM AC  WHERE";
-                    sql += "  code_str LIKE '%" + criteria + "%'";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY code_str ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_AC_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsAC varclsAC = null;
                         while (dr.Read())
                         {
-
                             varclsAC = new clsAC();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsAC.Id = int.Parse(dr["id"].ToString());
                             varclsAC.Code_str = dr["code_str"].ToString();
@@ -12131,14 +12564,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'AC' avec la classe 'clsAC' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'AC' avec la classe 'clsAC' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsAC;
         }
@@ -12154,11 +12589,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM AC ORDER BY designation DESC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsAC varclsAC = null;
                         while (dr.Read())
                         {
-
                             varclsAC = new clsAC();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsAC.Id = int.Parse(dr["id"].ToString());
                             varclsAC.Code_str = dr["code_str"].ToString();
@@ -12171,14 +12604,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'AC' avec la classe 'clsAC' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'AC' avec la classe 'clsAC' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsAC;
         }
@@ -12206,15 +12641,17 @@ namespace smartManage.Model
                     if (varclsAC.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsAC.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12242,15 +12679,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsAC.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12266,15 +12705,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM AC  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsAC.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'AC' avec la classe 'clsAC' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12289,12 +12730,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM vga WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM vga WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsvga.User_created = dr["user_created"].ToString();
@@ -12304,14 +12746,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsvga;
         }
@@ -12324,17 +12768,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM vga  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_vga_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsvga varclsvga = null;
                         while (dr.Read())
                         {
-
                             varclsvga = new clsvga();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
@@ -12346,14 +12788,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'vga' avec la classe 'clsvga' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'vga' avec la classe 'clsvga' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsvga;
         }
@@ -12369,11 +12813,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM vga ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsvga varclsvga = null;
                         while (dr.Read())
                         {
-
                             varclsvga = new clsvga();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsvga.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsvga.Valeur = int.Parse(dr["valeur"].ToString());
@@ -12385,14 +12827,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'vga' avec la classe 'clsvga' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsvga;
         }
@@ -12417,15 +12861,17 @@ namespace smartManage.Model
                     if (varclsvga.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsvga.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12450,15 +12896,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsvga.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12474,15 +12922,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM vga  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsvga.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'vga' avec la classe 'clsvga' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12497,12 +12947,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM optio WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM optio WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsoptio.Id = int.Parse(dr["id"].ToString());
                             varclsoptio.Designation = dr["designation"].ToString();
                             varclsoptio.User_created = dr["user_created"].ToString();
@@ -12512,14 +12963,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsoptio;
         }
@@ -12532,18 +12985,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM optio  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_optio_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsoptio varclsoptio = null;
                         while (dr.Read())
                         {
-
                             varclsoptio = new clsoptio();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsoptio.Id = int.Parse(dr["id"].ToString());
                             varclsoptio.Designation = dr["designation"].ToString();
@@ -12555,14 +13005,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'optio' avec la classe 'clsoptio' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'optio' avec la classe 'clsoptio' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsoptio;
         }
@@ -12578,11 +13030,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM optio ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsoptio varclsoptio = null;
                         while (dr.Read())
                         {
-
                             varclsoptio = new clsoptio();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsoptio.Id = int.Parse(dr["id"].ToString());
                             varclsoptio.Designation = dr["designation"].ToString();
@@ -12594,14 +13044,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'optio' avec la classe 'clsoptio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'optio' avec la classe 'clsoptio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsoptio;
         }
@@ -12627,15 +13079,17 @@ namespace smartManage.Model
                     if (varclsoptio.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsoptio.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12661,15 +13115,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsoptio.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12685,15 +13141,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM optio  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsoptio.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'optio' avec la classe 'clsoptio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12708,12 +13166,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM tension_batterie WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM tension_batterie WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
                             varclstension_batterie.User_created = dr["user_created"].ToString();
@@ -12723,14 +13182,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstension_batterie;
         }
@@ -12743,17 +13204,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM tension_batterie  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_tension_batterie_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_batterie varclstension_batterie = null;
                         while (dr.Read())
                         {
-
                             varclstension_batterie = new clstension_batterie();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
@@ -12765,14 +13224,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_batterie;
         }
@@ -12788,11 +13249,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM tension_batterie ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_batterie varclstension_batterie = null;
                         while (dr.Read())
                         {
-
                             varclstension_batterie = new clstension_batterie();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_batterie.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_batterie.Valeur = double.Parse(dr["valeur"].ToString());
@@ -12804,14 +13263,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_batterie;
         }
@@ -12836,15 +13297,17 @@ namespace smartManage.Model
                     if (varclstension_batterie.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_batterie.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12869,15 +13332,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12893,15 +13358,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM tension_batterie  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_batterie' avec la classe 'clstension_batterie' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -12916,12 +13383,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM promotion WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM promotion WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspromotion.Id = int.Parse(dr["id"].ToString());
                             varclspromotion.Designation = dr["designation"].ToString();
                             varclspromotion.User_created = dr["user_created"].ToString();
@@ -12931,14 +13399,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspromotion;
         }
@@ -12951,18 +13421,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM promotion  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_promotion_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspromotion varclspromotion = null;
                         while (dr.Read())
                         {
-
                             varclspromotion = new clspromotion();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspromotion.Id = int.Parse(dr["id"].ToString());
                             varclspromotion.Designation = dr["designation"].ToString();
@@ -12974,14 +13441,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'promotion' avec la classe 'clspromotion' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'promotion' avec la classe 'clspromotion' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspromotion;
         }
@@ -12997,11 +13466,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM promotion ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspromotion varclspromotion = null;
                         while (dr.Read())
                         {
-
                             varclspromotion = new clspromotion();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspromotion.Id = int.Parse(dr["id"].ToString());
                             varclspromotion.Designation = dr["designation"].ToString();
@@ -13013,14 +13480,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'promotion' avec la classe 'clspromotion' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'promotion' avec la classe 'clspromotion' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspromotion;
         }
@@ -13046,15 +13515,17 @@ namespace smartManage.Model
                     if (varclspromotion.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspromotion.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13080,15 +13551,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspromotion.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13104,15 +13577,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM promotion  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspromotion.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'promotion' avec la classe 'clspromotion' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13127,12 +13602,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM tension_adaptateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM tension_adaptateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
                             varclstension_adaptateur.User_created = dr["user_created"].ToString();
@@ -13142,14 +13618,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstension_adaptateur;
         }
@@ -13162,17 +13640,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM tension_adaptateur  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_tension_adaptateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_adaptateur varclstension_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclstension_adaptateur = new clstension_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -13184,14 +13660,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_adaptateur;
         }
@@ -13207,11 +13685,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM tension_adaptateur ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_adaptateur varclstension_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclstension_adaptateur = new clstension_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -13223,14 +13699,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_adaptateur;
         }
@@ -13255,15 +13733,17 @@ namespace smartManage.Model
                     if (varclstension_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_adaptateur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13288,15 +13768,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13312,15 +13794,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM tension_adaptateur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_adaptateur' avec la classe 'clstension_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13335,12 +13819,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM section WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM section WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclssection.Id = int.Parse(dr["id"].ToString());
                             varclssection.Designation1 = dr["designation1"].ToString();
                             varclssection.Designation2 = dr["designation2"].ToString();
@@ -13351,14 +13836,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclssection;
         }
@@ -13371,19 +13858,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM section  WHERE";
-                    sql += "  designation1 LIKE '%" + criteria + "%'";
-                    sql += "  OR   designation2 LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation1 ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_section_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssection varclssection = null;
                         while (dr.Read())
                         {
-
                             varclssection = new clssection();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssection.Id = int.Parse(dr["id"].ToString());
                             varclssection.Designation1 = dr["designation1"].ToString();
@@ -13396,14 +13879,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'section' avec la classe 'clssection' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'section' avec la classe 'clssection' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssection;
         }
@@ -13419,11 +13904,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM section ORDER BY designation1 ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssection varclssection = null;
                         while (dr.Read())
                         {
-
                             varclssection = new clssection();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssection.Id = int.Parse(dr["id"].ToString());
                             varclssection.Designation1 = dr["designation1"].ToString();
@@ -13436,14 +13919,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'section' avec la classe 'clssection' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'section' avec la classe 'clssection' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssection;
         }
@@ -13471,15 +13956,17 @@ namespace smartManage.Model
                     if (varclssection.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssection.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13507,15 +13994,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssection.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13531,15 +14020,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM section  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssection.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'section' avec la classe 'clssection' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13554,12 +14045,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM puissance_adaptateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM puissance_adaptateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
                             varclspuissance_adaptateur.User_created = dr["user_created"].ToString();
@@ -13569,14 +14061,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspuissance_adaptateur;
         }
@@ -13589,17 +14083,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM puissance_adaptateur  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_puissance_adaptateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspuissance_adaptateur varclspuissance_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclspuissance_adaptateur = new clspuissance_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -13611,14 +14103,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspuissance_adaptateur;
         }
@@ -13634,11 +14128,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM puissance_adaptateur ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspuissance_adaptateur varclspuissance_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclspuissance_adaptateur = new clspuissance_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -13650,14 +14142,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspuissance_adaptateur;
         }
@@ -13682,15 +14176,17 @@ namespace smartManage.Model
                     if (varclspuissance_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance_adaptateur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13715,15 +14211,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13739,15 +14237,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM puissance_adaptateur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance_adaptateur' avec la classe 'clspuissance_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13762,12 +14262,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM retrait_materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM retrait_materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsretrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsretrait_materiel.Id_personne = int.Parse(dr["id_personne"].ToString());
                             varclsretrait_materiel.Code_ac = dr["code_AC"].ToString();
@@ -13784,14 +14285,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsretrait_materiel;
         }
@@ -13804,18 +14307,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM retrait_materiel  WHERE";
-                    sql += "  code_AC LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_retrait_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsretrait_materiel varclsretrait_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsretrait_materiel = new clsretrait_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsretrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsretrait_materiel.Id_personne = int.Parse(dr["id_personne"].ToString());
@@ -13834,14 +14334,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsretrait_materiel;
         }
@@ -13857,11 +14359,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM retrait_materiel ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsretrait_materiel varclsretrait_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsretrait_materiel = new clsretrait_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsretrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsretrait_materiel.Id_personne = int.Parse(dr["id_personne"].ToString());
@@ -13880,14 +14380,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsretrait_materiel;
         }
@@ -13924,15 +14426,17 @@ namespace smartManage.Model
                     if (varclsretrait_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsretrait_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13969,15 +14473,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsretrait_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -13993,15 +14499,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM retrait_materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsretrait_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'retrait_materiel' avec la classe 'clsretrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14016,12 +14524,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM intensite_adaptateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM intensite_adaptateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
                             varclsintensite_adaptateur.User_created = dr["user_created"].ToString();
@@ -14031,14 +14540,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsintensite_adaptateur;
         }
@@ -14051,17 +14562,14 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM intensite_adaptateur  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
-                    using (IDataReader dr = cmd.ExecuteReader())
-                    {
+                    cmd.CommandText = "sp_intensite_adaptateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
 
-                        clsintensite_adaptateur varclsintensite_adaptateur = null;
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {                        clsintensite_adaptateur varclsintensite_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclsintensite_adaptateur = new clsintensite_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14073,14 +14581,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsintensite_adaptateur;
         }
@@ -14096,11 +14606,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM intensite_adaptateur ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsintensite_adaptateur varclsintensite_adaptateur = null;
                         while (dr.Read())
                         {
-
                             varclsintensite_adaptateur = new clsintensite_adaptateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite_adaptateur.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14112,14 +14620,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsintensite_adaptateur;
         }
@@ -14144,15 +14654,17 @@ namespace smartManage.Model
                     if (varclsintensite_adaptateur.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite_adaptateur.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14165,7 +14677,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE intensite_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.CommandText = "UPDATE intensite_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id";
                     cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite_adaptateur.Valeur));
                     if (varclsintensite_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
@@ -14177,15 +14689,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14198,18 +14712,20 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("DELETE FROM intensite_adaptateur  WHERE  1=1  AND id=@id ");
+                    cmd.CommandText = "DELETE FROM intensite_adaptateur  WHERE  1=1  AND id=@id";
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite_adaptateur' avec la classe 'clsintensite_adaptateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14224,12 +14740,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM puissance WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM puissance WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
                             varclspuissance.User_created = dr["user_created"].ToString();
@@ -14239,14 +14756,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspuissance;
         }
@@ -14259,17 +14778,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM puissance  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_puissance_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspuissance varclspuissance = null;
                         while (dr.Read())
                         {
-
                             varclspuissance = new clspuissance();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14281,14 +14798,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspuissance;
         }
@@ -14304,11 +14823,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM puissance ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspuissance varclspuissance = null;
                         while (dr.Read())
                         {
-
                             varclspuissance = new clspuissance();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspuissance.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspuissance.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14320,14 +14837,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'puissance' avec la classe 'clspuissance' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspuissance;
         }
@@ -14352,15 +14871,17 @@ namespace smartManage.Model
                     if (varclspuissance.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspuissance.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14385,15 +14906,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14409,15 +14932,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM puissance  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'puissance' avec la classe 'clspuissance' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14432,12 +14957,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM detail_retrait_materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM detail_retrait_materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_retrait_materiel"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id_retrait_materiel = int.Parse(dr["id_retrait_materiel"].ToString());
                             if (!dr["id_materiel"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id_materiel = int.Parse(dr["id_materiel"].ToString());
@@ -14448,14 +14974,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsdetail_retrait_materiel;
         }
@@ -14468,17 +14996,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM detail_retrait_materiel  WHERE";
-                    sql += "  user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_detail_retrait_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsdetail_retrait_materiel varclsdetail_retrait_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsdetail_retrait_materiel = new clsdetail_retrait_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_retrait_materiel"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id_retrait_materiel = int.Parse(dr["id_retrait_materiel"].ToString());
@@ -14491,14 +15017,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdetail_retrait_materiel;
         }
@@ -14514,11 +15042,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM detail_retrait_materiel ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsdetail_retrait_materiel varclsdetail_retrait_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsdetail_retrait_materiel = new clsdetail_retrait_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_retrait_materiel"].ToString().Trim().Equals("")) varclsdetail_retrait_materiel.Id_retrait_materiel = int.Parse(dr["id_retrait_materiel"].ToString());
@@ -14531,14 +15057,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsdetail_retrait_materiel;
         }
@@ -14564,15 +15092,17 @@ namespace smartManage.Model
                     if (varclsdetail_retrait_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsdetail_retrait_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14598,15 +15128,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdetail_retrait_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14622,15 +15154,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM detail_retrait_materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsdetail_retrait_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'detail_retrait_materiel' avec la classe 'clsdetail_retrait_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14645,12 +15179,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM intensite WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM intensite WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
                             varclsintensite.User_created = dr["user_created"].ToString();
@@ -14660,14 +15195,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsintensite;
         }
@@ -14680,17 +15217,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM intensite  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_intensite_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsintensite varclsintensite = null;
                         while (dr.Read())
                         {
-
                             varclsintensite = new clsintensite();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14702,14 +15237,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsintensite;
         }
@@ -14725,11 +15262,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM intensite ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsintensite varclsintensite = null;
                         while (dr.Read())
                         {
-
                             varclsintensite = new clsintensite();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsintensite.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsintensite.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14741,14 +15276,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'intensite' avec la classe 'clsintensite' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsintensite;
         }
@@ -14773,15 +15310,17 @@ namespace smartManage.Model
                     if (varclsintensite.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsintensite.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14806,15 +15345,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14830,15 +15371,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM intensite  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'intensite' avec la classe 'clsintensite' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -14853,12 +15396,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM page_par_minute WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM page_par_minute WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
                             varclspage_par_minute.User_created = dr["user_created"].ToString();
@@ -14868,14 +15412,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclspage_par_minute;
         }
@@ -14888,17 +15434,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM page_par_minute  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_page_par_minute_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspage_par_minute varclspage_par_minute = null;
                         while (dr.Read())
                         {
-
                             varclspage_par_minute = new clspage_par_minute();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14910,14 +15454,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspage_par_minute;
         }
@@ -14933,11 +15479,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM page_par_minute ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clspage_par_minute varclspage_par_minute = null;
                         while (dr.Read())
                         {
-
                             varclspage_par_minute = new clspage_par_minute();
                             if (!dr["id"].ToString().Trim().Equals("")) varclspage_par_minute.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclspage_par_minute.Valeur = double.Parse(dr["valeur"].ToString());
@@ -14949,14 +15493,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclspage_par_minute;
         }
@@ -14981,15 +15527,17 @@ namespace smartManage.Model
                     if (varclspage_par_minute.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclspage_par_minute.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15014,15 +15562,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15038,15 +15588,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM page_par_minute  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'page_par_minute' avec la classe 'clspage_par_minute' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15061,7 +15613,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM signataire WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM signataire WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -15077,14 +15631,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclssignataire;
         }
@@ -15097,11 +15653,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM signataire  WHERE 1=1";
-                    sql += "  OR   code_AC LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_signataire_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         clssignataire varclssignataire = null;
@@ -15120,14 +15675,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'signataire' avec la classe 'clssignataire' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'signataire' avec la classe 'clssignataire' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssignataire;
         }
@@ -15143,7 +15700,6 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM signataire ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssignataire varclssignataire = null;
                         while (dr.Read())
                         {
@@ -15160,14 +15716,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'signataire' avec la classe 'clssignataire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'signataire' avec la classe 'clssignataire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssignataire;
         }
@@ -15196,15 +15754,17 @@ namespace smartManage.Model
                     if (varclssignataire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssignataire.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15233,15 +15793,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssignataire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15257,15 +15819,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM signataire  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssignataire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'signataire' avec la classe 'clssignataire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15280,12 +15844,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM tension_alimentation WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM tension_alimentation WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
                             varclstension_alimentation.User_created = dr["user_created"].ToString();
@@ -15295,14 +15860,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclstension_alimentation;
         }
@@ -15315,17 +15882,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM tension_alimentation  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_tension_alimentation_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_alimentation varclstension_alimentation = null;
                         while (dr.Read())
                         {
-
                             varclstension_alimentation = new clstension_alimentation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
@@ -15337,14 +15902,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_alimentation;
         }
@@ -15360,11 +15927,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM tension_alimentation ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clstension_alimentation varclstension_alimentation = null;
                         while (dr.Read())
                         {
-
                             varclstension_alimentation = new clstension_alimentation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclstension_alimentation.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclstension_alimentation.Valeur = int.Parse(dr["valeur"].ToString());
@@ -15376,14 +15941,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstension_alimentation;
         }
@@ -15408,15 +15975,17 @@ namespace smartManage.Model
                     if (varclstension_alimentation.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclstension_alimentation.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15441,15 +16010,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_alimentation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15465,15 +16036,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM tension_alimentation  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_alimentation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'tension_alimentation' avec la classe 'clstension_alimentation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15488,12 +16061,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM salle WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM salle WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclssalle.Id = int.Parse(dr["id"].ToString());
                             varclssalle.Designation = dr["designation"].ToString();
                             varclssalle.User_created = dr["user_created"].ToString();
@@ -15503,14 +16077,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclssalle;
         }
@@ -15523,18 +16099,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM salle  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_salle_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssalle varclssalle = null;
                         while (dr.Read())
                         {
-
                             varclssalle = new clssalle();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssalle.Id = int.Parse(dr["id"].ToString());
                             varclssalle.Designation = dr["designation"].ToString();
@@ -15546,14 +16119,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'salle' avec la classe 'clssalle' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'salle' avec la classe 'clssalle' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssalle;
         }
@@ -15569,11 +16144,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM salle ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssalle varclssalle = null;
                         while (dr.Read())
                         {
-
                             varclssalle = new clssalle();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssalle.Id = int.Parse(dr["id"].ToString());
                             varclssalle.Designation = dr["designation"].ToString();
@@ -15585,14 +16158,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'salle' avec la classe 'clssalle' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'salle' avec la classe 'clssalle' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssalle;
         }
@@ -15618,15 +16193,17 @@ namespace smartManage.Model
                     if (varclssalle.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssalle.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15652,15 +16229,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssalle.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15676,15 +16255,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM salle  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssalle.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'salle' avec la classe 'clssalle' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15699,12 +16280,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM usb WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM usb WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsusb.User_created = dr["user_created"].ToString();
@@ -15714,14 +16296,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsusb;
         }
@@ -15734,17 +16318,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM usb  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_usb_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb varclsusb = null;
                         while (dr.Read())
                         {
-
                             varclsusb = new clsusb();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
@@ -15756,14 +16338,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb' avec la classe 'clsusb' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'usb' avec la classe 'clsusb' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb;
         }
@@ -15779,11 +16363,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM usb ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsusb varclsusb = null;
                         while (dr.Read())
                         {
-
                             varclsusb = new clsusb();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsusb.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsusb.Valeur = int.Parse(dr["valeur"].ToString());
@@ -15795,14 +16377,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'usb' avec la classe 'clsusb' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsusb;
         }
@@ -15827,15 +16411,17 @@ namespace smartManage.Model
                     if (varclsusb.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsusb.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15860,15 +16446,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15884,15 +16472,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM usb  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsusb.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'usb' avec la classe 'clsusb' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -15907,12 +16497,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM fonction WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM fonction WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfonction.Id = int.Parse(dr["id"].ToString());
                             varclsfonction.Designation = dr["designation"].ToString();
                             varclsfonction.User_created = dr["user_created"].ToString();
@@ -15922,14 +16513,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsfonction;
         }
@@ -15942,18 +16535,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM fonction  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_fonction_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfonction varclsfonction = null;
                         while (dr.Read())
                         {
-
                             varclsfonction = new clsfonction();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfonction.Id = int.Parse(dr["id"].ToString());
                             varclsfonction.Designation = dr["designation"].ToString();
@@ -15965,14 +16555,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fonction' avec la classe 'clsfonction' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fonction' avec la classe 'clsfonction' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfonction;
         }
@@ -15988,11 +16580,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM fonction ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfonction varclsfonction = null;
                         while (dr.Read())
                         {
-
                             varclsfonction = new clsfonction();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfonction.Id = int.Parse(dr["id"].ToString());
                             varclsfonction.Designation = dr["designation"].ToString();
@@ -16004,14 +16594,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fonction' avec la classe 'clsfonction' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fonction' avec la classe 'clsfonction' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfonction;
         }
@@ -16037,15 +16629,17 @@ namespace smartManage.Model
                     if (varclsfonction.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfonction.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16071,15 +16665,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfonction.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16095,15 +16691,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM fonction  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfonction.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fonction' avec la classe 'clsfonction' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16118,12 +16716,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM memoire WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM memoire WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsmemoire.User_created = dr["user_created"].ToString();
@@ -16133,14 +16732,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsmemoire;
         }
@@ -16153,17 +16754,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM memoire  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_memoire_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmemoire varclsmemoire = null;
                         while (dr.Read())
                         {
-
                             varclsmemoire = new clsmemoire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16175,14 +16774,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmemoire;
         }
@@ -16198,11 +16799,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM memoire ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmemoire varclsmemoire = null;
                         while (dr.Read())
                         {
-
                             varclsmemoire = new clsmemoire();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmemoire.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmemoire.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16214,14 +16813,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmemoire;
         }
@@ -16246,15 +16847,17 @@ namespace smartManage.Model
                     if (varclsmemoire.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmemoire.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16279,15 +16882,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmemoire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16303,15 +16908,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM memoire  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmemoire.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'memoire' avec la classe 'clsmemoire' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16326,12 +16933,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM lieu_affectation WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM lieu_affectation WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclslieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclslieu_affectation.Code_ac = dr["code_AC"].ToString();
                             if (!dr["id_type_lieu_affectation"].ToString().Trim().Equals("")) varclslieu_affectation.Id_type_lieu_affectation = int.Parse(dr["id_type_lieu_affectation"].ToString());
@@ -16346,14 +16954,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclslieu_affectation;
         }
@@ -16366,19 +16976,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM lieu_affectation  WHERE";
-                    sql += "  code_AC LIKE '%" + criteria + "%'";
-                    sql += "  OR   designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_lieu_affectation_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clslieu_affectation varclslieu_affectation = null;
                         while (dr.Read())
                         {
-
                             varclslieu_affectation = new clslieu_affectation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclslieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclslieu_affectation.Code_ac = dr["code_AC"].ToString();
@@ -16395,14 +17001,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclslieu_affectation;
         }
@@ -16418,11 +17026,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM lieu_affectation ORDER BY designation ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clslieu_affectation varclslieu_affectation = null;
                         while (dr.Read())
                         {
-
                             varclslieu_affectation = new clslieu_affectation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclslieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclslieu_affectation.Code_ac = dr["code_AC"].ToString();
@@ -16439,14 +17045,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclslieu_affectation;
         }
@@ -16464,11 +17072,9 @@ namespace smartManage.Model
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clslieu_affectation varclslieu_affectation = null;
                         while (dr.Read())
                         {
-
                             varclslieu_affectation = new clslieu_affectation();
                             if (!dr["id"].ToString().Trim().Equals("")) varclslieu_affectation.Id = int.Parse(dr["id"].ToString());
                             varclslieu_affectation.Code_ac = dr["code_AC"].ToString();
@@ -16485,14 +17091,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclslieu_affectation;
         }
@@ -16526,15 +17134,17 @@ namespace smartManage.Model
                     if (varclslieu_affectation.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclslieu_affectation.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16568,15 +17178,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclslieu_affectation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16592,15 +17204,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM lieu_affectation  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclslieu_affectation.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'lieu_affectation' avec la classe 'clslieu_affectation' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16615,12 +17229,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM sorties_audio WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM sorties_audio WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
                             varclssorties_audio.User_created = dr["user_created"].ToString();
@@ -16630,14 +17245,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclssorties_audio;
         }
@@ -16650,17 +17267,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM sorties_audio  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_sorties_audio_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssorties_audio varclssorties_audio = null;
                         while (dr.Read())
                         {
-
                             varclssorties_audio = new clssorties_audio();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16672,14 +17287,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssorties_audio;
         }
@@ -16695,11 +17312,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM sorties_audio ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clssorties_audio varclssorties_audio = null;
                         while (dr.Read())
                         {
-
                             varclssorties_audio = new clssorties_audio();
                             if (!dr["id"].ToString().Trim().Equals("")) varclssorties_audio.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclssorties_audio.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16711,14 +17326,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclssorties_audio;
         }
@@ -16743,15 +17360,17 @@ namespace smartManage.Model
                     if (varclssorties_audio.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclssorties_audio.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16776,15 +17395,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssorties_audio.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16800,15 +17421,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM sorties_audio  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclssorties_audio.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'sorties_audio' avec la classe 'clssorties_audio' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16823,12 +17446,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM microphone WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM microphone WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsmicrophone.User_created = dr["user_created"].ToString();
@@ -16838,14 +17462,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsmicrophone;
         }
@@ -16858,17 +17484,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM microphone  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_microphone_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmicrophone varclsmicrophone = null;
                         while (dr.Read())
                         {
-
                             varclsmicrophone = new clsmicrophone();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16880,14 +17504,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmicrophone;
         }
@@ -16903,11 +17529,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM microphone ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsmicrophone varclsmicrophone = null;
                         while (dr.Read())
                         {
-
                             varclsmicrophone = new clsmicrophone();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsmicrophone.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsmicrophone.Valeur = int.Parse(dr["valeur"].ToString());
@@ -16919,14 +17543,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsmicrophone;
         }
@@ -16951,15 +17577,17 @@ namespace smartManage.Model
                     if (varclsmicrophone.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsmicrophone.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -16984,15 +17612,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmicrophone.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17008,15 +17638,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM microphone  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsmicrophone.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'microphone' avec la classe 'clsmicrophone' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17031,12 +17663,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM affectation_materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM affectation_materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsaffectation_materiel.Code_ac = dr["code_AC"].ToString();
                             if (!dr["id_lieu_affectation"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id_lieu_affectation = int.Parse(dr["id_lieu_affectation"].ToString());
@@ -17050,14 +17683,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsaffectation_materiel;
         }
@@ -17070,18 +17705,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM affectation_materiel  WHERE";
-                    sql += "  code_AC LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_affectation_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsaffectation_materiel varclsaffectation_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsaffectation_materiel = new clsaffectation_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsaffectation_materiel.Code_ac = dr["code_AC"].ToString();
@@ -17097,14 +17729,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsaffectation_materiel;
         }
@@ -17120,11 +17754,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM affectation_materiel ");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsaffectation_materiel varclsaffectation_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsaffectation_materiel = new clsaffectation_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsaffectation_materiel.Code_ac = dr["code_AC"].ToString();
@@ -17140,14 +17772,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsaffectation_materiel;
         }
@@ -17165,11 +17799,9 @@ namespace smartManage.Model
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsaffectation_materiel varclsaffectation_materiel = null;
                         while (dr.Read())
                         {
-
                             varclsaffectation_materiel = new clsaffectation_materiel();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsaffectation_materiel.Id = int.Parse(dr["id"].ToString());
                             varclsaffectation_materiel.Code_ac = dr["code_AC"].ToString();
@@ -17185,14 +17817,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsaffectation_materiel;
         }
@@ -17223,15 +17857,17 @@ namespace smartManage.Model
                     if (varclsaffectation_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsaffectation_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17262,15 +17898,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsaffectation_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17286,15 +17924,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM affectation_materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsaffectation_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'affectation_materiel' avec la classe 'clsaffectation_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17309,12 +17949,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM gain WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM gain WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsgain.User_created = dr["user_created"].ToString();
@@ -17324,14 +17965,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsgain;
         }
@@ -17344,17 +17987,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM gain  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_gain_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgain varclsgain = null;
                         while (dr.Read())
                         {
-
                             varclsgain = new clsgain();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
@@ -17366,14 +18007,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gain' avec la classe 'clsgain' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gain' avec la classe 'clsgain' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgain;
         }
@@ -17389,11 +18032,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM gain ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgain varclsgain = null;
                         while (dr.Read())
                         {
-
                             varclsgain = new clsgain();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgain.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgain.Valeur = int.Parse(dr["valeur"].ToString());
@@ -17405,14 +18046,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gain' avec la classe 'clsgain' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgain;
         }
@@ -17437,15 +18080,17 @@ namespace smartManage.Model
                     if (varclsgain.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgain.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17470,15 +18115,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgain.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17494,15 +18141,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM gain  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgain.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gain' avec la classe 'clsgain' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17517,12 +18166,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM gbe WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM gbe WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
                             varclsgbe.User_created = dr["user_created"].ToString();
@@ -17532,14 +18182,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsgbe;
         }
@@ -17552,17 +18204,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM gbe  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_gbe_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgbe varclsgbe = null;
                         while (dr.Read())
                         {
-
                             varclsgbe = new clsgbe();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
@@ -17574,14 +18224,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgbe;
         }
@@ -17597,11 +18249,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM gbe ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsgbe varclsgbe = null;
                         while (dr.Read())
                         {
-
                             varclsgbe = new clsgbe();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsgbe.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsgbe.Valeur = int.Parse(dr["valeur"].ToString());
@@ -17613,14 +18263,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'gbe' avec la classe 'clsgbe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsgbe;
         }
@@ -17645,15 +18297,17 @@ namespace smartManage.Model
                     if (varclsgbe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsgbe.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17678,15 +18332,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgbe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17702,15 +18358,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM gbe  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsgbe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'gbe' avec la classe 'clsgbe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17725,12 +18383,13 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM utilisateur WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM utilisateur WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-
                             if (!dr["id"].ToString().Trim().Equals("")) varclsutilisateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsutilisateur.Id_personne = int.Parse(dr["id_personne"].ToString());
                             varclsutilisateur.Nomuser = dr["nomuser"].ToString();
@@ -17741,14 +18400,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsutilisateur;
         }
@@ -17761,19 +18422,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM utilisateur  WHERE";
-                    sql += "  nomuser LIKE '%" + criteria + "%'";
-                    sql += "  OR   motpass LIKE '%" + criteria + "%'";
-                    sql += "  OR   schema_user LIKE '%" + criteria + "%'";
-                    sql += "  OR   droits LIKE '%" + criteria + "%'";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_utilisateur_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsutilisateur varclsutilisateur = null;
                         while (dr.Read())
                         {
-
                             varclsutilisateur = new clsutilisateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsutilisateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsutilisateur.Id_personne = int.Parse(dr["id_personne"].ToString());
@@ -17786,14 +18443,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsutilisateur;
         }
@@ -17809,11 +18468,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM utilisateur ORDER BY nomuser ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsutilisateur varclsutilisateur = null;
                         while (dr.Read())
                         {
-
                             varclsutilisateur = new clsutilisateur();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsutilisateur.Id = int.Parse(dr["id"].ToString());
                             if (!dr["id_personne"].ToString().Trim().Equals("")) varclsutilisateur.Id_personne = int.Parse(dr["id_personne"].ToString());
@@ -17826,14 +18483,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsutilisateur;
         }
@@ -17860,15 +18519,17 @@ namespace smartManage.Model
                     if (varclsutilisateur.Activation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, varclsutilisateur.Activation));
                     else cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17895,15 +18556,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17919,15 +18582,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM utilisateur  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -17943,7 +18608,8 @@ namespace smartManage.Model
 
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT MAX(id) AS lastID From {0}", table_name);
+                    cmd.CommandText = "SELECT MAX(id) AS lastID From " + table_name;
+
                     IDataReader rd = cmd.ExecuteReader();
 
                     if (rd.Read())
@@ -17955,17 +18621,17 @@ namespace smartManage.Model
                         else
                             lastID = Convert.ToInt32(rd["lastID"].ToString()) + 1;
                     }
-
-                    rd.Dispose();
                 }
             }
             catch (Exception exc)
             {
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la génération de l'id de l'utilisateur  : " + exc.GetType().ToString() + " : " + " => " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName); 
+                throw;
             }
             finally
             {
-                conn.Close();
+                if (conn != null)
+                    conn.Close();
             }
             return lastID;
         }
@@ -17986,21 +18652,23 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format(@"exec sp_addlogin '" + varclsutilisateur.Nomuser + "','" + varclsutilisateur.Motpass + "','" + clsMetier.bdEnCours + @"'                                               
+                    cmd.CommandText = string.Format(@"exec sp_addlogin '" + varclsutilisateur.Nomuser + "','" + varclsutilisateur.Motpass + "','" + bdEnCours + @"'                                               
                                                       exec sp_grantdbaccess '" + varclsutilisateur.Nomuser + @"'
                                                  ");
                     int j = cmd.ExecuteNonQuery();
                     echec_create = false;
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
                 message_erreur_user = exc.Message;
-                conn.Close();
-                throw new Exception(exc.Message);
+                throw;
             }
-
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+            }
             //Dans la transaction on fait le reste
             IDbTransaction transaction = null;
 
@@ -18046,8 +18714,6 @@ namespace smartManage.Model
 
                     transaction.Commit();
                 }
-
-                conn.Close();
             }
             catch (Exception exc)
             {
@@ -18055,16 +18721,19 @@ namespace smartManage.Model
                 {
                     transaction.Rollback();
 
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la création de l'utilisateur  : " + message_erreur_user + " => " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la création de l'utilisateur  : " + exc.GetType().ToString() + " : " + message_erreur_user + " => " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
-                conn.Close();
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
 
-        public int updateClsutilisateur(clsutilisateur varclsutilisateur)
+        public int updateClsutilisateur(DataRowView varclsutilisateur)
         {
             IDbTransaction transaction = null;
             int i = 0;
@@ -18076,15 +18745,15 @@ namespace smartManage.Model
 
                 if (clsTools.etat_modification_user == 4)
                 {
-                    varclsutilisateur.Activation = clsTools.activationUser;
+                    varclsutilisateur["activation"] = clsTools.activationUser;
 
                     if (conn.State != ConnectionState.Open) conn.Open();
 
-                    if ((bool)varclsutilisateur.Activation)
+                    if ((bool)varclsutilisateur["activation"])
                     {
                         using (IDbCommand cmd3 = conn.CreateCommand())
                         {
-                            cmd3.CommandText = string.Format(@"grant connect to " + varclsutilisateur.Nomuser); //On interdit à l'utilisateur de se connecter au serveur
+                            cmd3.CommandText = string.Format(@"grant connect to " + varclsutilisateur["nomuser"]); //On interdit à l'utilisateur de se connecter au serveur
                             cmd3.Transaction = transaction;
                             i = cmd3.ExecuteNonQuery();
                         }
@@ -18093,7 +18762,7 @@ namespace smartManage.Model
                     {
                         using (IDbCommand cmd3 = conn.CreateCommand())
                         {
-                            cmd3.CommandText = string.Format(@"revoke connect to " + varclsutilisateur.Nomuser); //On interdit à l'utilisateur de se connecter au serveur
+                            cmd3.CommandText = string.Format(@"revoke connect to " + varclsutilisateur["nomuser"]); //On interdit à l'utilisateur de se connecter au serveur
                             cmd3.Transaction = transaction;
                             i = cmd3.ExecuteNonQuery();
                         }
@@ -18102,8 +18771,8 @@ namespace smartManage.Model
                     using (IDbCommand cmd4 = conn.CreateCommand())
                     {
                         cmd4.CommandText = string.Format("UPDATE utilisateur SET activation=@activation  WHERE 1=1  AND id=@id ");
-                        cmd4.Parameters.Add(getParameter(cmd4, "@activation", DbType.Boolean, 2, varclsutilisateur.Activation));
-                        cmd4.Parameters.Add(getParameter(cmd4, "@id", DbType.Int32, 4, varclsutilisateur.Id));
+                        cmd4.Parameters.Add(getParameter(cmd4, "@activation", DbType.Boolean, 2, varclsutilisateur["activation"]));
+                        cmd4.Parameters.Add(getParameter(cmd4, "@id", DbType.Int32, 4, varclsutilisateur["id"]));
                         cmd4.Transaction = transaction;
 
                         i = cmd4.ExecuteNonQuery();
@@ -18116,9 +18785,9 @@ namespace smartManage.Model
                     //Avant de modifier l'utilisateur dans la table, on modifie le user de la bd
                     using (IDbCommand cmd1 = conn.CreateCommand())
                     {
-                        varclsutilisateur.Nomuser = clsTools.newUser;
+                        varclsutilisateur["nomuser"] = clsTools.newUser;
                         //varclstbl_utilisateur.Motpass = clsTools.oldPassword;
-                        cmd1.CommandText = string.Format("alter login " + clsTools.oldUser + " with name=" + varclsutilisateur.Nomuser); //On modifie le login de l'utilisateur pour changer son mode de connexion
+                        cmd1.CommandText = string.Format("alter login " + clsTools.oldUser + " with name=" + varclsutilisateur["nomuser"]); //On modifie le login de l'utilisateur pour changer son mode de connexion
                         cmd1.Transaction = transaction;
                         i = cmd1.ExecuteNonQuery();
                     }
@@ -18130,8 +18799,8 @@ namespace smartManage.Model
                     //Avant de modifier l'utilisateur dans la table, on modifie le user de la bd
                     using (IDbCommand cmd1 = conn.CreateCommand())
                     {
-                        varclsutilisateur.Motpass = clsTools.newPassword;
-                        cmd1.CommandText = string.Format("alter LOGIN " + varclsutilisateur.Nomuser + " WITH PASSWORD='" + ImplementChiffer.Instance.Decipher(clsTools.newPassword, "Jos@mRootP@ss") + "'"); //On modifie le login de l'utilisateur pour changer son mot de passe de connexion
+                        varclsutilisateur["motpass"] = clsTools.newPassword;
+                        cmd1.CommandText = string.Format("alter LOGIN " + varclsutilisateur["nomuser"] + " WITH PASSWORD='" + ImplementChiffer.Instance.Decipher(clsTools.newPassword, "Jos@mRootP@ss") + "'"); //On modifie le login de l'utilisateur pour changer son mot de passe de connexion
                         cmd1.Transaction = transaction;
                         i = cmd1.ExecuteNonQuery();
                     }
@@ -18143,10 +18812,10 @@ namespace smartManage.Model
                     //Avant de modifier l'utilisateur dans la table, on modifie le user de la bd
                     using (IDbCommand cmd1 = conn.CreateCommand())
                     {
-                        varclsutilisateur.Nomuser = clsTools.newUser;
-                        varclsutilisateur.Motpass = clsTools.newPassword;
+                        varclsutilisateur["nomuser"] = clsTools.newUser;
+                        varclsutilisateur["motpass"] = clsTools.newPassword;
                         cmd1.CommandText = string.Format("ALTER LOGIN " + clsTools.oldUser + " WITH PASSWORD='" + ImplementChiffer.Instance.Decipher(clsTools.newPassword, "Jos@mRootP@ss") + "'" + @"
-                                                          ALTER LOGIN " + clsTools.oldUser + " WITH NAME=" + varclsutilisateur.Nomuser); //On modifie le login de l'utilisateur pour changer son mot de passe de connexion, puis on modifie son nom de login
+                                                          ALTER LOGIN " + clsTools.oldUser + " WITH NAME=" + varclsutilisateur["nomuser"]); //On modifie le login de l'utilisateur pour changer son mot de passe de connexion, puis on modifie son nom de login
                         cmd1.Transaction = transaction;
                         i = cmd1.ExecuteNonQuery();
                     }
@@ -18158,12 +18827,12 @@ namespace smartManage.Model
                     using (IDbCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = string.Format("UPDATE utilisateur  SET id_personne=@id_personne,nomuser=@nomuser,activation=@activation  WHERE 1=1  AND id=@id ");
-                        cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsutilisateur.Id_personne));
-                        if (varclsutilisateur.Nomuser != null) cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, varclsutilisateur.Nomuser));
+                        cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsutilisateur["id_personne"]));
+                        if (varclsutilisateur["nomuser"] != null) cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, varclsutilisateur["nomuser"]));
                         else cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, DBNull.Value));
-                        if (varclsutilisateur.Activation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, varclsutilisateur.Activation));
+                        if (varclsutilisateur["activation"] != null) cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, varclsutilisateur["activation"]));
                         else cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, DBNull.Value));
-                        cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur.Id));
+                        cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur["id"]));
                         cmd.Transaction = transaction;
                         i = cmd.ExecuteNonQuery();
                         ok = true;
@@ -18175,14 +18844,14 @@ namespace smartManage.Model
                     using (IDbCommand cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = string.Format("UPDATE utilisateur  SET id_personne=@id_personne,nomuser=@nomuser,motpass=@motpass,activation=@activation  WHERE 1=1  AND id=@id ");
-                        cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsutilisateur.Id_personne));
-                        if (varclsutilisateur.Nomuser != null) cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, varclsutilisateur.Nomuser));
+                        cmd.Parameters.Add(getParameter(cmd, "@id_personne", DbType.Int32, 4, varclsutilisateur["id_personne"]));
+                        if (varclsutilisateur["nomuser"] != null) cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, varclsutilisateur["nomuser"]));
                         else cmd.Parameters.Add(getParameter(cmd, "@nomuser", DbType.String, 30, DBNull.Value));
-                        if (varclsutilisateur.Motpass != null) cmd.Parameters.Add(getParameter(cmd, "@motpass", DbType.String, 1000, varclsutilisateur.Motpass));
+                        if (varclsutilisateur["motpass"] != null) cmd.Parameters.Add(getParameter(cmd, "@motpass", DbType.String, 1000, varclsutilisateur["motpass"]));
                         else cmd.Parameters.Add(getParameter(cmd, "@motpass", DbType.String, 1000, DBNull.Value));
-                        if (varclsutilisateur.Activation.HasValue) cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, varclsutilisateur.Activation));
+                        if (varclsutilisateur["activation"] != null) cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, varclsutilisateur["activation"]));
                         else cmd.Parameters.Add(getParameter(cmd, "@activation", DbType.Boolean, 2, DBNull.Value));
-                        cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur.Id));
+                        cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsutilisateur["id"]));
                         cmd.Transaction = transaction;
                         i = cmd.ExecuteNonQuery();
                         ok = true;
@@ -18202,24 +18871,25 @@ namespace smartManage.Model
 
                         using (IDbCommand cmd2 = conn.CreateCommand())
                         {
-                            cmd2.CommandText = string.Format(@"SELECT utilisateur.schema_user FROM utilisateur WHERE utilisateur.id=" + varclsutilisateur.Id);
+                            cmd2.CommandText = "SELECT utilisateur.schema_user FROM utilisateur WHERE utilisateur.id=@id";
+                            cmd2.Parameters.Add(getParameter(cmd2, "@id_utilisateur", DbType.Int32, 4, varclsutilisateur["id"]));
                             cmd2.Transaction = transaction;
 
                             using (IDataReader dr = cmd2.ExecuteReader())
                             {
                                 if (dr.Read())
                                 {
-                                    varclsutilisateur.Nomuser = dr["schema_user"].ToString();
+                                    varclsutilisateur["nomuser"] = dr["schema_user"].ToString();
                                 }
                             }
                         }
 
                         //Si l'on à cocher la case à cocher d'activation de l'utilisateur on doit le donner accès à se connecter ou non
-                        if ((bool)varclsutilisateur.Activation)
+                        if ((bool)varclsutilisateur["activation"])
                         {
                             using (IDbCommand cmd3 = conn.CreateCommand())
                             {
-                                cmd3.CommandText = string.Format(@"grant connect to " + varclsutilisateur.Nomuser); //On interdit à l'utilisateur de se connecter au serveur
+                                cmd3.CommandText = string.Format(@"grant connect to " + varclsutilisateur["nomuser"]); //On interdit à l'utilisateur de se connecter au serveur
                                 cmd3.Transaction = transaction;
                                 i = cmd3.ExecuteNonQuery();
                                 transaction.Commit();
@@ -18230,11 +18900,10 @@ namespace smartManage.Model
                         {
                             using (IDbCommand cmd3 = conn.CreateCommand())
                             {
-                                cmd3.CommandText = string.Format(@"revoke connect to " + varclsutilisateur.Nomuser); //On interdit à l'utilisateur de se connecter au serveur
+                                cmd3.CommandText = string.Format(@"revoke connect to " + varclsutilisateur["nomuser"]); //On interdit à l'utilisateur de se connecter au serveur
                                 cmd3.Transaction = transaction;
                                 i = cmd3.ExecuteNonQuery();
                                 transaction.Commit();
-                                conn.Close();
                             }
                         }
                     }
@@ -18246,18 +18915,20 @@ namespace smartManage.Model
                 {
                     transaction.Rollback();
 
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la modification de l'utilisateur, " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la modification de l'utilisateur : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
-
-                conn.Close();
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             clsTools.etat_modification_user = -1;
             return i;
         }
 
-        public int deleteClsutilisateur(clsutilisateur varclsutilisateur)
+        public int deleteClsutilisateur(DataRowView varclsutilisateur)
         {
             int i = 0;
             IDbTransaction transaction = null;
@@ -18268,13 +18939,15 @@ namespace smartManage.Model
 
                 using (IDbCommand cmd1 = conn.CreateCommand())
                 {
-                    cmd1.CommandText = string.Format(@"SELECT utilisateur.schema_user FROM utilisateur WHERE utilisateur.id=" + varclsutilisateur.Id);
+                    cmd1.CommandText = @"SELECT utilisateur.schema_user FROM utilisateur WHERE utilisateur.id=@id_utilisateur";
+                    cmd1.Parameters.Add(getParameter(cmd1, "@id_utilisateur", DbType.Int32, 4, varclsutilisateur["id"]));
                     cmd1.Transaction = transaction;
                     using (IDataReader dr = cmd1.ExecuteReader())
                     {
                         if (dr.Read())
                         {
-                            if (!dr["schema_user"].ToString().Trim().Equals("")) varclsutilisateur.Schema_user = dr["schema_user"].ToString();
+                            if (!dr["schema_user"].ToString().Trim().Equals(""))
+                                varclsutilisateur["schema_user"] = dr["schema_user"].ToString();
                         }
                     }
                 }
@@ -18283,9 +18956,9 @@ namespace smartManage.Model
                 //puis on supprime son nom d'utilisateur et enfin on supprime son login
                 using (IDbCommand cmd2 = conn.CreateCommand())
                 {
-                    cmd2.CommandText = string.Format("DROP SCHEMA " + varclsutilisateur.Schema_user + @" 
-                                                      DROP USER " + varclsutilisateur.Schema_user + @"
-                                                      DROP LOGIN " + varclsutilisateur.Nomuser);
+                    cmd2.CommandText = string.Format("DROP SCHEMA " + varclsutilisateur["schema_user"] + @" 
+                                                      DROP USER " + varclsutilisateur["schema_user"] + @"
+                                                      DROP LOGIN " + varclsutilisateur["nomuser"]);
                     cmd2.Transaction = transaction;
                     i = cmd2.ExecuteNonQuery();
                 }
@@ -18293,14 +18966,12 @@ namespace smartManage.Model
                 //Enfin on supprime l'utilisateur dans la table des utilisateurs
                 using (IDbCommand cmd3 = conn.CreateCommand())
                 {
-                    cmd3.CommandText = string.Format("DELETE FROM utilisateur WHERE  1=1  AND id=@id ");
-                    cmd3.Parameters.Add(getParameter(cmd3, "@id", DbType.Int32, 4, varclsutilisateur.Id));
+                    cmd3.CommandText = "DELETE FROM utilisateur WHERE  1=1  AND id=@id";
+                    cmd3.Parameters.Add(getParameter(cmd3, "@id", DbType.Int32, 4, varclsutilisateur["id"]));
                     cmd3.Transaction = transaction;
                     i = cmd3.ExecuteNonQuery();
                     transaction.Commit();
                 }
-
-                conn.Close();
             }
             catch (Exception exc)
             {
@@ -18308,10 +18979,14 @@ namespace smartManage.Model
                 {
                     transaction.Rollback();
 
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la suppression de l'utilisateur, " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec lors de la suppression de l'utilisateur : " + exc.GetType().ToString() + " : " +exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
                 }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -18347,7 +19022,8 @@ namespace smartManage.Model
             {
                 try
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
 
                     //On commence par recuperer le password chiffre dans la BD pour la comparer avec celui que 
                     //le user a saisi
@@ -18356,17 +19032,18 @@ namespace smartManage.Model
 
                     using (IDbCommand cmd = conn.CreateCommand())
                     {
-                        cmd.CommandText = string.Format("SELECT motpass from utilisateur WHERE nomuser='{0}'", username);
-                        IDataReader dr = cmd.ExecuteReader();
+                        cmd.CommandText = "SELECT motpass from utilisateur WHERE nomuser=@username";
+                        cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 50, username));
 
-                        if (dr.Read())
+                        using (IDataReader dr = cmd.ExecuteReader())
                         {
-                            strBDCipher = (dr["motpass"]).ToString();
-                            strBDdecipherPasswor = ImplementChiffer.Instance.Decipher((dr["motpass"]).ToString(), "Jos@mRootP@ss");
-                            ok = true;
+                            if (dr.Read())
+                            {
+                                strBDCipher = (dr["motpass"]).ToString();
+                                strBDdecipherPasswor = ImplementChiffer.Instance.Decipher((dr["motpass"]).ToString(), "Jos@mRootP@ss");
+                                ok = true;
+                            }
                         }
-                        dr.Close();
-                        cmd.Dispose();
                     }
 
 
@@ -18374,8 +19051,10 @@ namespace smartManage.Model
                     {
                         using (IDbCommand cmd = conn.CreateCommand())
                         {
-                            cmd.CommandText = string.Format(@"SELECT personne.id AS id,ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') AS nom,utilisateur.activation AS activation,utilisateur.nomuser,utilisateur.droits AS droits,utilisateur.motpass FROM personne 
-                            LEFT OUTER JOIN utilisateur ON personne.id=utilisateur.id_personne WHERE utilisateur.nomuser='{0}' AND utilisateur.motpass='{1}'", username, strBDCipher);
+                            cmd.CommandText = @"SELECT personne.id AS id,ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') AS nom,utilisateur.activation AS activation,utilisateur.nomuser,utilisateur.droits AS droits,utilisateur.motpass FROM personne 
+                            LEFT OUTER JOIN utilisateur ON personne.id=utilisateur.id_personne WHERE utilisateur.nomuser=@username AND utilisateur.motpass=@strBDCipher";
+                            cmd.Parameters.Add(getParameter(cmd, "@username", DbType.String, 30, username));
+                            cmd.Parameters.Add(getParameter(cmd, "@strBDCipher", DbType.String, 1000, strBDCipher));
 
                             using (IDataReader dr = cmd.ExecuteReader())
                             {
@@ -18439,14 +19118,16 @@ namespace smartManage.Model
                         lstValue.Add(false);
                         throw new Exception("Nom d'utilisateur ou mot de passe invalide, contacter votre administrateur");
                     }
-                    conn.Close();
                 }
                 catch (Exception exc)
                 {
-                    conn.Close();
-                    string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                    ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Vérification des paramètres de connexion de l'utilisateur : username et password : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                    throw new Exception(exc.Message);
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Vérification des paramètres de connexion de l'utilisateur : username et password : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
+                }
+                finally
+                {
+                    if (conn != null)
+                        conn.Close();
                 }
             }
             return lstValue;
@@ -18468,14 +19149,16 @@ namespace smartManage.Model
                         lstclstbl_utilisateur.Load(dr);
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstbl_utilisateur;
         }
@@ -18488,23 +19171,26 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format(@"SELECT utilisateur.id,utilisateur.id_personne,utilisateur.nomuser,utilisateur.motpass,utilisateur.schema_user,
+                    cmd.CommandText = @"SELECT utilisateur.id,utilisateur.id_personne,utilisateur.nomuser,utilisateur.motpass,utilisateur.schema_user,
                     utilisateur.droits,utilisateur.activation, ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') AS nom FROM utilisateur 
-                    INNER JOIN personne ON personne.id = utilisateur.id_personne WHERE utilisateur.id=" + intid);
+                    INNER JOIN personne ON personne.id = utilisateur.id_personne WHERE utilisateur.id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, intid));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         lstclstbl_utilisateur.Load(dr);
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclstbl_utilisateur;
         }
@@ -18517,9 +19203,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format(@"SELECT utilisateur.id AS idUser,utilisateur.id_personne,utilisateur.nomuser,utilisateur.motpass,
+                    cmd.CommandText = @"SELECT utilisateur.id AS idUser,utilisateur.id_personne,utilisateur.nomuser,utilisateur.motpass,
                     utilisateur.schema_user,utilisateur.droits,utilisateur.activation, ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'')  AS nom FROM utilisateur 
-                    INNER JOIN personne ON personne.id = utilisateur.id_personne WHERE utilisateur.nomuser='{0}'", nom_user);
+                    INNER JOIN personne ON personne.id = utilisateur.id_personne WHERE utilisateur.nomuser=@nom_user";
+                    cmd.Parameters.Add(getParameter(cmd, "@nom_user", DbType.String, 30, nom_user));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -18540,14 +19227,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Vérification des paramètres de connexion de l'utilisateur : username et password : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Vérification des paramètres de connexion de l'utilisateur : username et password : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsutilisateur;
         }
@@ -18567,15 +19256,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@droits", DbType.String, 100, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_user));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'utilisateur' avec la classe 'clsutilisateur' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -18592,7 +19283,8 @@ namespace smartManage.Model
 
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT nomuser,schema_user  FROM utilisateur WHERE id=" + id_user);
+                    cmd.CommandText = "SELECT nomuser,schema_user  FROM utilisateur WHERE id=@id_user";
+                    cmd.Parameters.Add(getParameter(cmd, "@id_user", DbType.Int32, 4, id_user));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -18603,14 +19295,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tbl_fiche_menage' avec la classe 'clstbl_fiche_menage' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tbl_fiche_menage' avec la classe 'clstbl_fiche_menage' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return schema;
         }
@@ -18625,7 +19319,9 @@ namespace smartManage.Model
 
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT droits FROM utilisateur WHERE id=" + id_user);
+                    cmd.CommandText = "SELECT droits FROM utilisateur WHERE id=@id_user";
+                    cmd.Parameters.Add(getParameter(cmd, "@id_user", DbType.Int32, 4, id_user));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -18642,14 +19338,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tbl_fiche_menage' avec la classe 'clstbl_fiche_menage' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'tbl_fiche_menage' avec la classe 'clstbl_fiche_menage' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return droits;
         }
@@ -18772,14 +19470,16 @@ namespace smartManage.Model
                         #endregion
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec d'attribution des droits à l'utilisateur, veuillez réessayez ultérieurement : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec d'attribution des droits à l'utilisateur, veuillez réessayez ultérieurement : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
         }
 
@@ -18889,14 +19589,16 @@ namespace smartManage.Model
                         #endregion
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec retrait des droits à l'utilisateur, veuillez réessayez ultérieurement : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec retrait des droits à l'utilisateur, veuillez réessayez ultérieurement : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
         }
         #endregion
@@ -18911,7 +19613,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM categorie_materiel WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM categorie_materiel WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -18926,14 +19630,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclscategorie_materiel;
         }
@@ -18946,11 +19652,10 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM categorie_materiel  WHERE";
-                    sql += "  designation LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY designation ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_categorie_materiel_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
 
@@ -18969,14 +19674,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscategorie_materiel;
         }
@@ -19008,14 +19715,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclscategorie_materiel;
         }
@@ -19041,15 +19750,17 @@ namespace smartManage.Model
                     if (varclscategorie_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclscategorie_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -19075,15 +19786,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscategorie_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -19099,15 +19812,17 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM categorie_materiel  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclscategorie_materiel.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -19122,7 +19837,9 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("SELECT *  FROM fe WHERE id={0}", intid);
+                    cmd.CommandText = "SELECT *  FROM fe WHERE id=@id";
+                    cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, Convert.ToInt32(intid)));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
                         if (dr.Read())
@@ -19137,14 +19854,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection d'un enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return varclsfe;
         }
@@ -19157,17 +19876,15 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    string sql = "SELECT *  FROM fe  WHERE 1=1";
-                    sql += "  OR   user_created LIKE '%" + criteria + "%'";
-                    sql += "  OR   user_modified LIKE '%" + criteria + "%' ORDER BY valeur ASC";
-                    cmd.CommandText = string.Format(sql);
+                    cmd.CommandText = "sp_fe_criteria";
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfe varclsfe = null;
                         while (dr.Read())
                         {
-
                             varclsfe = new clsfe();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfe.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsfe.Valeur = int.Parse(dr["valeur"].ToString());
@@ -19179,14 +19896,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fe' avec la classe 'clsfe' suivant un critère : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection des tous les enregistrements de la table : 'fe' avec la classe 'clsfe' suivant un critère : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfe;
         }
@@ -19202,11 +19921,9 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("SELECT *  FROM fe ORDER BY valeur ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsfe varclsfe = null;
                         while (dr.Read())
                         {
-
                             varclsfe = new clsfe();
                             if (!dr["id"].ToString().Trim().Equals("")) varclsfe.Id = int.Parse(dr["id"].ToString());
                             if (!dr["valeur"].ToString().Trim().Equals("")) varclsfe.Valeur = int.Parse(dr["valeur"].ToString());
@@ -19218,14 +19935,16 @@ namespace smartManage.Model
                         }
                     }
                 }
-                conn.Close();
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'fe' avec la classe 'clsfe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return lstclsfe;
         }
@@ -19250,15 +19969,17 @@ namespace smartManage.Model
                     if (varclsfe.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsfe.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -19283,15 +20004,17 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Update enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
@@ -19307,19 +20030,60 @@ namespace smartManage.Model
                     cmd.CommandText = string.Format("DELETE FROM fe  WHERE  1=1  AND id=@id ");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsfe.Id));
                     i = cmd.ExecuteNonQuery();
-                    conn.Close();
                 }
             }
             catch (Exception exc)
             {
-                conn.Close();
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(exc.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Suppression enregistrement de la table : 'fe' avec la classe 'clsfe' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
             }
             return i;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                if (conn != null)
+                    conn.Close();
+            }
+        }
+
         #endregion CLSFE 
+
+        public bool LimiteImageSize(string fileName, long byteSize, int heightSize, int widthSize)
+        {
+            var fileSizeInBytes = new System.IO.FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
+
+            using (var img = new System.Drawing.Bitmap(fileName))
+            {
+                if (img.Width > widthSize || img.Height > heightSize)
+                    throw new CustomException(string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize));
+            }
+
+            return true;
+        }
+
+        public bool LimiteImageSize(string fileName, long byteSize)
+        {
+            var fileSizeInBytes = new System.IO.FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
+
+            return true;
+        }
     } //***fin class 
 } //***fin namespace 

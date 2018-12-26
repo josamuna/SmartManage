@@ -162,7 +162,6 @@ namespace ManageQRCode
                 ModulePlacer.PlaceVersion(ref qr, versionString);
             }
 
-
             ModulePlacer.AddQuietZone(ref qr);
             return qr;
         }
@@ -273,7 +272,6 @@ namespace ManageQRCode
                     qrCode.ModuleMatrix[p2.Y][p2.X] = fStr[i] == '1';
                 }
             }
-            
 
             public static int MaskCode(ref QRCodeData qrCode, int version, ref List<Rectangle> blockedModules, ECCLevel eccLevel)
             {
@@ -281,7 +279,6 @@ namespace ManageQRCode
                 var patternScore = 0;
 
                 var size = qrCode.ModuleMatrix.Count;
-
               
                 //#if NET40
                     var methods = typeof (MaskPattern).GetMethods();
@@ -328,18 +325,14 @@ namespace ManageQRCode
                             patternName = pattern.Name;
                             patternScore = score;
                         }
-
                     }
                 }
-
-
 
                 //#if NET40
                     var patterMethod = typeof(MaskPattern).GetMethods().First(x => x.Name == patternName);
                 //#else
                 //    var patterMethod = typeof(MaskPattern).GetTypeInfo().GetDeclaredMethod(patternName);
                 //#endif
-
 
                 for (var x = 0; x < size; x++)
                 {
@@ -353,7 +346,6 @@ namespace ManageQRCode
                 }
                 return Convert.ToInt32(patterMethod.Name.Substring(patterMethod.Name.Length - 1, 1)) - 1;
             }
-
 
             public static void PlaceDataWords(ref QRCodeData qrCode, string data, ref List<Rectangle> blockedModules)
             {
@@ -596,7 +588,6 @@ namespace ManageQRCode
                         }
                     }
 
-
                     //Penalty 2
                     for (var y = 0; y < size - 1; y++)
                     {
@@ -683,7 +674,6 @@ namespace ManageQRCode
                     return score1 + score2 + score3 + score4;
                 }
             }
-
         }
 
         private List<string> CalculateECCWords(string bitString, ECCInfo eccInfo)
@@ -918,7 +908,6 @@ namespace ManageQRCode
                 var dec = Convert.ToInt32(plainText.Substring(0, 3));
                 codeText += DecToBin(dec, 10);
                 plainText = plainText.Substring(3);
-
             }
             if (plainText.Length == 2)
             {
@@ -1037,7 +1026,6 @@ namespace ManageQRCode
             return resultPolynom;
         }
 
-
         private Polynom MultiplyGeneratorPolynomByLeadterm(Polynom genPolynom, PolynomItem leadTerm, int lowerExponentBy)
         {
             var resultPolynom = new Polynom();
@@ -1051,8 +1039,7 @@ namespace ManageQRCode
                 resultPolynom.PolyItems.Add(polItemRes);
             }
             return resultPolynom;
-        }
-      
+        }    
 
         private Polynom MultiplyAlphaPolynoms(Polynom polynomBase, Polynom polynomMultiplier)
         {
@@ -1458,15 +1445,33 @@ namespace ManageQRCode
 
         public void Dispose()
         {
-            this.alignmentPatternBaseValues = null;
-            this.alignmentPatternTable = null;
-            this.alphanumEncDict = null;
-            this.capacityBaseValues = null;
-            this.capacityECCBaseValues = null;
-            this.capacityECCTable = null;
-            this.capacityTable = null;
-            this.galoisField = null;
-            this.remainderBits = null;
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                if(alignmentPatternBaseValues != null)
+                    alignmentPatternBaseValues = null;
+                if(alignmentPatternTable != null)
+                    alignmentPatternTable = null;
+                if(alphanumEncDict != null)
+                    alphanumEncDict = null;
+                if(capacityBaseValues != null)
+                    capacityBaseValues = null;
+                if(capacityECCBaseValues != null)
+                    capacityECCBaseValues = null;
+               if(capacityECCTable != null)
+                    capacityECCTable = null;
+                if(capacityTable != null)
+                    capacityTable = null;
+                if(galoisField != null)
+                    galoisField = null;
+                if(remainderBits != null)
+                    remainderBits = null;
+            }
         }
     }
 }

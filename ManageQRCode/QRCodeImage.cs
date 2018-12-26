@@ -6,8 +6,6 @@ namespace ManageQRCode
 {
     public class QRCodeImage
     {
-        const string DirectoryUtilLog = "Log";
-
         public QRCodeImage()
         {
 
@@ -32,11 +30,10 @@ namespace ManageQRCode
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception exc)
             {
-                string MasterDirectory = ImplementUtilities.Instance.MasterDirectoryConfiguration;
-                ImplementLog.Instance.PutLogMessage(MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de génération QR Code : " + ex.Message, DirectoryUtilLog, MasterDirectory + "LogFile.txt");
-                throw new Exception(ex.Message);
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de génération du QR Code  : " + exc.GetType().ToString() + " : " + " => " + exc.Message, Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
             }
 
             return img;

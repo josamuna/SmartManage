@@ -32,30 +32,39 @@ namespace ManageQRCode
             //Decompress
             if (compressMode.Equals(Compression.Deflate))
             {
-                using (var input = new MemoryStream(bytes.ToArray()))
+                var input = new MemoryStream(bytes.ToArray());
+                try
                 {
                     using (var output = new MemoryStream())
                     {
-                        using (var dstream = new DeflateStream(input, CompressionMode.Decompress))
-                        {
-                            Stream4Methods.CopyTo(dstream, output);
-                        }
+                        var dstream = new DeflateStream(input, CompressionMode.Decompress);
+                        Stream4Methods.CopyTo(dstream, output);
                         bytes = new List<byte>(output.ToArray());
                     }                    
-                }                    
+                } 
+                finally
+                {
+                    if (input != null)
+                        input.Dispose();
+                }                   
             }
             else if (compressMode.Equals(Compression.GZip))
             {
-                using (var input = new MemoryStream(bytes.ToArray()))
+                var input = new MemoryStream(bytes.ToArray());
+
+                try
                 {
                     using (var output = new MemoryStream())
                     {
-                        using (var dstream = new GZipStream(input, CompressionMode.Decompress))
-                        {
-                            Stream4Methods.CopyTo(dstream, output);
-                        }
+                        var dstream = new GZipStream(input, CompressionMode.Decompress);
+                        Stream4Methods.CopyTo(dstream, output);
                         bytes = new List<byte>(output.ToArray());
                     }
+                }
+                finally
+                {
+                    if (input != null)
+                        input.Dispose();
                 }
             }
 
@@ -130,24 +139,34 @@ namespace ManageQRCode
             //Compress stream (optional)
             if (compressMode.Equals(Compression.Deflate))
             {
-                using (var output = new MemoryStream())
+                var output = new MemoryStream();
+                try
                 {
-                    using (var dstream = new DeflateStream(output, CompressionMode.Compress))
-                    {
-                        dstream.Write(rawData, 0, rawData.Length);
-                    }
+                    var dstream = new DeflateStream(output, CompressionMode.Compress);
+                    dstream.Write(rawData, 0, rawData.Length);
                     rawData = output.ToArray();
+                }
+                finally
+                {
+                    if (output != null)
+                        output.Dispose();
                 }
             }
             else if (compressMode.Equals(Compression.GZip))
             {
-                using (var output = new MemoryStream())
+                var output = new MemoryStream();
+                GZipStream gzipStream = null;
+
+                try
                 {
-                    using (GZipStream gzipStream = new GZipStream(output, CompressionMode.Compress, true))
-                    {
-                        gzipStream.Write(rawData, 0, rawData.Length);
-                    }
+                    gzipStream = new GZipStream(output, CompressionMode.Compress, true);
+                    gzipStream.Write(rawData, 0, rawData.Length);
                     rawData = output.ToArray();
+                }
+                finally
+                {
+                    if (output != null)
+                        output.Dispose();
                 }
             }           
             return rawData;
@@ -169,9 +188,20 @@ namespace ManageQRCode
 
         public void Dispose()
         {
-            this.ModuleMatrix = null;
-            this.Version = 0;
-            
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (this.ModuleMatrix != null)
+                {
+                    this.ModuleMatrix = null;
+                    this.Version = 0;
+                }
+            }
         }
 
         public enum Compression

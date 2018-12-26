@@ -133,5 +133,19 @@ namespace ManageQRCode
             roundedRect.CloseFigure();
             return roundedRect;
         }
+
+        public new void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if(disposing)
+            {
+                //Dispose ressource here
+            }
+        }
     }
 }

@@ -1,24 +1,23 @@
 ﻿using ManageUtilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace smartManage.Desktop
 {
     public partial class frmParametersServeur : Form, ICRUDGeneral, ICallMainForm
     {
-        //Repertoire pour le Log
-        private const string MasterDirectory = "SmartManage";
-        //Nom du repertoire qui contiendra la chaine de connexion a la BD
-        private const string DirectoryUtilConn = "ConnectionStringRaduis";
-        //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Adminitration
-        private const string FileRadAdmin = "UserRadAdmin.txt";
-        //Nom du fichier qui contiendra la chaine de connexion connexion a la MySql pour Etudiant
-        private const string FileRadStudent = "UserRadStudent.txt";
+        ResourceManager stringManager = null;
 
         public frmParametersServeur()
         {
             InitializeComponent();
+            //Initialisation des Resources
+            Assembly _assembly = Assembly.Load("ResourcesData");
+            stringManager = new ResourceManager("ResourcesData.Resource", _assembly);
         }
 
         public frmPrincipal Principal
@@ -75,9 +74,9 @@ namespace smartManage.Desktop
                     List<string> paramServeur = new List<string>();
 
                     if (cboServerType.SelectedValue.ToString().Equals(TypeServeur.Administration.ToString()))
-                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadAdmin, '\n', txtChipherKey.Text, true);
+                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileRadAdmin, '\n', txtChipherKey.Text, true);
                     else
-                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(MasterDirectory, DirectoryUtilConn, FileRadStudent, '\n', txtChipherKey.Text, true);
+                        paramServeur = ImplementUtilities.Instance.LoadDatabaseParameters(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileRadStudent, '\n', txtChipherKey.Text, true);
 
                     if (paramServeur.Count > 0)
                     {
@@ -94,7 +93,7 @@ namespace smartManage.Desktop
             }
             catch(Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de chargement des données, {0}", ex.Message), "Chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de chargement des données, {0}", ex.Message), "Chargement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -108,15 +107,15 @@ namespace smartManage.Desktop
                 //string cipherPwd = ImplementChiffer.Instance.Cipher(txtPwd.Text, txtChipherKey.Text);
 
                 if (cboServerType.SelectedValue.ToString().Equals(TypeServeur.Administration.ToString()))
-                    ImplementUtilities.Instance.SaveParameters(MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), DirectoryUtilConn, FileRadAdmin);
+                    ImplementUtilities.Instance.SaveParameters(Properties.Settings.Default.MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileRadAdmin);
                 else
-                    ImplementUtilities.Instance.SaveParameters(MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), DirectoryUtilConn, FileRadStudent);
+                    ImplementUtilities.Instance.SaveParameters(Properties.Settings.Default.MasterDirectory, string.Format("Serveur={0}\nDataBase={1}\nUser={2}", host, dataBase, user), Properties.Settings.Default.DirectoryUtilConn, Properties.Settings.Default.FileRadStudent); 
 
-                MessageBox.Show("Enregistrement effectué avec succès", "Enregistrement des données", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Enregistrement effectué avec succès", "Enregistrement des données", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Echec de l'enregistrement des données, {0}", ex.Message), "Enregistrement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show(string.Format("Echec de l'enregistrement des données, {0}", ex.Message), "Enregistrement des données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 

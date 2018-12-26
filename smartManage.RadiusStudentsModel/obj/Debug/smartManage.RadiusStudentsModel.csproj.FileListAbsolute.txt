@@ -6,6 +6,8 @@ D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\ManageU
 D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\MySql.Data.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\PDUConverter.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\GSMCommShared.dll
-D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\obj\Debug\smartManage.RadiusStudentsModel.csprojResolveAssemblyReference.cache
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\ManageUtilities.pdb
 D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\obj\Debug\smartManage.RadiusStudentsModel.dll
 D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\obj\Debug\smartManage.RadiusStudentsModel.pdb
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\smartManage.RadiusStudentsModel.dll.CodeAnalysisLog.xml
+D:\DOC\GitHub\SmartManageClone\smartManage.RadiusStudentsModel\bin\Debug\smartManage.RadiusStudentsModel.dll.lastcodeanalysissucceeded

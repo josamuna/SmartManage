@@ -5,5 +5,14 @@
     <Setting Name="strChaineConnexion" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="MasterDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ConnectionString</Value>
+    </Setting>
+    <Setting Name="DirectoryUtilLog" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Log</Value>
+    </Setting>
+    <Setting Name="LogFileName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">LogFileRadiusAdmin.txt</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

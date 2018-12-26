@@ -51,8 +51,12 @@ namespace smartManage.Tools
             byte[] saltBytes = keyBytes;
 
             //On do le chiffrement AES
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = null; 
+
+            try
             {
+                ms = new MemoryStream();
+
                 using (RijndaelManaged AES = new RijndaelManaged())
                 {
                     //Taille de la cle AES
@@ -71,13 +75,15 @@ namespace smartManage.Tools
                     AES.Mode = CipherMode.CBC;
 
                     //Ecriture dans le MemoryStream
-                    using (CryptoStream cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
-                        cs.Close();
-                    }
+                    CryptoStream cs = new CryptoStream(ms, AES.CreateEncryptor(), CryptoStreamMode.Write);
+                    cs.Write(bytesToEncrypt, 0, bytesToEncrypt.Length);
                     encryptedBytes = ms.ToArray();
                 }
+            }
+            finally
+            {
+                if (ms != null)
+                    ms.Dispose();
             }
 
             return encryptedBytes;
@@ -91,8 +97,12 @@ namespace smartManage.Tools
             byte[] saltBytes = keyBytes;
 
             //On do le dechiffrement AES
-            using (MemoryStream ms = new MemoryStream())
+            MemoryStream ms = null;
+
+            try
             {
+                ms = new MemoryStream();
+
                 using (RijndaelManaged AES = new RijndaelManaged())
                 {
                     //Taille de la cle AES
@@ -111,13 +121,15 @@ namespace smartManage.Tools
                     AES.Mode = CipherMode.CBC;
 
                     //Recuperation du MemoryStream 
-                    using (CryptoStream cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write))
-                    {
-                        cs.Write(bytesToDecrypte, 0, bytesToDecrypte.Length);
-                        cs.Close();
-                    }
+                    CryptoStream cs = new CryptoStream(ms, AES.CreateDecryptor(), CryptoStreamMode.Write);
+                    cs.Write(bytesToDecrypte, 0, bytesToDecrypte.Length);
                     decryptedBytes = ms.ToArray();
                 }
+            }
+            finally
+            {
+                if (ms != null)
+                    ms.Dispose();
             }
 
             return decryptedBytes;

@@ -37,6 +37,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.smCloseAllForms = new System.Windows.Forms.ToolStripMenuItem();
             this.smQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.smLock = new System.Windows.Forms.ToolStripMenuItem();
             this.donnéesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.matérielToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ssmAmplifie = new System.Windows.Forms.ToolStripMenuItem();
@@ -128,7 +129,8 @@
             this.smDeconnection,
             this.toolStripSeparator3,
             this.smCloseAllForms,
-            this.smQuit});
+            this.smQuit,
+            this.smLock});
             this.fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
             this.fichierToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
             this.fichierToolStripMenuItem.Text = "&Fichier";
@@ -137,7 +139,9 @@
             // 
             this.smConnection.Image = global::smartManage.Desktop.Properties.Resources.password_lock;
             this.smConnection.Name = "smConnection";
-            this.smConnection.Size = new System.Drawing.Size(143, 22);
+            this.smConnection.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.C)));
+            this.smConnection.Size = new System.Drawing.Size(217, 22);
             this.smConnection.Text = "Conne&xion";
             this.smConnection.Click += new System.EventHandler(this.smConnection_Click);
             // 
@@ -145,19 +149,21 @@
             // 
             this.smDeconnection.Image = global::smartManage.Desktop.Properties.Resources.verouiller;
             this.smDeconnection.Name = "smDeconnection";
-            this.smDeconnection.Size = new System.Drawing.Size(143, 22);
+            this.smDeconnection.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D)));
+            this.smDeconnection.Size = new System.Drawing.Size(217, 22);
             this.smDeconnection.Text = "Déconnexion";
             this.smDeconnection.Click += new System.EventHandler(this.smDeconnection_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(140, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(214, 6);
             // 
             // smCloseAllForms
             // 
             this.smCloseAllForms.Name = "smCloseAllForms";
-            this.smCloseAllForms.Size = new System.Drawing.Size(143, 22);
+            this.smCloseAllForms.Size = new System.Drawing.Size(217, 22);
             this.smCloseAllForms.Text = "&Fermer tous";
             this.smCloseAllForms.Click += new System.EventHandler(this.smCloseAllForms_Click);
             // 
@@ -165,9 +171,17 @@
             // 
             this.smQuit.Image = global::smartManage.Desktop.Properties.Resources.Arrêter;
             this.smQuit.Name = "smQuit";
-            this.smQuit.Size = new System.Drawing.Size(143, 22);
+            this.smQuit.Size = new System.Drawing.Size(217, 22);
             this.smQuit.Text = "&Quitter";
             this.smQuit.Click += new System.EventHandler(this.smQuit_Click);
+            // 
+            // smLock
+            // 
+            this.smLock.Name = "smLock";
+            this.smLock.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.L)));
+            this.smLock.Size = new System.Drawing.Size(217, 22);
+            this.smLock.Text = "Vérouiller";
             // 
             // donnéesToolStripMenuItem
             // 
@@ -727,7 +741,7 @@
             this.Name = "frmPrincipal";
             this.Text = "Smart Manage votre appui à la bonne gestion";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmPrincipal_FormClosed);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmPrincipal_FormClosing);
             this.Load += new System.EventHandler(this.frmPrincipal_Load);
             this.MdiChildActivate += new System.EventHandler(this.frmPrincipal_MdiChildActivate);
             this.nmStripMenu.ResumeLayout(false);
@@ -816,6 +830,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem smLock;
     }
 }
 

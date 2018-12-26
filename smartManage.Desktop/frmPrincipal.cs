@@ -2,6 +2,9 @@
 using smartManage.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Forms;
 
 namespace smartManage.Desktop
@@ -9,6 +12,7 @@ namespace smartManage.Desktop
     public partial class frmPrincipal : Form
     {
         private ICRUDGeneral frmCurrent = null;
+        ResourceManager stringManager = null;
 
         #region CODE FOR APPLIYING CHILD FORM AND MDIFORM
 
@@ -177,6 +181,7 @@ namespace smartManage.Desktop
                 smDeconnection.Enabled = val;
                 smPerson.Enabled = val;
                 smSignataire.Enabled = val;
+                smLock.Enabled = val;
 
                 ssmAffectationPerson.Enabled = val;
                 ssmAffectationMaterials.Enabled = val;
@@ -215,6 +220,7 @@ namespace smartManage.Desktop
                 smDeconnection.Enabled = val;
                 smPerson.Enabled = val;
                 smSignataire.Enabled = val;
+                smLock.Enabled = val;
 
                 smRptMateriels.Enabled = val;
                 smRptPerson.Enabled = val;
@@ -250,6 +256,7 @@ namespace smartManage.Desktop
                 smDeconnection.Enabled = val;
                 smPerson.Enabled = val;
                 smSignataire.Enabled = !val;
+                smLock.Enabled = val;
 
                 ssmAffectationPerson.Enabled = val;
                 ssmAffectationMaterials.Enabled = val;
@@ -285,6 +292,7 @@ namespace smartManage.Desktop
                 smDeconnection.Enabled = val;
                 smPerson.Enabled = val;
                 smSignataire.Enabled = !val;
+                smLock.Enabled = val;
 
                 ssmAffectationPerson.Enabled = val;
                 ssmAffectationMaterials.Enabled = !val;
@@ -319,8 +327,9 @@ namespace smartManage.Desktop
         public frmPrincipal()
         {
             InitializeComponent();
-
-            ImplementUtilities.Instance.MasterDirectoryConfiguration = "SmartManage";
+            //Initialisation des Resources
+            Assembly _assembly = Assembly.Load("ResourcesData");
+            stringManager = new ResourceManager("ResourcesData.Resource", _assembly);
 
             lblDate.Text = string.Format("{0} {1}", DateTime.Now.ToLongDateString(), DateTime.Now.ToLongTimeString());
 
@@ -417,11 +426,6 @@ namespace smartManage.Desktop
             LockMenu(false, null);
         }
 
-        private void frmPrincipal_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //Fermeture de la connexion a la BD et on quitte
-        }
-
         private void smCloseAllForms_Click(object sender, EventArgs e)
         {
             try
@@ -430,7 +434,7 @@ namespace smartManage.Desktop
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Echec de fermeture des formulaires enfants, " + ex.Message, "Fermeture des formulaires enfants", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                MessageBox.Show("Echec de fermeture des formulaires enfants, " + ex.Message, "Fermeture des formulaires enfants", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
 
@@ -449,7 +453,14 @@ namespace smartManage.Desktop
             {
                 clsMetier.GetInstance().CloseConnection();
             }
-            catch (Exception) { }
+            catch (InvalidOperationException ex)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (ArgumentNullException ex)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
 
             this.LockMenu(false, null);
             this.ApplyDefaultStatusBar(this, "Aucun utilisateur n'est encore connecté");
@@ -625,6 +636,23 @@ namespace smartManage.Desktop
             frm.Icon = this.Icon;
             frmCurrent = frm;
             frm.Show();
+        }
+
+        private void frmPrincipal_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            //Fermeture de la connexion a la BD et on quitte
+            try
+            {
+                clsMetier.GetInstance().CloseConnection();
+            }
+            catch (InvalidOperationException ex)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (ArgumentNullException ex)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
         }
     }
 }

@@ -12,7 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>\\Josam\shared_doc\TestProject\SmartManage\</PublishUrl>
+    <TargetFrameworkProfile />
+    <PublishUrl>\\Josam\shared_doc\TestProject\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -23,20 +24,21 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <SupportUrl>\\Josam\shared_doc\TestProject\SmartManage\Support\aide.html</SupportUrl>
-    <TargetCulture>fr</TargetCulture>
+    <TargetCulture>en-US</TargetCulture>
     <ProductName>SmartManage Application</ProductName>
     <PublisherName>Josamuna Soft</PublisherName>
     <SuiteName>SmartManage Application</SuiteName>
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>26</ApplicationRevision>
-    <ApplicationVersion>1.6.0.%2a</ApplicationVersion>
+    <ApplicationRevision>45</ApplicationRevision>
+    <ApplicationVersion>2.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Relative</BootstrapperComponentsLocation>
+    <BootstrapperComponentsUrl>\\Josam\shared_doc\TestProject\Prerequis</BootstrapperComponentsUrl>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -75,37 +77,24 @@
   <PropertyGroup>
     <ApplicationIcon>LogoSmartManage.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>smartManage.DesktopKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="CrystalDecisions.ReportAppServer.ClientDoc, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.CommonObjectModel, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.Controllers, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.DataDefModel, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportAppServer.XmlSerialize, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="FlashControlV71, Version=1.0.3187.32366, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
-    <Reference Include="ManageConnexion, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\ManageConnexion.dll</HintPath>
+    <Reference Include="ManageConnexion">
+      <HintPath>..\..\..\CODES\ProjetUltraManage\ManageConnexion\bin\Release\ManageConnexion.dll</HintPath>
     </Reference>
-    <Reference Include="ManageUtilities, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Libraries\ManageUtilities.dll</HintPath>
+    <Reference Include="ManageUtilities">
+      <HintPath>..\..\..\CODES\ProjetUltraManage\ManageUtilities\bin\Release\ManageUtilities.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="MySql.Data">
@@ -124,7 +113,6 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -132,6 +120,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomException.cs" />
     <Compile Include="FormActualisation.cs" />
     <Compile Include="frmDataViewEtudiant.cs">
       <SubType>Form</SubType>
@@ -661,12 +650,6 @@
     <Compile Include="frmCategorieMateriel.Designer.cs">
       <DependentUpon>frmCategorieMateriel.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAdminRadiusDataView.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAdminRadiusDataView.Designer.cs">
-      <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmOrdinateur.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -712,12 +695,24 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Reports\rpt1.cs">
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\drop.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>rpt1.rpt</DependentUpon>
+      <DependentUpon>drop.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\LstOrdinateur.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LstOrdinateur.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SafeNativeMethods.cs" />
     <Compile Include="TestQRCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -796,10 +791,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmEmetteur.resx">
       <DependentUpon>frmEmetteur.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmAdminRadiusDataView.resx">
-      <DependentUpon>frmAdminRadiusDataView.cs</DependentUpon>
-      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="frmAmplificateur.resx">
       <DependentUpon>frmAmplificateur.cs</DependentUpon>
@@ -989,9 +980,13 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\rpt1.rpt">
+    <EmbeddedResource Include="Reports\drop.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>rpt1.cs</LastGenOutput>
+      <LastGenOutput>drop.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstOrdinateur.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstOrdinateur.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>
@@ -1001,17 +996,16 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <None Include="smartManage.Desktop_TemporaryKey.pfx" />
+    <None Include="smartManage.DesktopKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ManageQRCode\ManageQRCode.csproj">
       <Project>{e76178cc-759b-4932-9b7b-61df8302395a}</Project>
       <Name>ManageQRCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ResourcesData\ResourcesData.csproj">
+      <Project>{16564681-6eec-4d7a-ac8d-27a87c53437e}</Project>
+      <Name>ResourcesData</Name>
     </ProjectReference>
     <ProjectReference Include="..\smartManage.Model\smartManage.Model.csproj">
       <Project>{646de8b7-ebfb-4b29-a7ae-6be2945ba5e7}</Project>
@@ -1073,12 +1067,8 @@
     <None Include="Images\report2.png" />
     <None Include="Images\report1.png" />
     <None Include="Images\switch2.png" />
-    <Content Include="Libraries\GSMCommServer.dll" />
-    <Content Include="Libraries\GSMCommShared.dll" />
-    <Content Include="Libraries\GSMCommunication.dll" />
-    <Content Include="Libraries\ManageConnexion.dll" />
-    <Content Include="Libraries\ManageUtilities.dll" />
-    <Content Include="Libraries\PDUConverter.dll" />
+    <Content Include="Images\logoisig.png" />
+    <Content Include="Images\logoisig1.png" />
     <Content Include="LogoSmartManage.ico" />
     <Content Include="LogoSmartManage_setup.ico" />
     <None Include="Resources\LogoSmartManage_setup1.ico" />
@@ -1091,12 +1081,39 @@
     <Content Include="Images\Refresh.png" />
     <Content Include="Images\Search.png" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
+    <Folder Include="Libraries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.ReportViewer.12.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft Report Viewer 2014 Runtime</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.SqlServer.SQLSysClrTypes.12.0.x86">
+      <Visible>False</Visible>
+      <ProductName>Microsoft® System CLR Types for SQL Server® 2014 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="SAP.CrystalReports14.NET.2.0">
+      <Visible>False</Visible>
+      <ProductName>SAP Crystal Reports Runtime Engine for .NET Framework</ProductName>
+      <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
