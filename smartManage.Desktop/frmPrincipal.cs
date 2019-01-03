@@ -645,6 +645,10 @@ namespace smartManage.Desktop
             {
                 clsMetier.GetInstance().CloseConnection();
             }
+            catch (NullReferenceException ex)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
             catch (InvalidOperationException ex)
             {
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
@@ -653,6 +657,36 @@ namespace smartManage.Desktop
             {
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
+        }
+
+        private void smRptPerson_Click(object sender, EventArgs e)
+        {
+            Properties.Settings.Default.StringLogFile = "Rapport non encore ajouté";
+            MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadReportCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+        }
+
+        private void smRptMateriels_Click(object sender, EventArgs e)
+        {
+            frmReportMateriel frm = new frmReportMateriel();
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frm.Show();
+        }
+
+        private void ssmRptAffectationMateriels_Click(object sender, EventArgs e)
+        {
+            frmReportAffectationMateriel frm = new frmReportAffectationMateriel();
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frm.Show();
+        }
+
+        private void ssmRptAffectationPerson_Click(object sender, EventArgs e)
+        {
+            frmReportAffectationMateriel frm = new frmReportAffectationMateriel();
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frm.Show();
         }
     }
 }

@@ -774,7 +774,7 @@ namespace smartManage.Desktop
 
         public void Preview()
         {
-            frmReportLieuAffectation frm = new frmReportLieuAffectation();
+            frmReportAffectationMateriel frm = new frmReportAffectationMateriel();
             frm.MdiParent = Principal;
             frm.Icon = this.Icon;
             frm.Show();

@@ -1,101 +1,429 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-	<!-- 
-		Microsoft ResX Schema
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
 
-		Version 1.3
-
-		The primary goals of this format is to allow a simple XML format 
-		that is mostly human readable. The generation and parsing of the 
-		various data types are done through the TypeConverter classes 
-		associated with the data types.
-
-		Example:
-
-		... ado.net/XML headers & schema ...
-		<resheader name="resmimetype">text/microsoft-resx</resheader>
-		<resheader name="version">1.3</resheader>
-		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-		<data name="Name1">this is my long string</data>
-		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-			[base64 mime encoded serialized .NET Framework object]
-		</data>
-		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-			[base64 mime encoded string representing a byte array form of the .NET Framework object]
-		</data>
-
-		There are any number of "resheader" rows that contain simple 
-		name/value pairs.
-
-		Each data row contains a name, and value. The row also contains a 
-		type or mimetype. Type corresponds to a .NET class that support 
-		text/value conversion through the TypeConverter architecture. 
-		Classes that don't support this are serialized and stored with the 
-		mimetype set.
-
-		The mimetype is used for serialized objects, and tells the 
-		ResXResourceReader how to depersist the object. This is currently not 
-		extensible. For a given mimetype the value must be set accordingly:
-
-		Note - application/x-microsoft.net.object.binary.base64 is the format 
-		that the ResXResourceWriter will generate, however the reader can 
-		read any of the formats listed below.
-
-		mimetype: application/x-microsoft.net.object.binary.base64
-		value   : The object must be serialized with 
-			: System.Serialization.Formatters.Binary.BinaryFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.soap.base64
-		value   : The object must be serialized with 
-			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-			: and then encoded with base64 encoding.
-
-		mimetype: application/x-microsoft.net.object.bytearray.base64
-		value   : The object must be serialized into a byte array 
-			: using a System.ComponentModel.TypeConverter
-			: and then encoded with base64 encoding.
-	-->
-	
-	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-		<xsd:element name="root" msdata:IsDataSet="true">
-			<xsd:complexType>
-				<xsd:choice maxOccurs="unbounded">
-					<xsd:element name="data">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
-							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-						</xsd:complexType>
-					</xsd:element>
-					<xsd:element name="resheader">
-						<xsd:complexType>
-							<xsd:sequence>
-								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-							</xsd:sequence>
-							<xsd:attribute name="name" type="xsd:string" use="required" />
-						</xsd:complexType>
-					</xsd:element>
-				</xsd:choice>
-			</xsd:complexType>
-		</xsd:element>
-	</xsd:schema>
-	<resheader name="resmimetype">
-		<value>text/microsoft-resx</value>
-	</resheader>
-	<resheader name="version">
-		<value>1.3</value>
-	</resheader>
-	<resheader name="reader">
-		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
-	<resheader name="writer">
-		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-	</resheader>
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="StringCancelDeleteCaption" xml:space="preserve">
+    <value>Suppression</value>
+  </data>
+  <data name="StringCancelDeleteMessage" xml:space="preserve">
+    <value>Aucune suppression effectuée</value>
+  </data>
+  <data name="StringEmptyNewPasswordCaption" xml:space="preserve">
+    <value>Modification utilisateur</value>
+  </data>
+  <data name="StringEmptyNewPasswordMessage" xml:space="preserve">
+    <value>Le nouveau mot de passe ne peut être vide</value>
+  </data>
+  <data name="StringEmptyOldPasswordCaption" xml:space="preserve">
+    <value>Modification utilisateur</value>
+  </data>
+  <data name="StringEmptyOldPasswordMessage" xml:space="preserve">
+    <value>L'ancien mot de passe ne peut être vide</value>
+  </data>
+  <data name="StringEmptyUserNameCaption" xml:space="preserve">
+    <value>Modification utilisateur</value>
+  </data>
+  <data name="StringEmptyUserNameMessage" xml:space="preserve">
+    <value>Le nom de l'utilisateur ne peut être vide</value>
+  </data>
+  <data name="StringExcelDocumentFilterValue1" xml:space="preserve">
+    <value>Excel Documents (*.xlsx)|*.xlsx</value>
+  </data>
+  <data name="StringExcelDocumentFilterValue2" xml:space="preserve">
+    <value>Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*</value>
+  </data>
+  <data name="StringFailedArchiveCaption" xml:space="preserve">
+    <value>Archivage enregistrement</value>
+  </data>
+  <data name="StringFailedArchiveMessage" xml:space="preserve">
+    <value>Echec d'archivage</value>
+  </data>
+  <data name="StringFailedAuthenticationUserBDCaption" xml:space="preserve">
+    <value>Authentification de l'utilisateur</value>
+  </data>
+  <data name="StringFailedAuthenticationUserBDMessage" xml:space="preserve">
+    <value>Echec de l'authentification de l'utilisateur</value>
+  </data>
+  <data name="StringFailedDeleteCaption" xml:space="preserve">
+    <value>Suppression</value>
+  </data>
+  <data name="StringFailedDeleteMessage" xml:space="preserve">
+    <value>Echec de la suppression</value>
+  </data>
+  <data name="StringFailedDenyRightAccessCaption" xml:space="preserve">
+    <value>Retrait droits d'accès</value>
+  </data>
+  <data name="StringFailedDenyRightAccessMessage" xml:space="preserve">
+    <value>Erreur lors du retrait des droits d'accès</value>
+  </data>
+  <data name="StringFailedExportExcelCaption" xml:space="preserve">
+    <value>Exportation Excel</value>
+  </data>
+  <data name="StringFailedExportExcelMessage" xml:space="preserve">
+    <value>Erreur d'exportation vers Excel</value>
+  </data>
+  <data name="StringFailedGenerateQrCodeCaption" xml:space="preserve">
+    <value>Génération QrCode</value>
+  </data>
+  <data name="StringFailedGenerateQrCodeMessage" xml:space="preserve">
+    <value>Erreur lors de la génération du QrCode</value>
+  </data>
+  <data name="StringFailedGrantRightAccessCaption" xml:space="preserve">
+    <value>Attributions droits d'accès</value>
+  </data>
+  <data name="StringFailedGrantRightAccessMessage" xml:space="preserve">
+    <value>Erreur lors de la validation des droits</value>
+  </data>
+  <data name="StringFailedLoadComboBoxCaption" xml:space="preserve">
+    <value>Chargement listes déroulantes</value>
+  </data>
+  <data name="StringFailedLoadComboBoxMessage" xml:space="preserve">
+    <value>Echec de chargement des listes déroulantes</value>
+  </data>
+  <data name="StringFailedLoadDataBaseParamsCaption" xml:space="preserve">
+    <value>Paramètres de connexion à la Base de Données</value>
+  </data>
+  <data name="StringFailedLoadDataBaseParamsMessage" xml:space="preserve">
+    <value>Erreur lors du chargement des paramètres de connexion à la Base de Données</value>
+  </data>
+  <data name="StringFailedLoadDataCaption" xml:space="preserve">
+    <value>Chargement des données</value>
+  </data>
+  <data name="StringFailedLoadDataMessage" xml:space="preserve">
+    <value>Erreur lors du chargement des données</value>
+  </data>
+  <data name="StringFailedLoadDtgvCaption" xml:space="preserve">
+    <value>Chargement zone d'affichage</value>
+  </data>
+  <data name="StringFailedLoadDtgvMessage" xml:space="preserve">
+    <value>Erreur lors du chargement de la zone d'affichage</value>
+  </data>
+  <data name="StringFailedLoadPictureCaption" xml:space="preserve">
+    <value>Sélection photo</value>
+  </data>
+  <data name="StringFailedLoadPictureMessage" xml:space="preserve">
+    <value>Erreur de chargement de la photo</value>
+  </data>
+  <data name="StringFailedLoadReportCaption" xml:space="preserve">
+    <value>Chargement rapport</value>
+  </data>
+  <data name="StringFailedLoadReportMessage" xml:space="preserve">
+    <value>Echec de chargement du rapport</value>
+  </data>
+  <data name="StringFailedLoadRightAccessCaption" xml:space="preserve">
+    <value>Chargement des droits</value>
+  </data>
+  <data name="StringFailedLoadRightAccessMessage" xml:space="preserve">
+    <value>Erreur lors du chargement des droits</value>
+  </data>
+  <data name="StringFailedOpenConnectionBDMessage" xml:space="preserve">
+    <value>Echec de l'ouverture de la connexion à la Base de données</value>
+  </data>
+  <data name="StringFailedRefreshCaption" xml:space="preserve">
+    <value>Actualisation</value>
+  </data>
+  <data name="StringFailedRefreshLoadComboCaption" xml:space="preserve">
+    <value>Actualisation liste déroulante</value>
+  </data>
+  <data name="StringFailedRefreshLoadComboMessage" xml:space="preserve">
+    <value>Echec d'actualisation de la liste déroulante</value>
+  </data>
+  <data name="StringFailedRefreshMessage" xml:space="preserve">
+    <value>Erreur lors de l'actualisation</value>
+  </data>
+  <data name="StringFailedSaveDataBaseParamsCaption" xml:space="preserve">
+    <value>Enregistrement paramètres de connexion</value>
+  </data>
+  <data name="StringFailedSaveDataBaseParamsMessage" xml:space="preserve">
+    <value>Erreur lors de l'enregistrement des paramètres de connexion</value>
+  </data>
+  <data name="StringFailedSaveUpdateCaption" xml:space="preserve">
+    <value>Mise à jour</value>
+  </data>
+  <data name="StringFailedSaveUpdateMessage" xml:space="preserve">
+    <value>Echec de la mise à jour</value>
+  </data>
+  <data name="StringFailedSearchCaption" xml:space="preserve">
+    <value>Recherche élément</value>
+  </data>
+  <data name="StringFailedSearchMessage" xml:space="preserve">
+    <value>Erreur lors de la recherche</value>
+  </data>
+  <data name="StringFailedSelectRecordDtgvCaption" xml:space="preserve">
+    <value>Sélection enegistrement</value>
+  </data>
+  <data name="StringFailedSelectRecordDtgvMessage" xml:space="preserve">
+    <value>Erreur lors de la sélection d'un enregistrement</value>
+  </data>
+  <data name="StringFailedSelectUserDataCaption" xml:space="preserve">
+    <value>Sélection informations utilisateur</value>
+  </data>
+  <data name="StringFailedSelectUserDataMessage" xml:space="preserve">
+    <value>Erreur lors de sélection des informations de l'utilisateur</value>
+  </data>
+  <data name="StringFailedUpdateCaption" xml:space="preserve">
+    <value>Modification</value>
+  </data>
+  <data name="StringFailedUpdateMessage" xml:space="preserve">
+    <value>Echec de la modification</value>
+  </data>
+  <data name="StringFailedUpdateUserCaption" xml:space="preserve">
+    <value>Modification utilisateur</value>
+  </data>
+  <data name="StringFailedUpdateUserMessage" xml:space="preserve">
+    <value>Echec de la modification</value>
+  </data>
+  <data name="StringFailOpenConnectionBDCaption" xml:space="preserve">
+    <value>Connexion à la Base de données</value>
+  </data>
+  <data name="StringInBuildingCaption" xml:space="preserve">
+    <value>En construction</value>
+  </data>
+  <data name="StringInBuildingMessage" xml:space="preserve">
+    <value>Fonctionnalité non encore opéraionnelle</value>
+  </data>
+  <data name="StringInfoStatusAppMessage" xml:space="preserve">
+    <value>Informations sur l'état de l'application</value>
+  </data>
+  <data name="StringLoadPictureCaption1" xml:space="preserve">
+    <value>Sélection d'une photo</value>
+  </data>
+  <data name="StringNoDataLoadBindingCaption" xml:space="preserve">
+    <value>Chargement des données</value>
+  </data>
+  <data name="StringNoDataLoadBindingMessage" xml:space="preserve">
+    <value>Il n'ya rien à afficher !!!</value>
+  </data>
+  <data name="StringNoMatchOldPasswordCaption" xml:space="preserve">
+    <value>Modification utilisateur</value>
+  </data>
+  <data name="StringNoMatchOldPasswordMessage" xml:space="preserve">
+    <value>L'ancien mot de passe ne correspond pas</value>
+  </data>
+  <data name="StringNoValue" xml:space="preserve">
+    <value>NON</value>
+  </data>
+  <data name="StringPictureFilter1" xml:space="preserve">
+    <value>PNG File|*.png|JPG File|*.jpg|TIFF File|*.tif|BitMap Image|*.bmp</value>
+  </data>
+  <data name="StringPictureFilter2" xml:space="preserve">
+    <value>PNG Files(*.png)|*.png|JPG Files(*.jpg)|*.jpg|JPEG Files(*.jpeg)|*.jpeg|TIFF Files(*.tiff)|*.tiff</value>
+  </data>
+  <data name="StringPromptDeleteCaption" xml:space="preserve">
+    <value>Suppression enregistrement</value>
+  </data>
+  <data name="StringPromptDeleteMessage" xml:space="preserve">
+    <value>Voulez-vous supprimer cet enregistrement ?</value>
+  </data>
+  <data name="StringPromptQuitAppCaption" xml:space="preserve">
+    <value>Quitter l'application</value>
+  </data>
+  <data name="StringPromptQuitAppMessage" xml:space="preserve">
+    <value>Voulez-vous vraiment quitter ?</value>
+  </data>
+  <data name="StringStatusConnectedUserMessage" xml:space="preserve">
+    <value>est maintenant connecté ...</value>
+  </data>
+  <data name="StringStatusDisconnectedUserMessage" xml:space="preserve">
+    <value>Déconnecté de la base des données ...</value>
+  </data>
+  <data name="StringSuccessArchiveCaption" xml:space="preserve">
+    <value>Archivage enregistrement</value>
+  </data>
+  <data name="StringSuccessArchiveMessage" xml:space="preserve">
+    <value>Archivage effectué</value>
+  </data>
+  <data name="StringSuccessConnectionBDCaption" xml:space="preserve">
+    <value>Connexion à la base de données</value>
+  </data>
+  <data name="StringSuccessConnectionBDMessage" xml:space="preserve">
+    <value>Connexion réussie</value>
+  </data>
+  <data name="StringSuccessDeleteCaption" xml:space="preserve">
+    <value>Suppression</value>
+  </data>
+  <data name="StringSuccessDeleteMessage" xml:space="preserve">
+    <value>Suppression effectuée</value>
+  </data>
+  <data name="StringSuccessDenyRightAccessCaption" xml:space="preserve">
+    <value>Retrait droits d'accès</value>
+  </data>
+  <data name="StringSuccessDenyRightAccessMessage" xml:space="preserve">
+    <value>Droits d'accès retirés avec succès</value>
+  </data>
+  <data name="StringSuccessGrantRightAccessCaption" xml:space="preserve">
+    <value>Attributions droits d'accès</value>
+  </data>
+  <data name="StringSuccessGrantRightAccessMessage" xml:space="preserve">
+    <value>Droits d'accès attribué avec succès</value>
+  </data>
+  <data name="StringSuccessSaveCaption" xml:space="preserve">
+    <value>Enregistrement</value>
+  </data>
+  <data name="StringSuccessSaveDataBaseParamsCaption" xml:space="preserve">
+    <value>Enregistrement paramètres de connexion</value>
+  </data>
+  <data name="StringSuccessSaveDataBaseParamsMessage" xml:space="preserve">
+    <value>Enregistrement effectué</value>
+  </data>
+  <data name="StringSuccessSaveMessage" xml:space="preserve">
+    <value>Enregistrement effectué</value>
+  </data>
+  <data name="StringSuccessUpdateCaption" xml:space="preserve">
+    <value>Modification</value>
+  </data>
+  <data name="StringSuccessUpdateMessage" xml:space="preserve">
+    <value>Modification effectuée</value>
+  </data>
+  <data name="StringSusccessExportExcelCaption" xml:space="preserve">
+    <value>Exportation Excel</value>
+  </data>
+  <data name="StringSusccessExportExcelMessage" xml:space="preserve">
+    <value>Exportation Excel réussie</value>
+  </data>
+  <data name="StringSystemErrorCaption" xml:space="preserve">
+    <value>Erreur système</value>
+  </data>
+  <data name="StringSystemErrorMessage" xml:space="preserve">
+    <value>Erreur système interne, veuillez notifier à l'administrateur</value>
+  </data>
+  <data name="StringWarningSelectDenyRightAccessCaption" xml:space="preserve">
+    <value>Retrait droits d'accès</value>
+  </data>
+  <data name="StringWarningSelectDenyRightAccessMessage" xml:space="preserve">
+    <value>Veuillez choisir une catégorie des droits d'accès à retirer à l'utilisateur svp !!!</value>
+  </data>
+  <data name="StringWarningSelectGrantRightAccessCaption" xml:space="preserve">
+    <value>Attributions droits d'accès</value>
+  </data>
+  <data name="StringWarningSelectGrantRightAccessMessage" xml:space="preserve">
+    <value>Veuillez choisir une catégorie des droits à attribuer à l'utilisateur svp !!!</value>
+  </data>
+  <data name="StringYesValue" xml:space="preserve">
+    <value>OUI</value>
+  </data>
+  <data name="StringZeroDotZeroValue" xml:space="preserve">
+    <value>0,0</value>
+  </data>
+  <data name="StringZeroRecordAffectedMessage" xml:space="preserve">
+    <value>Aucun enregistrement affecté</value>
+  </data>
+  <data name="StringZeroValue" xml:space="preserve">
+    <value>0</value>
+  </data>
 </root>

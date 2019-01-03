@@ -1,5 +1,0 @@
-D:\DOC\CODES\GestionLaboratoire\GestionMateriels\Microsoft.ApplicationBlocks.Data\bin\Debug\Microsoft.ApplicationBlocks.Data.dll
-D:\DOC\CODES\GestionLaboratoire\GestionMateriels\Microsoft.ApplicationBlocks.Data\bin\Debug\Microsoft.ApplicationBlocks.Data.pdb
-D:\DOC\CODES\GestionLaboratoire\GestionMateriels\Microsoft.ApplicationBlocks.Data\obj\Debug\Microsoft.ApplicationBlocks.Data.csprojResolveAssemblyReference.cache
-D:\DOC\CODES\GestionLaboratoire\GestionMateriels\Microsoft.ApplicationBlocks.Data\obj\Debug\Microsoft.ApplicationBlocks.Data.dll
-D:\DOC\CODES\GestionLaboratoire\GestionMateriels\Microsoft.ApplicationBlocks.Data\obj\Debug\Microsoft.ApplicationBlocks.Data.pdb

@@ -39,7 +39,7 @@
   <ItemGroup>
     <Reference Include="GSMCommunication, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\SmartManage_2008\GestionMateriels\smartManage.Desktop\Libraries\Old_GSM\GSMCommunication.dll</HintPath>
+      <HintPath>C:\Users\LABOINFO\Desktop\GSMCommunication.dll</HintPath>
     </Reference>
     <Reference Include="ManageUtilities">
       <HintPath>..\..\..\CODES\ProjetUltraManage\ManageUtilities\bin\Release\ManageUtilities.dll</HintPath>
@@ -49,7 +49,7 @@
     </Reference>
     <Reference Include="PDUConverter, Version=1.21.0.0, Culture=neutral, PublicKeyToken=515d87df384dcc81, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\SmartManage_2008\GestionMateriels\smartManage.Desktop\Libraries\Old_GSM\PDUConverter.dll</HintPath>
+      <HintPath>C:\Users\LABOINFO\Desktop\PDUConverter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

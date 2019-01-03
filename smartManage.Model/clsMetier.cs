@@ -19729,6 +19729,47 @@ namespace smartManage.Model
             return lstclscategorie_materiel;
         }
 
+        public List<clscategorie_materiel> getAllClscategorie_materiel1()
+        {
+            List<clscategorie_materiel> lstclscategorie_materiel = new List<clscategorie_materiel>();
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT *  FROM categorie_materiel ORDER BY id ASC");
+                    using (IDataReader dr = cmd.ExecuteReader())
+                    {
+
+                        clscategorie_materiel varclscategorie_materiel = null;
+                        while (dr.Read())
+                        {
+
+                            varclscategorie_materiel = new clscategorie_materiel();
+                            if (!dr["id"].ToString().Trim().Equals("")) varclscategorie_materiel.Id = int.Parse(dr["id"].ToString());
+                            varclscategorie_materiel.Designation = dr["designation"].ToString();
+                            varclscategorie_materiel.User_created = dr["user_created"].ToString();
+                            if (!dr["date_created"].ToString().Trim().Equals("")) varclscategorie_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
+                            varclscategorie_materiel.User_modified = dr["user_modified"].ToString();
+                            if (!dr["date_modified"].ToString().Trim().Equals("")) varclscategorie_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+                            lstclscategorie_materiel.Add(varclscategorie_materiel);
+                        }
+                    }
+                }
+            }
+            catch (Exception exc)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'categorie_materiel' avec la classe 'clscategorie_materiel' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+            }
+            return lstclscategorie_materiel;
+        }
+
         public int insertClscategorie_materiel(clscategorie_materiel varclscategorie_materiel)
         {
             int i = 0;
@@ -20061,29 +20102,5 @@ namespace smartManage.Model
         }
 
         #endregion CLSFE 
-
-        public bool LimiteImageSize(string fileName, long byteSize, int heightSize, int widthSize)
-        {
-            var fileSizeInBytes = new System.IO.FileInfo(fileName).Length;
-            if (fileSizeInBytes > byteSize)
-                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
-
-            using (var img = new System.Drawing.Bitmap(fileName))
-            {
-                if (img.Width > widthSize || img.Height > heightSize)
-                    throw new CustomException(string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize));
-            }
-
-            return true;
-        }
-
-        public bool LimiteImageSize(string fileName, long byteSize)
-        {
-            var fileSizeInBytes = new System.IO.FileInfo(fileName).Length;
-            if (fileSizeInBytes > byteSize)
-                throw new CustomException(string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000));
-
-            return true;
-        }
     } //***fin class 
 } //***fin namespace 

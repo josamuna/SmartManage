@@ -1316,9 +1316,16 @@ create table radusergroup
 ) 
 go
 
+create table current_AC 
+(
+  code_str varchar(50) not null
+) 
+go
 
 
 --Insertion des data de base
+insert into current_AC values('2018-2019')
+
 insert into groupe(id,designation,niveau) values
 (1,'Administrateur',0),(2,'Admin',1),(3,'User',2)
 

@@ -31,7 +31,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>45</ApplicationRevision>
+    <ApplicationRevision>46</ApplicationRevision>
     <ApplicationVersion>2.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -164,35 +164,23 @@
     <Compile Include="frmParametersServeur.Designer.cs">
       <DependentUpon>frmParametersServeur.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmReportAffectationMateriel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportAffectationMateriel.Designer.cs">
-      <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportLieuAffectation.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportLieuAffectation.Designer.cs">
-      <DependentUpon>frmReportLieuAffectation.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmGroupUserAdmin.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmGroupUserAdmin.Designer.cs">
       <DependentUpon>frmGroupUserAdmin.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmReportAffectationMateriel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReportAffectationMateriel.designer.cs">
+      <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmTypeLieuAffectation.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmTypeLieuAffectation.Designer.cs">
       <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportSignataire.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportSignataire.Designer.cs">
-      <DependentUpon>frmReportSignataire.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSignataire.cs">
       <SubType>Form</SubType>
@@ -254,12 +242,6 @@
     <Compile Include="frmDefaultPwd.designer.cs">
       <DependentUpon>frmDefaultPwd.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmReportPersonne.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportPersonne.Designer.cs">
-      <DependentUpon>frmReportPersonne.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmTelephone.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -307,18 +289,6 @@
     </Compile>
     <Compile Include="frmPortee.Designer.cs">
       <DependentUpon>frmPortee.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportAmplificateur.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportAmplificateur.Designer.cs">
-      <DependentUpon>frmReportAmplificateur.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportRouteurAP.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportRouteurAP.Designer.cs">
-      <DependentUpon>frmReportRouteurAP.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSwitch.cs">
       <SubType>Form</SubType>
@@ -500,17 +470,11 @@
     <Compile Include="frmPuissanceAdaptateur.Designer.cs">
       <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmReportImprimante.cs">
+    <Compile Include="frmReportMateriel.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmReportImprimante.Designer.cs">
-      <DependentUpon>frmReportImprimante.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmReportOrdinateur.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmReportOrdinateur.designer.cs">
-      <DependentUpon>frmReportOrdinateur.cs</DependentUpon>
+    <Compile Include="frmReportMateriel.designer.cs">
+      <DependentUpon>frmReportMateriel.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTensionAlimentation.cs">
       <SubType>Form</SubType>
@@ -662,18 +626,6 @@
     <Compile Include="frmPrincipal.Designer.cs">
       <DependentUpon>frmPrincipal.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmRptAffectationMateriel.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRptAffectationMateriel.Designer.cs">
-      <DependentUpon>frmRptAffectationMateriel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmRptAffectationPersonne.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmRptAffectationPersonne.Designer.cs">
-      <DependentUpon>frmRptAffectationPersonne.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmUtilisateur.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -705,6 +657,66 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>drop.rpt</DependentUpon>
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\LstSignataireSansSignature.cs">
+      <DependentUpon>LstSignataireSansSignature.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstSignataireAvecSignature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LstSignataireAvecSignature.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\LstAffectationMateriel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LstAffectationMateriel.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\LstRetroprojecteur.cs">
+      <DependentUpon>LstRetroprojecteur.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstEmetteur.cs">
+      <DependentUpon>LstEmetteur.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstImprimante.cs">
+      <DependentUpon>LstImprimante.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstAmplificateur.cs">
+      <DependentUpon>LstAmplificateur.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstRouteurAP.cs">
+      <DependentUpon>LstRouteurAP.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstAccessPoint.cs">
+      <DependentUpon>LstAccessPoint.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Reports\LstSwitch.cs">
+      <DependentUpon>LstSwitch.rpt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <SubType>Component</SubType>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Reports\LstOrdinateur.cs">
       <AutoGen>True</AutoGen>
@@ -743,6 +755,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGroupUserAdmin.resx">
       <DependentUpon>frmGroupUserAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReportAffectationMateriel.resx">
+      <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTypeLieuAffectation.resx">
       <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
@@ -891,8 +906,8 @@
     <EmbeddedResource Include="frmPuissanceAdaptateur.resx">
       <DependentUpon>frmPuissanceAdaptateur.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmReportOrdinateur.resx">
-      <DependentUpon>frmReportOrdinateur.cs</DependentUpon>
+    <EmbeddedResource Include="frmReportMateriel.resx">
+      <DependentUpon>frmReportMateriel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTensionAlimentation.resx">
       <DependentUpon>frmTensionAlimentation.cs</DependentUpon>
@@ -983,6 +998,46 @@
     <EmbeddedResource Include="Reports\drop.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>drop.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstSignataireSansSignature.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstSignataireSansSignature.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstSignataireAvecSignature.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstSignataireAvecSignature.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstAffectationMateriel.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstAffectationMateriel.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstRetroprojecteur.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstRetroprojecteur.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstEmetteur.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstEmetteur.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstImprimante.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstImprimante.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstAmplificateur.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstAmplificateur.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstRouteurAP.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstRouteurAP.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstAccessPoint.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstAccessPoint.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\LstSwitch.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>LstSwitch.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\LstOrdinateur.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>

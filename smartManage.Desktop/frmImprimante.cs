@@ -1219,7 +1219,7 @@ namespace smartManage.Desktop
 
         public void Preview()
         {
-            frmReportImprimante frm = new frmReportImprimante();
+            frmReportMateriel frm = new frmReportMateriel();
             frm.MdiParent = Principal;
             //frm.setData(factory.getAllSexe_Dt(), @"D:\appStockMS\appStock.Desktop\reports\rptListSexe.rdlc");
             frm.Icon = this.Icon;
@@ -1377,29 +1377,28 @@ namespace smartManage.Desktop
 
         private void LoadPicture1()
         {
-            try
-            {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
 
-                if (result == DialogResult.OK)
+            if (result == DialogResult.OK)
+            {
+                string strChaine = clsTools.Instance.LimiteImageSize1(open.FileName, 1024000, 1000, 1000);
+
+                if (string.IsNullOrEmpty(strChaine))
                 {
-                    if (clsMetier.GetInstance().LimiteImageSize(open.FileName, 1024000, 1000, 1000))
-                    {
-                        pbPhoto1.Load(open.FileName);
-                        blnPhoto1 = true;
-                        materiel.Photo1 = clsTools.Instance.GetByteFromFile(open.FileName);
-                    }
+                    pbPhoto1.Load(open.FileName);
+                    blnPhoto1 = true;
+                    materiel.Photo1 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
-            }
-            catch (CustomException ex)
-            {
-                Properties.Settings.Default.StringLogFile = ex.Message;
-                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                else
+                {
+                    Properties.Settings.Default.StringLogFile = strChaine;
+                    MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + strChaine;
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                }
             }
         }
 
@@ -1441,29 +1440,28 @@ namespace smartManage.Desktop
 
         private void LoadPicture2()
         {
-            try
-            {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
 
-                if (result == DialogResult.OK)
+            if (result == DialogResult.OK)
+            {
+                string strChaine = clsTools.Instance.LimiteImageSize1(open.FileName, 1024000, 1000, 1000);
+
+                if (string.IsNullOrEmpty(strChaine))
                 {
-                    if (clsMetier.GetInstance().LimiteImageSize(open.FileName, 1024000, 1000, 1000))
-                    {
-                        pbPhoto2.Load(open.FileName);
-                        blnPhoto2 = true;
-                        materiel.Photo2 = clsTools.Instance.GetByteFromFile(open.FileName);
-                    }
+                    pbPhoto2.Load(open.FileName);
+                    blnPhoto2 = true;
+                    materiel.Photo2 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
-            }
-            catch (CustomException ex)
-            {
-                Properties.Settings.Default.StringLogFile = ex.Message;
-                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                else
+                {
+                    Properties.Settings.Default.StringLogFile = strChaine;
+                    MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + strChaine;
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                }
             }
         }
 
@@ -1497,29 +1495,28 @@ namespace smartManage.Desktop
 
         private void LoadPicture3()
         {
-            try
-            {
-                OpenFileDialog open;
-                DialogResult result;
-                LoadPicture(out open, out result);
+            OpenFileDialog open;
+            DialogResult result;
+            LoadPicture(out open, out result);
 
-                if (result == DialogResult.OK)
+            if (result == DialogResult.OK)
+            {
+                string strChaine = clsTools.Instance.LimiteImageSize1(open.FileName, 1024000, 1000, 1000);
+
+                if (string.IsNullOrEmpty(strChaine))
                 {
-                    if (clsMetier.GetInstance().LimiteImageSize(open.FileName, 1024000, 1000, 1000))
-                    {
-                        pbPhoto3.Load(open.FileName);
-                        blnPhoto3 = true;
-                        materiel.Photo3 = clsTools.Instance.GetByteFromFile(open.FileName);
-                    }
+                    pbPhoto3.Load(open.FileName);
+                    blnPhoto3 = true;
+                    materiel.Photo3 = clsTools.Instance.GetByteFromFile(open.FileName);
                 }
-            }
-            catch (CustomException ex)
-            {
-                Properties.Settings.Default.StringLogFile = ex.Message;
-                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                else
+                {
+                    Properties.Settings.Default.StringLogFile = strChaine;
+                    MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + strChaine;
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                }
             }
         }
 

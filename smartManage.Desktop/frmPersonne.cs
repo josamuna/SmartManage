@@ -811,10 +811,12 @@ namespace smartManage.Desktop
 
         public void Preview()
         {
-            frmReportPersonne frm = new frmReportPersonne();
-            frm.MdiParent = Principal;
-            frm.Icon = this.Icon;
-            frm.Show();
+            //frmReportPersonne frm = new frmReportPersonne();
+            //frm.MdiParent = Principal;
+            //frm.Icon = this.Icon;
+            //frm.Show();
+            Properties.Settings.Default.StringLogFile = "Rapport non encore ajouté";
+            MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadReportCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
 
         public void RefreshRec()
@@ -862,11 +864,21 @@ namespace smartManage.Desktop
 
             if (result == DialogResult.OK)
             {
-                if (clsMetier.GetInstance().LimiteImageSize(open.FileName, 5120000, 6000, 6000))
+                string strChaine = clsTools.Instance.LimiteImageSize1(open.FileName, 1024000, 1000, 1000);
+
+                if (string.IsNullOrEmpty(strChaine))
                 {
                     pbPhoto.Load(open.FileName);
                     blnPhoto = true;
                     materiel.Photo = clsTools.Instance.GetByteFromFile(open.FileName);
+                }
+                else
+                {
+                    Properties.Settings.Default.StringLogFile = strChaine;
+                    MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadPictureCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement de la photo  : " + this.Name + " : " + strChaine;
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
                 }
             }
         }

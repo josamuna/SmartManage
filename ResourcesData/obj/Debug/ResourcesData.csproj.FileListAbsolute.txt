@@ -10,5 +10,3 @@ D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\en-US\ResourcesData.resou
 D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\fr-FR\ResourcesData.resources.dll
 D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.dll
 D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.pdb
-D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\ResourcesData.dll.CodeAnalysisLog.xml
-D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\ResourcesData.dll.lastcodeanalysissucceeded

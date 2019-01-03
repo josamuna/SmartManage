@@ -387,5 +387,33 @@ namespace smartManage.Tools
 
             return true;
         }
+
+        public string LimiteImageSize1(string fileName, long byteSize, int heightSize, int widthSize)
+        {
+            string chaine = null;
+
+            var fileSizeInBytes = new FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                return string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000);
+
+            using (var img = new Bitmap(fileName))
+            {
+                if (img.Width > widthSize || img.Height > heightSize)
+                    return string.Format("Les dimension de l'image excèdent celles requises : {0}x{1}", heightSize, widthSize);
+            }
+
+            return chaine;
+        }
+
+        public string LimiteImageSize1(string fileName, long byteSize)
+        {
+            string chaine = null;
+
+            var fileSizeInBytes = new FileInfo(fileName).Length;
+            if (fileSizeInBytes > byteSize)
+                chaine = string.Format("L'image est plus large que la taille requise de {0}Mb", byteSize / 1000000);
+
+            return chaine;
+        }
     }
 }

@@ -11,5 +11,3 @@ D:\DOC\GitHub\SmartManageClone\ManageQRCode\bin\Debug\ManageUtilities.dll
 D:\DOC\GitHub\SmartManageClone\ManageQRCode\bin\Debug\ManageUtilities.pdb
 D:\DOC\GitHub\SmartManageClone\ManageQRCode\obj\Debug\ManageQRCode.dll
 D:\DOC\GitHub\SmartManageClone\ManageQRCode\obj\Debug\ManageQRCode.pdb
-D:\DOC\GitHub\SmartManageClone\ManageQRCode\bin\Debug\ManageQRCode.dll.CodeAnalysisLog.xml
-D:\DOC\GitHub\SmartManageClone\ManageQRCode\bin\Debug\ManageQRCode.dll.lastcodeanalysissucceeded
