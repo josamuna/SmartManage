@@ -51,7 +51,7 @@ namespace smartManage.Desktop
         Thread tActualiseComb = null;
         Thread tStopWaitCursor = null;
 
-        bool firstLoad = false;
+        ////bool firstLoad = false;
 
         ResourceManager stringManager = null;
 
@@ -149,7 +149,7 @@ namespace smartManage.Desktop
                 {
                     ExecuteThreadStopWaitCursor();
                     MessageBox.Show(stringManager.GetString("StringNoDataLoadBindingMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringNoDataLoadBindingCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
-                }                    
+                }
             }
             catch (ArgumentException ex)
             {
@@ -194,6 +194,9 @@ namespace smartManage.Desktop
                 this.Cursor = Cursors.WaitCursor;
 
                 BindingList();
+
+                txtCurrentPasswordGet.Text = ((clsaffectation_materiel)bdsrc.Current).Current_password;
+                txtChipherKey.Clear();
                 blnModifie = true;
                 Principal.ActivateOnNewSelectionChangeDgvCommandButtons(true);
             }
@@ -208,12 +211,12 @@ namespace smartManage.Desktop
         private void ExecuteSelectionDataGrid()
         {
             LoadSomeData selectDataGrid = new LoadSomeData(DoExecuteSelectionDataGrid);
-            
+
             try
             {
                 this.Invoke(selectDataGrid, "tSelectedItemDataGrid");
             }
-            catch 
+            catch
             {
                 blnModifie = false;
                 Principal.ActivateOnSelectionChangeDgvExceptionCommandButtons(false);
@@ -457,11 +460,16 @@ namespace smartManage.Desktop
             SetBindingControls(cboMateriel, "SelectedValue", materiel, "Id_materiel");
             SetBindingControls(cboSalle, "SelectedValue", materiel, "Id_salle");
             SetBindingControls(txtDateAffectation, "Text", materiel, "Date_affectation");
-            
+
+            SetBindingControls(txtAdresseIP, "Text", materiel, "Ip");
+            SetBindingControls(txtSSID, "Text", materiel, "Ssid");
+            SetBindingControls(chkIsDgw, "Checked", materiel, "Isdgw");
+            SetBindingControls(txtCurrentPassword, "Text", materiel, "Current_password");
+
             SetBindingControls(txtCreateBy, "Text", materiel, "User_created");
             SetBindingControls(txtDateCreate, "Text", materiel, "Date_created");
             SetBindingControls(txtModifieBy, "Text", materiel, "User_modified");
-            SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");                 
+            SetBindingControls(txtDateModifie, "Text", materiel, "Date_modified");
         }
 
         private void BindingList()
@@ -472,6 +480,11 @@ namespace smartManage.Desktop
             SetBindingControls(cboMateriel, "SelectedValue", bdsrc, "Id_materiel");
             SetBindingControls(cboSalle, "SelectedValue", bdsrc, "Id_salle");
             SetBindingControls(txtDateAffectation, "Text", bdsrc, "Date_affectation");
+
+            SetBindingControls(txtAdresseIP, "Text", bdsrc, "Ip");
+            SetBindingControls(txtSSID, "Text", bdsrc, "Ssid");
+            SetBindingControls(chkIsDgw, "Checked", bdsrc, "Isdgw");
+            SetBindingControls(txtCurrentPassword, "Text", bdsrc, "Current_password");
 
             SetBindingControls(txtCreateBy, "Text", bdsrc, "User_created");
             SetBindingControls(txtDateCreate, "Text", bdsrc, "Date_created");
@@ -560,9 +573,9 @@ namespace smartManage.Desktop
 
         private void TempsLoadForm_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if(tLoadForm != null)
+            if (tLoadForm != null)
             {
-                if(!tLoadForm.IsAlive)
+                if (!tLoadForm.IsAlive)
                 {
                     tempsLoadForm.Enabled = false;
 
@@ -570,7 +583,7 @@ namespace smartManage.Desktop
                     tLoadForm = null;
 
                     ExecuteThreadStopWaitCursor();
-                }               
+                }
             }
         }
 
@@ -649,11 +662,26 @@ namespace smartManage.Desktop
             {
                 if (!blnModifie)
                 {
-                    int record = materiel.inserts();
-                    if (record == 0)
-                        throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                    if (!string.IsNullOrEmpty(txtCurrentPassword.Text) || !string.IsNullOrEmpty(txtChipherKey.Text))
+                    {
+                        materiel.Current_password = ImplementChiffer.Instance.Cipher(materiel.Current_password, txtChipherKey.Text);
+
+                        int record = materiel.inserts();
+                        if (record == 0)
+                            throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                        else
+                            MessageBox.Show(stringManager.GetString("StringSuccessSaveMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessSaveCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    }
+                    else if (string.IsNullOrEmpty(txtCurrentPassword.Text) && string.IsNullOrEmpty(txtChipherKey.Text))
+                    {
+                        int record = materiel.inserts();
+                        if (record == 0)
+                            throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                        else
+                            MessageBox.Show(stringManager.GetString("StringSuccessSaveMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessSaveCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    }
                     else
-                        MessageBox.Show(stringManager.GetString("StringSuccessSaveMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessSaveCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        throw new CustomException("Veuillez spécifier une clé de chiffrement valide");
                 }
                 else
                 {
@@ -661,6 +689,7 @@ namespace smartManage.Desktop
                 }
 
                 newID = null;
+                txtChipherKey.Clear();
                 RefreshLoadDataGrid();
             }
             catch (ArgumentException ex)
@@ -675,6 +704,20 @@ namespace smartManage.Desktop
                 MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
 
                 Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (System.Data.SqlTypes.SqlTypeException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (System.Security.Cryptography.CryptographicException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedSaveUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
             catch (System.Data.SqlClient.SqlException ex)
@@ -693,11 +736,42 @@ namespace smartManage.Desktop
             clsaffectation_materiel mat = new clsaffectation_materiel();
             mat = ((clsaffectation_materiel)bdsrc.Current);
 
-            int record = mat.update(mat);
-            if (record == 0)
-                throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
-            else
-                MessageBox.Show(stringManager.GetString("StringSuccessUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            if (!string.IsNullOrEmpty(txtCurrentPassword.Text) || !string.IsNullOrEmpty(txtChipherKey.Text))
+            {
+                if (txtCurrentPassword.Text.Equals(txtCurrentPasswordGet.Text))
+                {
+                    //Mot de passe non change
+                    int record = mat.update(mat);
+                    if (record == 0)
+                        throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                    else
+                        MessageBox.Show(stringManager.GetString("StringSuccessUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                }
+                else 
+                {
+                    if (!string.IsNullOrEmpty(txtChipherKey.Text))
+                    {
+                        //Changement du mot de passe
+                        string newPassword = ImplementChiffer.Instance.Cipher(txtCurrentPassword.Text, txtChipherKey.Text);
+                        mat.Current_password = newPassword;
+                        int record = mat.update(mat);
+                        if (record == 0)
+                            throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                        else
+                            MessageBox.Show(stringManager.GetString("StringSuccessUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    }
+                    else
+                        throw new CustomException("Veuillez spécifier une clé de chiffrement valide");
+                }
+            }
+            else if (string.IsNullOrEmpty(txtCurrentPassword.Text) && string.IsNullOrEmpty(txtChipherKey.Text))
+            {
+                int record = mat.update(mat);
+                if (record == 0)
+                    throw new CustomException(stringManager.GetString("StringZeroRecordAffectedMessage", CultureInfo.CurrentUICulture));
+                else
+                    MessageBox.Show(stringManager.GetString("StringSuccessUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringSuccessUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
         }
 
         public void Delete()
@@ -880,23 +954,23 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Affectation d'un matériel dans suivant un lieu");
             Principal.SetCurrentICRUDChildForm(this);
 
-            try
-            {
-                if (firstLoad)
-                {
-                    tempsActivateForm.Enabled = true;
-                    tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+            ////try
+            ////{
+            ////    if (firstLoad)
+            ////    {
+            ////        tempsActivateForm.Enabled = true;
+            ////        tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
 
-                    if (tLoadForm == null)
-                    {
-                        tLoadForm = new Thread(new ThreadStart(ExecuteLoadForm));
-                        tLoadForm.Start();
-                    }
-                }
-            }
-            catch { }
+            ////        if (tLoadForm == null)
+            ////        {
+            ////            tLoadForm = new Thread(new ThreadStart(ExecuteLoadForm));
+            ////            tLoadForm.Start();
+            ////        }
+            ////    }
+            ////}
+            ////catch { }
 
-            firstLoad = true;
+            ////firstLoad = true;
             //Affecte Activate BindingNavigator
             Principal.ActivateMainBindingSource(Principal);
         }
@@ -925,7 +999,7 @@ namespace smartManage.Desktop
                         pbQrCode.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Qrcode);
 
                         //Load Picture of material here 
-                        if(obj_materiel.Photo1 != null)
+                        if (obj_materiel.Photo1 != null)
                             pbPhoto1.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Photo1);
                         if (obj_materiel.Photo2 != null)
                             pbPhoto2.Image = clsTools.Instance.GetImageFromByte(obj_materiel.Photo2);
@@ -947,9 +1021,67 @@ namespace smartManage.Desktop
                     }
                 }
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(stringManager.GetString("StringFailedSelectionChangeMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectionChangeCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélecion dans le combobox : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedSelectionChangeMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectionChangeCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélecion dans le combobox : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+        }
+
+        private void lblShowPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtCurrentPassword.Text))
+                {
+                    if (!string.IsNullOrEmpty(txtChipherKey.Text))
+                    {
+                        if (lblShowPassword.Text.Equals("Afficher mot de passe"))
+                        {
+                            string decipherPwd = ImplementChiffer.Instance.Decipher(txtCurrentPassword.Text, txtChipherKey.Text);
+                            txtCurrentPassword.Text = decipherPwd;
+
+                            lblShowPassword.Text = "Masquer le mot de passe";
+                            lblShowPassword.ForeColor = System.Drawing.Color.Chocolate;
+                        }
+                        else if (lblShowPassword.Text.Equals("Masquer le mot de passe"))
+                        {
+                            txtCurrentPassword.Text = txtCurrentPasswordGet.Text;
+                            txtChipherKey.Clear();
+                            lblShowPassword.Text = "Afficher mot de passe";
+                            lblShowPassword.ForeColor = System.Drawing.Color.Blue;
+                        }
+                    }
+                    else throw new CustomException("Veuillez spécifier une clé de chiffrement non vide");
+                }
+                else throw new NullReferenceException("Il n'ya rien a déchiffrer");
+            }
+            catch (CustomException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedShowPasswordCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur d'affichage du mot de passe : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (NullReferenceException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedShowPasswordCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur d'affichage du mot de passe : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (System.Security.Cryptography.CryptographicException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedShowPasswordMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedShowPasswordCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur d'affichage du mot de passe : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
         }
     }

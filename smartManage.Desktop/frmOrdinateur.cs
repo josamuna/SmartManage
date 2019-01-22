@@ -58,7 +58,7 @@ namespace smartManage.Desktop
         bool blnPhoto2 = false;
         bool blnPhoto3 = false;
 
-        bool firstLoad = false;
+        ////bool firstLoad = false;
 
         ResourceManager stringManager = null;
 
@@ -419,6 +419,12 @@ namespace smartManage.Desktop
                 //Affiche QrCode from Byte[]
                 pbQRCode.Image = null;
                 pbQRCode.Image = clsTools.Instance.GetImageFromByte(((clsmateriel)bdsrc.Current).Qrcode);
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedSelectRecordDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSelectRecordDtgvCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur de sélection dans le DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
             catch (ArgumentException ex)
             {
@@ -887,15 +893,15 @@ namespace smartManage.Desktop
                 if (e.Value == null) e = null;
                 else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto1.Image));
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
         }
 
@@ -906,16 +912,16 @@ namespace smartManage.Desktop
                 if (e.Value == null) e = null;
                 else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto2.Image));
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
-            //catch (ArgumentException ex)
-            //{
-            //    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-            //    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
-            //}
+            catch (ArgumentException)
+            {
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
         }
 
         private void Bs_Parse3(object sender, ConvertEventArgs e)
@@ -925,15 +931,15 @@ namespace smartManage.Desktop
                 if (e.Value == null) e = null;
                 else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto3.Image));
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
         }
         void binding_Format1(object sender, ConvertEventArgs e)
@@ -1230,23 +1236,23 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des ordinateurs");
             Principal.SetCurrentICRUDChildForm(this);
 
-            try
-            {
-                if (firstLoad)
-                {
-                    tempsActivateForm.Enabled = true;
-                    tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+            //try
+            //{
+            //    if (firstLoad)
+            //    {
+            //        tempsActivateForm.Enabled = true;
+            //        tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
 
-                    if (tDataGrid == null)
-                    {
-                        tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
-                        tDataGrid.Start();
-                    }
-                }
-            }
-            catch { }
+            //        if (tDataGrid == null)
+            //        {
+            //            tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+            //            tDataGrid.Start();
+            //        }
+            //    }
+            //}
+            //catch { }
 
-            firstLoad = true;
+            ////firstLoad = true;
         }
 
         private void frmOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
@@ -1372,6 +1378,14 @@ namespace smartManage.Desktop
                 newID = null;
                 RefreshData();
             }
+            catch (InvalidOperationException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
             catch (ArgumentException ex)
             {
                 MessageBox.Show(stringManager.GetString("StringFailedSaveUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
@@ -1379,6 +1393,14 @@ namespace smartManage.Desktop
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
             catch (CustomException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
+            catch (System.Data.SqlTypes.SqlTypeException ex)
             {
                 Properties.Settings.Default.StringLogFile = ex.Message;
                 MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);

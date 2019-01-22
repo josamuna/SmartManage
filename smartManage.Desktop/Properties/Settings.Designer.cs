@@ -202,5 +202,15 @@ namespace smartManage.Desktop.Properties {
                 this["LogFileNameRadiusStudent"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=JOSAM;Initial Catalog=gestion_labo_DB;User ID=sa")]
+        public string gestion_labo_DBConnectionString {
+            get {
+                return ((string)(this["gestion_labo_DBConnectionString"]));
+            }
+        }
     }
 }

@@ -1726,8 +1726,8 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des utilisateurs Radius des étudiants");
             Principal.SetCurrentICRUDChildForm(this);
 
-            if(tblMain.SelectedIndex > 0 && tblMain.SelectedIndex < 5)
-                RefreshData();
+            ////if(tblMain.SelectedIndex > 0 && tblMain.SelectedIndex < 5)
+            ////    RefreshData();
         }
 
         private void lblGeneratePassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

@@ -51,7 +51,7 @@ namespace smartManage.Desktop
         Thread tActualiseComb = null;
         Thread tStopWaitCursor = null;
 
-        bool firstLoad = false;
+        ////bool firstLoad = false;
         ResourceManager stringManager = null;
 
         public frmPrincipal Principal
@@ -703,6 +703,14 @@ namespace smartManage.Desktop
                 Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
+            catch (System.Data.SqlTypes.SqlTypeException ex)
+            {
+                Properties.Settings.Default.StringLogFile = ex.Message;
+                MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de la mise à jour  : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+            }
             catch (System.Data.SqlClient.SqlException ex)
             {
                 MessageBox.Show(stringManager.GetString("StringFailedSaveUpdateMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedSaveUpdateCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
@@ -913,23 +921,23 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Lieu d'affectation d'une personne (Agent) ou d'un équipement");
             Principal.SetCurrentICRUDChildForm(this);
 
-            try
-            {
-                if (firstLoad)
-                {
-                    tempsActivateForm.Enabled = true;
-                    tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+            ////try
+            ////{
+            ////    if (firstLoad)
+            ////    {
+            ////        tempsActivateForm.Enabled = true;
+            ////        tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
 
-                    if (tLoadForm == null)
-                    {
-                        tLoadForm = new Thread(new ThreadStart(ExecuteLoadForm));
-                        tLoadForm.Start();
-                    }
-                }
-            }
-            catch { }
+            ////        if (tLoadForm == null)
+            ////        {
+            ////            tLoadForm = new Thread(new ThreadStart(ExecuteLoadForm));
+            ////            tLoadForm.Start();
+            ////        }
+            ////    }
+            ////}
+            ////catch { }
 
-            firstLoad = true;
+            ////firstLoad = true;
             //Affecte Activate BindingNavigator
             Principal.ActivateMainBindingSource(Principal);
         }

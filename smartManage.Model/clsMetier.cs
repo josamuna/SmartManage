@@ -10598,7 +10598,7 @@ namespace smartManage.Model
             else
             {
                 if (mac_address.Length != 12)
-                    throw new Exception(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères svp !!!", mac_address));
+                    throw new CustomException(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères svp !!!", mac_address));
                 else
                 {
                     System.Text.StringBuilder strMAC = new System.Text.StringBuilder();
@@ -10606,11 +10606,11 @@ namespace smartManage.Model
                     foreach (char c in mac_address)
                     {
                         if (!char.IsLetterOrDigit(c))
-                            throw new Exception(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
+                            throw new CustomException(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
                         else
                         {
                             if (c > 'f')
-                                throw new Exception(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
+                                throw new CustomException(string.Format("Le caractère {0} n'est pas valide dans une adresse MAC.\nUtiliser les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", c));
                             else
                                 strMAC.Append(c);
                         }
@@ -10634,7 +10634,7 @@ namespace smartManage.Model
                 if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[1-9a-fA-F][0-9a-fA-F]{11}$"))
                     return mac_address.ToUpper();
                 else
-                    throw new Exception(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères et utilise les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", mac_address));
+                    throw new InvalidOperationException(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères et utilise les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", mac_address));
             }
             return mac_address;
         }
@@ -10652,7 +10652,7 @@ namespace smartManage.Model
                 if (System.Text.RegularExpressions.Regex.IsMatch(ipv4_address, @"^((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$"))
                     return ipv4_address.ToUpper();
                 else
-                    throw new Exception(string.Format(@"L'Adresse IP {0} n'est pas valide\nUne adresse IP valide doit quatre chiffre séparés par des points et utilise uniquement les chiffres de 0 à 9 sans caractères spéciaux (/,\;# etc.) !!!", ipv4_address));
+                    throw new InvalidOperationException(string.Format(@"L'Adresse IP {0} n'est pas valide\nUne adresse IP valide doit quatre chiffre séparés par des points et utilise uniquement les chiffres de 0 à 9 sans caractères spéciaux (/,\;# etc.) !!!", ipv4_address));
             }
             return ipv4_address;
         }
@@ -17680,6 +17680,11 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsaffectation_materiel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+
+                            if (!dr["ip"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ip = dr["ip"].ToString();
+                            if (!dr["ssid"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ssid = dr["ssid"].ToString();
+                            if (!dr["isdgw"].ToString().Trim().Equals("")) varclsaffectation_materiel.Isdgw = bool.Parse(dr["isdgw"].ToString());
+                            if (!dr["current_password"].ToString().Trim().Equals("")) varclsaffectation_materiel.Current_password = dr["current_password"].ToString();
                         }
                     }
                 }
@@ -17725,6 +17730,12 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsaffectation_materiel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+
+                            if (!dr["ip"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ip = dr["ip"].ToString();
+                            if (!dr["ssid"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ssid = dr["ssid"].ToString();
+                            if (!dr["isdgw"].ToString().Trim().Equals("")) varclsaffectation_materiel.Isdgw = bool.Parse(dr["isdgw"].ToString());
+                            if (!dr["current_password"].ToString().Trim().Equals("")) varclsaffectation_materiel.Current_password = dr["current_password"].ToString();
+
                             lstclsaffectation_materiel.Add(varclsaffectation_materiel);
                         }
                     }
@@ -17768,6 +17779,12 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsaffectation_materiel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+
+                            if (!dr["ip"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ip = dr["ip"].ToString();
+                            if (!dr["ssid"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ssid = dr["ssid"].ToString();
+                            if (!dr["isdgw"].ToString().Trim().Equals("")) varclsaffectation_materiel.Isdgw = bool.Parse(dr["isdgw"].ToString());
+                            if (!dr["current_password"].ToString().Trim().Equals("")) varclsaffectation_materiel.Current_password = dr["current_password"].ToString();
+
                             lstclsaffectation_materiel.Add(varclsaffectation_materiel);
                         }
                     }
@@ -17813,6 +17830,12 @@ namespace smartManage.Model
                             if (!dr["date_created"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_created = DateTime.Parse(dr["date_created"].ToString());
                             varclsaffectation_materiel.User_modified = dr["user_modified"].ToString();
                             if (!dr["date_modified"].ToString().Trim().Equals("")) varclsaffectation_materiel.Date_modified = DateTime.Parse(dr["date_modified"].ToString());
+
+                            if (!dr["ip"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ip = dr["ip"].ToString();
+                            if (!dr["ssid"].ToString().Trim().Equals("")) varclsaffectation_materiel.Ssid = dr["ssid"].ToString();
+                            if (!dr["isdgw"].ToString().Trim().Equals("")) varclsaffectation_materiel.Isdgw = bool.Parse(dr["isdgw"].ToString());
+                            if (!dr["current_password"].ToString().Trim().Equals("")) varclsaffectation_materiel.Current_password = dr["current_password"].ToString();
+
                             lstclsaffectation_materiel.Add(varclsaffectation_materiel);
                         }
                     }
@@ -17839,7 +17862,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("INSERT INTO affectation_materiel ( id,code_AC,id_lieu_affectation,id_materiel,id_salle,date_affectation,user_created,date_created,user_modified,date_modified ) VALUES (@id,@code_AC,@id_lieu_affectation,@id_materiel,@id_salle,@date_affectation,@user_created,@date_created,@user_modified,@date_modified  )");
+                    cmd.CommandText = string.Format("INSERT INTO affectation_materiel ( id,code_AC,id_lieu_affectation,id_materiel,id_salle,date_affectation,user_created,date_created,user_modified,date_modified,ip,ssid,isdgw,current_password ) VALUES (@id,@code_AC,@id_lieu_affectation,@id_materiel,@id_salle,@date_affectation,@user_created,@date_created,@user_modified,@date_modified,@ip,@ssid,@isdgw,@current_password  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsaffectation_materiel.Id));
                     if (varclsaffectation_materiel.Code_ac != null) cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, varclsaffectation_materiel.Code_ac));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, DBNull.Value));
@@ -17856,6 +17879,15 @@ namespace smartManage.Model
                     else cmd.Parameters.Add(getParameter(cmd, "@user_modified", DbType.String, 50, DBNull.Value));
                     if (varclsaffectation_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsaffectation_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
+
+                    if (varclsaffectation_materiel.Ip != null) cmd.Parameters.Add(getParameter(cmd, "@ip", DbType.String, 50, varclsaffectation_materiel.Ip));
+                    else cmd.Parameters.Add(getParameter(cmd, "@ip", DbType.String, 50, DBNull.Value));
+                    if (varclsaffectation_materiel.Ssid != null) cmd.Parameters.Add(getParameter(cmd, "@ssid", DbType.String, 50, varclsaffectation_materiel.Ssid));
+                    else cmd.Parameters.Add(getParameter(cmd, "@ssid", DbType.String, 50, DBNull.Value));
+                    if (varclsaffectation_materiel.Isdgw.HasValue) cmd.Parameters.Add(getParameter(cmd, "@isdgw", DbType.Boolean, 2, varclsaffectation_materiel.Isdgw));
+                    else cmd.Parameters.Add(getParameter(cmd, "@isdgw", DbType.Boolean, 2, DBNull.Value));
+                    if (varclsaffectation_materiel.Current_password != null) cmd.Parameters.Add(getParameter(cmd, "@current_password", DbType.String, 1000, varclsaffectation_materiel.Current_password));
+                    else cmd.Parameters.Add(getParameter(cmd, "@current_password", DbType.String, 1000, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
                 }
             }
@@ -17880,7 +17912,7 @@ namespace smartManage.Model
                 if (conn.State != ConnectionState.Open) conn.Open();
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = string.Format("UPDATE affectation_materiel  SET code_AC=@code_AC,id_lieu_affectation=@id_lieu_affectation,id_materiel=@id_materiel,id_salle=@id_salle,date_affectation=@date_affectation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
+                    cmd.CommandText = string.Format("UPDATE affectation_materiel  SET code_AC=@code_AC,id_lieu_affectation=@id_lieu_affectation,id_materiel=@id_materiel,id_salle=@id_salle,date_affectation=@date_affectation,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified,ip=@ip,ssid=@ssid,isdgw=@isdgw,current_password=@current_password  WHERE 1=1  AND id=@id ");
                     if (varclsaffectation_materiel.Code_ac != null) cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, varclsaffectation_materiel.Code_ac));
                     else cmd.Parameters.Add(getParameter(cmd, "@code_AC", DbType.String, 50, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id_lieu_affectation", DbType.Int32, 4, varclsaffectation_materiel.Id_lieu_affectation));
@@ -17897,6 +17929,15 @@ namespace smartManage.Model
                     if (varclsaffectation_materiel.Date_modified.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, varclsaffectation_materiel.Date_modified));
                     else cmd.Parameters.Add(getParameter(cmd, "@date_modified", DbType.DateTime, 8, DBNull.Value));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsaffectation_materiel.Id));
+
+                    if (varclsaffectation_materiel.Ip != null) cmd.Parameters.Add(getParameter(cmd, "@ip", DbType.String, 50, varclsaffectation_materiel.Ip));
+                    else cmd.Parameters.Add(getParameter(cmd, "@ip", DbType.String, 50, DBNull.Value));
+                    if (varclsaffectation_materiel.Ssid != null) cmd.Parameters.Add(getParameter(cmd, "@ssid", DbType.String, 50, varclsaffectation_materiel.Ssid));
+                    else cmd.Parameters.Add(getParameter(cmd, "@ssid", DbType.String, 50, DBNull.Value));
+                    if (varclsaffectation_materiel.Isdgw.HasValue) cmd.Parameters.Add(getParameter(cmd, "@isdgw", DbType.Boolean, 2, varclsaffectation_materiel.Isdgw));
+                    else cmd.Parameters.Add(getParameter(cmd, "@isdgw", DbType.Boolean, 2, DBNull.Value));
+                    if (varclsaffectation_materiel.Current_password != null) cmd.Parameters.Add(getParameter(cmd, "@current_password", DbType.String, 1000, varclsaffectation_materiel.Current_password));
+                    else cmd.Parameters.Add(getParameter(cmd, "@current_password", DbType.String, 1000, DBNull.Value));
                     i = cmd.ExecuteNonQuery();
                 }
             }

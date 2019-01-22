@@ -49,7 +49,7 @@ namespace smartManage.Desktop
         //Boolean variables for photo
         bool blnPhoto = false;
 
-        bool firstLoad = false;
+        ////bool firstLoad = false;
 
         public frmPrincipal Principal
         {
@@ -475,15 +475,15 @@ namespace smartManage.Desktop
                 if (e.Value == null) e = null;
                 else e.Value = (clsTools.Instance.GetBytesFromImage(pbPhoto.Image));
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                //Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de conversion de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                //ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
         }
 
@@ -883,23 +883,23 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Identification des signataires");
             Principal.SetCurrentICRUDChildForm(this);
 
-            try
-            {
-                if (firstLoad)
-                {
-                    tempsActivateForm.Enabled = true;
-                    tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
+            ////try
+            ////{
+            ////    if (firstLoad)
+            ////    {
+            ////        tempsActivateForm.Enabled = true;
+            ////        tempsActivateForm.Elapsed += TempsActivateForm_Elapsed;
 
-                    if (tDataGrid == null)
-                    {
-                        tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
-                        tDataGrid.Start();
-                    }
-                }
-            }
-            catch { }
+            ////        if (tDataGrid == null)
+            ////        {
+            ////            tDataGrid = new Thread(new ThreadStart(ExecuteDataGrid));
+            ////            tDataGrid.Start();
+            ////        }
+            ////    }
+            ////}
+            ////catch { }
 
-            firstLoad = true;
+            ////firstLoad = true;
         }
 
         private void smnCtxPhoto_Click(object sender, EventArgs e)

@@ -31,7 +31,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>46</ApplicationRevision>
+    <ApplicationRevision>48</ApplicationRevision>
     <ApplicationVersion>2.6.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -95,6 +95,8 @@
     <Reference Include="ManageUtilities">
       <HintPath>..\..\..\CODES\ProjetUltraManage\ManageUtilities\bin\Release\ManageUtilities.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualBasic.Compatibility" />
     <Reference Include="MySql.Data">
@@ -122,6 +124,12 @@
   <ItemGroup>
     <Compile Include="CustomException.cs" />
     <Compile Include="FormActualisation.cs" />
+    <Compile Include="frmAPropos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAPropos.Designer.cs">
+      <DependentUpon>frmAPropos.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDataViewEtudiant.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +183,18 @@
     </Compile>
     <Compile Include="frmReportAffectationMateriel.designer.cs">
       <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="A.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="A.designer.cs">
+      <DependentUpon>A.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplash.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplash.Designer.cs">
+      <DependentUpon>frmSplash.cs</DependentUpon>
     </Compile>
     <Compile Include="frmTypeLieuAffectation.cs">
       <SubType>Form</SubType>
@@ -652,6 +672,16 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSet1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\drop.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -661,8 +691,8 @@
     <Compile Include="Reports\LstSignataireSansSignature.cs">
       <DependentUpon>LstSignataireSansSignature.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstSignataireAvecSignature.cs">
       <AutoGen>True</AutoGen>
@@ -679,44 +709,44 @@
     <Compile Include="Reports\LstRetroprojecteur.cs">
       <DependentUpon>LstRetroprojecteur.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstEmetteur.cs">
       <DependentUpon>LstEmetteur.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstImprimante.cs">
       <DependentUpon>LstImprimante.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstAmplificateur.cs">
       <DependentUpon>LstAmplificateur.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstRouteurAP.cs">
       <DependentUpon>LstRouteurAP.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstAccessPoint.cs">
       <DependentUpon>LstAccessPoint.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstSwitch.cs">
       <DependentUpon>LstSwitch.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
-      <SubType>Component</SubType>
       <DesignTime>True</DesignTime>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Reports\LstOrdinateur.cs">
       <AutoGen>True</AutoGen>
@@ -732,6 +762,9 @@
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </Compile>
     <Compile Include="TypeServeur.cs" />
+    <EmbeddedResource Include="frmAPropos.resx">
+      <DependentUpon>frmAPropos.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDataViewEtudiant.resx">
       <DependentUpon>frmDataViewEtudiant.cs</DependentUpon>
     </EmbeddedResource>
@@ -758,6 +791,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReportAffectationMateriel.resx">
       <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="A.resx">
+      <DependentUpon>A.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplash.resx">
+      <DependentUpon>frmSplash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmTypeLieuAffectation.resx">
       <DependentUpon>frmTypeLieuAffectation.cs</DependentUpon>
@@ -1043,6 +1082,8 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LstOrdinateur.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Report1.rdlc" />
+    <EmbeddedResource Include="Reports\Report2.rdlc" />
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </EmbeddedResource>
@@ -1050,6 +1091,28 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSet1.xsc">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSet1.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSet1.xss">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSet2.xsc">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSet2.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet2.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSet2.xss">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
     </None>
     <None Include="smartManage.DesktopKey.pfx" />
   </ItemGroup>
@@ -1080,6 +1143,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\LogoSmartManage2.ico" />
     <None Include="Images\delete.png" />
     <None Include="Images\cle-mot-passe-icone-6615.ico" />
     <None Include="Images\003.ico" />

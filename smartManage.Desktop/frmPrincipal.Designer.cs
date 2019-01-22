@@ -378,7 +378,7 @@
             // 
             this.ssmRptAffectationPerson.Image = ((System.Drawing.Image)(resources.GetObject("ssmRptAffectationPerson.Image")));
             this.ssmRptAffectationPerson.Name = "ssmRptAffectationPerson";
-            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationPerson.Size = new System.Drawing.Size(126, 22);
             this.ssmRptAffectationPerson.Text = "Personnel";
             this.ssmRptAffectationPerson.Click += new System.EventHandler(this.ssmRptAffectationPerson_Click);
             // 
@@ -386,7 +386,7 @@
             // 
             this.ssmRptAffectationMateriels.Image = global::smartManage.Desktop.Properties.Resources.report13;
             this.ssmRptAffectationMateriels.Name = "ssmRptAffectationMateriels";
-            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(152, 22);
+            this.ssmRptAffectationMateriels.Size = new System.Drawing.Size(126, 22);
             this.ssmRptAffectationMateriels.Text = "Matériels";
             this.ssmRptAffectationMateriels.Click += new System.EventHandler(this.ssmRptAffectationMateriels_Click);
             // 
@@ -499,14 +499,16 @@
             // 
             this.smContent.Image = global::smartManage.Desktop.Properties.Resources.help;
             this.smContent.Name = "smContent";
-            this.smContent.Size = new System.Drawing.Size(131, 22);
+            this.smContent.Size = new System.Drawing.Size(152, 22);
             this.smContent.Text = "Contenu";
+            this.smContent.Click += new System.EventHandler(this.smContent_Click);
             // 
             // smAbout
             // 
             this.smAbout.Name = "smAbout";
             this.smAbout.Size = new System.Drawing.Size(131, 22);
             this.smAbout.Text = "A Propos...";
+            this.smAbout.Click += new System.EventHandler(this.smAbout_Click);
             // 
             // statusBar
             // 

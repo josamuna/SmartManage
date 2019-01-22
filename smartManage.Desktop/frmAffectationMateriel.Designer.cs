@@ -35,6 +35,10 @@
             this.colCode_AC = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colDate_affectation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_personne = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIP = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSSID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colIsdgw = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colCurrent_password = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_lieu_affectation = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_salle = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,6 +48,17 @@
             this.colDate_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.txtCurrentPasswordGet = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.txtChipherKey = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.txtCurrentPassword = new System.Windows.Forms.TextBox();
+            this.lblShowPassword = new System.Windows.Forms.LinkLabel();
+            this.chkIsDgw = new System.Windows.Forms.CheckBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtSSID = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtAdresseIP = new System.Windows.Forms.TextBox();
             this.cmdAffiche = new System.Windows.Forms.Button();
             this.chkAll = new System.Windows.Forms.CheckBox();
             this.cboACSearch = new System.Windows.Forms.ComboBox();
@@ -72,10 +87,6 @@
             this.txtId = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
-            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
-            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
             this.dgv1 = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -149,17 +160,21 @@
             this.colId_netette = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colId_portee = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colCompatible_wifi = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.pbPhoto3 = new System.Windows.Forms.PictureBox();
+            this.pbPhoto2 = new System.Windows.Forms.PictureBox();
+            this.pbPhoto1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbQrCode)).BeginInit();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv1)).BeginInit();
             this.SuspendLayout();
             // 
             // dgv
@@ -177,6 +192,10 @@
             this.colCode_AC,
             this.colDate_affectation,
             this.colId_personne,
+            this.colIP,
+            this.colSSID,
+            this.colIsdgw,
+            this.colCurrent_password,
             this.colId_lieu_affectation,
             this.colId_materiel,
             this.colId_salle,
@@ -197,7 +216,7 @@
             this.dgv.Name = "dgv";
             this.dgv.RowHeadersVisible = false;
             this.dgv.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgv.Size = new System.Drawing.Size(1206, 227);
+            this.dgv.Size = new System.Drawing.Size(1206, 233);
             this.dgv.TabIndex = 200;
             this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
@@ -228,6 +247,34 @@
             this.colId_personne.Name = "colId_personne";
             this.colId_personne.Visible = false;
             this.colId_personne.Width = 110;
+            // 
+            // colIP
+            // 
+            this.colIP.DataPropertyName = "Ip";
+            this.colIP.HeaderText = "Adresse IP";
+            this.colIP.Name = "colIP";
+            this.colIP.Width = 150;
+            // 
+            // colSSID
+            // 
+            this.colSSID.DataPropertyName = "Ssid";
+            this.colSSID.HeaderText = "SSID";
+            this.colSSID.Name = "colSSID";
+            this.colSSID.Width = 170;
+            // 
+            // colIsdgw
+            // 
+            this.colIsdgw.DataPropertyName = "Isdgw";
+            this.colIsdgw.HeaderText = "Is DGw";
+            this.colIsdgw.Name = "colIsdgw";
+            this.colIsdgw.Width = 80;
+            // 
+            // colCurrent_password
+            // 
+            this.colCurrent_password.DataPropertyName = "Current_password";
+            this.colCurrent_password.HeaderText = "Current Password";
+            this.colCurrent_password.Name = "colCurrent_password";
+            this.colCurrent_password.Visible = false;
             // 
             // colId_lieu_affectation
             // 
@@ -282,15 +329,26 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.dgv);
-            this.groupBox1.Location = new System.Drawing.Point(8, 283);
+            this.groupBox1.Location = new System.Drawing.Point(8, 330);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1212, 249);
+            this.groupBox1.Size = new System.Drawing.Size(1212, 255);
             this.groupBox1.TabIndex = 540;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Affichage des données manipulées";
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.txtCurrentPasswordGet);
+            this.groupBox2.Controls.Add(this.label10);
+            this.groupBox2.Controls.Add(this.txtChipherKey);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.txtCurrentPassword);
+            this.groupBox2.Controls.Add(this.lblShowPassword);
+            this.groupBox2.Controls.Add(this.chkIsDgw);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.txtSSID);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.txtAdresseIP);
             this.groupBox2.Controls.Add(this.cmdAffiche);
             this.groupBox2.Controls.Add(this.chkAll);
             this.groupBox2.Controls.Add(this.cboACSearch);
@@ -319,9 +377,108 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(8, 5);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(794, 171);
+            this.groupBox2.Size = new System.Drawing.Size(794, 216);
             this.groupBox2.TabIndex = 510;
             this.groupBox2.TabStop = false;
+            // 
+            // txtCurrentPasswordGet
+            // 
+            this.txtCurrentPasswordGet.Location = new System.Drawing.Point(739, 189);
+            this.txtCurrentPasswordGet.Name = "txtCurrentPasswordGet";
+            this.txtCurrentPasswordGet.Size = new System.Drawing.Size(49, 20);
+            this.txtCurrentPasswordGet.TabIndex = 176;
+            this.txtCurrentPasswordGet.Visible = false;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.BackColor = System.Drawing.Color.Transparent;
+            this.label10.Location = new System.Drawing.Point(331, 191);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(101, 13);
+            this.label10.TabIndex = 175;
+            this.label10.Text = "Clé de chiffrement : ";
+            // 
+            // txtChipherKey
+            // 
+            this.txtChipherKey.Location = new System.Drawing.Point(432, 188);
+            this.txtChipherKey.Name = "txtChipherKey";
+            this.txtChipherKey.PasswordChar = '*';
+            this.txtChipherKey.Size = new System.Drawing.Size(204, 20);
+            this.txtChipherKey.TabIndex = 10;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(331, 167);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(94, 13);
+            this.label8.TabIndex = 173;
+            this.label8.Text = "Actuel password : ";
+            // 
+            // txtCurrentPassword
+            // 
+            this.txtCurrentPassword.Location = new System.Drawing.Point(432, 164);
+            this.txtCurrentPassword.Name = "txtCurrentPassword";
+            this.txtCurrentPassword.Size = new System.Drawing.Size(204, 20);
+            this.txtCurrentPassword.TabIndex = 9;
+            // 
+            // lblShowPassword
+            // 
+            this.lblShowPassword.AutoSize = true;
+            this.lblShowPassword.LinkColor = System.Drawing.Color.Blue;
+            this.lblShowPassword.Location = new System.Drawing.Point(642, 167);
+            this.lblShowPassword.Name = "lblShowPassword";
+            this.lblShowPassword.Size = new System.Drawing.Size(109, 13);
+            this.lblShowPassword.TabIndex = 15;
+            this.lblShowPassword.TabStop = true;
+            this.lblShowPassword.Text = "Afficher mot de passe";
+            this.lblShowPassword.VisitedLinkColor = System.Drawing.Color.Blue;
+            this.lblShowPassword.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblShowPassword_LinkClicked);
+            // 
+            // chkIsDgw
+            // 
+            this.chkIsDgw.AutoSize = true;
+            this.chkIsDgw.ForeColor = System.Drawing.Color.Purple;
+            this.chkIsDgw.Location = new System.Drawing.Point(643, 190);
+            this.chkIsDgw.Name = "chkIsDgw";
+            this.chkIsDgw.Size = new System.Drawing.Size(90, 17);
+            this.chkIsDgw.TabIndex = 11;
+            this.chkIsDgw.TabStop = false;
+            this.chkIsDgw.Text = "Is Default Gw";
+            this.chkIsDgw.UseVisualStyleBackColor = true;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 191);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(41, 13);
+            this.label5.TabIndex = 168;
+            this.label5.Text = "SSID : ";
+            // 
+            // txtSSID
+            // 
+            this.txtSSID.Location = new System.Drawing.Point(102, 188);
+            this.txtSSID.Name = "txtSSID";
+            this.txtSSID.Size = new System.Drawing.Size(204, 20);
+            this.txtSSID.TabIndex = 8;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(7, 167);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(67, 13);
+            this.label3.TabIndex = 166;
+            this.label3.Text = "Adresse IP : ";
+            // 
+            // txtAdresseIP
+            // 
+            this.txtAdresseIP.Location = new System.Drawing.Point(102, 164);
+            this.txtAdresseIP.Name = "txtAdresseIP";
+            this.txtAdresseIP.Size = new System.Drawing.Size(204, 20);
+            this.txtAdresseIP.TabIndex = 7;
             // 
             // cmdAffiche
             // 
@@ -332,7 +489,7 @@
             this.cmdAffiche.Location = new System.Drawing.Point(552, 14);
             this.cmdAffiche.Name = "cmdAffiche";
             this.cmdAffiche.Size = new System.Drawing.Size(84, 22);
-            this.cmdAffiche.TabIndex = 9;
+            this.cmdAffiche.TabIndex = 14;
             this.cmdAffiche.Text = "Affiche&r";
             this.cmdAffiche.UseVisualStyleBackColor = false;
             this.cmdAffiche.Click += new System.EventHandler(this.cmdAffiche_Click);
@@ -344,7 +501,7 @@
             this.chkAll.Location = new System.Drawing.Point(311, 18);
             this.chkAll.Name = "chkAll";
             this.chkAll.Size = new System.Drawing.Size(86, 17);
-            this.chkAll.TabIndex = 7;
+            this.chkAll.TabIndex = 12;
             this.chkAll.TabStop = false;
             this.chkAll.Text = "Tout afficher";
             this.chkAll.UseVisualStyleBackColor = true;
@@ -358,7 +515,7 @@
             this.cboACSearch.Location = new System.Drawing.Point(432, 15);
             this.cboACSearch.Name = "cboACSearch";
             this.cboACSearch.Size = new System.Drawing.Size(114, 21);
-            this.cboACSearch.TabIndex = 8;
+            this.cboACSearch.TabIndex = 13;
             // 
             // lblAddAC
             // 
@@ -596,58 +753,12 @@
             this.groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox3.Controls.Add(this.dgv1);
-            this.groupBox3.Location = new System.Drawing.Point(8, 180);
+            this.groupBox3.Location = new System.Drawing.Point(8, 226);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1212, 99);
             this.groupBox3.TabIndex = 541;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Détails du lieu d\'affectation du matériel";
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox4.Controls.Add(this.pbPhoto3);
-            this.groupBox4.Controls.Add(this.pbPhoto2);
-            this.groupBox4.Controls.Add(this.pbPhoto1);
-            this.groupBox4.Location = new System.Drawing.Point(808, 5);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(411, 171);
-            this.groupBox4.TabIndex = 542;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Vue de profil de l\'équipement";
-            // 
-            // pbPhoto3
-            // 
-            this.pbPhoto3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto3.Location = new System.Drawing.Point(275, 27);
-            this.pbPhoto3.Name = "pbPhoto3";
-            this.pbPhoto3.Size = new System.Drawing.Size(127, 127);
-            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto3.TabIndex = 44;
-            this.pbPhoto3.TabStop = false;
-            // 
-            // pbPhoto2
-            // 
-            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto2.Location = new System.Drawing.Point(142, 27);
-            this.pbPhoto2.Name = "pbPhoto2";
-            this.pbPhoto2.Size = new System.Drawing.Size(127, 127);
-            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto2.TabIndex = 43;
-            this.pbPhoto2.TabStop = false;
-            // 
-            // pbPhoto1
-            // 
-            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbPhoto1.Location = new System.Drawing.Point(9, 27);
-            this.pbPhoto1.Name = "pbPhoto1";
-            this.pbPhoto1.Size = new System.Drawing.Size(127, 127);
-            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbPhoto1.TabIndex = 2;
-            this.pbPhoto1.TabStop = false;
             // 
             // dgv1
             // 
@@ -742,6 +853,7 @@
             this.dgv1.Location = new System.Drawing.Point(2, 19);
             this.dgv1.MultiSelect = false;
             this.dgv1.Name = "dgv1";
+            this.dgv1.ReadOnly = true;
             this.dgv1.RowHeadersVisible = false;
             this.dgv1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgv1.Size = new System.Drawing.Size(1208, 72);
@@ -753,6 +865,7 @@
             this.dataGridViewTextBoxColumn1.DataPropertyName = "Id";
             this.dataGridViewTextBoxColumn1.HeaderText = "Id";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Visible = false;
             // 
             // colCode_str
@@ -760,12 +873,14 @@
             this.colCode_str.DataPropertyName = "Code_str";
             this.colCode_str.HeaderText = "Code texte";
             this.colCode_str.Name = "colCode_str";
+            this.colCode_str.ReadOnly = true;
             // 
             // colArchiver
             // 
             this.colArchiver.DataPropertyName = "Archiver";
             this.colArchiver.HeaderText = "Archiver";
             this.colArchiver.Name = "colArchiver";
+            this.colArchiver.ReadOnly = true;
             this.colArchiver.Width = 50;
             // 
             // colId_categorie_materiel
@@ -773,6 +888,7 @@
             this.colId_categorie_materiel.DataPropertyName = "Id_categorie_materiel";
             this.colId_categorie_materiel.HeaderText = "Id_categorie_materiel";
             this.colId_categorie_materiel.Name = "colId_categorie_materiel";
+            this.colId_categorie_materiel.ReadOnly = true;
             this.colId_categorie_materiel.Visible = false;
             // 
             // colId_compte
@@ -780,6 +896,7 @@
             this.colId_compte.DataPropertyName = "Id_compte";
             this.colId_compte.HeaderText = "Id_compte";
             this.colId_compte.Name = "colId_compte";
+            this.colId_compte.ReadOnly = true;
             this.colId_compte.Visible = false;
             // 
             // colQrcode
@@ -787,6 +904,7 @@
             this.colQrcode.DataPropertyName = "Qrcode";
             this.colQrcode.HeaderText = "Qrcode";
             this.colQrcode.Name = "colQrcode";
+            this.colQrcode.ReadOnly = true;
             this.colQrcode.Visible = false;
             // 
             // colDate_acquisition
@@ -794,6 +912,7 @@
             this.colDate_acquisition.DataPropertyName = "Date_acquisition";
             this.colDate_acquisition.HeaderText = "Date acquisition";
             this.colDate_acquisition.Name = "colDate_acquisition";
+            this.colDate_acquisition.ReadOnly = true;
             this.colDate_acquisition.Width = 110;
             // 
             // colid_garantie
@@ -801,6 +920,7 @@
             this.colid_garantie.DataPropertyName = "id_garantie";
             this.colid_garantie.HeaderText = "id_garantie";
             this.colid_garantie.Name = "colid_garantie";
+            this.colid_garantie.ReadOnly = true;
             this.colid_garantie.Visible = false;
             // 
             // colId_marque
@@ -808,6 +928,7 @@
             this.colId_marque.DataPropertyName = "Id_marque";
             this.colId_marque.HeaderText = "Id_marque";
             this.colId_marque.Name = "colId_marque";
+            this.colId_marque.ReadOnly = true;
             this.colId_marque.Visible = false;
             // 
             // colId_modele
@@ -815,6 +936,7 @@
             this.colId_modele.DataPropertyName = "Id_modele";
             this.colId_modele.HeaderText = "Id_modele";
             this.colId_modele.Name = "colId_modele";
+            this.colId_modele.ReadOnly = true;
             this.colId_modele.Visible = false;
             // 
             // colId_couleur
@@ -822,6 +944,7 @@
             this.colId_couleur.DataPropertyName = "Id_couleur";
             this.colId_couleur.HeaderText = "Id_couleur";
             this.colId_couleur.Name = "colId_couleur";
+            this.colId_couleur.ReadOnly = true;
             this.colId_couleur.Visible = false;
             // 
             // colId_poids
@@ -829,6 +952,7 @@
             this.colId_poids.DataPropertyName = "Id_poids";
             this.colId_poids.HeaderText = "Id_poids";
             this.colId_poids.Name = "colId_poids";
+            this.colId_poids.ReadOnly = true;
             this.colId_poids.Visible = false;
             // 
             // colId_etat_materiel
@@ -836,6 +960,7 @@
             this.colId_etat_materiel.DataPropertyName = "Id_etat_materiel";
             this.colId_etat_materiel.HeaderText = "Id_etat_materiel";
             this.colId_etat_materiel.Name = "colId_etat_materiel";
+            this.colId_etat_materiel.ReadOnly = true;
             this.colId_etat_materiel.Visible = false;
             // 
             // colPhoto1
@@ -843,6 +968,7 @@
             this.colPhoto1.DataPropertyName = "Photo1";
             this.colPhoto1.HeaderText = "Photo1";
             this.colPhoto1.Name = "colPhoto1";
+            this.colPhoto1.ReadOnly = true;
             this.colPhoto1.Visible = false;
             // 
             // colPhoto2
@@ -850,6 +976,7 @@
             this.colPhoto2.DataPropertyName = "Photo2";
             this.colPhoto2.HeaderText = "Photo2";
             this.colPhoto2.Name = "colPhoto2";
+            this.colPhoto2.ReadOnly = true;
             this.colPhoto2.Visible = false;
             // 
             // colPhoto3
@@ -857,6 +984,7 @@
             this.colPhoto3.DataPropertyName = "Photo3";
             this.colPhoto3.HeaderText = "Photo3";
             this.colPhoto3.Name = "colPhoto3";
+            this.colPhoto3.ReadOnly = true;
             this.colPhoto3.Visible = false;
             // 
             // colLabel
@@ -864,24 +992,28 @@
             this.colLabel.DataPropertyName = "Label";
             this.colLabel.HeaderText = "Etiquette";
             this.colLabel.Name = "colLabel";
+            this.colLabel.ReadOnly = true;
             // 
             // colMac_adresse1
             // 
             this.colMac_adresse1.DataPropertyName = "Mac_adresse1";
             this.colMac_adresse1.HeaderText = "Mac Wifi";
             this.colMac_adresse1.Name = "colMac_adresse1";
+            this.colMac_adresse1.ReadOnly = true;
             // 
             // colMac_adresse2
             // 
             this.colMac_adresse2.DataPropertyName = "Mac_adresse2";
             this.colMac_adresse2.HeaderText = "Mac LAN";
             this.colMac_adresse2.Name = "colMac_adresse2";
+            this.colMac_adresse2.ReadOnly = true;
             // 
             // colCommentaire
             // 
             this.colCommentaire.DataPropertyName = "Commentaire";
             this.colCommentaire.HeaderText = "Commentaire";
             this.colCommentaire.Name = "colCommentaire";
+            this.colCommentaire.ReadOnly = true;
             this.colCommentaire.Width = 300;
             // 
             // dataGridViewTextBoxColumn2
@@ -889,30 +1021,35 @@
             this.dataGridViewTextBoxColumn2.DataPropertyName = "User_created";
             this.dataGridViewTextBoxColumn2.HeaderText = "User created";
             this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
+            this.dataGridViewTextBoxColumn2.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn3
             // 
             this.dataGridViewTextBoxColumn3.DataPropertyName = "Date_created";
             this.dataGridViewTextBoxColumn3.HeaderText = "Date created";
             this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
+            this.dataGridViewTextBoxColumn3.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn4
             // 
             this.dataGridViewTextBoxColumn4.DataPropertyName = "User_modified";
             this.dataGridViewTextBoxColumn4.HeaderText = "User modified";
             this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
+            this.dataGridViewTextBoxColumn4.ReadOnly = true;
             // 
             // dataGridViewTextBoxColumn5
             // 
             this.dataGridViewTextBoxColumn5.DataPropertyName = "Date_modified";
             this.dataGridViewTextBoxColumn5.HeaderText = "Date modified";
             this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
+            this.dataGridViewTextBoxColumn5.ReadOnly = true;
             // 
             // colId_type_ordinateur
             // 
             this.colId_type_ordinateur.DataPropertyName = "Id_type_ordinateur";
             this.colId_type_ordinateur.HeaderText = "Id_type_ordinateur";
             this.colId_type_ordinateur.Name = "colId_type_ordinateur";
+            this.colId_type_ordinateur.ReadOnly = true;
             this.colId_type_ordinateur.Visible = false;
             // 
             // colId_type_clavier
@@ -920,6 +1057,7 @@
             this.colId_type_clavier.DataPropertyName = "Id_type_clavier";
             this.colId_type_clavier.HeaderText = "Id_type_clavier";
             this.colId_type_clavier.Name = "colId_type_clavier";
+            this.colId_type_clavier.ReadOnly = true;
             this.colId_type_clavier.Visible = false;
             // 
             // colId_os
@@ -927,6 +1065,7 @@
             this.colId_os.DataPropertyName = "Id_os";
             this.colId_os.HeaderText = "Id_os";
             this.colId_os.Name = "colId_os";
+            this.colId_os.ReadOnly = true;
             this.colId_os.Visible = false;
             // 
             // colid_ram
@@ -934,6 +1073,7 @@
             this.colid_ram.DataPropertyName = "id_ram";
             this.colid_ram.HeaderText = "id_ram";
             this.colid_ram.Name = "colid_ram";
+            this.colid_ram.ReadOnly = true;
             this.colid_ram.Visible = false;
             // 
             // colid_processeur
@@ -941,6 +1081,7 @@
             this.colid_processeur.DataPropertyName = "id_processeur";
             this.colid_processeur.HeaderText = "id_processeur";
             this.colid_processeur.Name = "colid_processeur";
+            this.colid_processeur.ReadOnly = true;
             this.colid_processeur.Visible = false;
             this.colid_processeur.Width = 130;
             // 
@@ -949,6 +1090,7 @@
             this.colid_nombre_coeur_processeur.DataPropertyName = "id_nombre_coeur_processeur";
             this.colid_nombre_coeur_processeur.HeaderText = "id_nombre_coeur_processeur";
             this.colid_nombre_coeur_processeur.Name = "colid_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.ReadOnly = true;
             this.colid_nombre_coeur_processeur.Visible = false;
             this.colid_nombre_coeur_processeur.Width = 150;
             // 
@@ -957,6 +1099,7 @@
             this.colId_type_hdd.DataPropertyName = "Id_type_hdd";
             this.colId_type_hdd.HeaderText = "Id_type_hdd";
             this.colId_type_hdd.Name = "colId_type_hdd";
+            this.colId_type_hdd.ReadOnly = true;
             this.colId_type_hdd.Visible = false;
             // 
             // colId_nombre_hdd
@@ -964,6 +1107,7 @@
             this.colId_nombre_hdd.DataPropertyName = "Id_nombre_hdd";
             this.colId_nombre_hdd.HeaderText = "Id_nombre_hdd";
             this.colId_nombre_hdd.Name = "colId_nombre_hdd";
+            this.colId_nombre_hdd.ReadOnly = true;
             this.colId_nombre_hdd.Visible = false;
             // 
             // colId_capacite_hdd
@@ -971,6 +1115,7 @@
             this.colId_capacite_hdd.DataPropertyName = "Id_capacite_hdd";
             this.colId_capacite_hdd.HeaderText = "Id_capacite_hdd";
             this.colId_capacite_hdd.Name = "colId_capacite_hdd";
+            this.colId_capacite_hdd.ReadOnly = true;
             this.colId_capacite_hdd.Visible = false;
             this.colId_capacite_hdd.Width = 120;
             // 
@@ -979,6 +1124,7 @@
             this.colId_taille_ecran.DataPropertyName = "Id_taille_ecran";
             this.colId_taille_ecran.HeaderText = "Id_taille_ecran";
             this.colId_taille_ecran.Name = "colId_taille_ecran";
+            this.colId_taille_ecran.ReadOnly = true;
             this.colId_taille_ecran.Visible = false;
             this.colId_taille_ecran.Width = 150;
             // 
@@ -987,6 +1133,7 @@
             this.colId_usb2.DataPropertyName = "Id_usb2";
             this.colId_usb2.HeaderText = "Id_usb2";
             this.colId_usb2.Name = "colId_usb2";
+            this.colId_usb2.ReadOnly = true;
             this.colId_usb2.Visible = false;
             // 
             // colId_usb3
@@ -994,6 +1141,7 @@
             this.colId_usb3.DataPropertyName = "Id_usb3";
             this.colId_usb3.HeaderText = "Id_usb3";
             this.colId_usb3.Name = "colId_usb3";
+            this.colId_usb3.ReadOnly = true;
             this.colId_usb3.Visible = false;
             // 
             // colId_hdmi
@@ -1001,6 +1149,7 @@
             this.colId_hdmi.DataPropertyName = "Id_hdmi";
             this.colId_hdmi.HeaderText = "Id_hdmi";
             this.colId_hdmi.Name = "colId_hdmi";
+            this.colId_hdmi.ReadOnly = true;
             this.colId_hdmi.Visible = false;
             // 
             // colId_vga
@@ -1008,6 +1157,7 @@
             this.colId_vga.DataPropertyName = "Id_vga";
             this.colId_vga.HeaderText = "Id_vga";
             this.colId_vga.Name = "colId_vga";
+            this.colId_vga.ReadOnly = true;
             this.colId_vga.Visible = false;
             // 
             // colId_tension_batterie
@@ -1015,6 +1165,7 @@
             this.colId_tension_batterie.DataPropertyName = "Id_tension_batterie";
             this.colId_tension_batterie.HeaderText = "Id_tension_batterie";
             this.colId_tension_batterie.Name = "colId_tension_batterie";
+            this.colId_tension_batterie.ReadOnly = true;
             this.colId_tension_batterie.Visible = false;
             this.colId_tension_batterie.Width = 130;
             // 
@@ -1023,6 +1174,7 @@
             this.colId_tension_adaptateur.DataPropertyName = "Id_tension_adaptateur";
             this.colId_tension_adaptateur.HeaderText = "Id_tension_adaptateur";
             this.colId_tension_adaptateur.Name = "colId_tension_adaptateur";
+            this.colId_tension_adaptateur.ReadOnly = true;
             this.colId_tension_adaptateur.Visible = false;
             this.colId_tension_adaptateur.Width = 130;
             // 
@@ -1031,6 +1183,7 @@
             this.colId_puissance_adaptateur.DataPropertyName = "Id_puissance_adaptateur";
             this.colId_puissance_adaptateur.HeaderText = "Id_puissance_adaptateur";
             this.colId_puissance_adaptateur.Name = "colId_puissance_adaptateur";
+            this.colId_puissance_adaptateur.ReadOnly = true;
             this.colId_puissance_adaptateur.Visible = false;
             this.colId_puissance_adaptateur.Width = 150;
             // 
@@ -1039,6 +1192,7 @@
             this.colId_intensite_adaptateur.DataPropertyName = "Id_intensite_adaptateur";
             this.colId_intensite_adaptateur.HeaderText = "Id_intensite_adaptateur";
             this.colId_intensite_adaptateur.Name = "colId_intensite_adaptateur";
+            this.colId_intensite_adaptateur.ReadOnly = true;
             this.colId_intensite_adaptateur.Visible = false;
             this.colId_intensite_adaptateur.Width = 130;
             // 
@@ -1047,12 +1201,14 @@
             this.colNumero_cle.DataPropertyName = "Numero_cle";
             this.colNumero_cle.HeaderText = "Num clé";
             this.colNumero_cle.Name = "colNumero_cle";
+            this.colNumero_cle.ReadOnly = true;
             // 
             // colId_type_imprimante
             // 
             this.colId_type_imprimante.DataPropertyName = "Id_type_imprimante";
             this.colId_type_imprimante.HeaderText = "Id_type_imprimante";
             this.colId_type_imprimante.Name = "colId_type_imprimante";
+            this.colId_type_imprimante.ReadOnly = true;
             this.colId_type_imprimante.Visible = false;
             // 
             // colId_puissance
@@ -1060,6 +1216,7 @@
             this.colId_puissance.DataPropertyName = "Id_puissance";
             this.colId_puissance.HeaderText = "Id_puissance";
             this.colId_puissance.Name = "colId_puissance";
+            this.colId_puissance.ReadOnly = true;
             this.colId_puissance.Visible = false;
             // 
             // colId_intensite
@@ -1067,6 +1224,7 @@
             this.colId_intensite.DataPropertyName = "Id_intensite";
             this.colId_intensite.HeaderText = "Id_intensite";
             this.colId_intensite.Name = "colId_intensite";
+            this.colId_intensite.ReadOnly = true;
             this.colId_intensite.Visible = false;
             // 
             // colId_page_par_minute
@@ -1074,6 +1232,7 @@
             this.colId_page_par_minute.DataPropertyName = "Id_page_par_minute";
             this.colId_page_par_minute.HeaderText = "Id_page_par_minute";
             this.colId_page_par_minute.Name = "colId_page_par_minute";
+            this.colId_page_par_minute.ReadOnly = true;
             this.colId_page_par_minute.Visible = false;
             // 
             // colId_type_amplificateur
@@ -1081,6 +1240,7 @@
             this.colId_type_amplificateur.DataPropertyName = "Id_type_amplificateur";
             this.colId_type_amplificateur.HeaderText = "Id_type_amplificateur";
             this.colId_type_amplificateur.Name = "colId_type_amplificateur";
+            this.colId_type_amplificateur.ReadOnly = true;
             this.colId_type_amplificateur.Visible = false;
             // 
             // colId_tension_alimentation
@@ -1088,6 +1248,7 @@
             this.colId_tension_alimentation.DataPropertyName = "Id_tension_alimentation";
             this.colId_tension_alimentation.HeaderText = "Id_tension_alimentation";
             this.colId_tension_alimentation.Name = "colId_tension_alimentation";
+            this.colId_tension_alimentation.ReadOnly = true;
             this.colId_tension_alimentation.Visible = false;
             this.colId_tension_alimentation.Width = 110;
             // 
@@ -1096,6 +1257,7 @@
             this.colId_usb.DataPropertyName = "Id_usb";
             this.colId_usb.HeaderText = "Id_usb";
             this.colId_usb.Name = "colId_usb";
+            this.colId_usb.ReadOnly = true;
             this.colId_usb.Visible = false;
             // 
             // colId_memoire
@@ -1103,6 +1265,7 @@
             this.colId_memoire.DataPropertyName = "Id_memoire";
             this.colId_memoire.HeaderText = "Id_memoire";
             this.colId_memoire.Name = "colId_memoire";
+            this.colId_memoire.ReadOnly = true;
             this.colId_memoire.Visible = false;
             // 
             // colId_sorties_audio
@@ -1110,6 +1273,7 @@
             this.colId_sorties_audio.DataPropertyName = "Id_sorties_audio";
             this.colId_sorties_audio.HeaderText = "Id_sorties_audio";
             this.colId_sorties_audio.Name = "colId_sorties_audio";
+            this.colId_sorties_audio.ReadOnly = true;
             this.colId_sorties_audio.Visible = false;
             // 
             // colId_microphone
@@ -1117,6 +1281,7 @@
             this.colId_microphone.DataPropertyName = "Id_microphone";
             this.colId_microphone.HeaderText = "Id_microphone";
             this.colId_microphone.Name = "colId_microphone";
+            this.colId_microphone.ReadOnly = true;
             this.colId_microphone.Visible = false;
             // 
             // colId_gain
@@ -1124,6 +1289,7 @@
             this.colId_gain.DataPropertyName = "Id_gain";
             this.colId_gain.HeaderText = "Id_gain";
             this.colId_gain.Name = "colId_gain";
+            this.colId_gain.ReadOnly = true;
             this.colId_gain.Visible = false;
             // 
             // colId_type_routeur_ap
@@ -1131,6 +1297,7 @@
             this.colId_type_routeur_ap.DataPropertyName = "Id_type_routeur_ap";
             this.colId_type_routeur_ap.HeaderText = "Id_type_routeur_ap";
             this.colId_type_routeur_ap.Name = "colId_type_routeur_ap";
+            this.colId_type_routeur_ap.ReadOnly = true;
             this.colId_type_routeur_ap.Visible = false;
             // 
             // colId_version_ios
@@ -1138,6 +1305,7 @@
             this.colId_version_ios.DataPropertyName = "Id_version_ios";
             this.colId_version_ios.HeaderText = "Id_version_ios";
             this.colId_version_ios.Name = "colId_version_ios";
+            this.colId_version_ios.ReadOnly = true;
             this.colId_version_ios.Visible = false;
             // 
             // colId_gbe
@@ -1145,6 +1313,7 @@
             this.colId_gbe.DataPropertyName = "Id_gbe";
             this.colId_gbe.HeaderText = "Id_gbe";
             this.colId_gbe.Name = "colId_gbe";
+            this.colId_gbe.ReadOnly = true;
             this.colId_gbe.Visible = false;
             // 
             // colId_fe
@@ -1152,6 +1321,7 @@
             this.colId_fe.DataPropertyName = "Id_fe";
             this.colId_fe.HeaderText = "Id_fe";
             this.colId_fe.Name = "colId_fe";
+            this.colId_fe.ReadOnly = true;
             this.colId_fe.Visible = false;
             // 
             // colId_fo
@@ -1159,6 +1329,7 @@
             this.colId_fo.DataPropertyName = "Id_fo";
             this.colId_fo.HeaderText = "Id_fo";
             this.colId_fo.Name = "colId_fo";
+            this.colId_fo.ReadOnly = true;
             this.colId_fo.Visible = false;
             // 
             // colId_serial
@@ -1166,6 +1337,7 @@
             this.colId_serial.DataPropertyName = "Id_serial";
             this.colId_serial.HeaderText = "Id_serial";
             this.colId_serial.Name = "colId_serial";
+            this.colId_serial.ReadOnly = true;
             this.colId_serial.Visible = false;
             // 
             // colCapable_usb
@@ -1173,6 +1345,7 @@
             this.colCapable_usb.DataPropertyName = "Capable_usb";
             this.colCapable_usb.HeaderText = "Supporte USB";
             this.colCapable_usb.Name = "colCapable_usb";
+            this.colCapable_usb.ReadOnly = true;
             this.colCapable_usb.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colCapable_usb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colCapable_usb.ThreeState = true;
@@ -1182,6 +1355,7 @@
             this.colId_default_pwd.DataPropertyName = "Id_default_pwd";
             this.colId_default_pwd.HeaderText = "Id_default_pwd";
             this.colId_default_pwd.Name = "colId_default_pwd";
+            this.colId_default_pwd.ReadOnly = true;
             this.colId_default_pwd.Visible = false;
             // 
             // colId_default_ip
@@ -1189,6 +1363,7 @@
             this.colId_default_ip.DataPropertyName = "Id_default_ip";
             this.colId_default_ip.HeaderText = "Id_default_ip";
             this.colId_default_ip.Name = "colId_default_ip";
+            this.colId_default_ip.ReadOnly = true;
             this.colId_default_ip.Visible = false;
             // 
             // colId_console
@@ -1196,6 +1371,7 @@
             this.colId_console.DataPropertyName = "Id_console";
             this.colId_console.HeaderText = "Id_console";
             this.colId_console.Name = "colId_console";
+            this.colId_console.ReadOnly = true;
             this.colId_console.Visible = false;
             // 
             // colId_auxiliaire
@@ -1203,6 +1379,7 @@
             this.colId_auxiliaire.DataPropertyName = "Id_auxiliaire";
             this.colId_auxiliaire.HeaderText = "Id_auxiliaire";
             this.colId_auxiliaire.Name = "colId_auxiliaire";
+            this.colId_auxiliaire.ReadOnly = true;
             this.colId_auxiliaire.Visible = false;
             // 
             // colId_type_ap
@@ -1210,6 +1387,7 @@
             this.colId_type_ap.DataPropertyName = "Id_type_ap";
             this.colId_type_ap.HeaderText = "Id_type_ap";
             this.colId_type_ap.Name = "colId_type_ap";
+            this.colId_type_ap.ReadOnly = true;
             this.colId_type_ap.Visible = false;
             // 
             // colId_type_switch
@@ -1217,6 +1395,7 @@
             this.colId_type_switch.DataPropertyName = "Id_type_switch";
             this.colId_type_switch.HeaderText = "Id_type_switch";
             this.colId_type_switch.Name = "colId_type_switch";
+            this.colId_type_switch.ReadOnly = true;
             this.colId_type_switch.Visible = false;
             // 
             // colId_frequence
@@ -1224,6 +1403,7 @@
             this.colId_frequence.DataPropertyName = "Id_frequence";
             this.colId_frequence.HeaderText = "Id_frequence";
             this.colId_frequence.Name = "colId_frequence";
+            this.colId_frequence.ReadOnly = true;
             this.colId_frequence.Visible = false;
             // 
             // colId_antenne
@@ -1231,6 +1411,7 @@
             this.colId_antenne.DataPropertyName = "Id_antenne";
             this.colId_antenne.HeaderText = "Id_antenne";
             this.colId_antenne.Name = "colId_antenne";
+            this.colId_antenne.ReadOnly = true;
             this.colId_antenne.Visible = false;
             // 
             // colId_netette
@@ -1238,6 +1419,7 @@
             this.colId_netette.DataPropertyName = "Id_netette";
             this.colId_netette.HeaderText = "Id_netette";
             this.colId_netette.Name = "colId_netette";
+            this.colId_netette.ReadOnly = true;
             this.colId_netette.Visible = false;
             // 
             // colId_portee
@@ -1245,6 +1427,7 @@
             this.colId_portee.DataPropertyName = "Id_portee";
             this.colId_portee.HeaderText = "Id_portee";
             this.colId_portee.Name = "colId_portee";
+            this.colId_portee.ReadOnly = true;
             this.colId_portee.Visible = false;
             // 
             // colCompatible_wifi
@@ -1252,17 +1435,64 @@
             this.colCompatible_wifi.DataPropertyName = "Compatible_wifi";
             this.colCompatible_wifi.HeaderText = "Compatible Wifi";
             this.colCompatible_wifi.Name = "colCompatible_wifi";
+            this.colCompatible_wifi.ReadOnly = true;
             this.colCompatible_wifi.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.colCompatible_wifi.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.colCompatible_wifi.ThreeState = true;
             this.colCompatible_wifi.Width = 150;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox4.Controls.Add(this.pbPhoto3);
+            this.groupBox4.Controls.Add(this.pbPhoto2);
+            this.groupBox4.Controls.Add(this.pbPhoto1);
+            this.groupBox4.Location = new System.Drawing.Point(808, 5);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(411, 215);
+            this.groupBox4.TabIndex = 542;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Vue de profil de l\'équipement";
+            // 
+            // pbPhoto3
+            // 
+            this.pbPhoto3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pbPhoto3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto3.Location = new System.Drawing.Point(275, 27);
+            this.pbPhoto3.Name = "pbPhoto3";
+            this.pbPhoto3.Size = new System.Drawing.Size(127, 168);
+            this.pbPhoto3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto3.TabIndex = 44;
+            this.pbPhoto3.TabStop = false;
+            // 
+            // pbPhoto2
+            // 
+            this.pbPhoto2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto2.Location = new System.Drawing.Point(142, 27);
+            this.pbPhoto2.Name = "pbPhoto2";
+            this.pbPhoto2.Size = new System.Drawing.Size(127, 168);
+            this.pbPhoto2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto2.TabIndex = 43;
+            this.pbPhoto2.TabStop = false;
+            // 
+            // pbPhoto1
+            // 
+            this.pbPhoto1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbPhoto1.Location = new System.Drawing.Point(9, 27);
+            this.pbPhoto1.Name = "pbPhoto1";
+            this.pbPhoto1.Size = new System.Drawing.Size(127, 168);
+            this.pbPhoto1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbPhoto1.TabIndex = 2;
+            this.pbPhoto1.TabStop = false;
             // 
             // frmAffectationMateriel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.GhostWhite;
-            this.ClientSize = new System.Drawing.Size(1228, 540);
+            this.ClientSize = new System.Drawing.Size(1228, 593);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
@@ -1270,7 +1500,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "frmAffectationMateriel";
             this.Padding = new System.Windows.Forms.Padding(5);
-            this.Text = "Affectation d\'un matériel dans suivant un lieu";
+            this.Text = "Affectation d\'un matériel dans un lieu";
             this.Activated += new System.EventHandler(this.frmAffectationMateriel_Activated);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmAffectationMateriel_FormClosed);
             this.Load += new System.EventHandler(this.frmAffectationMateriel_Load);
@@ -1281,11 +1511,11 @@
             this.groupBox5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbQrCode)).EndInit();
             this.groupBox3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgv1)).EndInit();
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPhoto1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dgv1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1327,17 +1557,6 @@
         private System.Windows.Forms.PictureBox pbPhoto3;
         private System.Windows.Forms.PictureBox pbPhoto2;
         private System.Windows.Forms.PictureBox pbPhoto1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colCode_AC;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_affectation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_personne;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_lieu_affectation;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_materiel;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colId_salle;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_created;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_created;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_modified;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_modified;
         private System.Windows.Forms.DataGridView dgv1;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCode_str;
@@ -1411,5 +1630,31 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colId_netette;
         private System.Windows.Forms.DataGridViewTextBoxColumn colId_portee;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colCompatible_wifi;
+        private System.Windows.Forms.LinkLabel lblShowPassword;
+        private System.Windows.Forms.CheckBox chkIsDgw;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtSSID;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtAdresseIP;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.TextBox txtChipherKey;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtCurrentPassword;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCode_AC;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_affectation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_personne;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colIP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSSID;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn colIsdgw;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurrent_password;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_lieu_affectation;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_materiel;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colId_salle;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_created;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_created;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colUser_modified;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDate_modified;
+        private System.Windows.Forms.TextBox txtCurrentPasswordGet;
     }
 }

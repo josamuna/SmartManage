@@ -17,6 +17,10 @@ namespace smartManage.Model
         private DateTime? date_created;
         private string user_modified;
         private DateTime? date_modified;
+        private string ip;
+        private string ssid;
+        private bool? isdgw;
+        private string current_password;
         //***Listes***
         public List<clsaffectation_materiel> listes()
         {
@@ -101,6 +105,26 @@ namespace smartManage.Model
         {
             get { return date_modified; }
             set { date_modified = value; }
+        }//***Accesseur de ip***
+        public string Ip
+        {
+            get { return ip; }
+            set { ip = value; }
+        }  //***Accesseur de ssid***
+        public string Ssid
+        {
+            get { return ssid; }
+            set { ssid = value; }
+        }  //***Accesseur de isdgw***
+        public bool? Isdgw
+        {
+            get { return isdgw; }
+            set { isdgw = value; }
+        }  //***Accesseur de current_password***
+        public string Current_password
+        {
+            get { return current_password; }
+            set { current_password = value; }
         }
     } //***fin class
 } //***fin namespace

@@ -657,6 +657,8 @@ namespace smartManage.Desktop
             {
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
+
+            Application.Exit();
         }
 
         private void smRptPerson_Click(object sender, EventArgs e)
@@ -684,6 +686,20 @@ namespace smartManage.Desktop
         private void ssmRptAffectationPerson_Click(object sender, EventArgs e)
         {
             frmReportAffectationMateriel frm = new frmReportAffectationMateriel();
+            frm.MdiParent = this;
+            frm.Icon = this.Icon;
+            frm.Show();
+        }
+
+        private void smAbout_Click(object sender, EventArgs e)
+        {
+            frmAPropos frm = new frmAPropos();
+            frm.ShowDialog();
+        }
+
+        private void smContent_Click(object sender, EventArgs e)
+        {
+            A frm = new A();
             frm.MdiParent = this;
             frm.Icon = this.Icon;
             frm.Show();

@@ -524,7 +524,7 @@ namespace smartManage.Desktop
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Gestion des utilisateurs Radius de l'Administration");
             Principal.SetCurrentICRUDChildForm(this);
 
-            RefreshData();
+            //RefreshData();
         }
 
         private void frmDataViewAdministration_FormClosed(object sender, FormClosedEventArgs e)

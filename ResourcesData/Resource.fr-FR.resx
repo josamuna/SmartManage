@@ -426,4 +426,16 @@
   <data name="StringZeroValue" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="StringFailedSelectionChangeCaption" xml:space="preserve">
+    <value>Sélection d'un enregistrement</value>
+  </data>
+  <data name="StringFailedSelectionChangeMessage" xml:space="preserve">
+    <value>Erreur lors de la sélection d'un enregistrement</value>
+  </data>
+  <data name="StringFailedShowPasswordCaption" xml:space="preserve">
+    <value>Impossible d'afficher le mot de passe</value>
+  </data>
+  <data name="StringFailedShowPasswordMessage" xml:space="preserve">
+    <value>Affichage du mot de passe</value>
+  </data>
 </root>
