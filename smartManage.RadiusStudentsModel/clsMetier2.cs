@@ -277,13 +277,13 @@ namespace smartManage.RadiusStudentsModel
                 {
                     cmd.CommandText = @"SELECT *  FROM nas  WHERE nasname LIKE @criteria1 OR shortname LIKE @criteria2 OR type LIKE @criteria3 OR secret LIKE @criteria4
                     OR server LIKE @criteria5 OR community LIKE @criteria6 OR description LIKE @criteria7";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -543,24 +543,24 @@ namespace smartManage.RadiusStudentsModel
                     OR nasipaddress LIKE @criteria6 OR nasportid LIKE @criteria7 OR nasporttype LIKE @criteria8 OR acctauthentic LIKE @criteria9 OR connectinfo_start LIKE @criteria10 OR connectinfo_stop LIKE @criteria11 
                     OR calledstationid LIKE @criteria12 OR callingstationid LIKE @criteria13 OR acctterminatecause LIKE @criteria14 OR servicetype LIKE @criteria15 OR framedprotocol LIKE @criteria16 OR 
                     framedipaddress LIKE @criteria17 OR xascendsessionsvrkey LIKE @criteria18";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria8", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria9", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria10", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria11", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria12", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria13", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria14", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria15", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria16", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria17", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria18", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria7", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria8", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria9", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria10", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria11", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria12", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria13", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria14", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria15", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria16", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria17", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria18", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -923,10 +923,10 @@ namespace smartManage.RadiusStudentsModel
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "SELECT *  FROM radcheck  WHERE username LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1101,19 +1101,19 @@ namespace smartManage.RadiusStudentsModel
             try
             {
                 if (conn.State != ConnectionState.Open) conn.Open();
-
+                //,radgroupcheck.id AS id_gp,radusergroup.groupname
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT radcheck.id,radcheck.username,radcheck.attribute,radcheck.op,radcheck.value,radusergroup.priority,(SELECT COUNT(radcheck.id) FROM radcheck) AS nbr_enreg,radgroupcheck.id AS id_gp,radusergroup.groupname FROM radcheck
+                    cmd.CommandText = @"SELECT DISTINCT radcheck.id,radcheck.username,radcheck.attribute,radcheck.op,radcheck.value,radusergroup.priority,(SELECT COUNT(radcheck.id) FROM radcheck) AS nbr_enreg FROM radcheck
                     INNER JOIN radusergroup ON radcheck.username = radusergroup.username
                     INNER JOIN radgroupcheck ON radusergroup.groupname = radgroupcheck.groupname WHERE radcheck.username LIKE @criteria1 OR radcheck.attribute LIKE @criteria2 OR radcheck.op LIKE @criteria3
                     OR radcheck.value LIKE @criteria4 OR radusergroup.priority LIKE @criteria5 OR radgroupcheck.groupname LIKE @criteria6 ORDER BY radcheck.username ASC";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria5", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria6", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1497,10 +1497,10 @@ namespace smartManage.RadiusStudentsModel
                 {
                     cmd.CommandText = @"SELECT *  FROM radgroupcheck  WHERE groupname LIKE @criteria1 OR attribute LIKE @criteria2
                     OR op LIKE @criteria3 OR value LIKE @criteria4";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1740,10 +1740,10 @@ namespace smartManage.RadiusStudentsModel
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "SELECT *  FROM radgroupreply  WHERE groupname LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1954,9 +1954,9 @@ namespace smartManage.RadiusStudentsModel
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "SELECT *  FROM radpostauth  WHERE username LIKE @criteria1 OR pass LIKE @criteria2 OR reply LIKE @criteria3";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", string.Format("%{0}%", criteria))));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2191,10 +2191,10 @@ namespace smartManage.RadiusStudentsModel
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "SELECT *  FROM radreply  WHERE username LIKE @criteria1 OR attribute LIKE @criteria2 OR op LIKE @criteria3 OR value LIKE @criteria4";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria3", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria4", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2403,8 +2403,8 @@ namespace smartManage.RadiusStudentsModel
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "SELECT *  FROM radusergroup  WHERE username LIKE @criteria1 OR groupname LIKE @criteria2";
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, criteria));
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria1", DbType.String, 50, string.Format("%{0}%", criteria)));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria2", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2444,7 +2444,6 @@ namespace smartManage.RadiusStudentsModel
                     cmd.CommandText = string.Format("SELECT radusergroup.*,(SELECT COUNT(username) FROM radusergroup) AS nbr_enreg FROM radusergroup ORDER BY username ASC");
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
-
                         clsradusergroup varclsradusergroup = null;
                         while (dr.Read())
                         {

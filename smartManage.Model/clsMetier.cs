@@ -245,7 +245,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_compte_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -466,7 +466,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_fo_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -682,7 +682,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_groupe_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 30, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 30, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -885,7 +885,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_serial_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1104,7 +1104,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_marque_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1323,7 +1323,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_modele_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1542,7 +1542,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_default_ip_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1763,7 +1763,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_compte_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -1984,7 +1984,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_default_pwd_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2203,7 +2203,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_compte_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2421,7 +2421,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_compte_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2638,7 +2638,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_compte_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -2857,7 +2857,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_ordinateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3076,7 +3076,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_auxiliaire_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3295,7 +3295,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_telephone_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3339,7 +3339,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_telephone_personne_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, id_personne));
 
                     using (IDataReader dr = cmd.ExecuteReader())
@@ -3645,7 +3645,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_imprimante_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -3864,7 +3864,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_frequence_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4083,7 +4083,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_antenne_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4301,7 +4301,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "type_amplificateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4521,7 +4521,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_email_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -4831,7 +4831,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_routeur_AP_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5051,7 +5051,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_adresse_AP_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5362,7 +5362,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_AP_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5582,7 +5582,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_switch_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -5801,7 +5801,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_clavier_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -6020,7 +6020,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_etat_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -6239,7 +6239,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_OS_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -6458,7 +6458,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_architecture_OS_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -6682,7 +6682,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_OS_architecture_OS_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -6911,7 +6911,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_version_ios_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7130,7 +7130,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_netette_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7349,7 +7349,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_garantie_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7566,7 +7566,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_ram_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -7783,7 +7783,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_processeur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8000,7 +8000,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_nombre_coeur_processeur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8217,7 +8217,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_hdd_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8436,7 +8436,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_nombre_hdd_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8653,7 +8653,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_capacite_hdd_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -8870,7 +8870,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_taille_ecran_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -9230,7 +9230,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -11083,7 +11083,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_grade_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -11302,7 +11302,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_usb2_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -11529,7 +11529,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_personne_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -11891,7 +11891,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_usb3_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12108,7 +12108,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_type_lieu_affectationcriteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12327,7 +12327,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_hdmi_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12545,7 +12545,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_AC_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12770,7 +12770,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_vga_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -12987,7 +12987,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_optio_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13206,7 +13206,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_tension_batterie_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13423,7 +13423,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_promotion_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13642,7 +13642,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_tension_adaptateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -13860,7 +13860,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_section_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -14085,7 +14085,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_puissance_adaptateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -14309,7 +14309,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_retrait_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -14564,7 +14564,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_intensite_adaptateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {                        clsintensite_adaptateur varclsintensite_adaptateur = null;
@@ -14780,7 +14780,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_puissance_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -14998,7 +14998,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_detail_retrait_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -15219,7 +15219,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_intensite_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -15436,7 +15436,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_page_par_minute_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -15655,7 +15655,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_signataire_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -15884,7 +15884,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_tension_alimentation_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16101,7 +16101,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_salle_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16320,7 +16320,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_usb_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16537,7 +16537,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_fonction_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16756,7 +16756,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_memoire_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -16978,7 +16978,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_lieu_affectation_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -17269,7 +17269,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_sorties_audio_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -17486,7 +17486,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_microphone_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -17712,7 +17712,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_affectation_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -18030,7 +18030,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_gain_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -18247,7 +18247,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_gbe_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -18465,7 +18465,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_utilisateur_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -19695,7 +19695,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_categorie_materiel_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
@@ -19960,7 +19960,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = "sp_fe_criteria";
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, criteria));
+                    cmd.Parameters.Add(getParameter(cmd, "@criteria", DbType.String, 50, string.Format("%{0}%", criteria)));
 
                     using (IDataReader dr = cmd.ExecuteReader())
                     {
