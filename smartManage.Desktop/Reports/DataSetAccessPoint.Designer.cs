@@ -20,9 +20,9 @@ namespace smartManage.Desktop.Reports {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("DataSet2")]
+    [global::System.Xml.Serialization.XmlRootAttribute("DataSetAccessPoint")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class DataSet2 : global::System.Data.DataSet {
+    public partial class DataSetAccessPoint : global::System.Data.DataSet {
         
         private DataTable1DataTable tableDataTable1;
         
@@ -30,7 +30,7 @@ namespace smartManage.Desktop.Reports {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public DataSet2() {
+        public DataSetAccessPoint() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -41,7 +41,7 @@ namespace smartManage.Desktop.Reports {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected DataSet2(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected DataSetAccessPoint(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -127,7 +127,7 @@ namespace smartManage.Desktop.Reports {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            DataSet2 cln = ((DataSet2)(base.Clone()));
+            DataSetAccessPoint cln = ((DataSetAccessPoint)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -199,9 +199,9 @@ namespace smartManage.Desktop.Reports {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "DataSet2";
+            this.DataSetName = "DataSetAccessPoint";
             this.Prefix = "";
-            this.Namespace = "http://tempuri.org/DataSet2.xsd";
+            this.Namespace = "http://tempuri.org/DataSetAccessPoint.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
             this.tableDataTable1 = new DataTable1DataTable();
@@ -225,7 +225,7 @@ namespace smartManage.Desktop.Reports {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            DataSet2 ds = new DataSet2();
+            DataSetAccessPoint ds = new DataSetAccessPoint();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -283,6 +283,8 @@ namespace smartManage.Desktop.Reports {
             
             private global::System.Data.DataColumn columnCode;
             
+            private global::System.Data.DataColumn columnCatMat;
+            
             private global::System.Data.DataColumn columnNumero;
             
             private global::System.Data.DataColumn columnDateAcq;
@@ -309,11 +311,27 @@ namespace smartManage.Desktop.Reports {
             
             private global::System.Data.DataColumn columnEtiquette;
             
+            private global::System.Data.DataColumn columnMacWifi;
+            
+            private global::System.Data.DataColumn columnMacLAN;
+            
+            private global::System.Data.DataColumn columnTypeOrdi;
+            
             private global::System.Data.DataColumn columnClavier;
+            
+            private global::System.Data.DataColumn columnSystemeExpl;
             
             private global::System.Data.DataColumn columnMemoire;
             
             private global::System.Data.DataColumn columnProcesseur;
+            
+            private global::System.Data.DataColumn columnCoeurProcesseur;
+            
+            private global::System.Data.DataColumn columnTypeHDD;
+            
+            private global::System.Data.DataColumn columnNbrHDD;
+            
+            private global::System.Data.DataColumn columnCapaciteHDD;
             
             private global::System.Data.DataColumn columnEcran;
             
@@ -325,7 +343,13 @@ namespace smartManage.Desktop.Reports {
             
             private global::System.Data.DataColumn columnVGA;
             
+            private global::System.Data.DataColumn columnUBat;
+            
+            private global::System.Data.DataColumn columnUAdapt;
+            
             private global::System.Data.DataColumn columnPAdapt;
+            
+            private global::System.Data.DataColumn columnNumerocle;
             
             private global::System.Data.DataColumn columnIAdapt;
             
@@ -341,6 +365,8 @@ namespace smartManage.Desktop.Reports {
             
             private global::System.Data.DataColumn columnPPM;
             
+            private global::System.Data.DataColumn columnTypeImprimante;
+            
             private global::System.Data.DataColumn columnUAlim;
             
             private global::System.Data.DataColumn columnNbrUSB;
@@ -352,6 +378,8 @@ namespace smartManage.Desktop.Reports {
             private global::System.Data.DataColumn columnNbrMicro;
             
             private global::System.Data.DataColumn columnGain;
+            
+            private global::System.Data.DataColumn columnTypeAmplificateur;
             
             private global::System.Data.DataColumn columnNbrGbe;
             
@@ -386,34 +414,6 @@ namespace smartManage.Desktop.Reports {
             private global::System.Data.DataColumn columnNetete;
             
             private global::System.Data.DataColumn columnSupportWifi;
-            
-            private global::System.Data.DataColumn columnNumerocle;
-            
-            private global::System.Data.DataColumn columnCatMat;
-            
-            private global::System.Data.DataColumn columnMacWifi;
-            
-            private global::System.Data.DataColumn columnMacLAN;
-            
-            private global::System.Data.DataColumn columnTypeOrdi;
-            
-            private global::System.Data.DataColumn columnSystemeExpl;
-            
-            private global::System.Data.DataColumn columnCoeurProcesseur;
-            
-            private global::System.Data.DataColumn columnTypeHDD;
-            
-            private global::System.Data.DataColumn columnNbrHDD;
-            
-            private global::System.Data.DataColumn columnCapaciteHDD;
-            
-            private global::System.Data.DataColumn columnUBat;
-            
-            private global::System.Data.DataColumn columnUAdapt;
-            
-            private global::System.Data.DataColumn columnTypeImprimante;
-            
-            private global::System.Data.DataColumn columnTypeAmplificateur;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -461,6 +461,14 @@ namespace smartManage.Desktop.Reports {
             public global::System.Data.DataColumn CodeColumn {
                 get {
                     return this.columnCode;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CatMatColumn {
+                get {
+                    return this.columnCatMat;
                 }
             }
             
@@ -570,9 +578,41 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MacWifiColumn {
+                get {
+                    return this.columnMacWifi;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MacLANColumn {
+                get {
+                    return this.columnMacLAN;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TypeOrdiColumn {
+                get {
+                    return this.columnTypeOrdi;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn ClavierColumn {
                 get {
                     return this.columnClavier;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn SystemeExplColumn {
+                get {
+                    return this.columnSystemeExpl;
                 }
             }
             
@@ -589,6 +629,38 @@ namespace smartManage.Desktop.Reports {
             public global::System.Data.DataColumn ProcesseurColumn {
                 get {
                     return this.columnProcesseur;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CoeurProcesseurColumn {
+                get {
+                    return this.columnCoeurProcesseur;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TypeHDDColumn {
+                get {
+                    return this.columnTypeHDD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NbrHDDColumn {
+                get {
+                    return this.columnNbrHDD;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CapaciteHDDColumn {
+                get {
+                    return this.columnCapaciteHDD;
                 }
             }
             
@@ -634,9 +706,33 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn UBatColumn {
+                get {
+                    return this.columnUBat;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn UAdaptColumn {
+                get {
+                    return this.columnUAdapt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn PAdaptColumn {
                 get {
                     return this.columnPAdapt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn NumerocleColumn {
+                get {
+                    return this.columnNumerocle;
                 }
             }
             
@@ -698,6 +794,14 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TypeImprimanteColumn {
+                get {
+                    return this.columnTypeImprimante;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn UAlimColumn {
                 get {
                     return this.columnUAlim;
@@ -741,6 +845,14 @@ namespace smartManage.Desktop.Reports {
             public global::System.Data.DataColumn GainColumn {
                 get {
                     return this.columnGain;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn TypeAmplificateurColumn {
+                get {
+                    return this.columnTypeAmplificateur;
                 }
             }
             
@@ -882,118 +994,6 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NumerocleColumn {
-                get {
-                    return this.columnNumerocle;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CatMatColumn {
-                get {
-                    return this.columnCatMat;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MacWifiColumn {
-                get {
-                    return this.columnMacWifi;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn MacLANColumn {
-                get {
-                    return this.columnMacLAN;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TypeOrdiColumn {
-                get {
-                    return this.columnTypeOrdi;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn SystemeExplColumn {
-                get {
-                    return this.columnSystemeExpl;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CoeurProcesseurColumn {
-                get {
-                    return this.columnCoeurProcesseur;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TypeHDDColumn {
-                get {
-                    return this.columnTypeHDD;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn NbrHDDColumn {
-                get {
-                    return this.columnNbrHDD;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CapaciteHDDColumn {
-                get {
-                    return this.columnCapaciteHDD;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn UBatColumn {
-                get {
-                    return this.columnUBat;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn UAdaptColumn {
-                get {
-                    return this.columnUAdapt;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TypeImprimanteColumn {
-                get {
-                    return this.columnTypeImprimante;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn TypeAmplificateurColumn {
-                get {
-                    return this.columnTypeAmplificateur;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1032,6 +1032,7 @@ namespace smartManage.Desktop.Reports {
             public DataTable1Row AddDataTable1Row(
                         int id, 
                         string Code, 
+                        string CatMat, 
                         string Numero, 
                         string DateAcq, 
                         int Garantie, 
@@ -1045,15 +1046,26 @@ namespace smartManage.Desktop.Reports {
                         byte[] Photo2, 
                         byte[] Photo3, 
                         string Etiquette, 
+                        string MacWifi, 
+                        string MacLAN, 
+                        string TypeOrdi, 
                         string Clavier, 
+                        string SystemeExpl, 
                         int Memoire, 
                         double Processeur, 
+                        int CoeurProcesseur, 
+                        string TypeHDD, 
+                        int NbrHDD, 
+                        int CapaciteHDD, 
                         int Ecran, 
                         int USB20, 
                         int USB30, 
                         int HDMI, 
                         int VGA, 
+                        double UBat, 
+                        double UAdapt, 
                         double PAdapt, 
+                        int Numerocle, 
                         double IAdapt, 
                         string Commentaire, 
                         bool Archiver, 
@@ -1061,12 +1073,14 @@ namespace smartManage.Desktop.Reports {
                         double PImp, 
                         double IImp, 
                         double PPM, 
+                        string TypeImprimante, 
                         int UAlim, 
                         int NbrUSB, 
                         int NbrMemoire, 
                         int NbrSortiesAud, 
                         int NbrMicro, 
                         int Gain, 
+                        string TypeAmplificateur, 
                         int NbrGbe, 
                         int NbrFe, 
                         int NbrFo, 
@@ -1083,25 +1097,12 @@ namespace smartManage.Desktop.Reports {
                         string Frequence, 
                         int NbrAnt, 
                         string Netete, 
-                        bool SupportWifi, 
-                        int Numerocle, 
-                        string CatMat, 
-                        string MacWifi, 
-                        string MacLAN, 
-                        string TypeOrdi, 
-                        string SystemeExpl, 
-                        int CoeurProcesseur, 
-                        string TypeHDD, 
-                        int NbrHDD, 
-                        int CapaciteHDD, 
-                        double UBat, 
-                        double UAdapt, 
-                        string TypeImprimante, 
-                        string TypeAmplificateur) {
+                        bool SupportWifi) {
                 DataTable1Row rowDataTable1Row = ((DataTable1Row)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
                         Code,
+                        CatMat,
                         Numero,
                         DateAcq,
                         Garantie,
@@ -1115,15 +1116,26 @@ namespace smartManage.Desktop.Reports {
                         Photo2,
                         Photo3,
                         Etiquette,
+                        MacWifi,
+                        MacLAN,
+                        TypeOrdi,
                         Clavier,
+                        SystemeExpl,
                         Memoire,
                         Processeur,
+                        CoeurProcesseur,
+                        TypeHDD,
+                        NbrHDD,
+                        CapaciteHDD,
                         Ecran,
                         USB20,
                         USB30,
                         HDMI,
                         VGA,
+                        UBat,
+                        UAdapt,
                         PAdapt,
+                        Numerocle,
                         IAdapt,
                         Commentaire,
                         Archiver,
@@ -1131,12 +1143,14 @@ namespace smartManage.Desktop.Reports {
                         PImp,
                         IImp,
                         PPM,
+                        TypeImprimante,
                         UAlim,
                         NbrUSB,
                         NbrMemoire,
                         NbrSortiesAud,
                         NbrMicro,
                         Gain,
+                        TypeAmplificateur,
                         NbrGbe,
                         NbrFe,
                         NbrFo,
@@ -1153,21 +1167,7 @@ namespace smartManage.Desktop.Reports {
                         Frequence,
                         NbrAnt,
                         Netete,
-                        SupportWifi,
-                        Numerocle,
-                        CatMat,
-                        MacWifi,
-                        MacLAN,
-                        TypeOrdi,
-                        SystemeExpl,
-                        CoeurProcesseur,
-                        TypeHDD,
-                        NbrHDD,
-                        CapaciteHDD,
-                        UBat,
-                        UAdapt,
-                        TypeImprimante,
-                        TypeAmplificateur};
+                        SupportWifi};
                 rowDataTable1Row.ItemArray = columnValuesArray;
                 this.Rows.Add(rowDataTable1Row);
                 return rowDataTable1Row;
@@ -1192,6 +1192,7 @@ namespace smartManage.Desktop.Reports {
             internal void InitVars() {
                 this.columnid = base.Columns["id"];
                 this.columnCode = base.Columns["Code"];
+                this.columnCatMat = base.Columns["CatMat"];
                 this.columnNumero = base.Columns["Numero"];
                 this.columnDateAcq = base.Columns["DateAcq"];
                 this.columnGarantie = base.Columns["Garantie"];
@@ -1205,15 +1206,26 @@ namespace smartManage.Desktop.Reports {
                 this.columnPhoto2 = base.Columns["Photo2"];
                 this.columnPhoto3 = base.Columns["Photo3"];
                 this.columnEtiquette = base.Columns["Etiquette"];
+                this.columnMacWifi = base.Columns["MacWifi"];
+                this.columnMacLAN = base.Columns["MacLAN"];
+                this.columnTypeOrdi = base.Columns["TypeOrdi"];
                 this.columnClavier = base.Columns["Clavier"];
+                this.columnSystemeExpl = base.Columns["SystemeExpl"];
                 this.columnMemoire = base.Columns["Memoire"];
                 this.columnProcesseur = base.Columns["Processeur"];
+                this.columnCoeurProcesseur = base.Columns["CoeurProcesseur"];
+                this.columnTypeHDD = base.Columns["TypeHDD"];
+                this.columnNbrHDD = base.Columns["NbrHDD"];
+                this.columnCapaciteHDD = base.Columns["CapaciteHDD"];
                 this.columnEcran = base.Columns["Ecran"];
                 this.columnUSB20 = base.Columns["USB20"];
                 this.columnUSB30 = base.Columns["USB30"];
                 this.columnHDMI = base.Columns["HDMI"];
                 this.columnVGA = base.Columns["VGA"];
+                this.columnUBat = base.Columns["UBat"];
+                this.columnUAdapt = base.Columns["UAdapt"];
                 this.columnPAdapt = base.Columns["PAdapt"];
+                this.columnNumerocle = base.Columns["Numerocle"];
                 this.columnIAdapt = base.Columns["IAdapt"];
                 this.columnCommentaire = base.Columns["Commentaire"];
                 this.columnArchiver = base.Columns["Archiver"];
@@ -1221,12 +1233,14 @@ namespace smartManage.Desktop.Reports {
                 this.columnPImp = base.Columns["PImp"];
                 this.columnIImp = base.Columns["IImp"];
                 this.columnPPM = base.Columns["PPM"];
+                this.columnTypeImprimante = base.Columns["TypeImprimante"];
                 this.columnUAlim = base.Columns["UAlim"];
                 this.columnNbrUSB = base.Columns["NbrUSB"];
                 this.columnNbrMemoire = base.Columns["NbrMemoire"];
                 this.columnNbrSortiesAud = base.Columns["NbrSortiesAud"];
                 this.columnNbrMicro = base.Columns["NbrMicro"];
                 this.columnGain = base.Columns["Gain"];
+                this.columnTypeAmplificateur = base.Columns["TypeAmplificateur"];
                 this.columnNbrGbe = base.Columns["NbrGbe"];
                 this.columnNbrFe = base.Columns["NbrFe"];
                 this.columnNbrFo = base.Columns["NbrFo"];
@@ -1244,20 +1258,6 @@ namespace smartManage.Desktop.Reports {
                 this.columnNbrAnt = base.Columns["NbrAnt"];
                 this.columnNetete = base.Columns["Netete"];
                 this.columnSupportWifi = base.Columns["SupportWifi"];
-                this.columnNumerocle = base.Columns["Numerocle"];
-                this.columnCatMat = base.Columns["CatMat"];
-                this.columnMacWifi = base.Columns["MacWifi"];
-                this.columnMacLAN = base.Columns["MacLAN"];
-                this.columnTypeOrdi = base.Columns["TypeOrdi"];
-                this.columnSystemeExpl = base.Columns["SystemeExpl"];
-                this.columnCoeurProcesseur = base.Columns["CoeurProcesseur"];
-                this.columnTypeHDD = base.Columns["TypeHDD"];
-                this.columnNbrHDD = base.Columns["NbrHDD"];
-                this.columnCapaciteHDD = base.Columns["CapaciteHDD"];
-                this.columnUBat = base.Columns["UBat"];
-                this.columnUAdapt = base.Columns["UAdapt"];
-                this.columnTypeImprimante = base.Columns["TypeImprimante"];
-                this.columnTypeAmplificateur = base.Columns["TypeAmplificateur"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1267,6 +1267,8 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnid);
                 this.columnCode = new global::System.Data.DataColumn("Code", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCode);
+                this.columnCatMat = new global::System.Data.DataColumn("CatMat", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCatMat);
                 this.columnNumero = new global::System.Data.DataColumn("Numero", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumero);
                 this.columnDateAcq = new global::System.Data.DataColumn("DateAcq", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1293,12 +1295,28 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnPhoto3);
                 this.columnEtiquette = new global::System.Data.DataColumn("Etiquette", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEtiquette);
+                this.columnMacWifi = new global::System.Data.DataColumn("MacWifi", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMacWifi);
+                this.columnMacLAN = new global::System.Data.DataColumn("MacLAN", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMacLAN);
+                this.columnTypeOrdi = new global::System.Data.DataColumn("TypeOrdi", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTypeOrdi);
                 this.columnClavier = new global::System.Data.DataColumn("Clavier", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnClavier);
+                this.columnSystemeExpl = new global::System.Data.DataColumn("SystemeExpl", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSystemeExpl);
                 this.columnMemoire = new global::System.Data.DataColumn("Memoire", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnMemoire);
                 this.columnProcesseur = new global::System.Data.DataColumn("Processeur", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnProcesseur);
+                this.columnCoeurProcesseur = new global::System.Data.DataColumn("CoeurProcesseur", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCoeurProcesseur);
+                this.columnTypeHDD = new global::System.Data.DataColumn("TypeHDD", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTypeHDD);
+                this.columnNbrHDD = new global::System.Data.DataColumn("NbrHDD", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNbrHDD);
+                this.columnCapaciteHDD = new global::System.Data.DataColumn("CapaciteHDD", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCapaciteHDD);
                 this.columnEcran = new global::System.Data.DataColumn("Ecran", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnEcran);
                 this.columnUSB20 = new global::System.Data.DataColumn("USB20", typeof(int), null, global::System.Data.MappingType.Element);
@@ -1309,8 +1327,14 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnHDMI);
                 this.columnVGA = new global::System.Data.DataColumn("VGA", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnVGA);
+                this.columnUBat = new global::System.Data.DataColumn("UBat", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUBat);
+                this.columnUAdapt = new global::System.Data.DataColumn("UAdapt", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnUAdapt);
                 this.columnPAdapt = new global::System.Data.DataColumn("PAdapt", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPAdapt);
+                this.columnNumerocle = new global::System.Data.DataColumn("Numerocle", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnNumerocle);
                 this.columnIAdapt = new global::System.Data.DataColumn("IAdapt", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnIAdapt);
                 this.columnCommentaire = new global::System.Data.DataColumn("Commentaire", typeof(string), null, global::System.Data.MappingType.Element);
@@ -1325,6 +1349,8 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnIImp);
                 this.columnPPM = new global::System.Data.DataColumn("PPM", typeof(double), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnPPM);
+                this.columnTypeImprimante = new global::System.Data.DataColumn("TypeImprimante", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTypeImprimante);
                 this.columnUAlim = new global::System.Data.DataColumn("UAlim", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnUAlim);
                 this.columnNbrUSB = new global::System.Data.DataColumn("NbrUSB", typeof(int), null, global::System.Data.MappingType.Element);
@@ -1337,6 +1363,8 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnNbrMicro);
                 this.columnGain = new global::System.Data.DataColumn("Gain", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGain);
+                this.columnTypeAmplificateur = new global::System.Data.DataColumn("TypeAmplificateur", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnTypeAmplificateur);
                 this.columnNbrGbe = new global::System.Data.DataColumn("NbrGbe", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNbrGbe);
                 this.columnNbrFe = new global::System.Data.DataColumn("NbrFe", typeof(int), null, global::System.Data.MappingType.Element);
@@ -1371,37 +1399,10 @@ namespace smartManage.Desktop.Reports {
                 base.Columns.Add(this.columnNetete);
                 this.columnSupportWifi = new global::System.Data.DataColumn("SupportWifi", typeof(bool), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSupportWifi);
-                this.columnNumerocle = new global::System.Data.DataColumn("Numerocle", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNumerocle);
-                this.columnCatMat = new global::System.Data.DataColumn("CatMat", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCatMat);
-                this.columnMacWifi = new global::System.Data.DataColumn("MacWifi", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMacWifi);
-                this.columnMacLAN = new global::System.Data.DataColumn("MacLAN", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnMacLAN);
-                this.columnTypeOrdi = new global::System.Data.DataColumn("TypeOrdi", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTypeOrdi);
-                this.columnSystemeExpl = new global::System.Data.DataColumn("SystemeExpl", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnSystemeExpl);
-                this.columnCoeurProcesseur = new global::System.Data.DataColumn("CoeurProcesseur", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCoeurProcesseur);
-                this.columnTypeHDD = new global::System.Data.DataColumn("TypeHDD", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTypeHDD);
-                this.columnNbrHDD = new global::System.Data.DataColumn("NbrHDD", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnNbrHDD);
-                this.columnCapaciteHDD = new global::System.Data.DataColumn("CapaciteHDD", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCapaciteHDD);
-                this.columnUBat = new global::System.Data.DataColumn("UBat", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnUBat);
-                this.columnUAdapt = new global::System.Data.DataColumn("UAdapt", typeof(double), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnUAdapt);
-                this.columnTypeImprimante = new global::System.Data.DataColumn("TypeImprimante", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTypeImprimante);
-                this.columnTypeAmplificateur = new global::System.Data.DataColumn("TypeAmplificateur", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnTypeAmplificateur);
                 this.columnid.AllowDBNull = false;
                 this.columnCode.AllowDBNull = false;
                 this.columnCode.MaxLength = 10;
+                this.columnCatMat.MaxLength = 50;
                 this.columnNumero.AllowDBNull = false;
                 this.columnNumero.MaxLength = 10;
                 this.columnDateAcq.ReadOnly = true;
@@ -1417,9 +1418,16 @@ namespace smartManage.Desktop.Reports {
                 this.columnEtat.MaxLength = 50;
                 this.columnQRCode.AllowDBNull = false;
                 this.columnEtiquette.MaxLength = 20;
+                this.columnMacWifi.MaxLength = 20;
+                this.columnMacLAN.MaxLength = 20;
+                this.columnTypeOrdi.MaxLength = 50;
                 this.columnClavier.MaxLength = 10;
+                this.columnSystemeExpl.MaxLength = 50;
+                this.columnTypeHDD.MaxLength = 50;
                 this.columnCommentaire.MaxLength = 400;
                 this.columnTypeSwitch.MaxLength = 50;
+                this.columnTypeImprimante.MaxLength = 50;
+                this.columnTypeAmplificateur.MaxLength = 50;
                 this.columnDefaultPwd.MaxLength = 20;
                 this.columnDefaultIP.MaxLength = 50;
                 this.columnTyperouteurAP.MaxLength = 50;
@@ -1427,14 +1435,6 @@ namespace smartManage.Desktop.Reports {
                 this.columnTypeAP.MaxLength = 50;
                 this.columnFrequence.MaxLength = 20;
                 this.columnNetete.MaxLength = 20;
-                this.columnCatMat.MaxLength = 50;
-                this.columnMacWifi.MaxLength = 20;
-                this.columnMacLAN.MaxLength = 20;
-                this.columnTypeOrdi.MaxLength = 50;
-                this.columnSystemeExpl.MaxLength = 50;
-                this.columnTypeHDD.MaxLength = 50;
-                this.columnTypeImprimante.MaxLength = 50;
-                this.columnTypeAmplificateur.MaxLength = 50;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1502,7 +1502,7 @@ namespace smartManage.Desktop.Reports {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                DataSet2 ds = new DataSet2();
+                DataSetAccessPoint ds = new DataSetAccessPoint();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1594,6 +1594,22 @@ namespace smartManage.Desktop.Reports {
                 }
                 set {
                     this[this.tableDataTable1.CodeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CatMat {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.CatMatColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CatMat\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CatMatColumn] = value;
                 }
             }
             
@@ -1772,6 +1788,54 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MacWifi {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MacWifiColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MacWifi\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MacWifiColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MacLAN {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.MacLANColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MacLAN\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.MacLANColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TypeOrdi {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TypeOrdiColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TypeOrdi\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TypeOrdiColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Clavier {
                 get {
                     try {
@@ -1783,6 +1847,22 @@ namespace smartManage.Desktop.Reports {
                 }
                 set {
                     this[this.tableDataTable1.ClavierColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string SystemeExpl {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.SystemeExplColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'SystemeExpl\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.SystemeExplColumn] = value;
                 }
             }
             
@@ -1815,6 +1895,70 @@ namespace smartManage.Desktop.Reports {
                 }
                 set {
                     this[this.tableDataTable1.ProcesseurColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CoeurProcesseur {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable1.CoeurProcesseurColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CoeurProcesseur\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CoeurProcesseurColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TypeHDD {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TypeHDDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TypeHDD\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TypeHDDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int NbrHDD {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable1.NbrHDDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'NbrHDD\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.NbrHDDColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int CapaciteHDD {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable1.CapaciteHDDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CapaciteHDD\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.CapaciteHDDColumn] = value;
                 }
             }
             
@@ -1900,6 +2044,38 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double UBat {
+                get {
+                    try {
+                        return ((double)(this[this.tableDataTable1.UBatColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UBat\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.UBatColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public double UAdapt {
+                get {
+                    try {
+                        return ((double)(this[this.tableDataTable1.UAdaptColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UAdapt\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.UAdaptColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public double PAdapt {
                 get {
                     try {
@@ -1911,6 +2087,22 @@ namespace smartManage.Desktop.Reports {
                 }
                 set {
                     this[this.tableDataTable1.PAdaptColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int Numerocle {
+                get {
+                    try {
+                        return ((int)(this[this.tableDataTable1.NumerocleColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Numerocle\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.NumerocleColumn] = value;
                 }
             }
             
@@ -2028,6 +2220,22 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TypeImprimante {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TypeImprimanteColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TypeImprimante\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TypeImprimanteColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int UAlim {
                 get {
                     try {
@@ -2119,6 +2327,22 @@ namespace smartManage.Desktop.Reports {
                 }
                 set {
                     this[this.tableDataTable1.GainColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string TypeAmplificateur {
+                get {
+                    try {
+                        return ((string)(this[this.tableDataTable1.TypeAmplificateurColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TypeAmplificateur\' in table \'DataTable1\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableDataTable1.TypeAmplificateurColumn] = value;
                 }
             }
             
@@ -2396,226 +2620,14 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Numerocle {
-                get {
-                    try {
-                        return ((int)(this[this.tableDataTable1.NumerocleColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Numerocle\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.NumerocleColumn] = value;
-                }
+            public bool IsCatMatNull() {
+                return this.IsNull(this.tableDataTable1.CatMatColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CatMat {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.CatMatColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CatMat\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.CatMatColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string MacWifi {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.MacWifiColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'MacWifi\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.MacWifiColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string MacLAN {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.MacLANColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'MacLAN\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.MacLANColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string TypeOrdi {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.TypeOrdiColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TypeOrdi\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.TypeOrdiColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string SystemeExpl {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.SystemeExplColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'SystemeExpl\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.SystemeExplColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int CoeurProcesseur {
-                get {
-                    try {
-                        return ((int)(this[this.tableDataTable1.CoeurProcesseurColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CoeurProcesseur\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.CoeurProcesseurColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string TypeHDD {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.TypeHDDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TypeHDD\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.TypeHDDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int NbrHDD {
-                get {
-                    try {
-                        return ((int)(this[this.tableDataTable1.NbrHDDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'NbrHDD\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.NbrHDDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int CapaciteHDD {
-                get {
-                    try {
-                        return ((int)(this[this.tableDataTable1.CapaciteHDDColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CapaciteHDD\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.CapaciteHDDColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double UBat {
-                get {
-                    try {
-                        return ((double)(this[this.tableDataTable1.UBatColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UBat\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.UBatColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public double UAdapt {
-                get {
-                    try {
-                        return ((double)(this[this.tableDataTable1.UAdaptColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'UAdapt\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.UAdaptColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string TypeImprimante {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.TypeImprimanteColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TypeImprimante\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.TypeImprimanteColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string TypeAmplificateur {
-                get {
-                    try {
-                        return ((string)(this[this.tableDataTable1.TypeAmplificateurColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'TypeAmplificateur\' in table \'DataTable1\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableDataTable1.TypeAmplificateurColumn] = value;
-                }
+            public void SetCatMatNull() {
+                this[this.tableDataTable1.CatMatColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2692,6 +2704,42 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMacWifiNull() {
+                return this.IsNull(this.tableDataTable1.MacWifiColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMacWifiNull() {
+                this[this.tableDataTable1.MacWifiColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMacLANNull() {
+                return this.IsNull(this.tableDataTable1.MacLANColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMacLANNull() {
+                this[this.tableDataTable1.MacLANColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTypeOrdiNull() {
+                return this.IsNull(this.tableDataTable1.TypeOrdiColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTypeOrdiNull() {
+                this[this.tableDataTable1.TypeOrdiColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsClavierNull() {
                 return this.IsNull(this.tableDataTable1.ClavierColumn);
             }
@@ -2700,6 +2748,18 @@ namespace smartManage.Desktop.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetClavierNull() {
                 this[this.tableDataTable1.ClavierColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsSystemeExplNull() {
+                return this.IsNull(this.tableDataTable1.SystemeExplColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetSystemeExplNull() {
+                this[this.tableDataTable1.SystemeExplColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2724,6 +2784,54 @@ namespace smartManage.Desktop.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetProcesseurNull() {
                 this[this.tableDataTable1.ProcesseurColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCoeurProcesseurNull() {
+                return this.IsNull(this.tableDataTable1.CoeurProcesseurColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCoeurProcesseurNull() {
+                this[this.tableDataTable1.CoeurProcesseurColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTypeHDDNull() {
+                return this.IsNull(this.tableDataTable1.TypeHDDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTypeHDDNull() {
+                this[this.tableDataTable1.TypeHDDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNbrHDDNull() {
+                return this.IsNull(this.tableDataTable1.NbrHDDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNbrHDDNull() {
+                this[this.tableDataTable1.NbrHDDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCapaciteHDDNull() {
+                return this.IsNull(this.tableDataTable1.CapaciteHDDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCapaciteHDDNull() {
+                this[this.tableDataTable1.CapaciteHDDColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2788,6 +2896,30 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsUBatNull() {
+                return this.IsNull(this.tableDataTable1.UBatColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetUBatNull() {
+                this[this.tableDataTable1.UBatColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsUAdaptNull() {
+                return this.IsNull(this.tableDataTable1.UAdaptColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetUAdaptNull() {
+                this[this.tableDataTable1.UAdaptColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsPAdaptNull() {
                 return this.IsNull(this.tableDataTable1.PAdaptColumn);
             }
@@ -2796,6 +2928,18 @@ namespace smartManage.Desktop.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetPAdaptNull() {
                 this[this.tableDataTable1.PAdaptColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsNumerocleNull() {
+                return this.IsNull(this.tableDataTable1.NumerocleColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetNumerocleNull() {
+                this[this.tableDataTable1.NumerocleColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2884,6 +3028,18 @@ namespace smartManage.Desktop.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTypeImprimanteNull() {
+                return this.IsNull(this.tableDataTable1.TypeImprimanteColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTypeImprimanteNull() {
+                this[this.tableDataTable1.TypeImprimanteColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsUAlimNull() {
                 return this.IsNull(this.tableDataTable1.UAlimColumn);
             }
@@ -2952,6 +3108,18 @@ namespace smartManage.Desktop.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetGainNull() {
                 this[this.tableDataTable1.GainColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTypeAmplificateurNull() {
+                return this.IsNull(this.tableDataTable1.TypeAmplificateurColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTypeAmplificateurNull() {
+                this[this.tableDataTable1.TypeAmplificateurColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -3157,174 +3325,6 @@ namespace smartManage.Desktop.Reports {
             public void SetSupportWifiNull() {
                 this[this.tableDataTable1.SupportWifiColumn] = global::System.Convert.DBNull;
             }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNumerocleNull() {
-                return this.IsNull(this.tableDataTable1.NumerocleColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNumerocleNull() {
-                this[this.tableDataTable1.NumerocleColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCatMatNull() {
-                return this.IsNull(this.tableDataTable1.CatMatColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCatMatNull() {
-                this[this.tableDataTable1.CatMatColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsMacWifiNull() {
-                return this.IsNull(this.tableDataTable1.MacWifiColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetMacWifiNull() {
-                this[this.tableDataTable1.MacWifiColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsMacLANNull() {
-                return this.IsNull(this.tableDataTable1.MacLANColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetMacLANNull() {
-                this[this.tableDataTable1.MacLANColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTypeOrdiNull() {
-                return this.IsNull(this.tableDataTable1.TypeOrdiColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTypeOrdiNull() {
-                this[this.tableDataTable1.TypeOrdiColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsSystemeExplNull() {
-                return this.IsNull(this.tableDataTable1.SystemeExplColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetSystemeExplNull() {
-                this[this.tableDataTable1.SystemeExplColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCoeurProcesseurNull() {
-                return this.IsNull(this.tableDataTable1.CoeurProcesseurColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCoeurProcesseurNull() {
-                this[this.tableDataTable1.CoeurProcesseurColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTypeHDDNull() {
-                return this.IsNull(this.tableDataTable1.TypeHDDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTypeHDDNull() {
-                this[this.tableDataTable1.TypeHDDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsNbrHDDNull() {
-                return this.IsNull(this.tableDataTable1.NbrHDDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetNbrHDDNull() {
-                this[this.tableDataTable1.NbrHDDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCapaciteHDDNull() {
-                return this.IsNull(this.tableDataTable1.CapaciteHDDColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCapaciteHDDNull() {
-                this[this.tableDataTable1.CapaciteHDDColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsUBatNull() {
-                return this.IsNull(this.tableDataTable1.UBatColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetUBatNull() {
-                this[this.tableDataTable1.UBatColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsUAdaptNull() {
-                return this.IsNull(this.tableDataTable1.UAdaptColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetUAdaptNull() {
-                this[this.tableDataTable1.UAdaptColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTypeImprimanteNull() {
-                return this.IsNull(this.tableDataTable1.TypeImprimanteColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTypeImprimanteNull() {
-                this[this.tableDataTable1.TypeImprimanteColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsTypeAmplificateurNull() {
-                return this.IsNull(this.tableDataTable1.TypeAmplificateurColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetTypeAmplificateurNull() {
-                this[this.tableDataTable1.TypeAmplificateurColumn] = global::System.Convert.DBNull;
-            }
         }
         
         /// <summary>
@@ -3362,7 +3362,7 @@ namespace smartManage.Desktop.Reports {
         }
     }
 }
-namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
+namespace smartManage.Desktop.Reports.DataSetAccessPointTableAdapters {
     
     
     /// <summary>
@@ -3488,6 +3488,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
             tableMapping.DataSetTable = "DataTable1";
             tableMapping.ColumnMappings.Add("id", "id");
             tableMapping.ColumnMappings.Add("Code", "Code");
+            tableMapping.ColumnMappings.Add("CatMat", "CatMat");
             tableMapping.ColumnMappings.Add("Numero", "Numero");
             tableMapping.ColumnMappings.Add("DateAcq", "DateAcq");
             tableMapping.ColumnMappings.Add("Garantie", "Garantie");
@@ -3501,15 +3502,26 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
             tableMapping.ColumnMappings.Add("Photo2", "Photo2");
             tableMapping.ColumnMappings.Add("Photo3", "Photo3");
             tableMapping.ColumnMappings.Add("Etiquette", "Etiquette");
+            tableMapping.ColumnMappings.Add("MacWifi", "MacWifi");
+            tableMapping.ColumnMappings.Add("MacLAN", "MacLAN");
+            tableMapping.ColumnMappings.Add("TypeOrdi", "TypeOrdi");
             tableMapping.ColumnMappings.Add("Clavier", "Clavier");
+            tableMapping.ColumnMappings.Add("SystemeExpl", "SystemeExpl");
             tableMapping.ColumnMappings.Add("Memoire", "Memoire");
             tableMapping.ColumnMappings.Add("Processeur", "Processeur");
+            tableMapping.ColumnMappings.Add("CoeurProcesseur", "CoeurProcesseur");
+            tableMapping.ColumnMappings.Add("TypeHDD", "TypeHDD");
+            tableMapping.ColumnMappings.Add("NbrHDD", "NbrHDD");
+            tableMapping.ColumnMappings.Add("CapaciteHDD", "CapaciteHDD");
             tableMapping.ColumnMappings.Add("Ecran", "Ecran");
             tableMapping.ColumnMappings.Add("USB20", "USB20");
             tableMapping.ColumnMappings.Add("USB30", "USB30");
             tableMapping.ColumnMappings.Add("HDMI", "HDMI");
             tableMapping.ColumnMappings.Add("VGA", "VGA");
+            tableMapping.ColumnMappings.Add("UBat", "UBat");
+            tableMapping.ColumnMappings.Add("UAdapt", "UAdapt");
             tableMapping.ColumnMappings.Add("PAdapt", "PAdapt");
+            tableMapping.ColumnMappings.Add("Numerocle", "Numerocle");
             tableMapping.ColumnMappings.Add("IAdapt", "IAdapt");
             tableMapping.ColumnMappings.Add("Commentaire", "Commentaire");
             tableMapping.ColumnMappings.Add("Archiver", "Archiver");
@@ -3517,12 +3529,14 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
             tableMapping.ColumnMappings.Add("PImp", "PImp");
             tableMapping.ColumnMappings.Add("IImp", "IImp");
             tableMapping.ColumnMappings.Add("PPM", "PPM");
+            tableMapping.ColumnMappings.Add("TypeImprimante", "TypeImprimante");
             tableMapping.ColumnMappings.Add("UAlim", "UAlim");
             tableMapping.ColumnMappings.Add("NbrUSB", "NbrUSB");
             tableMapping.ColumnMappings.Add("NbrMemoire", "NbrMemoire");
             tableMapping.ColumnMappings.Add("NbrSortiesAud", "NbrSortiesAud");
             tableMapping.ColumnMappings.Add("NbrMicro", "NbrMicro");
             tableMapping.ColumnMappings.Add("Gain", "Gain");
+            tableMapping.ColumnMappings.Add("TypeAmplificateur", "TypeAmplificateur");
             tableMapping.ColumnMappings.Add("NbrGbe", "NbrGbe");
             tableMapping.ColumnMappings.Add("NbrFe", "NbrFe");
             tableMapping.ColumnMappings.Add("NbrFo", "NbrFo");
@@ -3540,20 +3554,6 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
             tableMapping.ColumnMappings.Add("NbrAnt", "NbrAnt");
             tableMapping.ColumnMappings.Add("Netete", "Netete");
             tableMapping.ColumnMappings.Add("SupportWifi", "SupportWifi");
-            tableMapping.ColumnMappings.Add("Numerocle", "Numerocle");
-            tableMapping.ColumnMappings.Add("CatMat", "CatMat");
-            tableMapping.ColumnMappings.Add("MacWifi", "MacWifi");
-            tableMapping.ColumnMappings.Add("MacLAN", "MacLAN");
-            tableMapping.ColumnMappings.Add("TypeOrdi", "TypeOrdi");
-            tableMapping.ColumnMappings.Add("SystemeExpl", "SystemeExpl");
-            tableMapping.ColumnMappings.Add("CoeurProcesseur", "CoeurProcesseur");
-            tableMapping.ColumnMappings.Add("TypeHDD", "TypeHDD");
-            tableMapping.ColumnMappings.Add("NbrHDD", "NbrHDD");
-            tableMapping.ColumnMappings.Add("CapaciteHDD", "CapaciteHDD");
-            tableMapping.ColumnMappings.Add("UBat", "UBat");
-            tableMapping.ColumnMappings.Add("UAdapt", "UAdapt");
-            tableMapping.ColumnMappings.Add("TypeImprimante", "TypeImprimante");
-            tableMapping.ColumnMappings.Add("TypeAmplificateur", "TypeAmplificateur");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -3570,81 +3570,102 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "select materiel.id,materiel.code_str as \'Code\',categorie_materiel.designation as " +
-                "\'CatMat\',compte.numero as \'Numero\',CONVERT(varchar(10),date_acquisition,3) as \'D" +
-                "ateAcq\',garantie.valeur as \'Garantie\',marque.designation as \'Marque\',\r\nmodele.de" +
-                "signation as \'Modele\',couleur.designation as \'Couleur\',poids.valeur as \'Poids\',e" +
-                "tat_materiel.designation as \'Etat\',materiel.qrcode as \'QRCode\',materiel.photo1 a" +
-                "s \'Photo1\',materiel.photo2 as \'Photo2\',materiel.photo3 as \'Photo3\',materiel.labe" +
-                "l as \'Etiquette\',\r\nmateriel.mac_adresse1 as \'MacWifi\', materiel.mac_adresse2 as " +
-                "\'MacLAN\',type_ordinateur.designation as \'TypeOrdi\',type_clavier.designation as \'" +
-                "Clavier\',OS.designation \'SystemeExpl\',ram.id as \'Memoire\',processeur.valeur as \'" +
-                "Processeur\',\r\nnombre_coeur_processeur.valeur as \'CoeurProcesseur\',type_hdd.desig" +
-                "nation as \'TypeHDD\',nombre_hdd.valeur as \'NbrHDD\',capacite_hdd.valeur as \'Capaci" +
-                "teHDD\',taille_ecran.valeur as \'Ecran\',usb2.valeur as \'USB20\',usb3.valeur as \'USB" +
-                "30\',hdmi.valeur as \'HDMI\',\r\nvga.valeur as \'VGA\',tension_adaptateur.valeur as \'UB" +
-                "at\',tension_adaptateur.valeur as \'UAdapt\',puissance_adaptateur.valeur as \'PAdapt" +
-                "\',materiel.numero_cle as \'Numerocle\', intensite_adaptateur.valeur as \'IAdapt\', \r" +
-                "\nmateriel.commentaire as \'Commentaire\',materiel.archiver as \'Archiver\',\r\n\r\ntype_" +
-                "switch.designation as \'TypeSwitch\',\r\n\r\npuissance.valeur as \'PImp\',intensite.vale" +
-                "ur as \'IImp\',page_par_minute.valeur as \'PPM\',type_imprimante.designation as \'Typ" +
-                "eImprimante\',\r\n\r\ntension_alimentation.valeur as \'UAlim\',usb.valeur as \'NbrUSB\',m" +
-                "emoire.valeur as \'NbrMemoire\',sorties_audio.valeur as \'NbrSortiesAud\',microphone" +
-                ".valeur as \'NbrMicro\',gain.valeur as \'Gain\',type_amplificateur.designation as \'T" +
-                "ypeAmplificateur\',\r\n\r\ngbe.valeur as \'NbrGbe\',fe.valeur as \'NbrFe\',fo.valeur as \'" +
-                "NbrFo\',serial.valeur as \'NbrSerial\',default_pwd.designation as \'DefaultPwd\',defa" +
-                "ult_ip.designation as \'DefaultIP\',console.valeur as \'NbrConsole\',auxiliaire.vale" +
-                "ur as \'NbrAux\',materiel.capable_usb as \'SupportUSB\', type_routeur_AP.designation" +
-                " as \'TyperouteurAP\', version_ios.designation as \'VersionIOS\',\r\n\r\nportee.valeur a" +
-                "s \'Portee\',type_AP.designation as \'TypeAP\',\r\n\r\nfrequence.designation as \'Frequen" +
-                "ce\',antenne.valeur as \'NbrAnt\',\r\n\r\nnetette.designation as \'Netete\',materiel.comp" +
-                "atible_wifi as \'SupportWifi\'\r\n\r\n from materiel \r\nleft outer join garantie on gar" +
-                "antie.id=materiel.id_garantie\r\nleft outer join categorie_materiel on categorie_m" +
-                "ateriel.id=materiel.id_categorie_materiel\r\ninner join compte on compte.id=materi" +
-                "el.id_compte\r\ninner join marque on marque.id=materiel.id_marque\r\ninner join mode" +
-                "le on modele.id=materiel.id_modele\r\ninner join couleur on couleur.id=materiel.id" +
-                "_couleur\r\ninner join poids on poids.id=materiel.id_poids\r\ninner join etat_materi" +
-                "el on etat_materiel.id=materiel.id_etat_materiel\r\nleft outer join type_ordinateu" +
-                "r on type_ordinateur.id=materiel.id_type_ordinateur\r\nleft outer join type_clavie" +
-                "r on type_clavier.id=materiel.id_type_clavier\r\nleft outer join OS on OS.id=mater" +
-                "iel.id_OS\r\nleft outer join ram on ram.id=materiel.id_ram\r\nleft outer join proces" +
-                "seur on processeur.id=materiel.id_processeur\r\nleft outer join nombre_coeur_proce" +
-                "sseur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur\r\nleft ou" +
-                "ter join type_hdd on type_hdd.id=materiel.id_type_hdd\r\nleft outer join nombre_hd" +
-                "d on nombre_hdd.id=materiel.id_nombre_hdd\r\nleft outer join capacite_hdd on capac" +
-                "ite_hdd.id=materiel.id_capacite_hdd\r\nleft outer join taille_ecran on taille_ecra" +
-                "n.id=materiel.id_taille_ecran\r\nleft outer join usb2 on usb2.id=materiel.id_usb2\r" +
-                "\nleft outer join usb3 on usb3.id=materiel.id_usb3\r\nleft outer join hdmi on hdmi." +
-                "id=materiel.id_hdmi\r\nleft outer join vga on vga.id=materiel.id_vga\r\nleft outer j" +
-                "oin tension_batterie on tension_batterie.id=materiel.id_tension_batterie\r\nleft o" +
-                "uter join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adapta" +
-                "teur\r\nleft outer join puissance_adaptateur on puissance_adaptateur.id=materiel.i" +
-                "d_puissance_adaptateur\r\nleft outer join intensite_adaptateur on intensite_adapta" +
-                "teur.id=materiel.id_intensite_adaptateur\r\n\r\n--Printer\r\nleft outer join type_impr" +
-                "imante on type_imprimante.id=materiel.id_type_imprimante\r\nleft outer join puissa" +
-                "nce on puissance.id=materiel.id_puissance\r\nleft outer join intensite on intensit" +
-                "e.id=materiel.id_intensite\r\nleft outer join page_par_minute on page_par_minute.i" +
-                "d=materiel.id_page_par_minute\r\n\r\n--Amplificateur\r\nleft outer join type_amplifica" +
-                "teur on type_amplificateur.id=materiel.id_type_amplificateur\r\nleft outer join te" +
-                "nsion_alimentation on tension_alimentation.id=materiel.id_tension_alimentation\r\n" +
-                "left outer join usb on usb.id=materiel.id_usb\r\nleft outer join memoire on memoir" +
-                "e.id=materiel.id_memoire\r\nleft outer join sorties_audio on sorties_audio.id=mate" +
-                "riel.id_sorties_audio\r\nleft outer join microphone on microphone.id=materiel.id_m" +
-                "icrophone\r\nleft outer join gain on gain.id=materiel.id_gain\r\n\r\n--Routeur_AP\r\nlef" +
-                "t outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP\r\n" +
-                "left outer join gbe on gbe.id=materiel.id_gbe\r\nleft outer join fe on fe.id=mater" +
-                "iel.id_fe\r\nleft outer join fo on fo.id=materiel.id_fo\r\nleft outer join serial on" +
-                " serial.id=materiel.id_serial\r\nleft outer join default_pwd on default_pwd.id=mat" +
-                "eriel.id_default_pwd\r\nleft outer join default_ip on default_ip.id=materiel.id_de" +
-                "fault_ip\r\nleft outer join console on console.id=materiel.id_console\r\nleft outer " +
-                "join auxiliaire on auxiliaire.id=materiel.id_auxiliaire\r\nleft outer join version" +
-                "_ios on version_ios.id=materiel.id_version_ios\r\n--capable_usb\r\n\r\n--AccessPoint\r\n" +
-                "left outer join type_AP on type_AP.id=materiel.id_type_AP\r\nleft outer join porte" +
-                "e on portee.id=materiel.id_portee\r\n\r\n--Switch\r\nleft outer join type_switch on ty" +
-                "pe_switch.id=materiel.id_type_switch\r\n\r\n--Emetteur\r\nleft outer join frequence on" +
-                " frequence.id=materiel.id_frequence\r\nleft outer join antenne on antenne.id=mater" +
-                "iel.id_antenne\r\n\r\n--Retroprojecteur\r\nleft outer join netette on netette.id=mater" +
-                "iel.id_netette\r\nwhere categorie_materiel.designation=\'Ordinateur\'";
+            this._commandCollection[0].CommandText = "SELECT        materiel.id, materiel.code_str AS \'Code\', categorie_materiel.design" +
+                "ation AS \'CatMat\', compte.numero AS \'Numero\', CONVERT(varchar(10), materiel.date" +
+                "_acquisition, 3) AS \'DateAcq\', garantie.valeur AS \'Garantie\', \r\n                " +
+                "         marque.designation AS \'Marque\', modele.designation AS \'Modele\', couleur" +
+                ".designation AS \'Couleur\', poids.valeur AS \'Poids\', etat_materiel.designation AS" +
+                " \'Etat\', materiel.qrcode AS \'QRCode\', \r\n                         materiel.photo1" +
+                " AS \'Photo1\', materiel.photo2 AS \'Photo2\', materiel.photo3 AS \'Photo3\', materiel" +
+                ".label AS \'Etiquette\', materiel.mac_adresse1 AS \'MacWifi\', materiel.mac_adresse2" +
+                " AS \'MacLAN\', \r\n                         type_ordinateur.designation AS \'TypeOrd" +
+                "i\', type_clavier.designation AS \'Clavier\', OS.designation AS \'SystemeExpl\', ram." +
+                "id AS \'Memoire\', processeur.valeur AS \'Processeur\', \r\n                         n" +
+                "ombre_coeur_processeur.valeur AS \'CoeurProcesseur\', type_hdd.designation AS \'Typ" +
+                "eHDD\', nombre_hdd.valeur AS \'NbrHDD\', capacite_hdd.valeur AS \'CapaciteHDD\', tail" +
+                "le_ecran.valeur AS \'Ecran\', \r\n                         usb2.valeur AS \'USB20\', u" +
+                "sb3.valeur AS \'USB30\', hdmi.valeur AS \'HDMI\', vga.valeur AS \'VGA\', tension_adapt" +
+                "ateur.valeur AS \'UBat\', tension_adaptateur.valeur AS \'UAdapt\', \r\n               " +
+                "          puissance_adaptateur.valeur AS \'PAdapt\', materiel.numero_cle AS \'Numer" +
+                "ocle\', intensite_adaptateur.valeur AS \'IAdapt\', materiel.commentaire AS \'Comment" +
+                "aire\', materiel.archiver AS \'Archiver\', \r\n                         type_switch.d" +
+                "esignation AS \'TypeSwitch\', puissance.valeur AS \'PImp\', intensite.valeur AS \'IIm" +
+                "p\', page_par_minute.valeur AS \'PPM\', type_imprimante.designation AS \'TypeImprima" +
+                "nte\', \r\n                         tension_alimentation.valeur AS \'UAlim\', usb.val" +
+                "eur AS \'NbrUSB\', memoire.valeur AS \'NbrMemoire\', sorties_audio.valeur AS \'NbrSor" +
+                "tiesAud\', microphone.valeur AS \'NbrMicro\', gain.valeur AS \'Gain\', \r\n            " +
+                "             type_amplificateur.designation AS \'TypeAmplificateur\', gbe.valeur A" +
+                "S \'NbrGbe\', fe.valeur AS \'NbrFe\', fo.valeur AS \'NbrFo\', serial.valeur AS \'NbrSer" +
+                "ial\', default_pwd.designation AS \'DefaultPwd\', \r\n                         defaul" +
+                "t_ip.designation AS \'DefaultIP\', console.valeur AS \'NbrConsole\', auxiliaire.vale" +
+                "ur AS \'NbrAux\', materiel.capable_usb AS \'SupportUSB\', type_routeur_AP.designatio" +
+                "n AS \'TyperouteurAP\', \r\n                         version_ios.designation AS \'Ver" +
+                "sionIOS\', portee.valeur AS \'Portee\', type_AP.designation AS \'TypeAP\', frequence." +
+                "designation AS \'Frequence\', antenne.valeur AS \'NbrAnt\', netette.designation AS \'" +
+                "Netete\', \r\n                         materiel.compatible_wifi AS \'SupportWifi\'\r\nF" +
+                "ROM            materiel LEFT OUTER JOIN\r\n                         garantie ON ga" +
+                "rantie.id = materiel.id_garantie LEFT OUTER JOIN\r\n                         categ" +
+                "orie_materiel ON categorie_materiel.id = materiel.id_categorie_materiel INNER JO" +
+                "IN\r\n                         compte ON compte.id = materiel.id_compte INNER JOIN" +
+                "\r\n                         marque ON marque.id = materiel.id_marque INNER JOIN\r\n" +
+                "                         modele ON modele.id = materiel.id_modele INNER JOIN\r\n  " +
+                "                       couleur ON couleur.id = materiel.id_couleur INNER JOIN\r\n " +
+                "                        poids ON poids.id = materiel.id_poids INNER JOIN\r\n      " +
+                "                   etat_materiel ON etat_materiel.id = materiel.id_etat_materiel" +
+                " LEFT OUTER JOIN\r\n                         type_ordinateur ON type_ordinateur.id" +
+                " = materiel.id_type_ordinateur LEFT OUTER JOIN\r\n                         type_cl" +
+                "avier ON type_clavier.id = materiel.id_type_clavier LEFT OUTER JOIN\r\n           " +
+                "              OS ON OS.id = materiel.id_OS LEFT OUTER JOIN\r\n                    " +
+                "     ram ON ram.id = materiel.id_ram LEFT OUTER JOIN\r\n                         p" +
+                "rocesseur ON processeur.id = materiel.id_processeur LEFT OUTER JOIN\r\n           " +
+                "              nombre_coeur_processeur ON nombre_coeur_processeur.id = materiel.i" +
+                "d_nombre_coeur_processeur LEFT OUTER JOIN\r\n                         type_hdd ON " +
+                "type_hdd.id = materiel.id_type_hdd LEFT OUTER JOIN\r\n                         nom" +
+                "bre_hdd ON nombre_hdd.id = materiel.id_nombre_hdd LEFT OUTER JOIN\r\n             " +
+                "            capacite_hdd ON capacite_hdd.id = materiel.id_capacite_hdd LEFT OUTE" +
+                "R JOIN\r\n                         taille_ecran ON taille_ecran.id = materiel.id_t" +
+                "aille_ecran LEFT OUTER JOIN\r\n                         usb2 ON usb2.id = materiel" +
+                ".id_usb2 LEFT OUTER JOIN\r\n                         usb3 ON usb3.id = materiel.id" +
+                "_usb3 LEFT OUTER JOIN\r\n                         hdmi ON hdmi.id = materiel.id_hd" +
+                "mi LEFT OUTER JOIN\r\n                         vga ON vga.id = materiel.id_vga LEF" +
+                "T OUTER JOIN\r\n                         tension_batterie ON tension_batterie.id =" +
+                " materiel.id_tension_batterie LEFT OUTER JOIN\r\n                         tension_" +
+                "adaptateur ON tension_adaptateur.id = materiel.id_tension_adaptateur LEFT OUTER " +
+                "JOIN\r\n                         puissance_adaptateur ON puissance_adaptateur.id =" +
+                " materiel.id_puissance_adaptateur LEFT OUTER JOIN\r\n                         inte" +
+                "nsite_adaptateur ON intensite_adaptateur.id = materiel.id_intensite_adaptateur L" +
+                "EFT OUTER JOIN\r\n                         type_imprimante ON type_imprimante.id =" +
+                " materiel.id_type_imprimante LEFT OUTER JOIN\r\n                         puissance" +
+                " ON puissance.id = materiel.id_puissance LEFT OUTER JOIN\r\n                      " +
+                "   intensite ON intensite.id = materiel.id_intensite LEFT OUTER JOIN\r\n          " +
+                "               page_par_minute ON page_par_minute.id = materiel.id_page_par_minu" +
+                "te LEFT OUTER JOIN\r\n                         type_amplificateur ON type_amplific" +
+                "ateur.id = materiel.id_type_amplificateur LEFT OUTER JOIN\r\n                     " +
+                "    tension_alimentation ON tension_alimentation.id = materiel.id_tension_alimen" +
+                "tation LEFT OUTER JOIN\r\n                         usb ON usb.id = materiel.id_usb" +
+                " LEFT OUTER JOIN\r\n                         memoire ON memoire.id = materiel.id_m" +
+                "emoire LEFT OUTER JOIN\r\n                         sorties_audio ON sorties_audio." +
+                "id = materiel.id_sorties_audio LEFT OUTER JOIN\r\n                         microph" +
+                "one ON microphone.id = materiel.id_microphone LEFT OUTER JOIN\r\n                 " +
+                "        gain ON gain.id = materiel.id_gain LEFT OUTER JOIN\r\n                    " +
+                "     type_routeur_AP ON type_routeur_AP.id = materiel.id_type_routeur_AP LEFT OU" +
+                "TER JOIN\r\n                         gbe ON gbe.id = materiel.id_gbe LEFT OUTER JO" +
+                "IN\r\n                         fe ON fe.id = materiel.id_fe LEFT OUTER JOIN\r\n     " +
+                "                    fo ON fo.id = materiel.id_fo LEFT OUTER JOIN\r\n              " +
+                "           serial ON serial.id = materiel.id_serial LEFT OUTER JOIN\r\n           " +
+                "              default_pwd ON default_pwd.id = materiel.id_default_pwd LEFT OUTER" +
+                " JOIN\r\n                         default_ip ON default_ip.id = materiel.id_defaul" +
+                "t_ip LEFT OUTER JOIN\r\n                         console ON console.id = materiel." +
+                "id_console LEFT OUTER JOIN\r\n                         auxiliaire ON auxiliaire.id" +
+                " = materiel.id_auxiliaire LEFT OUTER JOIN\r\n                         version_ios " +
+                "ON version_ios.id = materiel.id_version_ios LEFT OUTER JOIN\r\n                   " +
+                "      type_AP ON type_AP.id = materiel.id_type_AP LEFT OUTER JOIN\r\n             " +
+                "            portee ON portee.id = materiel.id_portee LEFT OUTER JOIN\r\n          " +
+                "               type_switch ON type_switch.id = materiel.id_type_switch LEFT OUTE" +
+                "R JOIN\r\n                         frequence ON frequence.id = materiel.id_frequen" +
+                "ce LEFT OUTER JOIN\r\n                         antenne ON antenne.id = materiel.id" +
+                "_antenne LEFT OUTER JOIN\r\n                         netette ON netette.id = mater" +
+                "iel.id_netette\r\nWHERE        (categorie_materiel.designation = \'Access Point\')";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -3652,7 +3673,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DataSet2.DataTable1DataTable dataTable) {
+        public virtual int Fill(DataSetAccessPoint.DataTable1DataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -3665,9 +3686,9 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DataSet2.DataTable1DataTable GetData() {
+        public virtual DataSetAccessPoint.DataTable1DataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            DataSet2.DataTable1DataTable dataTable = new DataSet2.DataTable1DataTable();
+            DataSetAccessPoint.DataTable1DataTable dataTable = new DataSetAccessPoint.DataTable1DataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -3741,7 +3762,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateUpdatedRows(DataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateUpdatedRows(DataSetAccessPoint dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -3751,7 +3772,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateInsertedRows(DataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
+        private int UpdateInsertedRows(DataSetAccessPoint dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             return result;
         }
@@ -3761,7 +3782,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private int UpdateDeletedRows(DataSet2 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
+        private int UpdateDeletedRows(DataSetAccessPoint dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
             return result;
         }
@@ -3795,7 +3816,7 @@ namespace smartManage.Desktop.Reports.DataSet2TableAdapters {
         ///</summary>
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public virtual int UpdateAll(DataSet2 dataSet) {
+        public virtual int UpdateAll(DataSetAccessPoint dataSet) {
             if ((dataSet == null)) {
                 throw new global::System.ArgumentNullException("dataSet");
             }

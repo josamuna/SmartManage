@@ -31,8 +31,8 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>51</ApplicationRevision>
-    <ApplicationVersion>2.6.252.%2a</ApplicationVersion>
+    <ApplicationRevision>52</ApplicationRevision>
+    <ApplicationVersion>2.6.253.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -672,6 +672,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSet1.cs">
+      <DependentUpon>DataSet1.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -682,11 +685,50 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet2.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Reports\drop.cs">
+    <Compile Include="Reports\DataSetAccessPoint.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>drop.rpt</DependentUpon>
-      <SubType>Component</SubType>
+      <DependentUpon>DataSetAccessPoint.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetAmplificateur.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetAmplificateur.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetEmetteur.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetEmetteur.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetImprimante.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetImprimante.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetOrdinateur.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetOrdinateur.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetRetroprojecteur.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRetroprojecteur.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetRouteurAP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetRouteurAP.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetSignataire.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetSignataire.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DataSetSwitch.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetSwitch.xsd</DependentUpon>
     </Compile>
     <Compile Include="Reports\LstSignataireSansSignature.cs">
       <DependentUpon>LstSignataireSansSignature.rpt</DependentUpon>
@@ -746,12 +788,6 @@
       <DependentUpon>LstSwitch.rpt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Reports\LstOrdinateur.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LstOrdinateur.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SafeNativeMethods.cs" />
@@ -1034,10 +1070,6 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\drop.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>drop.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\LstSignataireSansSignature.rpt">
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LstSignataireSansSignature.cs</LastGenOutput>
@@ -1078,12 +1110,12 @@
       <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
       <LastGenOutput>LstSwitch.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\LstOrdinateur.rpt">
-      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
-      <LastGenOutput>LstOrdinateur.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="Reports\Report1.rdlc" />
     <EmbeddedResource Include="Reports\Report2.rdlc" />
+    <EmbeddedResource Include="Reports\RptAccessPoint.rdlc" />
+    <EmbeddedResource Include="Reports\RptOrdinateur.rdlc" />
+    <EmbeddedResource Include="Reports\RptSignataireSansSignature.rdlc" />
+    <EmbeddedResource Include="Reports\RptSignataireAvecSignature.rdlc" />
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </EmbeddedResource>
@@ -1113,6 +1145,105 @@
     </None>
     <None Include="Reports\DataSet2.xss">
       <DependentUpon>DataSet2.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetAccessPoint.xsc">
+      <DependentUpon>DataSetAccessPoint.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetAccessPoint.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAccessPoint.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetAccessPoint.xss">
+      <DependentUpon>DataSetAccessPoint.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetAmplificateur.xsc">
+      <DependentUpon>DataSetAmplificateur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetAmplificateur.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetAmplificateur.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetAmplificateur.xss">
+      <DependentUpon>DataSetAmplificateur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetEmetteur.xsc">
+      <DependentUpon>DataSetEmetteur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetEmetteur.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetEmetteur.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetEmetteur.xss">
+      <DependentUpon>DataSetEmetteur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetImprimante.xsc">
+      <DependentUpon>DataSetImprimante.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetImprimante.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetImprimante.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetImprimante.xss">
+      <DependentUpon>DataSetImprimante.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetOrdinateur.xsc">
+      <DependentUpon>DataSetOrdinateur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetOrdinateur.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetOrdinateur.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetOrdinateur.xss">
+      <DependentUpon>DataSetOrdinateur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetRetroprojecteur.xsc">
+      <DependentUpon>DataSetRetroprojecteur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetRetroprojecteur.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRetroprojecteur.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetRetroprojecteur.xss">
+      <DependentUpon>DataSetRetroprojecteur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetRouteurAP.xsc">
+      <DependentUpon>DataSetRouteurAP.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetRouteurAP.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetRouteurAP.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetRouteurAP.xss">
+      <DependentUpon>DataSetRouteurAP.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetSignataire.xsc">
+      <DependentUpon>DataSetSignataire.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetSignataire.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetSignataire.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetSignataire.xss">
+      <DependentUpon>DataSetSignataire.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetSwitch.xsc">
+      <DependentUpon>DataSetSwitch.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetSwitch.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetSwitch.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetSwitch.xss">
+      <DependentUpon>DataSetSwitch.xsd</DependentUpon>
     </None>
     <None Include="smartManage.DesktopKey.pfx" />
   </ItemGroup>
@@ -1239,6 +1370,10 @@
     <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

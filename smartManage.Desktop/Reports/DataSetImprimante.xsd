@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema id="DataSet2" targetNamespace="http://tempuri.org/DataSet2.xsd" xmlns:mstns="http://tempuri.org/DataSet2.xsd" xmlns="http://tempuri.org/DataSet2.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+<xs:schema id="DataSetImprimante" targetNamespace="http://tempuri.org/DataSetImprimante.xsd" xmlns:mstns="http://tempuri.org/DataSetImprimante.xsd" xmlns="http://tempuri.org/DataSetImprimante.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
   <xs:annotation>
     <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
       <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
@@ -9,100 +9,77 @@
         <Tables>
           <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
             <MainSource>
-              <DbSource ConnectionRef="gestion_labo_DBConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+              <DbSource ConnectionRef="gestion_labo_DBConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
                 <SelectCommand>
                   <DbCommand CommandType="Text" ModifiedByUser="true">
-                    <CommandText>select materiel.id,materiel.code_str as 'Code',categorie_materiel.designation as 'CatMat',compte.numero as 'Numero',CONVERT(varchar(10),date_acquisition,3) as 'DateAcq',garantie.valeur as 'Garantie',marque.designation as 'Marque',
-modele.designation as 'Modele',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-materiel.mac_adresse1 as 'MacWifi', materiel.mac_adresse2 as 'MacLAN',type_ordinateur.designation as 'TypeOrdi',type_clavier.designation as 'Clavier',OS.designation 'SystemeExpl',ram.id as 'Memoire',processeur.valeur as 'Processeur',
-nombre_coeur_processeur.valeur as 'CoeurProcesseur',type_hdd.designation as 'TypeHDD',nombre_hdd.valeur as 'NbrHDD',capacite_hdd.valeur as 'CapaciteHDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB20',usb3.valeur as 'USB30',hdmi.valeur as 'HDMI',
-vga.valeur as 'VGA',tension_adaptateur.valeur as 'UBat',tension_adaptateur.valeur as 'UAdapt',puissance_adaptateur.valeur as 'PAdapt',materiel.numero_cle as 'Numerocle', intensite_adaptateur.valeur as 'IAdapt', 
-materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-type_switch.designation as 'TypeSwitch',
-
-puissance.valeur as 'PImp',intensite.valeur as 'IImp',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'TypeImprimante',
-
-tension_alimentation.valeur as 'UAlim',usb.valeur as 'NbrUSB',memoire.valeur as 'NbrMemoire',sorties_audio.valeur as 'NbrSortiesAud',microphone.valeur as 'NbrMicro',gain.valeur as 'Gain',type_amplificateur.designation as 'TypeAmplificateur',
-
-gbe.valeur as 'NbrGbe',fe.valeur as 'NbrFe',fo.valeur as 'NbrFo',serial.valeur as 'NbrSerial',default_pwd.designation as 'DefaultPwd',default_ip.designation as 'DefaultIP',console.valeur as 'NbrConsole',auxiliaire.valeur as 'NbrAux',materiel.capable_usb as 'SupportUSB', type_routeur_AP.designation as 'TyperouteurAP', version_ios.designation as 'VersionIOS',
-
-portee.valeur as 'Portee',type_AP.designation as 'TypeAP',
-
-frequence.designation as 'Frequence',antenne.valeur as 'NbrAnt',
-
-netette.designation as 'Netete',materiel.compatible_wifi as 'SupportWifi'
-
- from materiel 
-left outer join garantie on garantie.id=materiel.id_garantie
-left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-inner join compte on compte.id=materiel.id_compte
-inner join marque on marque.id=materiel.id_marque
-inner join modele on modele.id=materiel.id_modele
-inner join couleur on couleur.id=materiel.id_couleur
-inner join poids on poids.id=materiel.id_poids
-inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-left outer join OS on OS.id=materiel.id_OS
-left outer join ram on ram.id=materiel.id_ram
-left outer join processeur on processeur.id=materiel.id_processeur
-left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-left outer join usb2 on usb2.id=materiel.id_usb2
-left outer join usb3 on usb3.id=materiel.id_usb3
-left outer join hdmi on hdmi.id=materiel.id_hdmi
-left outer join vga on vga.id=materiel.id_vga
-left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
---Printer
-left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-left outer join puissance on puissance.id=materiel.id_puissance
-left outer join intensite on intensite.id=materiel.id_intensite
-left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
---Amplificateur
-left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-left outer join usb on usb.id=materiel.id_usb
-left outer join memoire on memoire.id=materiel.id_memoire
-left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-left outer join microphone on microphone.id=materiel.id_microphone
-left outer join gain on gain.id=materiel.id_gain
-
---Routeur_AP
-left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-left outer join gbe on gbe.id=materiel.id_gbe
-left outer join fe on fe.id=materiel.id_fe
-left outer join fo on fo.id=materiel.id_fo
-left outer join serial on serial.id=materiel.id_serial
-left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-left outer join default_ip on default_ip.id=materiel.id_default_ip
-left outer join console on console.id=materiel.id_console
-left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-left outer join version_ios on version_ios.id=materiel.id_version_ios
---capable_usb
-
---AccessPoint
-left outer join type_AP on type_AP.id=materiel.id_type_AP
-left outer join portee on portee.id=materiel.id_portee
-
---Switch
-left outer join type_switch on type_switch.id=materiel.id_type_switch
-
---Emetteur
-left outer join frequence on frequence.id=materiel.id_frequence
-left outer join antenne on antenne.id=materiel.id_antenne
-
---Retroprojecteur
-left outer join netette on netette.id=materiel.id_netette
-where categorie_materiel.designation='Ordinateur'</CommandText>
+                    <CommandText>SELECT        materiel.id, materiel.code_str AS 'Code', categorie_materiel.designation AS 'CatMat', compte.numero AS 'Numero', CONVERT(varchar(10), materiel.date_acquisition, 3) AS 'DateAcq', garantie.valeur AS 'Garantie', 
+                         marque.designation AS 'Marque', modele.designation AS 'Modele', couleur.designation AS 'Couleur', poids.valeur AS 'Poids', etat_materiel.designation AS 'Etat', materiel.qrcode AS 'QRCode', 
+                         materiel.photo1 AS 'Photo1', materiel.photo2 AS 'Photo2', materiel.photo3 AS 'Photo3', materiel.label AS 'Etiquette', materiel.mac_adresse1 AS 'MacWifi', materiel.mac_adresse2 AS 'MacLAN', 
+                         type_ordinateur.designation AS 'TypeOrdi', type_clavier.designation AS 'Clavier', OS.designation AS 'SystemeExpl', ram.id AS 'Memoire', processeur.valeur AS 'Processeur', 
+                         nombre_coeur_processeur.valeur AS 'CoeurProcesseur', type_hdd.designation AS 'TypeHDD', nombre_hdd.valeur AS 'NbrHDD', capacite_hdd.valeur AS 'CapaciteHDD', taille_ecran.valeur AS 'Ecran', 
+                         usb2.valeur AS 'USB20', usb3.valeur AS 'USB30', hdmi.valeur AS 'HDMI', vga.valeur AS 'VGA', tension_adaptateur.valeur AS 'UBat', tension_adaptateur.valeur AS 'UAdapt', 
+                         puissance_adaptateur.valeur AS 'PAdapt', materiel.numero_cle AS 'Numerocle', intensite_adaptateur.valeur AS 'IAdapt', materiel.commentaire AS 'Commentaire', materiel.archiver AS 'Archiver', 
+                         type_switch.designation AS 'TypeSwitch', puissance.valeur AS 'PImp', intensite.valeur AS 'IImp', page_par_minute.valeur AS 'PPM', type_imprimante.designation AS 'TypeImprimante', 
+                         tension_alimentation.valeur AS 'UAlim', usb.valeur AS 'NbrUSB', memoire.valeur AS 'NbrMemoire', sorties_audio.valeur AS 'NbrSortiesAud', microphone.valeur AS 'NbrMicro', gain.valeur AS 'Gain', 
+                         type_amplificateur.designation AS 'TypeAmplificateur', gbe.valeur AS 'NbrGbe', fe.valeur AS 'NbrFe', fo.valeur AS 'NbrFo', serial.valeur AS 'NbrSerial', default_pwd.designation AS 'DefaultPwd', 
+                         default_ip.designation AS 'DefaultIP', console.valeur AS 'NbrConsole', auxiliaire.valeur AS 'NbrAux', materiel.capable_usb AS 'SupportUSB', type_routeur_AP.designation AS 'TyperouteurAP', 
+                         version_ios.designation AS 'VersionIOS', portee.valeur AS 'Portee', type_AP.designation AS 'TypeAP', frequence.designation AS 'Frequence', antenne.valeur AS 'NbrAnt', netette.designation AS 'Netete', 
+                         materiel.compatible_wifi AS 'SupportWifi'
+FROM            materiel LEFT OUTER JOIN
+                         garantie ON garantie.id = materiel.id_garantie LEFT OUTER JOIN
+                         categorie_materiel ON categorie_materiel.id = materiel.id_categorie_materiel INNER JOIN
+                         compte ON compte.id = materiel.id_compte INNER JOIN
+                         marque ON marque.id = materiel.id_marque INNER JOIN
+                         modele ON modele.id = materiel.id_modele INNER JOIN
+                         couleur ON couleur.id = materiel.id_couleur INNER JOIN
+                         poids ON poids.id = materiel.id_poids INNER JOIN
+                         etat_materiel ON etat_materiel.id = materiel.id_etat_materiel LEFT OUTER JOIN
+                         type_ordinateur ON type_ordinateur.id = materiel.id_type_ordinateur LEFT OUTER JOIN
+                         type_clavier ON type_clavier.id = materiel.id_type_clavier LEFT OUTER JOIN
+                         OS ON OS.id = materiel.id_OS LEFT OUTER JOIN
+                         ram ON ram.id = materiel.id_ram LEFT OUTER JOIN
+                         processeur ON processeur.id = materiel.id_processeur LEFT OUTER JOIN
+                         nombre_coeur_processeur ON nombre_coeur_processeur.id = materiel.id_nombre_coeur_processeur LEFT OUTER JOIN
+                         type_hdd ON type_hdd.id = materiel.id_type_hdd LEFT OUTER JOIN
+                         nombre_hdd ON nombre_hdd.id = materiel.id_nombre_hdd LEFT OUTER JOIN
+                         capacite_hdd ON capacite_hdd.id = materiel.id_capacite_hdd LEFT OUTER JOIN
+                         taille_ecran ON taille_ecran.id = materiel.id_taille_ecran LEFT OUTER JOIN
+                         usb2 ON usb2.id = materiel.id_usb2 LEFT OUTER JOIN
+                         usb3 ON usb3.id = materiel.id_usb3 LEFT OUTER JOIN
+                         hdmi ON hdmi.id = materiel.id_hdmi LEFT OUTER JOIN
+                         vga ON vga.id = materiel.id_vga LEFT OUTER JOIN
+                         tension_batterie ON tension_batterie.id = materiel.id_tension_batterie LEFT OUTER JOIN
+                         tension_adaptateur ON tension_adaptateur.id = materiel.id_tension_adaptateur LEFT OUTER JOIN
+                         puissance_adaptateur ON puissance_adaptateur.id = materiel.id_puissance_adaptateur LEFT OUTER JOIN
+                         intensite_adaptateur ON intensite_adaptateur.id = materiel.id_intensite_adaptateur LEFT OUTER JOIN
+                         type_imprimante ON type_imprimante.id = materiel.id_type_imprimante LEFT OUTER JOIN
+                         puissance ON puissance.id = materiel.id_puissance LEFT OUTER JOIN
+                         intensite ON intensite.id = materiel.id_intensite LEFT OUTER JOIN
+                         page_par_minute ON page_par_minute.id = materiel.id_page_par_minute LEFT OUTER JOIN
+                         type_amplificateur ON type_amplificateur.id = materiel.id_type_amplificateur LEFT OUTER JOIN
+                         tension_alimentation ON tension_alimentation.id = materiel.id_tension_alimentation LEFT OUTER JOIN
+                         usb ON usb.id = materiel.id_usb LEFT OUTER JOIN
+                         memoire ON memoire.id = materiel.id_memoire LEFT OUTER JOIN
+                         sorties_audio ON sorties_audio.id = materiel.id_sorties_audio LEFT OUTER JOIN
+                         microphone ON microphone.id = materiel.id_microphone LEFT OUTER JOIN
+                         gain ON gain.id = materiel.id_gain LEFT OUTER JOIN
+                         type_routeur_AP ON type_routeur_AP.id = materiel.id_type_routeur_AP LEFT OUTER JOIN
+                         gbe ON gbe.id = materiel.id_gbe LEFT OUTER JOIN
+                         fe ON fe.id = materiel.id_fe LEFT OUTER JOIN
+                         fo ON fo.id = materiel.id_fo LEFT OUTER JOIN
+                         serial ON serial.id = materiel.id_serial LEFT OUTER JOIN
+                         default_pwd ON default_pwd.id = materiel.id_default_pwd LEFT OUTER JOIN
+                         default_ip ON default_ip.id = materiel.id_default_ip LEFT OUTER JOIN
+                         console ON console.id = materiel.id_console LEFT OUTER JOIN
+                         auxiliaire ON auxiliaire.id = materiel.id_auxiliaire LEFT OUTER JOIN
+                         version_ios ON version_ios.id = materiel.id_version_ios LEFT OUTER JOIN
+                         type_AP ON type_AP.id = materiel.id_type_AP LEFT OUTER JOIN
+                         portee ON portee.id = materiel.id_portee LEFT OUTER JOIN
+                         type_switch ON type_switch.id = materiel.id_type_switch LEFT OUTER JOIN
+                         frequence ON frequence.id = materiel.id_frequence LEFT OUTER JOIN
+                         antenne ON antenne.id = materiel.id_antenne LEFT OUTER JOIN
+                         netette ON netette.id = materiel.id_netette
+WHERE        (categorie_materiel.designation = 'Imprimante')</CommandText>
                     <Parameters />
                   </DbCommand>
                 </SelectCommand>
@@ -111,6 +88,7 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
             <Mappings>
               <Mapping SourceColumn="id" DataSetColumn="id" />
               <Mapping SourceColumn="Code" DataSetColumn="Code" />
+              <Mapping SourceColumn="CatMat" DataSetColumn="CatMat" />
               <Mapping SourceColumn="Numero" DataSetColumn="Numero" />
               <Mapping SourceColumn="DateAcq" DataSetColumn="DateAcq" />
               <Mapping SourceColumn="Garantie" DataSetColumn="Garantie" />
@@ -124,15 +102,26 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
               <Mapping SourceColumn="Photo2" DataSetColumn="Photo2" />
               <Mapping SourceColumn="Photo3" DataSetColumn="Photo3" />
               <Mapping SourceColumn="Etiquette" DataSetColumn="Etiquette" />
+              <Mapping SourceColumn="MacWifi" DataSetColumn="MacWifi" />
+              <Mapping SourceColumn="MacLAN" DataSetColumn="MacLAN" />
+              <Mapping SourceColumn="TypeOrdi" DataSetColumn="TypeOrdi" />
               <Mapping SourceColumn="Clavier" DataSetColumn="Clavier" />
+              <Mapping SourceColumn="SystemeExpl" DataSetColumn="SystemeExpl" />
               <Mapping SourceColumn="Memoire" DataSetColumn="Memoire" />
               <Mapping SourceColumn="Processeur" DataSetColumn="Processeur" />
+              <Mapping SourceColumn="CoeurProcesseur" DataSetColumn="CoeurProcesseur" />
+              <Mapping SourceColumn="TypeHDD" DataSetColumn="TypeHDD" />
+              <Mapping SourceColumn="NbrHDD" DataSetColumn="NbrHDD" />
+              <Mapping SourceColumn="CapaciteHDD" DataSetColumn="CapaciteHDD" />
               <Mapping SourceColumn="Ecran" DataSetColumn="Ecran" />
               <Mapping SourceColumn="USB20" DataSetColumn="USB20" />
               <Mapping SourceColumn="USB30" DataSetColumn="USB30" />
               <Mapping SourceColumn="HDMI" DataSetColumn="HDMI" />
               <Mapping SourceColumn="VGA" DataSetColumn="VGA" />
+              <Mapping SourceColumn="UBat" DataSetColumn="UBat" />
+              <Mapping SourceColumn="UAdapt" DataSetColumn="UAdapt" />
               <Mapping SourceColumn="PAdapt" DataSetColumn="PAdapt" />
+              <Mapping SourceColumn="Numerocle" DataSetColumn="Numerocle" />
               <Mapping SourceColumn="IAdapt" DataSetColumn="IAdapt" />
               <Mapping SourceColumn="Commentaire" DataSetColumn="Commentaire" />
               <Mapping SourceColumn="Archiver" DataSetColumn="Archiver" />
@@ -140,12 +129,14 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
               <Mapping SourceColumn="PImp" DataSetColumn="PImp" />
               <Mapping SourceColumn="IImp" DataSetColumn="IImp" />
               <Mapping SourceColumn="PPM" DataSetColumn="PPM" />
+              <Mapping SourceColumn="TypeImprimante" DataSetColumn="TypeImprimante" />
               <Mapping SourceColumn="UAlim" DataSetColumn="UAlim" />
               <Mapping SourceColumn="NbrUSB" DataSetColumn="NbrUSB" />
               <Mapping SourceColumn="NbrMemoire" DataSetColumn="NbrMemoire" />
               <Mapping SourceColumn="NbrSortiesAud" DataSetColumn="NbrSortiesAud" />
               <Mapping SourceColumn="NbrMicro" DataSetColumn="NbrMicro" />
               <Mapping SourceColumn="Gain" DataSetColumn="Gain" />
+              <Mapping SourceColumn="TypeAmplificateur" DataSetColumn="TypeAmplificateur" />
               <Mapping SourceColumn="NbrGbe" DataSetColumn="NbrGbe" />
               <Mapping SourceColumn="NbrFe" DataSetColumn="NbrFe" />
               <Mapping SourceColumn="NbrFo" DataSetColumn="NbrFo" />
@@ -163,20 +154,6 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
               <Mapping SourceColumn="NbrAnt" DataSetColumn="NbrAnt" />
               <Mapping SourceColumn="Netete" DataSetColumn="Netete" />
               <Mapping SourceColumn="SupportWifi" DataSetColumn="SupportWifi" />
-              <Mapping SourceColumn="Numerocle" DataSetColumn="Numerocle" />
-              <Mapping SourceColumn="CatMat" DataSetColumn="CatMat" />
-              <Mapping SourceColumn="MacWifi" DataSetColumn="MacWifi" />
-              <Mapping SourceColumn="MacLAN" DataSetColumn="MacLAN" />
-              <Mapping SourceColumn="TypeOrdi" DataSetColumn="TypeOrdi" />
-              <Mapping SourceColumn="SystemeExpl" DataSetColumn="SystemeExpl" />
-              <Mapping SourceColumn="CoeurProcesseur" DataSetColumn="CoeurProcesseur" />
-              <Mapping SourceColumn="TypeHDD" DataSetColumn="TypeHDD" />
-              <Mapping SourceColumn="NbrHDD" DataSetColumn="NbrHDD" />
-              <Mapping SourceColumn="CapaciteHDD" DataSetColumn="CapaciteHDD" />
-              <Mapping SourceColumn="UBat" DataSetColumn="UBat" />
-              <Mapping SourceColumn="UAdapt" DataSetColumn="UAdapt" />
-              <Mapping SourceColumn="TypeImprimante" DataSetColumn="TypeImprimante" />
-              <Mapping SourceColumn="TypeAmplificateur" DataSetColumn="TypeAmplificateur" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -185,7 +162,7 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
       </DataSource>
     </xs:appinfo>
   </xs:annotation>
-  <xs:element name="DataSet2" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet2" msprop:Generator_UserDSName="DataSet2">
+  <xs:element name="DataSetImprimante" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetImprimante" msprop:Generator_UserDSName="DataSetImprimante">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
         <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
@@ -196,6 +173,13 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
                     <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CatMat" msprop:Generator_ColumnVarNameInTable="columnCatMat" msprop:Generator_ColumnPropNameInRow="CatMat" msprop:Generator_ColumnPropNameInTable="CatMatColumn" msprop:Generator_UserColumnName="CatMat" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
@@ -254,6 +238,27 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="MacWifi" msprop:Generator_ColumnVarNameInTable="columnMacWifi" msprop:Generator_ColumnPropNameInRow="MacWifi" msprop:Generator_ColumnPropNameInTable="MacWifiColumn" msprop:Generator_UserColumnName="MacWifi" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MacLAN" msprop:Generator_ColumnVarNameInTable="columnMacLAN" msprop:Generator_ColumnPropNameInRow="MacLAN" msprop:Generator_ColumnPropNameInTable="MacLANColumn" msprop:Generator_UserColumnName="MacLAN" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TypeOrdi" msprop:Generator_ColumnVarNameInTable="columnTypeOrdi" msprop:Generator_ColumnPropNameInRow="TypeOrdi" msprop:Generator_ColumnPropNameInTable="TypeOrdiColumn" msprop:Generator_UserColumnName="TypeOrdi" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
               <xs:element name="Clavier" msprop:Generator_ColumnVarNameInTable="columnClavier" msprop:Generator_ColumnPropNameInRow="Clavier" msprop:Generator_ColumnPropNameInTable="ClavierColumn" msprop:Generator_UserColumnName="Clavier" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
@@ -261,14 +266,34 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="SystemeExpl" msprop:Generator_ColumnVarNameInTable="columnSystemeExpl" msprop:Generator_ColumnPropNameInRow="SystemeExpl" msprop:Generator_ColumnPropNameInTable="SystemeExplColumn" msprop:Generator_UserColumnName="SystemeExpl" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
               <xs:element name="Memoire" msprop:Generator_ColumnVarNameInTable="columnMemoire" msprop:Generator_ColumnPropNameInRow="Memoire" msprop:Generator_ColumnPropNameInTable="MemoireColumn" msprop:Generator_UserColumnName="Memoire" type="xs:int" minOccurs="0" />
               <xs:element name="Processeur" msprop:Generator_ColumnVarNameInTable="columnProcesseur" msprop:Generator_ColumnPropNameInRow="Processeur" msprop:Generator_ColumnPropNameInTable="ProcesseurColumn" msprop:Generator_UserColumnName="Processeur" type="xs:double" minOccurs="0" />
+              <xs:element name="CoeurProcesseur" msprop:Generator_ColumnVarNameInTable="columnCoeurProcesseur" msprop:Generator_ColumnPropNameInRow="CoeurProcesseur" msprop:Generator_ColumnPropNameInTable="CoeurProcesseurColumn" msprop:Generator_UserColumnName="CoeurProcesseur" type="xs:int" minOccurs="0" />
+              <xs:element name="TypeHDD" msprop:Generator_ColumnVarNameInTable="columnTypeHDD" msprop:Generator_ColumnPropNameInRow="TypeHDD" msprop:Generator_ColumnPropNameInTable="TypeHDDColumn" msprop:Generator_UserColumnName="TypeHDD" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="NbrHDD" msprop:Generator_ColumnVarNameInTable="columnNbrHDD" msprop:Generator_ColumnPropNameInRow="NbrHDD" msprop:Generator_ColumnPropNameInTable="NbrHDDColumn" msprop:Generator_UserColumnName="NbrHDD" type="xs:int" minOccurs="0" />
+              <xs:element name="CapaciteHDD" msprop:Generator_ColumnVarNameInTable="columnCapaciteHDD" msprop:Generator_ColumnPropNameInRow="CapaciteHDD" msprop:Generator_ColumnPropNameInTable="CapaciteHDDColumn" msprop:Generator_UserColumnName="CapaciteHDD" type="xs:int" minOccurs="0" />
               <xs:element name="Ecran" msprop:Generator_ColumnVarNameInTable="columnEcran" msprop:Generator_ColumnPropNameInRow="Ecran" msprop:Generator_ColumnPropNameInTable="EcranColumn" msprop:Generator_UserColumnName="Ecran" type="xs:int" minOccurs="0" />
               <xs:element name="USB20" msprop:Generator_ColumnVarNameInTable="columnUSB20" msprop:Generator_ColumnPropNameInRow="USB20" msprop:Generator_ColumnPropNameInTable="USB20Column" msprop:Generator_UserColumnName="USB20" type="xs:int" minOccurs="0" />
               <xs:element name="USB30" msprop:Generator_ColumnVarNameInTable="columnUSB30" msprop:Generator_ColumnPropNameInRow="USB30" msprop:Generator_ColumnPropNameInTable="USB30Column" msprop:Generator_UserColumnName="USB30" type="xs:int" minOccurs="0" />
               <xs:element name="HDMI" msprop:Generator_ColumnVarNameInTable="columnHDMI" msprop:Generator_ColumnPropNameInRow="HDMI" msprop:Generator_ColumnPropNameInTable="HDMIColumn" msprop:Generator_UserColumnName="HDMI" type="xs:int" minOccurs="0" />
               <xs:element name="VGA" msprop:Generator_ColumnVarNameInTable="columnVGA" msprop:Generator_ColumnPropNameInRow="VGA" msprop:Generator_ColumnPropNameInTable="VGAColumn" msprop:Generator_UserColumnName="VGA" type="xs:int" minOccurs="0" />
+              <xs:element name="UBat" msprop:Generator_ColumnVarNameInTable="columnUBat" msprop:Generator_ColumnPropNameInRow="UBat" msprop:Generator_ColumnPropNameInTable="UBatColumn" msprop:Generator_UserColumnName="UBat" type="xs:double" minOccurs="0" />
+              <xs:element name="UAdapt" msprop:Generator_ColumnVarNameInTable="columnUAdapt" msprop:Generator_ColumnPropNameInRow="UAdapt" msprop:Generator_ColumnPropNameInTable="UAdaptColumn" msprop:Generator_UserColumnName="UAdapt" type="xs:double" minOccurs="0" />
               <xs:element name="PAdapt" msprop:Generator_ColumnVarNameInTable="columnPAdapt" msprop:Generator_ColumnPropNameInRow="PAdapt" msprop:Generator_ColumnPropNameInTable="PAdaptColumn" msprop:Generator_UserColumnName="PAdapt" type="xs:double" minOccurs="0" />
+              <xs:element name="Numerocle" msprop:Generator_ColumnVarNameInTable="columnNumerocle" msprop:Generator_ColumnPropNameInRow="Numerocle" msprop:Generator_ColumnPropNameInTable="NumerocleColumn" msprop:Generator_UserColumnName="Numerocle" type="xs:int" minOccurs="0" />
               <xs:element name="IAdapt" msprop:Generator_ColumnVarNameInTable="columnIAdapt" msprop:Generator_ColumnPropNameInRow="IAdapt" msprop:Generator_ColumnPropNameInTable="IAdaptColumn" msprop:Generator_UserColumnName="IAdapt" type="xs:double" minOccurs="0" />
               <xs:element name="Commentaire" msprop:Generator_ColumnVarNameInTable="columnCommentaire" msprop:Generator_ColumnPropNameInRow="Commentaire" msprop:Generator_ColumnPropNameInTable="CommentaireColumn" msprop:Generator_UserColumnName="Commentaire" minOccurs="0">
                 <xs:simpleType>
@@ -288,12 +313,26 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
               <xs:element name="PImp" msprop:Generator_ColumnVarNameInTable="columnPImp" msprop:Generator_ColumnPropNameInRow="PImp" msprop:Generator_ColumnPropNameInTable="PImpColumn" msprop:Generator_UserColumnName="PImp" type="xs:double" minOccurs="0" />
               <xs:element name="IImp" msprop:Generator_ColumnVarNameInTable="columnIImp" msprop:Generator_ColumnPropNameInRow="IImp" msprop:Generator_ColumnPropNameInTable="IImpColumn" msprop:Generator_UserColumnName="IImp" type="xs:double" minOccurs="0" />
               <xs:element name="PPM" msprop:Generator_ColumnVarNameInTable="columnPPM" msprop:Generator_ColumnPropNameInRow="PPM" msprop:Generator_ColumnPropNameInTable="PPMColumn" msprop:Generator_UserColumnName="PPM" type="xs:double" minOccurs="0" />
+              <xs:element name="TypeImprimante" msprop:Generator_ColumnVarNameInTable="columnTypeImprimante" msprop:Generator_ColumnPropNameInRow="TypeImprimante" msprop:Generator_ColumnPropNameInTable="TypeImprimanteColumn" msprop:Generator_UserColumnName="TypeImprimante" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
               <xs:element name="UAlim" msprop:Generator_ColumnVarNameInTable="columnUAlim" msprop:Generator_ColumnPropNameInRow="UAlim" msprop:Generator_ColumnPropNameInTable="UAlimColumn" msprop:Generator_UserColumnName="UAlim" type="xs:int" minOccurs="0" />
               <xs:element name="NbrUSB" msprop:Generator_ColumnVarNameInTable="columnNbrUSB" msprop:Generator_ColumnPropNameInRow="NbrUSB" msprop:Generator_ColumnPropNameInTable="NbrUSBColumn" msprop:Generator_UserColumnName="NbrUSB" type="xs:int" minOccurs="0" />
               <xs:element name="NbrMemoire" msprop:Generator_ColumnVarNameInTable="columnNbrMemoire" msprop:Generator_ColumnPropNameInRow="NbrMemoire" msprop:Generator_ColumnPropNameInTable="NbrMemoireColumn" msprop:Generator_UserColumnName="NbrMemoire" type="xs:int" minOccurs="0" />
               <xs:element name="NbrSortiesAud" msprop:Generator_ColumnVarNameInTable="columnNbrSortiesAud" msprop:Generator_ColumnPropNameInRow="NbrSortiesAud" msprop:Generator_ColumnPropNameInTable="NbrSortiesAudColumn" msprop:Generator_UserColumnName="NbrSortiesAud" type="xs:int" minOccurs="0" />
               <xs:element name="NbrMicro" msprop:Generator_ColumnVarNameInTable="columnNbrMicro" msprop:Generator_ColumnPropNameInRow="NbrMicro" msprop:Generator_ColumnPropNameInTable="NbrMicroColumn" msprop:Generator_UserColumnName="NbrMicro" type="xs:int" minOccurs="0" />
               <xs:element name="Gain" msprop:Generator_ColumnVarNameInTable="columnGain" msprop:Generator_ColumnPropNameInRow="Gain" msprop:Generator_ColumnPropNameInTable="GainColumn" msprop:Generator_UserColumnName="Gain" type="xs:int" minOccurs="0" />
+              <xs:element name="TypeAmplificateur" msprop:Generator_ColumnVarNameInTable="columnTypeAmplificateur" msprop:Generator_ColumnPropNameInRow="TypeAmplificateur" msprop:Generator_ColumnPropNameInTable="TypeAmplificateurColumn" msprop:Generator_UserColumnName="TypeAmplificateur" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
               <xs:element name="NbrGbe" msprop:Generator_ColumnVarNameInTable="columnNbrGbe" msprop:Generator_ColumnPropNameInRow="NbrGbe" msprop:Generator_ColumnPropNameInTable="NbrGbeColumn" msprop:Generator_UserColumnName="NbrGbe" type="xs:int" minOccurs="0" />
               <xs:element name="NbrFe" msprop:Generator_ColumnVarNameInTable="columnNbrFe" msprop:Generator_ColumnPropNameInRow="NbrFe" msprop:Generator_ColumnPropNameInTable="NbrFeColumn" msprop:Generator_UserColumnName="NbrFe" type="xs:int" minOccurs="0" />
               <xs:element name="NbrFo" msprop:Generator_ColumnVarNameInTable="columnNbrFo" msprop:Generator_ColumnPropNameInRow="NbrFo" msprop:Generator_ColumnPropNameInTable="NbrFoColumn" msprop:Generator_UserColumnName="NbrFo" type="xs:int" minOccurs="0" />
@@ -353,68 +392,6 @@ where categorie_materiel.designation='Ordinateur'</CommandText>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="SupportWifi" msprop:Generator_ColumnVarNameInTable="columnSupportWifi" msprop:Generator_ColumnPropNameInRow="SupportWifi" msprop:Generator_ColumnPropNameInTable="SupportWifiColumn" msprop:Generator_UserColumnName="SupportWifi" type="xs:boolean" minOccurs="0" />
-              <xs:element name="Numerocle" msprop:Generator_ColumnVarNameInTable="columnNumerocle" msprop:Generator_ColumnPropNameInRow="Numerocle" msprop:Generator_ColumnPropNameInTable="NumerocleColumn" msprop:Generator_UserColumnName="Numerocle" type="xs:int" minOccurs="0" />
-              <xs:element name="CatMat" msprop:Generator_ColumnVarNameInTable="columnCatMat" msprop:Generator_ColumnPropNameInRow="CatMat" msprop:Generator_ColumnPropNameInTable="CatMatColumn" msprop:Generator_UserColumnName="CatMat" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="MacWifi" msprop:Generator_ColumnVarNameInTable="columnMacWifi" msprop:Generator_ColumnPropNameInRow="MacWifi" msprop:Generator_ColumnPropNameInTable="MacWifiColumn" msprop:Generator_UserColumnName="MacWifi" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="MacLAN" msprop:Generator_ColumnVarNameInTable="columnMacLAN" msprop:Generator_ColumnPropNameInRow="MacLAN" msprop:Generator_ColumnPropNameInTable="MacLANColumn" msprop:Generator_UserColumnName="MacLAN" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="TypeOrdi" msprop:Generator_ColumnVarNameInTable="columnTypeOrdi" msprop:Generator_ColumnPropNameInRow="TypeOrdi" msprop:Generator_ColumnPropNameInTable="TypeOrdiColumn" msprop:Generator_UserColumnName="TypeOrdi" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="SystemeExpl" msprop:Generator_ColumnVarNameInTable="columnSystemeExpl" msprop:Generator_ColumnPropNameInRow="SystemeExpl" msprop:Generator_ColumnPropNameInTable="SystemeExplColumn" msprop:Generator_UserColumnName="SystemeExpl" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="CoeurProcesseur" msprop:Generator_ColumnVarNameInTable="columnCoeurProcesseur" msprop:Generator_ColumnPropNameInRow="CoeurProcesseur" msprop:Generator_ColumnPropNameInTable="CoeurProcesseurColumn" msprop:Generator_UserColumnName="CoeurProcesseur" type="xs:int" minOccurs="0" />
-              <xs:element name="TypeHDD" msprop:Generator_ColumnVarNameInTable="columnTypeHDD" msprop:Generator_ColumnPropNameInRow="TypeHDD" msprop:Generator_ColumnPropNameInTable="TypeHDDColumn" msprop:Generator_UserColumnName="TypeHDD" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="NbrHDD" msprop:Generator_ColumnVarNameInTable="columnNbrHDD" msprop:Generator_ColumnPropNameInRow="NbrHDD" msprop:Generator_ColumnPropNameInTable="NbrHDDColumn" msprop:Generator_UserColumnName="NbrHDD" type="xs:int" minOccurs="0" />
-              <xs:element name="CapaciteHDD" msprop:Generator_ColumnVarNameInTable="columnCapaciteHDD" msprop:Generator_ColumnPropNameInRow="CapaciteHDD" msprop:Generator_ColumnPropNameInTable="CapaciteHDDColumn" msprop:Generator_UserColumnName="CapaciteHDD" type="xs:int" minOccurs="0" />
-              <xs:element name="UBat" msprop:Generator_ColumnVarNameInTable="columnUBat" msprop:Generator_ColumnPropNameInRow="UBat" msprop:Generator_ColumnPropNameInTable="UBatColumn" msprop:Generator_UserColumnName="UBat" type="xs:double" minOccurs="0" />
-              <xs:element name="UAdapt" msprop:Generator_ColumnVarNameInTable="columnUAdapt" msprop:Generator_ColumnPropNameInRow="UAdapt" msprop:Generator_ColumnPropNameInTable="UAdaptColumn" msprop:Generator_UserColumnName="UAdapt" type="xs:double" minOccurs="0" />
-              <xs:element name="TypeImprimante" msprop:Generator_ColumnVarNameInTable="columnTypeImprimante" msprop:Generator_ColumnPropNameInRow="TypeImprimante" msprop:Generator_ColumnPropNameInTable="TypeImprimanteColumn" msprop:Generator_UserColumnName="TypeImprimante" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
-              <xs:element name="TypeAmplificateur" msprop:Generator_ColumnVarNameInTable="columnTypeAmplificateur" msprop:Generator_ColumnPropNameInRow="TypeAmplificateur" msprop:Generator_ColumnPropNameInTable="TypeAmplificateurColumn" msprop:Generator_UserColumnName="TypeAmplificateur" minOccurs="0">
-                <xs:simpleType>
-                  <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
-                  </xs:restriction>
-                </xs:simpleType>
-              </xs:element>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

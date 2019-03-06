@@ -960,11 +960,8 @@ namespace smartManage.Desktop
                     e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
-            catch (NullReferenceException ex)
-            {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
-            }
+            catch (NullReferenceException) { }
+
             catch (InvalidOperationException ex)
             {
                 Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
@@ -990,11 +987,8 @@ namespace smartManage.Desktop
                     e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
-            catch (NullReferenceException ex)
-            {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
-            }
+            catch (NullReferenceException) { }
+
             catch (InvalidOperationException ex)
             {
                 Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
@@ -1020,11 +1014,8 @@ namespace smartManage.Desktop
                     e.Value = (clsTools.Instance.GetImageFromByte((Byte[])e.Value));
                 }
             }
-            catch (NullReferenceException ex)
-            {
-                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
-                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
-            }
+            catch (NullReferenceException) { }
+
             catch (InvalidOperationException ex)
             {
                 Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du binding de la photo : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;

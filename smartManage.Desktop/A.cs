@@ -118,20 +118,12 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstOrdinateur rpt1 = null;
-                            Reports.LstOrdinateur rpt2 = null;
-                            Reports.LstOrdinateur rpt3 = null;
-                            Reports.LstOrdinateur rpt4 = null;
-                            Reports.LstOrdinateur rpt5 = null;
-                            Reports.LstOrdinateur rpt6 = null;
-                            Reports.LstOrdinateur rpt7 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Ordinateur par identifiant equipement
-                                rpt1 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -234,36 +226,33 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                //rpvReport.ReportSource = rpt1;
                                 rpvReport.Refresh();
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Ordinateur par etat de l'equipement
-                                
-                                rpt2 = new Reports.LstOrdinateur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
+
+                                cmd.CommandText = @"select materiel.id,materiel.code_str as 'Code',categorie_materiel.designation as 'CatMat',compte.numero as 'Numero',CONVERT(varchar(10),date_acquisition,3) as 'DateAcq',garantie.valeur as 'Garantie',marque.designation as 'Marque',
+                                modele.designation as 'Modele',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
+                                materiel.mac_adresse1 as 'MacWifi', materiel.mac_adresse2 as 'MacLAN',type_ordinateur.designation as 'TypeOrdi',type_clavier.designation as 'Clavier',OS.designation 'SystemeExpl',ram.id as 'Memoire',processeur.valeur as 'Processeur',
+                                nombre_coeur_processeur.valeur as 'CoeurProcesseur',type_hdd.designation as 'TypeHDD',nombre_hdd.valeur as 'NbrHDD',capacite_hdd.valeur as 'CapaciteHDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB20',usb3.valeur as 'USB30',hdmi.valeur as 'HDMI',
+                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'UBat',tension_adaptateur.valeur as 'UAdapt',puissance_adaptateur.valeur as 'PAdapt',materiel.numero_cle as 'Numerocle', intensite_adaptateur.valeur as 'IAdapt', 
                                 materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
 
-                                type_switch.designation as 'Type Switch',
+                                type_switch.designation as 'TypeSwitch',
 
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
+                                puissance.valeur as 'PImp',intensite.valeur as 'IImp',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'TypeImprimante',
 
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
+                                tension_alimentation.valeur as 'UAlim',usb.valeur as 'NbrUSB',memoire.valeur as 'NbrMemoire',sorties_audio.valeur as 'NbrSortiesAud',microphone.valeur as 'NbrMicro',gain.valeur as 'Gain',type_amplificateur.designation as 'TypeAmplificateur',
 
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
+                                gbe.valeur as 'NbrGbe',fe.valeur as 'NbrFe',fo.valeur as 'NbrFo',serial.valeur as 'NbrSerial',default_pwd.designation as 'DefaultPwd',default_ip.designation as 'DefaultIP',console.valeur as 'NbrConsole',auxiliaire.valeur as 'NbrAux',materiel.capable_usb as 'SupportUSB', type_routeur_AP.designation as 'TyperouteurAP', version_ios.designation as 'VersionIOS',
 
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
+                                portee.valeur as 'Portee',type_AP.designation as 'TypeAP',
 
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
+                                frequence.designation as 'Frequence',antenne.valeur as 'NbrAnt',
 
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
+                                netette.designation as 'Netete',materiel.compatible_wifi as 'SupportWifi'
 
                                  from materiel 
                                 left outer join garantie on garantie.id=materiel.id_garantie
@@ -342,26 +331,12 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "DataSet1");
-                                           
-                                rpvReport.LocalReport.DataSources.Clear();
-                                //ReportDataSource datasource = new ReportDataSource("DataSet1", dataset.Tables["DataSet1"]);
-                                rpvReport.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", dataset.Tables["DataSet1"]));
-                                rpvReport.LocalReport.ReportPath = @"D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\Reports\Report1.rdlc";
-                                rpvReport.LocalReport.EnableExternalImages = true;
-                                rpvReport.RefreshReport();
-                              
-                                //rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                //rpvReport.ReportSource = rpt2;
-                                //rpvReport.Refresh();
+                                dataset = LoadReportWithSubReport(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc");
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Ordinateur par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -464,7 +439,6 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
                                 //rpvReport.ReportSource = rpt3;
                                 rpvReport.Refresh();
                                 #endregion
@@ -472,7 +446,6 @@ namespace smartManage.Desktop
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region Ordinateur par MAC Wifi de l'equipement
-                                rpt4 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -575,7 +548,6 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
                                 //rpvReport.ReportSource = rpt4;
                                 rpvReport.Refresh();
                                 #endregion
@@ -583,7 +555,6 @@ namespace smartManage.Desktop
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Ordinateur par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -688,7 +659,6 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
                                 //rpvReport.ReportSource = rpt5;
                                 rpvReport.Refresh();
                                 #endregion
@@ -696,7 +666,6 @@ namespace smartManage.Desktop
                             else if (cboIndex == 1 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region par MAC LAN de l'equipement
-                                rpt6 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -799,7 +768,6 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt6.SetDataSource(dataset.Tables["lstTable"]);
                                 //rpvReport.ReportSource = rpt6;
                                 rpvReport.Refresh();
                                 #endregion
@@ -807,7 +775,6 @@ namespace smartManage.Desktop
                             else if (cboIndex == 2 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region par MAC Wifi et LAN de l'equipement 
-                                rpt7 = new Reports.LstOrdinateur();
                                 cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
                                 modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
                                 materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
@@ -911,26 +878,10 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                rpt7.SetDataSource(dataset.Tables["lstTable"]);
                                 //rpvReport.ReportSource = rpt7;
                                 rpvReport.Refresh();
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
-                            if (rpt6 != null)
-                                rpt6.Dispose();
-                            if (rpt7 != null)
-                                rpt7.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -5043,6 +4994,65 @@ namespace smartManage.Desktop
                     break;
             }
         }
+
+        private DataSet LoadReportWithSubReport(SqlDataAdapter adapter, string dataSetName, string embeddedRessource)
+        {
+            DataSet dataset = new DataSet();
+            dataset.Locale = CultureInfo.InvariantCulture;
+            adapter.Fill(dataset, dataSetName);
+
+            rpvReport.LocalReport.DataSources.Clear();
+            rpvReport.LocalReport.SubreportProcessing += new SubreportProcessingEventHandler(LocalReport_SubreportProcessing);
+            rpvReport.LocalReport.DataSources.Add(new ReportDataSource(dataSetName, dataset.Tables[0]));
+            rpvReport.LocalReport.ReportEmbeddedResource = embeddedRessource;
+            rpvReport.RefreshReport();
+
+            return dataset;
+        }
+
+        private void LocalReport_SubreportProcessing(object sender, SubreportProcessingEventArgs e)
+        {
+            //Initialisation de la chaine de connexion
+            conn = new SqlConnection(Model.Properties.Settings.Default.strChaineConnexion);
+
+            if (conn.State == ConnectionState.Closed)
+                conn.Open();
+
+            using (IDbCommand cmd = conn.CreateCommand())
+            {
+                SqlDataAdapter adapter = null;
+                DataSet dataset = null;
+
+                try
+                {
+                    cmd.CommandText = @"select grade.designation + ' ' + ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') as 'Signataire', signataire.signature_specimen as 'Signature' 
+                    from signataire 
+                    inner join AC on AC.code_str=signataire.code_AC
+                    inner join personne on personne.id=signataire.id_personne 
+                    inner join grade on grade.id=personne.id_grade
+                    where signataire.code_AC=(select code_str from current_AC)";
+
+                    SqlCommand sqlCmd = cmd as SqlCommand;
+                    adapter = new SqlDataAdapter(sqlCmd);
+                    dataset = new DataSet();
+                    dataset.Locale = CultureInfo.InvariantCulture;
+                    string dataSourceName = e.DataSourceNames[0];
+                    adapter.Fill(dataset, dataSourceName);
+                    e.DataSources.Add(new ReportDataSource(dataSourceName, dataset.Tables[0]));
+                }
+                finally
+                {
+                    if (dataset != null)
+                        dataset.Dispose();
+                    if (adapter != null)
+                        adapter.Dispose();
+                    if (conn != null)
+                        conn.Close();
+                }
+            }
+
+        }
+
 
         //public void setData(DataTable dtsrc, string reportpath1)
         //{

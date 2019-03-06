@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetSignataire" targetNamespace="http://tempuri.org/DataSetSignataire.xsd" xmlns:mstns="http://tempuri.org/DataSetSignataire.xsd" xmlns="http://tempuri.org/DataSetSignataire.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="gestion_labo_DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="gestion_labo_DBConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.smartManage.Desktop.Properties.Settings.GlobalReference.Default.gestion_labo_DBConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="signataireTableAdapter" GeneratorDataComponentClassName="signataireTableAdapter" Name="signataire" UserDataComponentName="signataireTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="gestion_labo_DBConnectionString (Settings)" DbObjectName="gestion_labo_DB.dbo.signataire" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>select grade.designation + ' ' + ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') as 'Signataire', signataire.signature_specimen as 'Signature' 
+from signataire 
+inner join AC on AC.code_str=signataire.code_AC
+inner join personne on personne.id=signataire.id_personne 
+inner join grade on grade.id=personne.id_grade
+where signataire.code_AC=(select code_str from current_AC)</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="Signataire" DataSetColumn="Signataire" />
+              <Mapping SourceColumn="Signature" DataSetColumn="Signature" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetSignataire" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetSignataire" msprop:Generator_UserDSName="DataSetSignataire">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="signataire" msprop:Generator_TableClassName="signataireDataTable" msprop:Generator_TableVarName="tablesignataire" msprop:Generator_TablePropName="signataire" msprop:Generator_RowDeletingName="signataireRowDeleting" msprop:Generator_RowChangingName="signataireRowChanging" msprop:Generator_RowEvHandlerName="signataireRowChangeEventHandler" msprop:Generator_RowDeletedName="signataireRowDeleted" msprop:Generator_UserTableName="signataire" msprop:Generator_RowChangedName="signataireRowChanged" msprop:Generator_RowEvArgName="signataireRowChangeEvent" msprop:Generator_RowClassName="signataireRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Signataire" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnSignataire" msprop:Generator_ColumnPropNameInRow="Signataire" msprop:Generator_ColumnPropNameInTable="SignataireColumn" msprop:Generator_UserColumnName="Signataire" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="163" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Signature" msprop:Generator_ColumnVarNameInTable="columnSignature" msprop:Generator_ColumnPropNameInRow="Signature" msprop:Generator_ColumnPropNameInTable="SignatureColumn" msprop:Generator_UserColumnName="Signature" type="xs:base64Binary" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

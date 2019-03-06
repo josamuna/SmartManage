@@ -543,6 +543,8 @@ namespace smartManage.Desktop
 
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Attente d'une action de l'utilisateur");
             Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
+            //Affecte Activate BindingNavigator
+            Principal.ActivateMainBindingSource(Principal);
         }
 
         public void New()
