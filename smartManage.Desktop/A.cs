@@ -768,7 +768,6 @@ namespace smartManage.Desktop
                                 dataset.Locale = CultureInfo.InvariantCulture;
                                 adapter.Fill(dataset, "lstTable");
 
-                                //rpvReport.ReportSource = rpt6;
                                 rpvReport.Refresh();
                                 #endregion
                             }
