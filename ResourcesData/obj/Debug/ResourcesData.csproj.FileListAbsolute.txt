@@ -1,0 +1,12 @@
+D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\ResourcesData.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\ResourcesData.pdb
+D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\en-US\ResourcesData.resources.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\bin\Debug\fr-FR\ResourcesData.resources.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.Resource.resources
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.Resource.en-US.resources
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.Resource.fr-FR.resources
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.csproj.GenerateResource.Cache
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\en-US\ResourcesData.resources.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\fr-FR\ResourcesData.resources.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.dll
+D:\DOC\GitHub\SmartManageClone\ResourcesData\obj\Debug\ResourcesData.pdb
