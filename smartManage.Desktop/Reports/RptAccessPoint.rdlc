@@ -6,7 +6,7 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.6958cm</Width>
+              <Width>0.75252cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.08cm</Width>
@@ -24,28 +24,25 @@
               <Width>0.74cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1cm</Width>
+              <Width>1.12336cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.4cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.9cm</Width>
+              <Width>1.85cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.9cm</Width>
+              <Width>1.55cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.89cm</Width>
+              <Width>1.55489cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.52375cm</Width>
+              <Width>1.16482cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.0937cm</Width>
-            </TablixColumn>
-            <TablixColumn>
-              <Width>1.3cm</Width>
+              <Width>0.98cm</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.79375cm</Width>
@@ -60,7 +57,7 @@
               <Width>1.35cm</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>2.64708cm</Width>
+              <Width>3.57867cm</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -492,7 +489,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Mac LAN</Value>
+                              <Value>Default Pwd.</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -540,7 +537,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Clavier</Value>
+                              <Value>Default IP</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -588,7 +585,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Système d'Exploitation</Value>
+                              <Value>Portée (Mètre)</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -636,7 +633,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Mémoire (Gb)</Value>
+                              <Value>Tension  Alim. (V)</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -647,54 +644,6 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox29</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                          <Style>Solid</Style>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox31">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Processeur (Ghz)</Value>
-                              <Style>
-                                <FontSize>6pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox31</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -1537,45 +1486,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox134">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>6pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox134</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <TopBorder>
-                          <Style>Solid</Style>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Style>Solid</Style>
-                        </BottomBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="Textbox135">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -2138,14 +2048,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="MacLAN">
+                    <Textbox Name="DefaultPwd">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!MacLAN.Value</Value>
+                              <Value>=Fields!DefaultPwd.Value</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                               </Style>
@@ -2154,7 +2064,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>MacLAN</rd:DefaultName>
+                      <rd:DefaultName>DefaultPwd</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -2181,14 +2091,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Clavier">
+                    <Textbox Name="DefaultIP">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Clavier.Value</Value>
+                              <Value>=Fields!DefaultIP.Value</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                               </Style>
@@ -2197,7 +2107,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Clavier</rd:DefaultName>
+                      <rd:DefaultName>DefaultIP</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -2224,57 +2134,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="SystemeExpl">
+                    <Textbox Name="Portee">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!SystemeExpl.Value</Value>
-                              <Style>
-                                <FontSize>6pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style />
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>SystemeExpl</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>Solid</Style>
-                        </Border>
-                        <TopBorder>
-                          <Color>Black</Color>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Color>Black</Color>
-                        </BottomBorder>
-                        <LeftBorder>
-                          <Color>Black</Color>
-                        </LeftBorder>
-                        <RightBorder>
-                          <Color>Black</Color>
-                        </RightBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Memoire">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>=Fields!Memoire.Value</Value>
+                              <Value>=Fields!Portee.Value</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                               </Style>
@@ -2285,11 +2152,23 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Memoire</rd:DefaultName>
+                      <rd:DefaultName>Portee</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
                         </Border>
+                        <TopBorder>
+                          <Color>Black</Color>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Color>Black</Color>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Color>Black</Color>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                        </RightBorder>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -2300,14 +2179,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Processeur">
+                    <Textbox Name="UAlim">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Processeur.Value</Value>
+                              <Value>=Fields!UAlim.Value</Value>
                               <Style>
                                 <FontSize>6pt</FontSize>
                               </Style>
@@ -2318,7 +2197,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Processeur</rd:DefaultName>
+                      <rd:DefaultName>UAlim</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>Solid</Style>
@@ -3018,45 +2897,6 @@
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox156</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <TopBorder>
-                          <Style>Solid</Style>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Style>Solid</Style>
-                        </BottomBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox157">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox157</rd:DefaultName>
                       <Style>
                         <Border>
                           <Style>None</Style>
@@ -3839,45 +3679,6 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox60">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Left</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox60</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Style>None</Style>
-                        </Border>
-                        <TopBorder>
-                          <Style>Solid</Style>
-                        </TopBorder>
-                        <BottomBorder>
-                          <Style>Solid</Style>
-                        </BottomBorder>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
                     <Textbox Name="Textbox61">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
@@ -4090,7 +3891,6 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember />
           </TablixMembers>
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
@@ -4132,7 +3932,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.3cm</Size>
+                    <Size>1.65893cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox92">
                         <CanGrow>true</CanGrow>
@@ -4141,7 +3941,7 @@
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>Type Ordinateur</Value>
+                                <Value>Type Access Point</Value>
                                 <Style>
                                   <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
@@ -4240,16 +4040,16 @@
                     </SortExpression>
                   </SortExpressions>
                   <TablixHeader>
-                    <Size>1.3cm</Size>
+                    <Size>1.65893cm</Size>
                     <CellContents>
-                      <Textbox Name="TypeOrdi1">
+                      <Textbox Name="TypeAP">
                         <CanGrow>true</CanGrow>
                         <KeepTogether>true</KeepTogether>
                         <Paragraphs>
                           <Paragraph>
                             <TextRuns>
                               <TextRun>
-                                <Value>=Fields!TypeOrdi.Value</Value>
+                                <Value>=Fields!TypeAP.Value</Value>
                                 <Style>
                                   <FontSize>6pt</FontSize>
                                   <FontWeight>Bold</FontWeight>
@@ -4259,7 +4059,7 @@
                             <Style />
                           </Paragraph>
                         </Paragraphs>
-                        <rd:DefaultName>TypeOrdi1</rd:DefaultName>
+                        <rd:DefaultName>TypeAP</rd:DefaultName>
                         <Style>
                           <Border>
                             <Style>Solid</Style>
@@ -4295,7 +4095,7 @@
                 </TablixMember>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.3cm</Size>
+                    <Size>1.65893cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox141">
                         <CanGrow>true</CanGrow>
@@ -4382,7 +4182,7 @@
               <TablixMembers>
                 <TablixMember>
                   <TablixHeader>
-                    <Size>1.3cm</Size>
+                    <Size>1.65893cm</Size>
                     <CellContents>
                       <Textbox Name="Textbox42">
                         <CanGrow>true</CanGrow>
@@ -4443,7 +4243,7 @@
         <Top>5.52773cm</Top>
         <Left>0.00001cm</Left>
         <Height>4.00542cm</Height>
-        <Width>27.58409cm</Width>
+        <Width>27.54695cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -4704,9 +4504,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox70</rd:DefaultName>
         <Top>4.60837cm</Top>
-        <Left>22.04405cm</Left>
+        <Left>22.18595cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.63133cm</Width>
+        <Width>4.48943cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -4721,7 +4521,7 @@
       <Subreport Name="Subreport3">
         <ReportName>smartManage.Desktop.Reports.RptSignataireSansSignature.rdlc</ReportName>
         <OmitBorderOnPageBreak>true</OmitBorderOnPageBreak>
-        <Top>10.02703cm</Top>
+        <Top>9.70953cm</Top>
         <Left>9.55665cm</Left>
         <Height>2.70521cm</Height>
         <Width>8.4075cm</Width>
@@ -4733,13 +4533,13 @@
         </Style>
       </Subreport>
     </ReportItems>
-    <Height>5.08463in</Height>
+    <Height>4.99088in</Height>
     <Style />
   </Body>
-  <Width>10.85988in</Width>
+  <Width>10.84526in</Width>
   <Page>
     <PageFooter>
-      <Height>0.74993cm</Height>
+      <Height>0.67056cm</Height>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
         <Textbox Name="Textbox71">
@@ -4760,7 +4560,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox71</rd:DefaultName>
           <Top>0.07056cm</Top>
-          <Left>12.25095cm</Left>
+          <Left>20.82345cm</Left>
           <Height>0.6cm</Height>
           <Width>2.5cm</Width>
           <Style>
@@ -5080,8 +4880,8 @@
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>DataSetAccessPoint</rd:DataSetName>
-        <rd:SchemaPath>D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\Reports\DataSetAccessPoint.xsd</rd:SchemaPath>
+        <rd:DataSetName>DataSetMateriel</rd:DataSetName>
+        <rd:SchemaPath>D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\Reports\DataSetMateriel.xsd</rd:SchemaPath>
         <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

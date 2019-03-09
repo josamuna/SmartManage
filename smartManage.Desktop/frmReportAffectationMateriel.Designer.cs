@@ -54,7 +54,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.cboAC = new System.Windows.Forms.ComboBox();
             this.cmdView = new System.Windows.Forms.Button();
-            this.crvReport = new CrystalDecisions.Windows.Forms.CrystalReportViewer();
+            this.rpvReport = new Microsoft.Reporting.WinForms.ReportViewer();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -298,23 +298,20 @@
             this.cmdView.UseVisualStyleBackColor = false;
             this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
             // 
-            // crvReport
+            // rpvReport
             // 
-            this.crvReport.ActiveViewIndex = -1;
-            this.crvReport.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.crvReport.Cursor = System.Windows.Forms.Cursors.Default;
-            this.crvReport.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.crvReport.Location = new System.Drawing.Point(0, 67);
-            this.crvReport.Name = "crvReport";
-            this.crvReport.Size = new System.Drawing.Size(1289, 488);
-            this.crvReport.TabIndex = 1;
+            this.rpvReport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rpvReport.Location = new System.Drawing.Point(0, 67);
+            this.rpvReport.Name = "rpvReport";
+            this.rpvReport.Size = new System.Drawing.Size(1289, 488);
+            this.rpvReport.TabIndex = 2;
             // 
             // frmReportAffectationMateriel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1289, 555);
-            this.Controls.Add(this.crvReport);
+            this.Controls.Add(this.rpvReport);
             this.Controls.Add(this.panel1);
             this.Name = "frmReportAffectationMateriel";
             this.Text = "Rapports pour affectation des matériels  et/ou des personnes";
@@ -352,6 +349,6 @@
         private System.Windows.Forms.DateTimePicker txtDateFinAffectation;
         private System.Windows.Forms.DateTimePicker txtDateDebutAffectation;
         private System.Windows.Forms.CheckBox chkArchiver;
-        private CrystalDecisions.Windows.Forms.CrystalReportViewer crvReport;
+        private Microsoft.Reporting.WinForms.ReportViewer rpvReport;
     }
 }

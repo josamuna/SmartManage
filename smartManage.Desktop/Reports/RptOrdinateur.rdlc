@@ -4704,9 +4704,9 @@
         </Paragraphs>
         <rd:DefaultName>Textbox70</rd:DefaultName>
         <Top>4.60837cm</Top>
-        <Left>22.04405cm</Left>
+        <Left>22.18595cm</Left>
         <Height>0.6cm</Height>
-        <Width>4.63133cm</Width>
+        <Width>4.48943cm</Width>
         <ZIndex>9</ZIndex>
         <Style>
           <Border>
@@ -4721,7 +4721,7 @@
       <Subreport Name="Subreport3">
         <ReportName>smartManage.Desktop.Reports.RptSignataireSansSignature.rdlc</ReportName>
         <OmitBorderOnPageBreak>true</OmitBorderOnPageBreak>
-        <Top>10.02703cm</Top>
+        <Top>9.70953cm</Top>
         <Left>9.55665cm</Left>
         <Height>2.70521cm</Height>
         <Width>8.4075cm</Width>
@@ -4733,7 +4733,7 @@
         </Style>
       </Subreport>
     </ReportItems>
-    <Height>5.08463in</Height>
+    <Height>4.94922in</Height>
     <Style />
   </Body>
   <Width>10.85988in</Width>
@@ -4759,8 +4759,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox71</rd:DefaultName>
-          <Top>0.07056cm</Top>
-          <Left>12.25095cm</Left>
+          <Top>0.07496cm</Top>
+          <Left>21.11455cm</Left>
           <Height>0.6cm</Height>
           <Width>2.5cm</Width>
           <Style>
@@ -5080,8 +5080,8 @@
         </Field>
       </Fields>
       <rd:DataSetInfo>
-        <rd:DataSetName>DataSetAccessPoint</rd:DataSetName>
-        <rd:SchemaPath>D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\Reports\DataSetAccessPoint.xsd</rd:SchemaPath>
+        <rd:DataSetName>DataSetMateriel</rd:DataSetName>
+        <rd:SchemaPath>D:\DOC\GitHub\SmartManageClone\smartManage.Desktop\Reports\DataSetMateriel.xsd</rd:SchemaPath>
         <rd:TableName>DataTable1</rd:TableName>
         <rd:TableAdapterFillMethod>Fill</rd:TableAdapterFillMethod>
         <rd:TableAdapterGetDataMethod>GetData</rd:TableAdapterGetDataMethod>

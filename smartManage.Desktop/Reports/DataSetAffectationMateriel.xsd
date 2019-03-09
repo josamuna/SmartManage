@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetAffectationMateriel" targetNamespace="http://tempuri.org/DataSetAffectationMateriel.xsd" xmlns:mstns="http://tempuri.org/DataSetAffectationMateriel.xsd" xmlns="http://tempuri.org/DataSetAffectationMateriel.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="gestion_labo_DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="gestion_labo_DBConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.smartManage.Desktop.Properties.Settings.GlobalReference.Default.gestion_labo_DBConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="DataTable1TableAdapter" GeneratorDataComponentClassName="DataTable1TableAdapter" Name="DataTable1" UserDataComponentName="DataTable1TableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="gestion_labo_DBConnectionString (Settings)" DbObjectType="Unknown" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        affectation_materiel.id AS 'NumAff', affectation_materiel.date_affectation AS 'Date', salle.designation AS 'Salle', AC.code_str AS 'AnneeAcademique', lieu_affectation.designation AS 'LieuAffectation', 
+                         type_lieu_affectation.designation AS 'TypeLieuAffectation', ISNULL(personne.nom, '') + ' ' + ISNULL(personne.postnom, '') + ' ' + ISNULL(personne.prenom, '') AS 'Nom', fonction.designation AS 'Fonction', 
+                         categorie_materiel.designation AS 'CatMat', materiel.code_str AS 'CodeMat', materiel.label AS 'LabelMat', materiel.qrcode AS 'QrCode'
+FROM            affectation_materiel INNER JOIN
+                         materiel ON materiel.id = affectation_materiel.id_materiel INNER JOIN
+                         categorie_materiel ON categorie_materiel.id = materiel.id_categorie_materiel INNER JOIN
+                         AC ON AC.code_str = affectation_materiel.code_AC INNER JOIN
+                         salle ON salle.id = affectation_materiel.id_salle INNER JOIN
+                         lieu_affectation ON lieu_affectation.id = affectation_materiel.id_lieu_affectation INNER JOIN
+                         type_lieu_affectation ON type_lieu_affectation.id = lieu_affectation.id_type_lieu_affectation LEFT OUTER JOIN
+                         personne ON personne.id = lieu_affectation.id_personne LEFT OUTER JOIN
+                         fonction ON fonction.id = lieu_affectation.id_fonction</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="NumAff" DataSetColumn="NumAff" />
+              <Mapping SourceColumn="Date" DataSetColumn="Date" />
+              <Mapping SourceColumn="Salle" DataSetColumn="Salle" />
+              <Mapping SourceColumn="AnneeAcademique" DataSetColumn="AnneeAcademique" />
+              <Mapping SourceColumn="LieuAffectation" DataSetColumn="LieuAffectation" />
+              <Mapping SourceColumn="TypeLieuAffectation" DataSetColumn="TypeLieuAffectation" />
+              <Mapping SourceColumn="Nom" DataSetColumn="Nom" />
+              <Mapping SourceColumn="Fonction" DataSetColumn="Fonction" />
+              <Mapping SourceColumn="CodeMat" DataSetColumn="CodeMat" />
+              <Mapping SourceColumn="LabelMat" DataSetColumn="LabelMat" />
+              <Mapping SourceColumn="QrCode" DataSetColumn="QrCode" />
+              <Mapping SourceColumn="CatMat" DataSetColumn="CatMat" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetAffectationMateriel" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetAffectationMateriel" msprop:Generator_UserDSName="DataSetAffectationMateriel">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_RowClassName="DataTable1Row" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="NumAff" msprop:Generator_ColumnVarNameInTable="columnNumAff" msprop:Generator_ColumnPropNameInRow="NumAff" msprop:Generator_ColumnPropNameInTable="NumAffColumn" msprop:Generator_UserColumnName="NumAff" type="xs:int" />
+              <xs:element name="Date" msprop:Generator_ColumnVarNameInTable="columnDate" msprop:Generator_ColumnPropNameInRow="Date" msprop:Generator_ColumnPropNameInTable="DateColumn" msprop:Generator_UserColumnName="Date" type="xs:dateTime" />
+              <xs:element name="Salle" msprop:Generator_ColumnVarNameInTable="columnSalle" msprop:Generator_ColumnPropNameInRow="Salle" msprop:Generator_ColumnPropNameInTable="SalleColumn" msprop:Generator_UserColumnName="Salle">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="AnneeAcademique" msprop:Generator_ColumnVarNameInTable="columnAnneeAcademique" msprop:Generator_ColumnPropNameInRow="AnneeAcademique" msprop:Generator_ColumnPropNameInTable="AnneeAcademiqueColumn" msprop:Generator_UserColumnName="AnneeAcademique">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LieuAffectation" msprop:Generator_ColumnVarNameInTable="columnLieuAffectation" msprop:Generator_ColumnPropNameInRow="LieuAffectation" msprop:Generator_ColumnPropNameInTable="LieuAffectationColumn" msprop:Generator_UserColumnName="LieuAffectation">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TypeLieuAffectation" msprop:Generator_ColumnVarNameInTable="columnTypeLieuAffectation" msprop:Generator_ColumnPropNameInRow="TypeLieuAffectation" msprop:Generator_ColumnPropNameInTable="TypeLieuAffectationColumn" msprop:Generator_UserColumnName="TypeLieuAffectation">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Nom" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnNom" msprop:Generator_ColumnPropNameInRow="Nom" msprop:Generator_ColumnPropNameInTable="NomColumn" msprop:Generator_UserColumnName="Nom" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="112" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Fonction" msprop:Generator_ColumnVarNameInTable="columnFonction" msprop:Generator_ColumnPropNameInRow="Fonction" msprop:Generator_ColumnPropNameInTable="FonctionColumn" msprop:Generator_UserColumnName="Fonction" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="CodeMat" msprop:Generator_ColumnVarNameInTable="columnCodeMat" msprop:Generator_ColumnPropNameInRow="CodeMat" msprop:Generator_ColumnPropNameInTable="CodeMatColumn" msprop:Generator_UserColumnName="CodeMat">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="LabelMat" msprop:Generator_ColumnVarNameInTable="columnLabelMat" msprop:Generator_ColumnPropNameInRow="LabelMat" msprop:Generator_ColumnPropNameInTable="LabelMatColumn" msprop:Generator_UserColumnName="LabelMat" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="QrCode" msprop:Generator_ColumnVarNameInTable="columnQrCode" msprop:Generator_ColumnPropNameInRow="QrCode" msprop:Generator_ColumnPropNameInTable="QrCodeColumn" msprop:Generator_UserColumnName="QrCode" type="xs:base64Binary" />
+              <xs:element name="CatMat" msprop:Generator_ColumnVarNameInTable="columnCatMat" msprop:Generator_ColumnPropNameInRow="CatMat" msprop:Generator_ColumnPropNameInTable="CatMatColumn" msprop:Generator_UserColumnName="CatMat">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="50" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:DataTable1" />
+      <xs:field xpath="mstns:NumAff" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

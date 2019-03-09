@@ -14,15 +14,15 @@ namespace smartManage.RadiusStudentsModel
     {
         //***Les variables globales***
         private static string _ConnectionString, _host, _db, _user, _pwd;
-        private static clsMetier2 Fact;
+        private static clsMetier2 fact;
         private MySqlConnection conn;
         private static GsmCommMain comm;
         #region prerecquis
         public static clsMetier2 GetInstance()
         {
-            if (Fact == null)
-                Fact = new clsMetier2();
-            return Fact;
+            if (fact == null)
+                fact = new clsMetier2();
+            return fact;
         }
         private object getParameter(IDbCommand cmd, string name, DbType type, int size, object value)
         {

@@ -1,3 +1,4 @@
+--Materiels
 select materiel.id,materiel.code_str as 'Code',categorie_materiel.designation as 'CatMat',compte.numero as 'Numero',CONVERT(varchar(10),date_acquisition,3) as 'DateAcq',garantie.valeur as 'Garantie',marque.designation as 'Marque',
 modele.designation as 'Modele',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
 materiel.mac_adresse1 as 'MacWifi', materiel.mac_adresse2 as 'MacLAN',type_ordinateur.designation as 'TypeOrdi',type_clavier.designation as 'Clavier',OS.designation 'SystemeExpl',ram.id as 'Memoire',processeur.valeur as 'Processeur',
@@ -103,3 +104,16 @@ where categorie_materiel.designation='Ordinateur'
                                 
                                 
                                 --and etat_materiel.designation='Bon' and archiver=0
+								
+--Affectation materiels
+select affectation_materiel.id as 'NumAff',affectation_materiel.date_affectation as 'Date',salle.designation as 'Salle',AC.code_str as 'AnneeAcademique',lieu_affectation.designation as 'LieuAffectation',type_lieu_affectation.designation as 'TypeLieuAffectation',
+ISNULL(personne.nom,'') + ' ' + ISNULL(personne.postnom,'') + ' ' + ISNULL(personne.prenom,'') as 'Nom',fonction.designation as 'Fonction',categorie_materiel.designation as 'CatMat',materiel.code_str as 'CodeMat',materiel.label as 'LabelMat',materiel.qrcode as 'QrCode' 
+from affectation_materiel
+inner join materiel on materiel.id=affectation_materiel.id_materiel
+inner join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
+inner join AC on AC.code_str=affectation_materiel.code_AC
+inner join salle on salle.id=affectation_materiel.id_salle
+inner join lieu_affectation on lieu_affectation.id=affectation_materiel.id_lieu_affectation
+inner join type_lieu_affectation on type_lieu_affectation.id=lieu_affectation.id_type_lieu_affectation
+left outer join personne on personne.id=lieu_affectation.id_personne
+left outer join fonction on fonction.id=lieu_affectation.id_fonction

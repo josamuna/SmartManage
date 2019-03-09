@@ -3644,7 +3644,7 @@ namespace smartManage.Desktop.Reports.DataSetOrdinateurTableAdapters {
                 "e_switch.id=materiel.id_type_switch\r\n\r\n--Emetteur\r\nleft outer join frequence on " +
                 "frequence.id=materiel.id_frequence\r\nleft outer join antenne on antenne.id=materi" +
                 "el.id_antenne\r\n\r\n--Retroprojecteur\r\nleft outer join netette on netette.id=materi" +
-                "el.id_netette\r\nwhere categorie_materiel.designation=\'Ordinateur\'";
+                "el.id_netette";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         

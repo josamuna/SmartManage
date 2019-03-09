@@ -123,97 +123,7 @@ namespace smartManage.Desktop
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Ordinateur par identifiant equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Ordinateur' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel(@"where  categorie_materiel.designation='Ordinateur' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -221,107 +131,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Ordinateur par etat de l'equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -329,107 +145,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Ordinateur par délais de garantie de l'equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -437,107 +159,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region Ordinateur par MAC Wifi de l'equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -545,107 +173,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@mac_adresse1", DbType.String, 20, cboMacWifi.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Ordinateur par date d'acquisition de l'equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -655,107 +189,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 1 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region par MAC LAN de l'equipement
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and materiel.mac_adresse2 LIKE @mac_adresse2 and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and materiel.mac_adresse2 LIKE @mac_adresse2 and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -763,107 +203,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@mac_adresse2", DbType.String, 20, cboMacLAN.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 2 && rd.Name.Equals(rdLstMAC.Name))
                             {
                                 #region par MAC Wifi et LAN de l'equipement 
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Ordinateur' and (materiel.mac_adresse1 LIKE @mac_adresse1 or materiel.mac_adresse2 LIKE @mac_adresse2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Ordinateur' and (materiel.mac_adresse1 LIKE @mac_adresse1 or materiel.mac_adresse2 LIKE @mac_adresse2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -872,11 +218,7 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@mac_adresse2", DbType.String, 20, cboMacLAN.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
 
@@ -905,109 +247,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstSwitch rpt1 = null;
-                            Reports.LstSwitch rpt2 = null;
-                            Reports.LstSwitch rpt3 = null;
-                            Reports.LstSwitch rpt4 = null;
-                            Reports.LstSwitch rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Switch par identifiant equipement
-                                rpt1 = new Reports.LstSwitch();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Switch' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Switch' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1015,110 +261,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Switch par etat de l'equipement
-                                rpt2 = new Reports.LstSwitch();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Switch' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Switch' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1126,110 +275,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Switch par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstSwitch();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Switch' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Switch' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1237,110 +289,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstMAC_Adresse.Name))
                             {
                                 #region Switch par MAC l'equipement
-                                rpt4 = new Reports.LstSwitch();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Switch' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Switch' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1348,110 +303,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@mac_adresse1", DbType.String, 20, cboMACAdresse.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Switch par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstSwitch();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Switch' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Switch' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1460,26 +318,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -1506,109 +347,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstImprimante rpt1 = null;
-                            Reports.LstImprimante rpt2 = null;
-                            Reports.LstImprimante rpt3 = null;
-                            Reports.LstImprimante rpt4 = null;
-                            Reports.LstImprimante rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Imprimante par identifiant equipement
-                                rpt1 = new Reports.LstImprimante();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Imprimante' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Imprimante' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1616,110 +361,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Imprimante par etat de l'equipement
-                                rpt2 = new Reports.LstImprimante();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Imprimante' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Imprimante' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1727,110 +375,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Imprimante par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstImprimante();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Imprimante' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Imprimante' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1838,110 +389,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstPPM.Name))
                             {
                                 #region Imprimante par PPM l'equipement
-                                rpt4 = new Reports.LstImprimante();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Imprimante' and page_par_minute.valeur=@page_par_minute and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Imprimante' and page_par_minute.valeur=@page_par_minute and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -1949,110 +403,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@page_par_minute", DbType.Int32, 4, Convert.ToInt32(cboPPM.SelectedValue, CultureInfo.InvariantCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Imprimante par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstImprimante();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                    from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Imprimante' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Imprimante' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2061,26 +418,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -2107,109 +447,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstEmetteur rpt1 = null;
-                            Reports.LstEmetteur rpt2 = null;
-                            Reports.LstEmetteur rpt3 = null;
-                            Reports.LstEmetteur rpt4 = null;
-                            Reports.LstEmetteur rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Emetteur par identifiant equipement
-                                rpt1 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Emetteur' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Emetteur' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2217,110 +461,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Emetteur par etat de l'equipement
-                                rpt2 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Emetteur' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Emetteur' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2328,110 +475,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Emetteur par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Emetteur' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Emetteur' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2439,110 +489,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstFrequence.Name))
                             {
                                 #region Emetteur par frequence de fonctionnement l'equipement
-                                rpt4 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                    from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Emetteur' and frequence.designation=@frequence and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Emetteur' and frequence.designation=@frequence and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2550,110 +503,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@frequence", DbType.String, 20, cboFrequence.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Emetteur par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Emetteur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Emetteur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2662,26 +518,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -2708,108 +547,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstAmplificateur rpt1 = null;
-                            Reports.LstAmplificateur rpt2 = null;
-                            Reports.LstAmplificateur rpt3 = null;
-                            Reports.LstAmplificateur rpt4 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Amplificateur par identifiant equipement
-                                rpt1 = new Reports.LstAmplificateur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Emetteur' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Emetteur' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2817,110 +561,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAmplificateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Amplificateur par etat de l'equipement
-                                rpt2 = new Reports.LstAmplificateur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Amplificateur' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Amplificateur' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -2928,110 +575,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAmplificateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Amplificateur par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstAmplificateur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Amplificateur' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Amplificateur' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3039,110 +589,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAmplificateur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Amplificateur par date d'acquisition de l'equipement
-                                rpt4 = new Reports.LstAmplificateur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Amplificateur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Amplificateur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3151,24 +604,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAmplificateur.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -3195,109 +633,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstRetroprojecteur rpt1 = null;
-                            Reports.LstRetroprojecteur rpt2 = null;
-                            Reports.LstRetroprojecteur rpt3 = null;
-                            Reports.LstRetroprojecteur rpt4 = null;
-                            Reports.LstRetroprojecteur rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Retroprojecteur par identifiant equipement
-                                rpt1 = new Reports.LstRetroprojecteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Retroprojecteur' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Retroprojecteur' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3305,110 +647,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Retroprojecteur par etat de l'equipement
-                                rpt2 = new Reports.LstRetroprojecteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Retroprojecteur' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Retroprojecteur' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3416,110 +661,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Retroprojecteur par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstRetroprojecteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Retroprojecteur' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Retroprojecteur' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3527,110 +675,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstNetete.Name))
                             {
                                 #region Retroprojecteur par netete de l'equipement
-                                rpt4 = new Reports.LstRetroprojecteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Retroprojecteur' and netette.designation=@netette and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Retroprojecteur' and netette.designation=@netette and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3638,110 +689,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@netette", DbType.String, 20, cboNetete.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Retroprojecteur par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstRetroprojecteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Retroprojecteur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Retroprojecteur' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3750,26 +704,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -3796,109 +733,13 @@ namespace smartManage.Desktop
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstRouteurAP rpt1 = null;
-                            Reports.LstRouteurAP rpt2 = null;
-                            Reports.LstRouteurAP rpt3 = null;
-                            Reports.LstRouteurAP rpt4 = null;
-                            Reports.LstRouteurAP rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Routeur_Access Point par identifiant equipement
-                                rpt1 = new Reports.LstRouteurAP();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Routeur_Access Point' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Routeur_Access Point' and materiel.code_str=@code_str and materiel.archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -3906,110 +747,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Routeur_Access Point par etat de l'equipement
-                                rpt2 = new Reports.LstRouteurAP();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Routeur_Access Point' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Routeur_Access Point' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4017,110 +761,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Routeur_Access Point par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstRouteurAP();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Routeur_Access Point' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Routeur_Access Point' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4128,110 +775,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstMAC_Adresse.Name))
                             {
                                 #region Routeur_Access Point par MAC l'equipement
-                                rpt4 = new Reports.LstRouteurAP();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Routeur_Access Point' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Routeur_Access Point' and materiel.mac_adresse1 LIKE @mac_adresse1 and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4239,110 +789,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@mac_adresse1", DbType.String, 20, cboMACAdresse.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Routeur_Access Point par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstRouteurAP();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Routeur_Access Point' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Routeur_Access Point' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4351,26 +804,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -4390,116 +826,20 @@ namespace smartManage.Desktop
                     break;
                 case 7:
                     //*****Choix pour Access Point
-                    #region Choix pour Emetteur
+                    #region Choix pour Access Point
                     using (IDbCommand cmd = conn.CreateCommand())
                     {
                         try
                         {
                             SqlDataAdapter adapter = null;
                             DataSet dataset = null;
-                            Reports.LstEmetteur rpt1 = null;
-                            Reports.LstEmetteur rpt2 = null;
-                            Reports.LstEmetteur rpt3 = null;
-                            Reports.LstEmetteur rpt4 = null;
-                            Reports.LstEmetteur rpt5 = null;
 
                             RadioButton rd = radiobutton as RadioButton;
 
                             if (cboIndex == 0 && rd.Name.Equals(rdLstIdentifiant.Name))
                             {
                                 #region Access Point par identifiant equipement
-                                rpt1 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where  categorie_materiel.designation='Access Point' and materiel.code_str=@code_str and materiel.archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where  categorie_materiel.designation='Access Point' and materiel.code_str=@code_str and materiel.archiver=@archive");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4507,110 +847,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@code_str", DbType.String, 10, cboIdentifiant.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt1.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt1;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEtat.Name))
                             {
                                 #region Access Point par etat de l'equipement
-                                rpt2 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Access Point' and etat_materiel.designation=@designation and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Access Point' and etat_materiel.designation=@designation and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4618,110 +861,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@designation", DbType.String, 50, cboEtat.SelectedValue));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt2.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt2;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstEndGarantie.Name))
                             {
                                 #region Access Point par délais de garantie de l'equipement
-                                rpt3 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Access Point' and garantie.valeur=@valeur and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Access Point' and garantie.valeur=@valeur and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4729,110 +875,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@valeur", DbType.Int32, 4, Convert.ToInt32(cboDelais.SelectedValue, CultureInfo.CurrentCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt3.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt3;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstPortee.Name))
                             {
                                 #region Access Point par portee l'equipement
-                                rpt4 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Access Point' and portee.valeur=@portee and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Access Point' and portee.valeur=@portee and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4840,110 +889,13 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@portee", DbType.Int32, 4, Convert.ToInt32(cboPortee.SelectedValue, CultureInfo.InvariantCulture)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt4.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt4;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
                             else if (cboIndex == 0 && rd.Name.Equals(rdLstDateAcquisition.Name))
                             {
                                 #region Access Point par date d'acquisition de l'equipement
-                                rpt5 = new Reports.LstEmetteur();
-                                cmd.CommandText = @"select materiel.id,materiel.code_str,categorie_materiel.designation as 'Catégorie Mat.',compte.numero as 'Numéro Cpte.',CONVERT(varchar(10),date_acquisition,3) as 'Date Acq.',garantie.valeur as 'Garantie(Année)',marque.designation as 'Marque',
-                                modele.designation as 'Modèle',couleur.designation as 'Couleur',poids.valeur as 'Poids',etat_materiel.designation as 'Etat',materiel.qrcode as 'QRCode',materiel.photo1 as 'Photo1',materiel.photo2 as 'Photo2',materiel.photo3 as 'Photo3',materiel.label as 'Etiquette',
-                                materiel.mac_adresse1 as 'MAC Wifi', materiel.mac_adresse2 as 'MAC LAN',type_ordinateur.designation as 'Type Ordi.',type_clavier.designation as 'Clavier',OS.designation 'Désignation',ram.id as 'Mémoire(Gb)',processeur.valeur as 'Processeur(Ghz)',
-                                nombre_coeur_processeur.valeur as 'Processor Core',type_hdd.designation as 'Type HDD',nombre_hdd.valeur as 'Nre HDD',capacite_hdd.valeur as 'HDD',taille_ecran.valeur as 'Ecran',usb2.valeur as 'USB2.0',usb3.valeur as 'USB3.0',hdmi.valeur as 'HDMI',
-                                vga.valeur as 'VGA',tension_adaptateur.valeur as 'U.Bat.(V)',tension_adaptateur.valeur as 'U.Adapt.(V)',puissance_adaptateur.valeur as 'P.Adapt.(W)',materiel.numero_cle as 'Numéro cl2', intensite_adaptateur.valeur as 'I.Adapt(A)', 
-                                materiel.commentaire as 'Commentaire',materiel.archiver as 'Archiver',
-
-                                type_switch.designation as 'Type Switch',
-
-                                puissance.valeur as 'P.Imp.(W)',intensite.valeur as 'I.Imp.(A)',page_par_minute.valeur as 'PPM',type_imprimante.designation as 'Type Imprimante',
-
-                                tension_alimentation.valeur as 'U.Alim.(V)',usb.valeur as 'Nbr.USB',memoire.valeur as 'Nbr. Mémoire',sorties_audio.valeur as 'Nbr. Sorties Aud.',microphone.valeur as 'Nbr. Micro.',gain.valeur as 'Gain(dB)',type_amplificateur.designation as 'Type Amplificateur',
-
-                                gbe.valeur as 'Nbr.Gbe',fe.valeur as 'Nbr.Fe',fo.valeur as 'Nbr.Fo',serial.valeur as 'Nbr.Serial',default_pwd.designation as 'Default Pwd',default_ip.designation as 'Default IP',console.valeur as 'Nbr.Console',auxiliaire.valeur as 'Nbr.Aux.',materiel.capable_usb as 'Support USB', type_routeur_AP.designation as 'Type routeur_AP', version_ios.designation as 'Version IOS',
-
-                                portee.valeur as 'Portée(m)',type_AP.designation as 'Type AP',
-
-                                frequence.designation as 'Fréquence(Hz)',antenne.valeur as 'Nbr. Ant.',
-
-                                netette.designation as 'Netété',materiel.compatible_wifi as 'Support Wifi'
-
-                                 from materiel 
-                                left outer join garantie on garantie.id=materiel.id_garantie
-                                left outer join categorie_materiel on categorie_materiel.id=materiel.id_categorie_materiel
-                                inner join compte on compte.id=materiel.id_compte
-                                inner join marque on marque.id=materiel.id_marque
-                                inner join modele on modele.id=materiel.id_modele
-                                inner join couleur on couleur.id=materiel.id_couleur
-                                inner join poids on poids.id=materiel.id_poids
-                                inner join etat_materiel on etat_materiel.id=materiel.id_etat_materiel
-                                left outer join type_ordinateur on type_ordinateur.id=materiel.id_type_ordinateur
-                                left outer join type_clavier on type_clavier.id=materiel.id_type_clavier
-                                left outer join OS on OS.id=materiel.id_OS
-                                left outer join ram on ram.id=materiel.id_ram
-                                left outer join processeur on processeur.id=materiel.id_processeur
-                                left outer join nombre_coeur_processeur on nombre_coeur_processeur.id=materiel.id_nombre_coeur_processeur
-                                left outer join type_hdd on type_hdd.id=materiel.id_type_hdd
-                                left outer join nombre_hdd on nombre_hdd.id=materiel.id_nombre_hdd
-                                left outer join capacite_hdd on capacite_hdd.id=materiel.id_capacite_hdd
-                                left outer join taille_ecran on taille_ecran.id=materiel.id_taille_ecran
-                                left outer join usb2 on usb2.id=materiel.id_usb2
-                                left outer join usb3 on usb3.id=materiel.id_usb3
-                                left outer join hdmi on hdmi.id=materiel.id_hdmi
-                                left outer join vga on vga.id=materiel.id_vga
-                                left outer join tension_batterie on tension_batterie.id=materiel.id_tension_batterie
-                                left outer join tension_adaptateur on tension_adaptateur.id=materiel.id_tension_adaptateur
-                                left outer join puissance_adaptateur on puissance_adaptateur.id=materiel.id_puissance_adaptateur
-                                left outer join intensite_adaptateur on intensite_adaptateur.id=materiel.id_intensite_adaptateur
-
-                                --Printer
-                                left outer join type_imprimante on type_imprimante.id=materiel.id_type_imprimante
-                                left outer join puissance on puissance.id=materiel.id_puissance
-                                left outer join intensite on intensite.id=materiel.id_intensite
-                                left outer join page_par_minute on page_par_minute.id=materiel.id_page_par_minute
-
-                                --Amplificateur
-                                left outer join type_amplificateur on type_amplificateur.id=materiel.id_type_amplificateur
-                                left outer join tension_alimentation on tension_alimentation.id=materiel.id_tension_alimentation
-                                left outer join usb on usb.id=materiel.id_usb
-                                left outer join memoire on memoire.id=materiel.id_memoire
-                                left outer join sorties_audio on sorties_audio.id=materiel.id_sorties_audio
-                                left outer join microphone on microphone.id=materiel.id_microphone
-                                left outer join gain on gain.id=materiel.id_gain
-
-                                --Routeur_AP
-                                left outer join type_routeur_AP on type_routeur_AP.id=materiel.id_type_routeur_AP
-                                left outer join gbe on gbe.id=materiel.id_gbe
-                                left outer join fe on fe.id=materiel.id_fe
-                                left outer join fo on fo.id=materiel.id_fo
-                                left outer join serial on serial.id=materiel.id_serial
-                                left outer join default_pwd on default_pwd.id=materiel.id_default_pwd
-                                left outer join default_ip on default_ip.id=materiel.id_default_ip
-                                left outer join console on console.id=materiel.id_console
-                                left outer join auxiliaire on auxiliaire.id=materiel.id_auxiliaire
-                                left outer join version_ios on version_ios.id=materiel.id_version_ios
-                                --capable_usb
-
-                                --AccessPoint
-                                left outer join type_AP on type_AP.id=materiel.id_type_AP
-                                left outer join portee on portee.id=materiel.id_portee
-
-                                --Switch
-                                left outer join type_switch on type_switch.id=materiel.id_type_switch
-
-                                --Emetteur
-                                left outer join frequence on frequence.id=materiel.id_frequence
-                                left outer join antenne on antenne.id=materiel.id_antenne
-
-                                --Retroprojecteur
-                                left outer join netette on netette.id=materiel.id_netette
-                                where categorie_materiel.designation='Access Point' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver";
+                                cmd.CommandText = Queries.GetInstance().CommonQueryMateriel("where categorie_materiel.designation='Access Point' and (convert(date,materiel.date_acquisition,100) between @date_acquisition1 and @date_acquisition2) and archiver=@archiver");
 
                                 SqlCommand sqlCmd = cmd as SqlCommand;
                                 adapter = new SqlDataAdapter(sqlCmd);
@@ -4952,26 +904,9 @@ namespace smartManage.Desktop
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@date_acquisition2", DbType.String, 10, Convert.ToString(txtDateAcquisitionFin.Text)));
                                 cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@archiver", DbType.Boolean, 2, chkArchiver.Checked));
 
-                                dataset = new DataSet();
-                                dataset.Locale = CultureInfo.InvariantCulture;
-                                adapter.Fill(dataset, "lstTable");
-
-                                rpt5.SetDataSource(dataset.Tables["lstTable"]);
-                                crvReport.ReportSource = rpt5;
-                                crvReport.Refresh();
+                                dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
-
-                            if (rpt1 != null)
-                                rpt1.Dispose();
-                            if (rpt2 != null)
-                                rpt2.Dispose();
-                            if (rpt3 != null)
-                                rpt3.Dispose();
-                            if (rpt4 != null)
-                                rpt4.Dispose();
-                            if (rpt5 != null)
-                                rpt5.Dispose();
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -5871,6 +1806,7 @@ namespace smartManage.Desktop
             {
                 ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
             }
+            this.rpvReport.RefreshReport();
         }
 
         private void frmReportMateriel_FormClosed(object sender, FormClosedEventArgs e)
