@@ -295,7 +295,7 @@
     <value>En construction</value>
   </data>
   <data name="StringInBuildingMessage" xml:space="preserve">
-    <value>Fonctionnalité non encore opéraionnelle</value>
+    <value>Fonctionnalité non encore opérationnelle</value>
   </data>
   <data name="StringInfoStatusAppMessage" xml:space="preserve">
     <value>Informations sur l'état de l'application</value>
@@ -437,5 +437,8 @@
   </data>
   <data name="StringFailedShowPasswordMessage" xml:space="preserve">
     <value>Affichage du mot de passe</value>
+  </data>
+  <data name="StringFailedLoadHelpCaption" xml:space="preserve">
+    <value>En cours de conception</value>
   </data>
 </root>

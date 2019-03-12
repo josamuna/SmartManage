@@ -115,7 +115,6 @@
             this.txtPwd.PasswordChar = '*';
             this.txtPwd.Size = new System.Drawing.Size(252, 20);
             this.txtPwd.TabIndex = 1;
-            this.txtPwd.Text = "isig";
             this.txtPwd.TextChanged += new System.EventHandler(this.txtpwd_TextChanged);
             this.txtPwd.Enter += new System.EventHandler(this.txtnomserveur_Enter);
             this.txtPwd.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtpwd_KeyDown);
@@ -131,7 +130,6 @@
             this.txtNomUser.Name = "txtNomUser";
             this.txtNomUser.Size = new System.Drawing.Size(252, 20);
             this.txtNomUser.TabIndex = 0;
-            this.txtNomUser.Text = "sa";
             this.txtNomUser.Enter += new System.EventHandler(this.txtnomserveur_Enter);
             this.txtNomUser.Leave += new System.EventHandler(this.txtnomserveur_Leave);
             // 

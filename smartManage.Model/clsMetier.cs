@@ -56,7 +56,7 @@ namespace smartManage.Model
             {
                 //sql server 2005
                 case 1: sch = string.Format("Data Source={0};Persist Security Info=True; Initial Catalog={1};User ID={2}; Password={3}", _host, _db, _user, _pwd); break;
-                //sql server 2008 Data Source=WIN7-PC\SQLEXPRESS;Initial Catalog=bihito;Persist Security Info=True;User ID=sa;Password=sa
+                //sql server 2008
                 case 2: sch = string.Format("Data Source={0};Persist Security Info=True; Initial Catalog={1};User ID={2}; Password={3}", _host, _db, _user, _pwd); break;
                 case 3: break;
             }

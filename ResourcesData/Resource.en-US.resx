@@ -271,52 +271,52 @@
     <value>Failed to select record</value>
   </data>
   <data name="StringFailedSelectUserDataCaption" xml:space="preserve">
-    <value>Selecting user informations</value>
+    <value>Selecting user's informations</value>
   </data>
   <data name="StringFailedSelectUserDataMessage" xml:space="preserve">
-    <value>Failed to select user informations</value>
+    <value>Failed to select user's informations</value>
   </data>
   <data name="StringFailedUpdateCaption" xml:space="preserve">
     <value>Modification</value>
   </data>
   <data name="StringFailedUpdateMessage" xml:space="preserve">
-    <value>Echec de la modification</value>
+    <value>Failed to update</value>
   </data>
   <data name="StringFailedUpdateUserCaption" xml:space="preserve">
-    <value>Modifie user</value>
+    <value>Update user</value>
   </data>
   <data name="StringFailedUpdateUserMessage" xml:space="preserve">
-    <value>Echec de la modification</value>
+    <value>Failed to update</value>
   </data>
   <data name="StringFailOpenConnectionBDCaption" xml:space="preserve">
-    <value>Connexion à la Base de données</value>
+    <value>Connection to Database</value>
   </data>
   <data name="StringInBuildingCaption" xml:space="preserve">
-    <value>En construction</value>
+    <value>In building</value>
   </data>
   <data name="StringInBuildingMessage" xml:space="preserve">
-    <value>Fonctionnalité non encore opéraionnelle</value>
+    <value>Functionality not available</value>
   </data>
   <data name="StringInfoStatusAppMessage" xml:space="preserve">
-    <value>Informations sur l'état de l'application</value>
+    <value>State application's info</value>
   </data>
   <data name="StringLoadPictureCaption1" xml:space="preserve">
-    <value>Sélection d'une photo</value>
+    <value>Select picture</value>
   </data>
   <data name="StringNoDataLoadBindingCaption" xml:space="preserve">
-    <value>Chargement des données</value>
+    <value>Loading datas</value>
   </data>
   <data name="StringNoDataLoadBindingMessage" xml:space="preserve">
-    <value>Il n'ya rien à afficher !!!</value>
+    <value>There's nothing to show !!!</value>
   </data>
   <data name="StringNoMatchOldPasswordCaption" xml:space="preserve">
-    <value>Modifie user</value>
+    <value>Update user</value>
   </data>
   <data name="StringNoMatchOldPasswordMessage" xml:space="preserve">
-    <value>L'ancien mot de passe ne correspond pas</value>
+    <value>The old password doesn't match</value>
   </data>
   <data name="StringNoValue" xml:space="preserve">
-    <value>NON</value>
+    <value>NO</value>
   </data>
   <data name="StringPictureFilter1" xml:space="preserve">
     <value>PNG File|*.png|JPG File|*.jpg|TIFF File|*.tif|BitMap Image|*.bmp</value>
@@ -325,94 +325,94 @@
     <value>PNG Files(*.png)|*.png|JPG Files(*.jpg)|*.jpg|JPEG Files(*.jpeg)|*.jpeg|TIFF Files(*.tiff)|*.tiff</value>
   </data>
   <data name="StringPromptDeleteCaption" xml:space="preserve">
-    <value>Suppression enregistrement</value>
+    <value>Delete record</value>
   </data>
   <data name="StringPromptDeleteMessage" xml:space="preserve">
-    <value>Voulez-vous supprimer cet enregistrement ?</value>
+    <value>Do you want to delete this record</value>
   </data>
   <data name="StringPromptQuitAppCaption" xml:space="preserve">
-    <value>Quitter l'application</value>
+    <value>Quit application</value>
   </data>
   <data name="StringPromptQuitAppMessage" xml:space="preserve">
-    <value>Voulez-vous vraiment quitter ?</value>
+    <value>Do you want to quit ?</value>
   </data>
   <data name="StringStatusConnectedUserMessage" xml:space="preserve">
-    <value>est maintenant connecté ...</value>
+    <value>Now connected ...</value>
   </data>
   <data name="StringStatusDisconnectedUserMessage" xml:space="preserve">
-    <value>Déconnecté de la base des données ...</value>
+    <value>Disconnected from Database ...</value>
   </data>
   <data name="StringSuccessArchiveCaption" xml:space="preserve">
-    <value>Archivage enregistrement</value>
+    <value>Archiving record</value>
   </data>
   <data name="StringSuccessArchiveMessage" xml:space="preserve">
-    <value>Archivage effectué</value>
+    <value>Archiving done</value>
   </data>
   <data name="StringSuccessConnectionBDCaption" xml:space="preserve">
-    <value>Connexion à la base de données</value>
+    <value>Connection to Database</value>
   </data>
   <data name="StringSuccessConnectionBDMessage" xml:space="preserve">
-    <value>Connexion réussie</value>
+    <value>Connection successed</value>
   </data>
   <data name="StringSuccessDeleteCaption" xml:space="preserve">
     <value>Deletion</value>
   </data>
   <data name="StringSuccessDeleteMessage" xml:space="preserve">
-    <value>Suppression effectuée</value>
+    <value>Deletion done</value>
   </data>
   <data name="StringSuccessDenyRightAccessCaption" xml:space="preserve">
-    <value>Retrait droits d'accès</value>
+    <value>Revoke access</value>
   </data>
   <data name="StringSuccessDenyRightAccessMessage" xml:space="preserve">
-    <value>Droits d'accès retirés avec succès</value>
+    <value>Access revoked successfully</value>
   </data>
   <data name="StringSuccessGrantRightAccessCaption" xml:space="preserve">
-    <value>Attributions droits d'accès</value>
+    <value>Grant access</value>
   </data>
   <data name="StringSuccessGrantRightAccessMessage" xml:space="preserve">
-    <value>Droits d'accès attribué avec succès</value>
+    <value>Access granted successfully</value>
   </data>
   <data name="StringSuccessSaveCaption" xml:space="preserve">
-    <value>Enregistrement</value>
+    <value>Recording</value>
   </data>
   <data name="StringSuccessSaveDataBaseParamsCaption" xml:space="preserve">
-    <value>Enregistrement paramètres de connexion</value>
+    <value>Recording connection parameters</value>
   </data>
   <data name="StringSuccessSaveDataBaseParamsMessage" xml:space="preserve">
-    <value>Enregistrement effectué</value>
+    <value>Saved successfully</value>
   </data>
   <data name="StringSuccessSaveMessage" xml:space="preserve">
-    <value>Enregistrement effectué</value>
+    <value>Saved successfully</value>
   </data>
   <data name="StringSuccessUpdateCaption" xml:space="preserve">
-    <value>Modification</value>
+    <value>Updating</value>
   </data>
   <data name="StringSuccessUpdateMessage" xml:space="preserve">
-    <value>Modification effectuée</value>
+    <value>Update done successfully</value>
   </data>
   <data name="StringSusccessExportExcelCaption" xml:space="preserve">
-    <value>Exportation Excel</value>
+    <value>Excel export</value>
   </data>
   <data name="StringSusccessExportExcelMessage" xml:space="preserve">
-    <value>Exportation Excel réussie</value>
+    <value>Export to Excel done successfully</value>
   </data>
   <data name="StringSystemErrorCaption" xml:space="preserve">
-    <value>Erreur système</value>
+    <value>System error</value>
   </data>
   <data name="StringSystemErrorMessage" xml:space="preserve">
-    <value>Erreur système interne, veuillez notifier à l'administrateur</value>
+    <value>Internal system errorm please contact administratorl'administrateur</value>
   </data>
   <data name="StringWarningSelectDenyRightAccessCaption" xml:space="preserve">
-    <value>Retrait droits d'accès</value>
+    <value>Revoke access</value>
   </data>
   <data name="StringWarningSelectDenyRightAccessMessage" xml:space="preserve">
-    <value>Veuillez choisir une catégorie des droits d'accès à retirer à l'utilisateur svp !!!</value>
+    <value>Please choose a access category to revoke to user !!!</value>
   </data>
   <data name="StringWarningSelectGrantRightAccessCaption" xml:space="preserve">
-    <value>Attributions droits d'accès</value>
+    <value>Grant access</value>
   </data>
   <data name="StringWarningSelectGrantRightAccessMessage" xml:space="preserve">
-    <value>Veuillez choisir une catégorie des droits à attribuer à l'utilisateur svp !!!</value>
+    <value>Please choose a access category to grant to user !!!</value>
   </data>
   <data name="StringYesValue" xml:space="preserve">
     <value>OUI</value>
@@ -421,15 +421,18 @@
     <value>0,0</value>
   </data>
   <data name="StringZeroRecordAffectedMessage" xml:space="preserve">
-    <value>Aucun enregistrement affecté</value>
+    <value>No record affected</value>
   </data>
   <data name="StringZeroValue" xml:space="preserve">
     <value>0</value>
   </data>
   <data name="StringFailedSelectionChangeCaption" xml:space="preserve">
-    <value>Sélection d'un enregistrement</value>
+    <value>Selecting record</value>
   </data>
   <data name="StringFailedSelectionChangeMessage" xml:space="preserve">
-    <value>Erreur lors de la sélection d'un enregistrement</value>
+    <value>Failed when selecting record</value>
+  </data>
+  <data name="StringFailedLoadHelpCaption" xml:space="preserve">
+    <value>In building</value>
   </data>
 </root>

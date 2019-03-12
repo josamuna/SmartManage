@@ -594,9 +594,11 @@
             // 
             // rpvReport
             // 
-            this.rpvReport.Location = new System.Drawing.Point(493, 112);
+            this.rpvReport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rpvReport.Location = new System.Drawing.Point(0, 106);
             this.rpvReport.Name = "rpvReport";
-            this.rpvReport.Size = new System.Drawing.Size(396, 175);
+            this.rpvReport.Padding = new System.Windows.Forms.Padding(5);
+            this.rpvReport.Size = new System.Drawing.Size(1289, 449);
             this.rpvReport.TabIndex = 2;
             // 
             // frmReportMateriel

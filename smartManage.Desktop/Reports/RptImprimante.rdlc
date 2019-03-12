@@ -1446,7 +1446,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -3626,7 +3625,7 @@
         <Top>5.52773cm</Top>
         <Left>0.00001cm</Left>
         <Height>4.00542cm</Height>
-        <Width>27.51177cm</Width>
+        <Width>27.51178cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -3647,7 +3646,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>NSTITUT SUPERIEUR D'INFORMATIQUE DET DE GESTION</Value>
+                <Value>NSTITUT SUPERIEUR D'INFORMATIQUE ET DE GESTION</Value>
                 <Style>
                   <FontSize>18pt</FontSize>
                   <FontWeight>Bold</FontWeight>

@@ -4849,7 +4849,7 @@
         <Top>5.52773cm</Top>
         <Left>0.00001cm</Left>
         <Height>4.00542cm</Height>
-        <Width>27.6301cm</Width>
+        <Width>27.63009cm</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -4870,7 +4870,7 @@
                 </Style>
               </TextRun>
               <TextRun>
-                <Value>NSTITUT SUPERIEUR D'INFORMATIQUE DET DE GESTION</Value>
+                <Value>NSTITUT SUPERIEUR D'INFORMATIQUE ET DE GESTION</Value>
                 <Style>
                   <FontSize>18pt</FontSize>
                   <FontWeight>Bold</FontWeight>

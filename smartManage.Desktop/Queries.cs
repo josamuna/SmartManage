@@ -110,6 +110,7 @@ namespace smartManage.Desktop
 
             --Retroprojecteur
             left outer join netette on netette.id=materiel.id_netette").Append(" ").Append(criteria);
+
             return stringBuilder.ToString();
         }
         internal string CommonQueryAffectationMateriel(string criteria)

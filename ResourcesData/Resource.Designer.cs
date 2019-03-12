@@ -349,6 +349,15 @@ namespace ResourcesData {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to En cours de conception.
+        /// </summary>
+        internal static string StringFailedLoadHelpCaption {
+            get {
+                return ResourceManager.GetString("StringFailedLoadHelpCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sélection photo.
         /// </summary>
         internal static string StringFailedLoadPictureCaption {
@@ -592,7 +601,7 @@ namespace ResourcesData {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fonctionnalité non encore opéraionnelle.
+        ///   Looks up a localized string similar to Fonctionnalité non encore opérationnelle.
         /// </summary>
         internal static string StringInBuildingMessage {
             get {

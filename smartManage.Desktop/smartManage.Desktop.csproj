@@ -31,7 +31,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>52</ApplicationRevision>
+    <ApplicationRevision>53</ApplicationRevision>
     <ApplicationVersion>2.6.253.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -178,12 +178,6 @@
     </Compile>
     <Compile Include="frmReportAffectationMateriel.designer.cs">
       <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
-    </Compile>
-    <Compile Include="A.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="A.designer.cs">
-      <DependentUpon>A.cs</DependentUpon>
     </Compile>
     <Compile Include="frmSplash.cs">
       <SubType>Form</SubType>
@@ -653,6 +647,7 @@
     <Compile Include="frmConnection.designer.cs">
       <DependentUpon>frmConnection.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ICallMainForm.cs" />
     <Compile Include="ICRUDGeneral.cs" />
     <Compile Include="LoadRdlcReport.cs" />
@@ -726,9 +721,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmReportAffectationMateriel.resx">
       <DependentUpon>frmReportAffectationMateriel.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="A.resx">
-      <DependentUpon>A.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmSplash.resx">
       <DependentUpon>frmSplash.cs</DependentUpon>

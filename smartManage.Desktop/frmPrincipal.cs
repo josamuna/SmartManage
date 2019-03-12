@@ -699,10 +699,8 @@ namespace smartManage.Desktop
 
         private void smContent_Click(object sender, EventArgs e)
         {
-            A frm = new A();
-            frm.MdiParent = this;
-            frm.Icon = this.Icon;
-            frm.Show();
+            Properties.Settings.Default.StringLogFile = "En construction";
+            MessageBox.Show(Properties.Settings.Default.StringLogFile, stringManager.GetString("StringFailedLoadHelpCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
         }
     }
 }

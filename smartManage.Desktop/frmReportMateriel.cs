@@ -221,6 +221,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOrdinateur.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -321,6 +323,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptSwitch.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -421,6 +425,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptImprimante.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -521,6 +527,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptEmetteur.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -607,6 +615,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAmplificateur.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -707,6 +717,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRetroprojecteur.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -807,6 +819,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptRouteurAP.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
@@ -907,6 +921,8 @@ namespace smartManage.Desktop
                                 dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAccessPoint.rdlc", rpvReport);
                                 #endregion
                             }
+                            else
+                                throw new CustomException("Sélection invalide, recommencez !!!");
 
                             if (dataset != null)
                                 dataset.Dispose();
