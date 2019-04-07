@@ -13,7 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>\\Josam\shared_doc\TestProject\</PublishUrl>
+    <PublishUrl>\\ISIGGOMA\SmartManage_Application\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Unc</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -31,7 +31,7 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>53</ApplicationRevision>
+    <ApplicationRevision>54</ApplicationRevision>
     <ApplicationVersion>2.6.253.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -679,6 +679,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSetOrdinateur.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Reports\DataSetQrCode.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSetQrCode.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Reports\DataSetSignataire.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -962,10 +967,14 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\RptAffectationMateriel.rdlc" />
+    <EmbeddedResource Include="Reports\RptOneQrCode.rdlc" />
     <EmbeddedResource Include="Reports\RptRetroprojecteur.rdlc" />
     <EmbeddedResource Include="Reports\RptImprimante.rdlc" />
     <EmbeddedResource Include="Reports\RptAmplificateur.rdlc" />
     <EmbeddedResource Include="Reports\RptEmetteur.rdlc" />
+    <EmbeddedResource Include="Reports\RptAllQrCode.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\RptSwitch.rdlc" />
     <EmbeddedResource Include="Reports\RptRouteurAP.rdlc" />
     <EmbeddedResource Include="Reports\RptAccessPoint.rdlc" />
@@ -975,7 +984,9 @@
     <EmbeddedResource Include="TestQRCode.resx">
       <DependentUpon>TestQRCode.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -1012,6 +1023,17 @@
     </None>
     <None Include="Reports\DataSetOrdinateur.xss">
       <DependentUpon>DataSetOrdinateur.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetQrCode.xsc">
+      <DependentUpon>DataSetQrCode.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\DataSetQrCode.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSetQrCode.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Reports\DataSetQrCode.xss">
+      <DependentUpon>DataSetQrCode.xsd</DependentUpon>
     </None>
     <None Include="Reports\DataSetSignataire.xsc">
       <DependentUpon>DataSetSignataire.xsd</DependentUpon>
@@ -1098,6 +1120,8 @@
     <None Include="Images\switch2.png" />
     <Content Include="Images\logoisig.png" />
     <Content Include="Images\logoisig1.png" />
+    <None Include="Images\OkIcon1.ico" />
+    <None Include="Images\OkIcon2.ico" />
     <Content Include="LogoSmartManage.ico" />
     <Content Include="LogoSmartManage_setup.ico" />
     <None Include="Resources\LogoSmartManage_setup1.ico" />

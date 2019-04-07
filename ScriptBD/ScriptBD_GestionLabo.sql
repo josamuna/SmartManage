@@ -11,6 +11,7 @@ else
 		create database gestion_labo_DB
 		use gestion_labo_DB
 	end
+go
  
 --Debut creation des tables
 create table categorie_materiel
@@ -1193,7 +1194,7 @@ go
  
  
 -----------TABLES POUR RADIUS-----------------------
-----------------------------------------------------
+-----------Non encore utilisee----------------------------
 
 
 create table nas 
@@ -1562,8 +1563,8 @@ insert into poids(id,valeur,user_created,date_created,user_modified,date_modifie
 (7,2.32,'sa',GETDATE(),null,null),(8,1,'sa',GETDATE(),null,null)
 
 insert into salle(id,designation,user_created,date_created,user_modified,date_modified) values
-(1,'BUGANDWA','sa',GETDATE(),null,null),(2,'KATULANYA','sa',GETDATE(),null,null),
-(3,'ISSU','sa',GETDATE(),null,null),(4,'Alain Odon','sa',GETDATE(),null,null),
+(1,'Bugandwa','sa',GETDATE(),null,null),(2,'Katulanya','sa',GETDATE(),null,null),
+(3,'Issu','sa',GETDATE(),null,null),(4,'Alain Odon','sa',GETDATE(),null,null),
 (5,'A coté du Goupe','sa',GETDATE(),null,null),(6,'A coté Bureau DG','sa',GETDATE(),null,null),
 (7,'Laboratoir Informatique','sa',GETDATE(),null,null)
 
@@ -1593,7 +1594,7 @@ insert into fonction(id,designation,user_created,date_created,user_modified,date
 (17,'Secrétaire de section','sa',GETDATE(),null,null),(18,'SG Adm et Fin','sa',GETDATE(),null,null),
 (19,'SG Académique','sa',GETDATE(),null,null),(20,'Directeur Général','sa',GETDATE(),null,null),
 (21,'Adj. Section chargé de l''enseignement','sa',GETDATE(),null,null),(22,'Webmaster','sa',GETDATE(),null,null),
-(23,'Administrateur réseau','sa',GETDATE(),null,null)
+(23,'Administrateur réseau','sa',GETDATE(),null,null),(24,'Coordonateur gardiens','sa',GETDATE(),null,null)
 
 insert into personne(id,nom,postnom,prenom,id_grade,isenseignant,isagent,isetudiant,user_created,date_created,user_modified,date_modified) values
 (1,'Zihindula','Biguru','Lucien',4,1,1,0,'sa',GETDATE(),null,null),(2,'Kasuku','Kalaba','Eric',16,1,1,0,'sa',GETDATE(),null,null),

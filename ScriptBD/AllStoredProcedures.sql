@@ -902,3 +902,21 @@ BEGIN
 	ORDER BY valeur ASC
 END
 GO
+
+--QrCode avec critere
+CREATE PROCEDURE sp_qrCode_criteria @criteria varchar(50)
+AS 
+BEGIN
+	SELECT qrcode,code_str,label FROM materiel WHERE
+	code_str=@criteria 
+	ORDER BY id ASC
+END
+GO
+
+--QrCode
+CREATE PROCEDURE sp_qrCode
+AS 
+BEGIN
+	SELECT qrcode,code_str,label FROM materiel ORDER BY id ASC
+END
+GO

@@ -77,6 +77,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.cmdView = new System.Windows.Forms.Button();
             this.rpvReport = new Microsoft.Reporting.WinForms.ReportViewer();
+            this.rdQrCode = new System.Windows.Forms.RadioButton();
+            this.cboSelectQrCode = new System.Windows.Forms.ComboBox();
             this.panel1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -95,6 +97,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cboSelectQrCode);
+            this.groupBox1.Controls.Add(this.rdQrCode);
             this.groupBox1.Controls.Add(this.rdLstPPM);
             this.groupBox1.Controls.Add(this.rdLstNetete);
             this.groupBox1.Controls.Add(this.rdLstFrequence);
@@ -587,7 +591,7 @@
             this.cmdView.Location = new System.Drawing.Point(1204, 39);
             this.cmdView.Name = "cmdView";
             this.cmdView.Size = new System.Drawing.Size(74, 22);
-            this.cmdView.TabIndex = 26;
+            this.cmdView.TabIndex = 28;
             this.cmdView.Text = "Afficher";
             this.cmdView.UseVisualStyleBackColor = false;
             this.cmdView.Click += new System.EventHandler(this.cmdView_Click);
@@ -600,6 +604,28 @@
             this.rpvReport.Padding = new System.Windows.Forms.Padding(5);
             this.rpvReport.Size = new System.Drawing.Size(1289, 449);
             this.rpvReport.TabIndex = 2;
+            // 
+            // rdQrCode
+            // 
+            this.rdQrCode.AutoSize = true;
+            this.rdQrCode.ForeColor = System.Drawing.Color.DarkBlue;
+            this.rdQrCode.Location = new System.Drawing.Point(1028, 76);
+            this.rdQrCode.Name = "rdQrCode";
+            this.rdQrCode.Size = new System.Drawing.Size(61, 17);
+            this.rdQrCode.TabIndex = 26;
+            this.rdQrCode.TabStop = true;
+            this.rdQrCode.Text = "QrCode";
+            this.rdQrCode.UseVisualStyleBackColor = true;
+            // 
+            // cboSelectQrCode
+            // 
+            this.cboSelectQrCode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboSelectQrCode.DropDownWidth = 90;
+            this.cboSelectQrCode.FormattingEnabled = true;
+            this.cboSelectQrCode.Location = new System.Drawing.Point(1095, 74);
+            this.cboSelectQrCode.Name = "cboSelectQrCode";
+            this.cboSelectQrCode.Size = new System.Drawing.Size(87, 21);
+            this.cboSelectQrCode.TabIndex = 27;
             // 
             // frmReportMateriel
             // 
@@ -666,5 +692,7 @@
         private System.Windows.Forms.RadioButton rdLstMAC_Adresse;
         private System.Windows.Forms.RadioButton rdLstPortee;
         private Microsoft.Reporting.WinForms.ReportViewer rpvReport;
+        private System.Windows.Forms.ComboBox cboSelectQrCode;
+        private System.Windows.Forms.RadioButton rdQrCode;
     }
 }

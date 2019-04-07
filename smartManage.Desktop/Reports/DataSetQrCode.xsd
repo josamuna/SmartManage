@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="DataSetQrCode" targetNamespace="http://tempuri.org/DataSetQrCode.xsd" xmlns:mstns="http://tempuri.org/DataSetQrCode.xsd" xmlns="http://tempuri.org/DataSetQrCode.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="gestion_labo_DBConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="gestion_labo_DBConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.smartManage.Desktop.Properties.Settings.GlobalReference.Default.gestion_labo_DBConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="materielTableAdapter" GeneratorDataComponentClassName="materielTableAdapter" Name="materiel" UserDataComponentName="materielTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="gestion_labo_DBConnectionString (Settings)" DbObjectName="gestion_labo_DB.dbo.materiel" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="true" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT        qrcode, code_str, label
+FROM            materiel
+ORDER BY id asc</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="qrcode" DataSetColumn="qrcode" />
+              <Mapping SourceColumn="code_str" DataSetColumn="code_str" />
+              <Mapping SourceColumn="label" DataSetColumn="label" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="DataSetQrCode" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSetQrCode" msprop:Generator_UserDSName="DataSetQrCode">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="materiel" msprop:Generator_TableClassName="materielDataTable" msprop:Generator_TableVarName="tablemateriel" msprop:Generator_TablePropName="materiel" msprop:Generator_RowDeletingName="materielRowDeleting" msprop:Generator_RowChangingName="materielRowChanging" msprop:Generator_RowEvHandlerName="materielRowChangeEventHandler" msprop:Generator_RowDeletedName="materielRowDeleted" msprop:Generator_UserTableName="materiel" msprop:Generator_RowChangedName="materielRowChanged" msprop:Generator_RowEvArgName="materielRowChangeEvent" msprop:Generator_RowClassName="materielRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="qrcode" msprop:Generator_ColumnVarNameInTable="columnqrcode" msprop:Generator_ColumnPropNameInRow="qrcode" msprop:Generator_ColumnPropNameInTable="qrcodeColumn" msprop:Generator_UserColumnName="qrcode" type="xs:base64Binary" />
+              <xs:element name="code_str" msprop:Generator_ColumnVarNameInTable="columncode_str" msprop:Generator_ColumnPropNameInRow="code_str" msprop:Generator_ColumnPropNameInTable="code_strColumn" msprop:Generator_UserColumnName="code_str">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="label" msprop:Generator_ColumnVarNameInTable="columnlabel" msprop:Generator_ColumnPropNameInRow="label" msprop:Generator_ColumnPropNameInTable="labelColumn" msprop:Generator_UserColumnName="label" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

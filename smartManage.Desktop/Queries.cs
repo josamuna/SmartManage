@@ -113,6 +113,7 @@ namespace smartManage.Desktop
 
             return stringBuilder.ToString();
         }
+
         internal string CommonQueryAffectationMateriel(string criteria)
         {
             StringBuilder stringBuilder = new StringBuilder();

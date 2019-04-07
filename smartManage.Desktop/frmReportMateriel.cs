@@ -943,53 +943,134 @@ namespace smartManage.Desktop
             }
         }
 
+        private void LoadReport(Control radiobutton, string code_materiel = null)
+        {
+            //Initialisation de la chaine de connexion
+            conn = new SqlConnection(Model.Properties.Settings.Default.strChaineConnexion);
+
+            if (conn.State == ConnectionState.Closed)
+                conn.Open();
+
+            SqlDataAdapter adapter = null;
+            DataSet dataset = null;
+
+            using (IDbCommand cmd = conn.CreateCommand())
+            {
+                try
+                {
+                    if (code_materiel == null)
+                    {
+                        //*****Choix pour tous les QrCode
+                        RadioButton rd = radiobutton as RadioButton;
+
+                        cmd.CommandText = "sp_qrCode";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlCommand sqlCmd = cmd as SqlCommand;
+                        adapter = new SqlDataAdapter(sqlCmd);
+
+                        dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptAllQrCode.rdlc", rpvReport);
+                    }
+                    else
+                    {
+                        //*****Choix pour un seul QrCode
+                        RadioButton rd = radiobutton as RadioButton;
+
+                        cmd.CommandText = "sp_qrCode_criteria";
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        SqlCommand sqlCmd = cmd as SqlCommand;
+                        adapter = new SqlDataAdapter(sqlCmd);
+
+                        cmd.Parameters.Add(clsMetier.GetInstance().getParameter(cmd, "@criteria", DbType.String, 50, cboIdentifiant.SelectedValue));
+
+                        dataset = LoadRdlcReport.GetInstance().LoadReportWithSubReportSignataire(adapter, "DataSet1", "smartManage.Desktop.Reports.RptOneQrCode.rdlc", rpvReport);
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+                    MessageBox.Show(stringManager.GetString("StringFailedLoadReportMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadReportCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Echec de chargement du rapport : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                }
+                finally
+                {
+                    if (dataset != null)
+                        dataset.Dispose();
+                    if (adapter != null)
+                        adapter.Dispose();
+                    if (conn != null)
+                        conn.Close();
+                }
+            }
+        }
+
         private void cmdView_Click(object sender, EventArgs e)
         {
             try
             {
-                if (cboCategorieMat.Items.Count > 0 && cboItems.Items.Count > 0)
+                if(rdQrCode.Checked)
                 {
-                    int categorie = cboCategorieMat.SelectedIndex;
-                    int index = cboItems.SelectedIndex;
-
-                    switch(categorie)
+                    //Report pour QrCode
+                    if(cboSelectQrCode.SelectedIndex == 0)
                     {
-                        case 0:
-                            //*****Choix pour Ordinateur
-                            ValidateReport(categorie, index);
-                            break;
-                        case 1:
-                            //*****Choix pour Switch
-                            ValidateReport(categorie, index);
-                            break;
-                        case 2:
-                            //*****Choix pour Imprimante
-                            ValidateReport(categorie, index);
-                            break;
-                        case 3:
-                            //*****Choix pour Emetteur
-                            ValidateReport(categorie, index);
-                            break;
-                        case 4:
-                            //*****Choix pour Amplificateur
-                            ValidateReport(categorie, index);
-                            break;
-                        case 5:
-                            //*****Choix pour Retroprojecteur
-                            ValidateReport(categorie, index);
-                            break;
-                        case 6:
-                            //*****Choix pour Routeur_Access Point
-                            ValidateReport(categorie, index);
-                            break;
-                        case 7:
-                            //*****Choix pour Access Point
-                            ValidateReport(categorie, index);
-                            break;
+                        LoadReport(rdLstIdentifiant);
                     }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(cboIdentifiant.SelectedItem.ToString()))
+                        {
+                            LoadReport(rdLstIdentifiant, cboIdentifiant.SelectedValue.ToString());
+                        }
+                        else
+                            throw new CustomException("Veuillez vérifier que la liste déroulante des codes des matériels n'est pas vide");
+                    }
+                }else
+                {
+                    if (cboCategorieMat.Items.Count > 0 && cboItems.Items.Count > 0)
+                    {
+                        int categorie = cboCategorieMat.SelectedIndex;
+                        int index = cboItems.SelectedIndex;
+
+                        switch (categorie)
+                        {
+                            case 0:
+                                //*****Choix pour Ordinateur
+                                ValidateReport(categorie, index);
+                                break;
+                            case 1:
+                                //*****Choix pour Switch
+                                ValidateReport(categorie, index);
+                                break;
+                            case 2:
+                                //*****Choix pour Imprimante
+                                ValidateReport(categorie, index);
+                                break;
+                            case 3:
+                                //*****Choix pour Emetteur
+                                ValidateReport(categorie, index);
+                                break;
+                            case 4:
+                                //*****Choix pour Amplificateur
+                                ValidateReport(categorie, index);
+                                break;
+                            case 5:
+                                //*****Choix pour Retroprojecteur
+                                ValidateReport(categorie, index);
+                                break;
+                            case 6:
+                                //*****Choix pour Routeur_Access Point
+                                ValidateReport(categorie, index);
+                                break;
+                            case 7:
+                                //*****Choix pour Access Point
+                                ValidateReport(categorie, index);
+                                break;
+                        }
+                    }
+                    else
+                        throw new CustomException("Impossible de charger les catégories de matériel ou la liste des items pour le rapport, veuillez réactualiser le formulaire");
                 }
-                else
-                    throw new CustomException("Impossible de charger les catégories de matériel ou la liste des items pour le rapport, veuillez réactualiser le formulaire");
             }
             catch (CustomException ex)
             {
@@ -1140,11 +1221,6 @@ namespace smartManage.Desktop
             }
         }
 
-        private void frmReportOrdinateur_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            
-        }
-
         private void DesableItem()
         {
             cboIdentifiant.Enabled = false;
@@ -1176,14 +1252,9 @@ namespace smartManage.Desktop
             rdLstPPM.Checked = false;
         }
 
-        private void frmReportOrdinateur_Load(object sender, EventArgs e)
-        {
-            
-        }
-
         private void ActivateControls(int categorie, Control control)
         {
-            //Comon Desable
+            //Comon Disable
             cboIdentifiant.Enabled = false;
             cboEtat.Enabled = false;
             cboDelais.Enabled = false;
@@ -1786,7 +1857,11 @@ namespace smartManage.Desktop
 
         private void frmReportMateriel_Load(object sender, EventArgs e)
         {
-            //Deseable allt controls to allow make choice
+            cboSelectQrCode.Items.Add("All");
+            cboSelectQrCode.Items.Add("Single-By code");
+            cboSelectQrCode.SelectedIndex = 0;
+
+            //Disable allt controls to allow make choice
             DesableItem();
 
             try

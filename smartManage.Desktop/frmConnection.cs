@@ -104,29 +104,60 @@ namespace smartManage.Desktop
         }
 
         private void btnxConn_Click(object sender, EventArgs e)
-        {
+        {        
             try
             {
-                //Appel de l'initialisation de la chaine de connexion avant de l'ouvrir
-                LoadValues();
+                ErrorProvider erProviderUser = new ErrorProvider();
+                ErrorProvider erProviderPassword = new ErrorProvider();
+                errProviderUser.BlinkStyle = erProviderPassword.BlinkStyle = ErrorBlinkStyle.BlinkIfDifferentError;
+                errProviderUser.BlinkRate = erProviderPassword.BlinkRate = 250;
 
-                //Execution des verification de l'utilisateur
-                VerifieUser();
-
-                //Recupération bd connectée
-                try
+                //Avant de checker une quelconque connexion vers la BD, on valide les champs avec ErrorProvider
+                if (txtNomUser.Text == string.Empty && txtPwd.Text == string.Empty)
                 {
-                    clsMetier.bdEnCours = clsMetier.GetInstance().getCurrentDataBase();
+                    erProviderUser.SetError(txtNomUser, "Veuillez spécifier un nom d'utilisateur valide svp !!!");
+                    erProviderPassword.SetError(txtPwd, "Veuillez spécifier un mot de passe valide svp !!!");
+                    txtNomUser.Focus();
                 }
-                catch (Exception) { }
+                else if (txtNomUser.Text == string.Empty)
+                {
+                    erProviderUser.SetError(txtNomUser, "Veuillez spécifier un nom d'utilisateur valide svp !!!");
+                    //Bitmap bitmap = new Bitmap(Properties.Resources.OkIcon2);
+                    //erProviderPassword.Icon = new Icon(SystemIcons.Information, 40, 40);
+                    erProviderPassword.Clear();
+                    txtNomUser.Focus();
+                }
+                else if (txtPwd.Text == string.Empty)
+                {
+                    erProviderPassword.SetError(txtPwd, "Veuillez spécifier un mot de passe valide svp !!!");
+                    //Bitmap bitmap = new Bitmap(Properties.Resources.OkIcon2);
+                    //erProviderUser.Icon = Icon.FromHandle(bitmap.GetHicon());
+                    erProviderUser.Clear();
+                    txtPwd.Focus();
+                }
+                else
+                {
+                    //Appel de l'initialisation de la chaine de connexion avant de l'ouvrir
+                    LoadValues();
 
-                //Activation/Desactivation items des menus
-                Properties.Settings.Default.UserConnected = connection.User;
-                Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Utilisateur authentifié avec succès");
+                    //Execution des verification de l'utilisateur
+                    VerifieUser();
 
-                Principal.LockMenu(true, clsTools.valueUser[0]);
-                this.Cursor = Cursors.Default;
-                this.Close();
+                    //Recupération bd connectée
+                    try
+                    {
+                        clsMetier.bdEnCours = clsMetier.GetInstance().getCurrentDataBase();
+                    }
+                    catch (Exception) { }
+
+                    //Activation/Desactivation items des menus
+                    Properties.Settings.Default.UserConnected = connection.User;
+                    Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Utilisateur authentifié avec succès");
+
+                    Principal.LockMenu(true, clsTools.valueUser[0]);
+                    this.Cursor = Cursors.Default;
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {

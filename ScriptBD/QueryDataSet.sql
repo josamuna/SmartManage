@@ -117,3 +117,6 @@ inner join lieu_affectation on lieu_affectation.id=affectation_materiel.id_lieu_
 inner join type_lieu_affectation on type_lieu_affectation.id=lieu_affectation.id_type_lieu_affectation
 left outer join personne on personne.id=lieu_affectation.id_personne
 left outer join fonction on fonction.id=lieu_affectation.id_fonction
+
+--Qr Code pour materiel
+select qrcode,code_str,label from materiel order by id asc
