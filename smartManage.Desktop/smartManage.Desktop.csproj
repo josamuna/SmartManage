@@ -31,8 +31,8 @@
     <MinimumRequiredVersion>1.0.0.0</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>SmartManage.html</WebPage>
-    <ApplicationRevision>55</ApplicationRevision>
-    <ApplicationVersion>2.6.253.%2a</ApplicationVersion>
+    <ApplicationRevision>60</ApplicationRevision>
+    <ApplicationVersion>2.7.253.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -60,10 +60,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>DF42A48E509B9891138AC274C93A8DCC5F27A308</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>1DCAFE9037F89670875333CDC5D1E260050077EC</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>smartManage.Desktop_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>smartManage.DesktopKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -1161,11 +1161,6 @@
     <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
       <Visible>False</Visible>
       <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="SAP.CrystalReports14.NET.2.0">
-      <Visible>False</Visible>
-      <ProductName>SAP Crystal Reports Runtime Engine for .NET Framework</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>

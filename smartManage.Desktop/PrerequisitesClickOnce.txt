@@ -1,0 +1,75 @@
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsXP-KB942288-v3-x86.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsXP-KB958655-v2-x86-ENU.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsServer2003-KB942288-v4-x86.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsServer2003-KB958655-v2-x86-ENU.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsServer2003-KB942288-v4-x64.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\WindowsServer2003.WindowsXP-KB958655-v2-x64-ENU.exe' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\Windows6.0-KB958655-v2-x86.MSU' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'WindowsInstaller4_5\Windows6.0-KB958655-v2-x64.MSU' 
+for item 'Windows Installer 4.5' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'DotNetFX40\dotNetFx40_Full_x86_x64.exe' 
+for item 'Microsoft .NET Framework 4 (x86 and x64)' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'SqlClrTypes_x86\SQLSysClrTypes.msi' 
+for item 'Microsoft® System CLR Types for SQL Server® 2014 (x86)' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		
+
+
+Severity	Code	Description	Project	File	Line
+Error		To enable 'Download prerequisites from the same location as my application' 
+in the Prerequisites dialog box, you must download file 'ReportViewer\ReportViewer.msi' 
+for item 'Microsoft Report Viewer 2014 Runtime' to your local machine. For more information, 
+see http://go.microsoft.com/fwlink/?LinkId=616018.	smartManage.Desktop		

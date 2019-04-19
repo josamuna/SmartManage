@@ -1,5 +1,6 @@
 ﻿using ManageUtilities;
 using smartManage.RadiusAdminModel;
+using smartManage.Tools;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,6 +27,7 @@ namespace smartManage.Desktop
         //Declaration des BindingSources
         BindingSource bdsrc_nas = new BindingSource();
         BindingSource bdsrc_user = new BindingSource();
+        BindingSource bdsrc_user_multi = new BindingSource();
         BindingSource bdsrc_accounting = new BindingSource();
         BindingSource bdsrc_postauth = new BindingSource();
 
@@ -33,6 +35,8 @@ namespace smartManage.Desktop
         bool blnModifie_user = false;
         bool blnModifie_accounting = false;
         bool blnModifie_postauth = false;
+
+        bool useCipherKey = false;
 
         int? newID_nas = null;
         int? newID_user = null;
@@ -43,12 +47,34 @@ namespace smartManage.Desktop
         //Timer pour chagement Datagrid et actualisation (Refresh)
         System.Timers.Timer tempsLoadDataGrid = null;
 
+        //Timer pour chagement Datagrid de generation
+        System.Timers.Timer tempsLoadDataGridMulti = null;
+
+        //Timer pour chagement Datagrid de generation avec fichier
+        System.Timers.Timer tempsLoadDataGridMultiFile = null;
+
+        //Timer pour chagement Datagrid de generation
+        System.Timers.Timer tempsGenerateKey = null;
+
+        //Timer pour enregistrer les data Générés
+        System.Timers.Timer tempsSaveKey = null;
+
+        //Timer pour exporter les data Générés
+        System.Timers.Timer tempsExportKey = null;
+
         //Timer for automatically set default cursor to form
         System.Timers.Timer tempsStopWaitCursor = null;
 
         //Thread pour chargement DataGrid
         Thread tLoadDataGrid = null;
         Thread tStopWaitCursor = null;
+
+        //Thread pour generation des cles
+        Thread tSaveKey = null;
+        Thread tExportKey = null;
+        Thread tGenerateKey = null;
+        Thread tLoadDataGridMulti = null;
+        Thread tLoadDataGridMultiFile = null;
 
         ResourceManager stringManager = null;
 
@@ -65,6 +91,20 @@ namespace smartManage.Desktop
             get;
             set;
         }
+
+        #region BINDING FOR GENERATE PASSWORD
+        private void BindingList_User_multi()
+        {
+            //SetBindingControls(txtCodeUser, "Text", bdsrc_user, "id");
+            //SetBindingControls(txtNomUser, "Text", bdsrc_user, "username");
+            //SetBindingControls(cboAttributUser, "SelectedValue", bdsrc_user, "attribute");
+            //SetBindingControls(cboOpUser, "SelectedValue", bdsrc_user, "op");
+            //SetBindingControls(txtPasswordUser, "Text", bdsrc_user, "value");
+            SetBindingControls(lblRecord, "Text", bdsrc_user_multi, "nbr_enreg");
+            //SetBindingControls(txtPriorityUser, "Text", bdsrc_user, "priority");
+            SetBindingControls(cboGroupe, "SelectedValue", bdsrc_user_multi, "groupname");
+        }
+        #endregion
 
         #region Methodes for BINDING
         private void setMembersallcbo(ComboBox cbo, string displayMember, string valueMember)
@@ -104,6 +144,470 @@ namespace smartManage.Desktop
             SetBindingControls(txtServeur, "Text", bdsrc_nas, "Server");
             SetBindingControls(txtCaumunaute, "Text", bdsrc_nas, "Community");
             SetBindingControls(txtDecriptionNas, "Text", bdsrc_nas, "Description");
+        }
+        #endregion
+
+        #region GENERATING KEY
+        private void UnloadThreadRessource(Thread thread)
+        {
+            if (thread != null)
+            {
+                thread.Abort();
+                thread = null;
+            }
+        }
+
+        private void CallGenerateKey()
+        {
+            try
+            {
+                if (tGenerateKey == null)
+                {
+                    tGenerateKey = new Thread(new ThreadStart(ExecuteGenerateKey));
+                    tGenerateKey.Start();
+                }
+                else
+                {
+                    tGenerateKey.Abort();
+                    tGenerateKey = null;
+                }
+            }
+            catch { }
+        }
+
+        private void CallSaveKey()
+        {
+            try
+            {
+                if (tSaveKey == null)
+                {
+                    tSaveKey = new Thread(new ThreadStart(ExecuteSaveKey));
+                    tSaveKey.Start();
+                }
+                else
+                {
+                    tSaveKey.Abort();
+                    tSaveKey = null;
+                }
+            }
+            catch { }
+        }
+
+        private void CallExportKey()
+        {
+            try
+            {
+                if (tExportKey == null)
+                {
+                    tExportKey = new Thread(new ThreadStart(ExecuteExportKey));
+                    tExportKey.Start();
+                }
+                else
+                {
+                    tExportKey.Abort();
+                    tExportKey = null;
+                }
+            }
+            catch { }
+        }
+
+        private void ExecuteGenerateKey()
+        {
+            try
+            {
+                LoadSomeData generate = new LoadSomeData(GenerateKey);
+
+                this.Invoke(generate, "tGenerateKey");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de la génération des mots de passe, {0}", ex.Message), "Génération des mots de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void GenerateKey(string threadName)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                tempsGenerateKey.Enabled = true;
+                tempsGenerateKey.Elapsed += TempsGenerateKey_Elapsed;
+
+                if (bdsrc_user_multi.Count > 0)
+                {
+                    foreach (DataRow dtr in ((DataRowView)bdsrc_user_multi.Current).Row.Table.Rows)
+                    {
+                        string strUser = dtr["username"].ToString();
+                        //Generate key
+                        if(useCipherKey)
+                            dtr["value"] = DoKey.Crypte(strUser, txtChipherKeyMultiple.Text).Substring(0, 4);
+                        else
+                            dtr["value"] = clsMetier1.GetInstance().GeneratePassword(strUser);
+
+                        dtr.EndEdit();
+                        ((DataRowView)bdsrc_user_multi.Current).Row.Table.AcceptChanges();
+                    }
+                    dgvUserMulti.DataSource = bdsrc_user_multi;
+                }
+                else
+                    MessageBox.Show("Il n'a rien a généré !!!", "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de la génération des mots de passe, {0}", ex.Message), "Génération des mots de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+
+            //Disable use cipherkey
+            useCipherKey = false;
+        }
+
+        private void AfficheDataMulti()
+        {
+            try
+            {
+                if (tLoadDataGridMulti == null)
+                {
+                    tLoadDataGridMulti = new Thread(new ThreadStart(ExecuteLoadDataGridMulti));
+                    tLoadDataGridMulti.Start();
+                }
+                else
+                {
+                    tLoadDataGridMulti.Abort();
+                    tLoadDataGridMulti = null;
+                }
+            }
+            catch { }
+        }
+
+        private void AfficheDataMultiFile()
+        {
+            try
+            {
+                if (tLoadDataGridMultiFile == null)
+                {
+                    tLoadDataGridMultiFile = new Thread(new ThreadStart(ExecuteLoadDataGridMultiFile));
+                    tLoadDataGridMultiFile.Start();
+                }
+                else
+                {
+                    tLoadDataGridMultiFile.Abort();
+                    tLoadDataGridMultiFile = null;
+                }
+            }
+            catch { }
+        }
+
+        private void TempsGenerateKey_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (tGenerateKey != null)
+            {
+                if (!tGenerateKey.IsAlive)
+                {
+                    tempsGenerateKey.Enabled = false;
+                    tGenerateKey.Abort();
+                    tGenerateKey = null;
+
+                    ExecuteThreadStopWaitCursor();
+
+                    try
+                    {
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
+                    }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteSaveKey()
+        {
+            try
+            {
+                LoadSomeData save = new LoadSomeData(SaveKey);
+
+                this.Invoke(save, "tSaveKey");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de l'enregistrement des données générées, {0}", ex.Message), "Enregistrement des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void SaveKey(string threadName)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                tempsSaveKey.Enabled = true;
+                tempsSaveKey.Elapsed += TempsSaveKey_Elapsed;
+
+                clsMetier1.GetInstance().insertClsradcheck_multiple_dtrowv((DataRowView)bdsrc_user_multi.Current);
+
+                MessageBox.Show("Enregistrement effectué avec succès", "Enregistrement des données générées", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de l'enregistrement des données générées, {0}", ex.Message), "Enregistrement des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void TempsSaveKey_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (tSaveKey != null)
+            {
+                if (!tSaveKey.IsAlive)
+                {
+                    tempsSaveKey.Enabled = false;
+                    tSaveKey.Abort();
+                    tSaveKey = null;
+
+                    ExecuteThreadStopWaitCursor();
+
+                    try
+                    {
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
+                    }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteExportKey()
+        {
+            try
+            {
+                LoadSomeData export = new LoadSomeData(ExportKey);
+
+                this.Invoke(export, "tExportKey");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de l'exportation des données générées, {0}", ex.Message), "Exportation des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void ExportKey(string threadName)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                tempsExportKey.Enabled = true;
+                tempsExportKey.Elapsed += TempsExportKey_Elapsed;
+
+                FolderBrowserDialog folder = new FolderBrowserDialog();
+                folder.Description = "Sélection d'un emplacement";
+
+                if (folder.ShowDialog() == DialogResult.OK)
+                {
+                    if (System.IO.Directory.Exists(folder.SelectedPath))
+                    {
+                        clsMetier1.GenerateFiles(bdsrc_user_multi, folder.SelectedPath);
+                        MessageBox.Show("Enregistrement effectué avec succès", "Enregistrement des données générées", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                    }
+                    else throw new Exception("L'emplacement choisi n'existe pas !!!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Erreur lors de l'enregistrement des données générées, {0}", ex.Message), "Enregistrement des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void TempsExportKey_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (tExportKey != null)
+            {
+                if (!tExportKey.IsAlive)
+                {
+                    tempsExportKey.Enabled = false;
+                    tExportKey.Abort();
+                    tExportKey = null;
+
+                    ExecuteThreadStopWaitCursor();
+
+                    try
+                    {
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
+                    }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteLoadDataGridMulti()
+        {
+            try
+            {
+                LoadSomeData loadDtMulti = new LoadSomeData(LoadDataGridMulti);
+
+                this.Invoke(loadDtMulti, "tLoadDataGridMulti");
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+        }
+
+        private void LoadDataGridMulti(string threadName)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                tempsLoadDataGridMulti.Enabled = true;
+                tempsLoadDataGridMulti.Elapsed += TempsLoadDataGridMulti_Elapsed;
+
+                bdsrc_user_multi.DataSource = clsMetier1.GetInstance().getAllClsradcheck_dt();
+                Principal.SetDataSource(bdsrc_user_multi);
+                dgvUserMulti.DataSource = bdsrc_user_multi;
+
+                cmdGenerate.Enabled = true;
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+        }
+
+        private void TempsLoadDataGridMulti_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (tLoadDataGridMulti != null)
+            {
+                if (!tLoadDataGridMulti.IsAlive)
+                {
+                    tempsLoadDataGridMulti.Enabled = false;
+                    tLoadDataGridMulti.Abort();
+                    tLoadDataGridMulti = null;
+
+                    ExecuteThreadStopWaitCursor();
+
+                    try
+                    {
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
+                    }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                }
+            }
+        }
+
+        private void ExecuteLoadDataGridMultiFile()
+        {
+            try
+            {
+                LoadSomeData loadDtMultiFile = new LoadSomeData(LoadDataGridMultiFile);
+
+                this.Invoke(loadDtMultiFile, "tLoadDataGridMultiFile");
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+        }
+
+        private void LoadDataGridMultiFile(string threadName)
+        {
+            try
+            {
+                this.Cursor = Cursors.WaitCursor;
+                tempsLoadDataGridMultiFile.Enabled = true;
+                tempsLoadDataGridMultiFile.Elapsed += TempsLoadDataGridMultiFile_Elapsed;
+
+                bdsrc_user_multi.DataSource = clsMetier1.GetInstance().getAllClsradcheck_dt_file(txtFile.Text);
+                Principal.SetDataSource(bdsrc_user_multi);
+                dgvUserMulti.DataSource = bdsrc_user_multi;
+
+                cmdGenerate.Enabled = true;
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+            catch (System.Data.SqlClient.SqlException ex)
+            {
+                MessageBox.Show(stringManager.GetString("StringFailedLoadDtgvMessage", CultureInfo.CurrentUICulture), stringManager.GetString("StringFailedLoadDataCaption", CultureInfo.CurrentUICulture), MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                Properties.Settings.Default.StringLogFile = DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Erreur lors du chargement du DataGrid : " + this.Name + " : " + ex.GetType().ToString() + " : " + ex.Message;
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, Properties.Settings.Default.StringLogFile, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+            }
+        }
+
+        private void TempsLoadDataGridMultiFile_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            if (tLoadDataGridMultiFile != null)
+            {
+                if (!tLoadDataGridMultiFile.IsAlive)
+                {
+                    tempsLoadDataGridMultiFile.Enabled = false;
+                    tLoadDataGridMultiFile.Abort();
+                    tLoadDataGridMultiFile = null;
+
+                    ExecuteThreadStopWaitCursor();
+
+                    try
+                    {
+                        SafeNativeMethods.SetProcessWorkingSetSize(Process.GetCurrentProcess().Handle, (UIntPtr)(-1), (UIntPtr)(-1));
+                    }
+                    catch (DllNotFoundException ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                    catch (System.ComponentModel.Win32Exception ex)
+                    {
+                        ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Réduction mémoire utilisée : " + ex.GetType().ToString() + " : " + ex.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileNameRadiusStudent);
+                    }
+                }
+            }
         }
         #endregion
 
@@ -263,6 +767,17 @@ namespace smartManage.Desktop
                         Principal.SetDataSource(bdsrc_postauth);
 
                         dgvPostAuth.DataSource = bdsrc_postauth;
+                        break;
+                    case 5://Generation multiple de mot de passe
+                        gpFile.Enabled = false;
+                        rdBD.Checked = true;
+
+                        cmdGenerate.Enabled = false;
+                        cmdSave.Enabled = false;
+                        cmdExport.Enabled = false;
+
+                        cboGroupe.DataSource = clsMetier1.GetInstance().getAllClsradgroupcheck_dt();
+                        this.setMembersallcbo(cboGroupe, "groupname", "groupname");
                         break;
                 }
 
@@ -449,7 +964,7 @@ namespace smartManage.Desktop
             gpUser.Enabled = status;
             gpAccounting.Enabled = status;
             gpPostAuthentication.Enabled = status;
-            gpReply.Enabled = status;
+            gpGeneratePassword.Enabled = status;
         }
 
         private void frmDataViewAdministration_Load(object sender, EventArgs e)
@@ -460,6 +975,21 @@ namespace smartManage.Desktop
             //Initialise timers
             tempsLoadDataGrid = new System.Timers.Timer();
             tempsLoadDataGrid.Interval = 100;
+
+            tempsLoadDataGridMulti = new System.Timers.Timer();
+            tempsLoadDataGridMulti.Interval = 100;
+
+            tempsLoadDataGridMultiFile = new System.Timers.Timer();
+            tempsLoadDataGridMultiFile.Interval = 100;
+
+            tempsGenerateKey = new System.Timers.Timer();
+            tempsGenerateKey.Interval = 100;
+
+            tempsSaveKey = new System.Timers.Timer();
+            tempsSaveKey.Interval = 100;
+
+            tempsExportKey = new System.Timers.Timer();
+            tempsExportKey.Interval = 100;
 
             tempsStopWaitCursor = new System.Timers.Timer();
             tempsStopWaitCursor.Interval = 100;
@@ -547,6 +1077,18 @@ namespace smartManage.Desktop
             }
             catch { }
 
+            //Reinitialise all Threads
+            try
+            {
+                this.UnloadThreadRessource(tLoadDataGrid);
+                this.UnloadThreadRessource(tLoadDataGridMulti);
+                this.UnloadThreadRessource(tLoadDataGridMultiFile);
+                this.UnloadThreadRessource(tGenerateKey);
+                this.UnloadThreadRessource(tSaveKey);
+                this.UnloadThreadRessource(tExportKey);
+            }
+            catch { }
+
             Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Attente d'une action de l'utilisateur");
             Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
             //Affecte Activate BindingNavigator
@@ -591,6 +1133,9 @@ namespace smartManage.Desktop
                         MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                     case 4:
+                        MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        break;
+                    case 5:
                         MessageBox.Show("Ajout pas nécessaire", "Nouvel enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
                 }
@@ -699,6 +1244,24 @@ namespace smartManage.Desktop
                             }
                         }
                         break;
+                    case 5:
+                        if (dgvUserMulti.RowCount == 0)
+                            return;
+                        else
+                        {
+                            if (string.IsNullOrEmpty(criteria))
+                            {
+                                this.RefreshRec();
+                                return;
+                            }
+                            else
+                            {
+                                DataTable lstItemSearch = new DataTable();
+                                lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
+                                dgvUserMulti.DataSource = lstItemSearch;
+                            }
+                        }
+                        break;
                 }
             }
             catch (System.Data.SqlClient.SqlException ex)
@@ -752,6 +1315,9 @@ namespace smartManage.Desktop
                     case 4:
                         MessageBox.Show("Aucune modification n;est requise ici", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
                         break;
+                    case 5:
+                        MessageBox.Show("Utiliser le bouton enregistrer de cette interface (Après génération des nouveaux mots de passe)", "Enregistrement-Modification", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        return;
                 }
 
                 RefreshData();
@@ -883,6 +1449,9 @@ namespace smartManage.Desktop
                         }
                         chkDeleteAllPostAuth.Checked = false;
                         break;
+                    case 5:
+                        MessageBox.Show("Aucune action requise", "Suppression enregistrement", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+                        return;
                 }
 
                 RefreshData();
@@ -1195,6 +1764,105 @@ namespace smartManage.Desktop
             catch (Exception ex)
             {
                 MessageBox.Show(string.Format("Echec de génération du mot de passe, {0}", ex.Message), "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void rdBD_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdBD.Checked)
+                gpFile.Enabled = false;
+        }
+
+        private void rdFile_CheckedChanged(object sender, EventArgs e)
+        {
+            if (rdFile.Checked)
+                gpFile.Enabled = true;
+            else
+                gpFile.Enabled = false;
+        }
+
+        private void cmdLoadFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                OpenFileDialog dlgOpen = new OpenFileDialog();
+                dlgOpen.Title = "Choisir un fichier";
+                dlgOpen.Filter = "Fichier texte (*.txt)|*.txt";
+
+                if (dlgOpen.ShowDialog() == DialogResult.OK)
+                {
+                    txtFile.Text = dlgOpen.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de l'ouverture du fichier, " + ex.Message, "Ouvrir un fichier", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void cmdView_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rdBD.Checked)
+                {
+                    AfficheDataMulti();
+                }
+                else if (rdFile.Checked)
+                {
+                    AfficheDataMultiFile();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(string.Format("Echec de l'afichage des données, {0}", ex.Message), "Affichage données", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void lblAddGroup_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            frmGroupUserAdmin frm = new frmGroupUserAdmin();
+            frm.Icon = this.Icon;
+            frm.ShowDialog();
+        }
+
+        private void cmdGenerate_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(txtChipherKeyMultiple.Text))
+                    useCipherKey = true;
+
+                CallGenerateKey();
+                cmdSave.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de la génération des mots de passe, " + ex.Message, "Génération mot de passe", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void cmdSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CallSaveKey();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de l'enregistrement des données générées, " + ex.Message, "Génération des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
+            }
+        }
+
+        private void cmdExport_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                CallExportKey();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Echec de l'enregistrement des données générées, " + ex.Message, "Génération des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
         }
     }

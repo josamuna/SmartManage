@@ -64,9 +64,9 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>code_str</rd:DefaultName>
-            <Top>2.67229cm</Top>
+            <Top>2.65562cm</Top>
             <Left>0.03528cm</Left>
-            <Height>0.6cm</Height>
+            <Height>0.61667cm</Height>
             <Width>2.00271cm</Width>
             <Style>
               <Border>
@@ -99,7 +99,7 @@
             </Paragraphs>
             <rd:DefaultName>label</rd:DefaultName>
             <Top>2.0909cm</Top>
-            <Height>0.6cm</Height>
+            <Height>0.49417cm</Height>
             <Width>2.00271cm</Width>
             <ZIndex>1</ZIndex>
             <Style>

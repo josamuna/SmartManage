@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tblMain = new System.Windows.Forms.TabControl();
             this.tblLogin = new System.Windows.Forms.TabPage();
             this.gpLogin = new System.Windows.Forms.GroupBox();
@@ -233,7 +233,7 @@
             this.label49 = new System.Windows.Forms.Label();
             this.label50 = new System.Windows.Forms.Label();
             this.tblUsersMultiple = new System.Windows.Forms.TabPage();
-            this.gpReply = new System.Windows.Forms.GroupBox();
+            this.gpGeneratePassword = new System.Windows.Forms.GroupBox();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.dgvUserMulti = new System.Windows.Forms.DataGridView();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
@@ -262,6 +262,7 @@
             this.colvalue5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colPriority5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNbrRecord = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_groupegp = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tblMain.SuspendLayout();
             this.tblLogin.SuspendLayout();
             this.gpLogin.SuspendLayout();
@@ -284,7 +285,7 @@
             this.groupBox4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvPostAuth)).BeginInit();
             this.tblUsersMultiple.SuspendLayout();
-            this.gpReply.SuspendLayout();
+            this.gpGeneratePassword.SuspendLayout();
             this.groupBox8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserMulti)).BeginInit();
             this.groupBox7.SuspendLayout();
@@ -428,14 +429,14 @@
             this.colCommunity,
             this.colDescription,
             this.colNombre_enregistrement1});
-            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle16.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle16.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvNAS.DefaultCellStyle = dataGridViewCellStyle16;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvNAS.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvNAS.Location = new System.Drawing.Point(3, 19);
             this.dgvNAS.MultiSelect = false;
             this.dgvNAS.Name = "dgvNAS";
@@ -1074,14 +1075,14 @@
             this.colGroupe,
             this.colPriority,
             this.colNombre_enregistrement2});
-            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle17.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle17.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle17.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle17.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUser.DefaultCellStyle = dataGridViewCellStyle17;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUser.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvUser.Location = new System.Drawing.Point(3, 19);
             this.dgvUser.MultiSelect = false;
             this.dgvUser.Name = "dgvUser";
@@ -1404,14 +1405,14 @@
             this.colAcctstopdelay,
             this.colXascendsessionsvrunique,
             this.colNombre_enregistrement3});
-            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle18.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle18.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle18.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle18.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAccounting.DefaultCellStyle = dataGridViewCellStyle18;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAccounting.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvAccounting.Location = new System.Drawing.Point(3, 19);
             this.dgvAccounting.MultiSelect = false;
             this.dgvAccounting.Name = "dgvAccounting";
@@ -2157,14 +2158,14 @@
             this.colReply,
             this.colAuthdate,
             this.colNombre_enregistrement4});
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPostAuth.DefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPostAuth.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvPostAuth.Location = new System.Drawing.Point(3, 19);
             this.dgvPostAuth.MultiSelect = false;
             this.dgvPostAuth.Name = "dgvPostAuth";
@@ -2311,26 +2312,26 @@
             // 
             this.tblUsersMultiple.BackColor = System.Drawing.Color.GhostWhite;
             this.tblUsersMultiple.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.tblUsersMultiple.Controls.Add(this.gpReply);
+            this.tblUsersMultiple.Controls.Add(this.gpGeneratePassword);
             this.tblUsersMultiple.Location = new System.Drawing.Point(4, 22);
             this.tblUsersMultiple.Name = "tblUsersMultiple";
             this.tblUsersMultiple.Size = new System.Drawing.Size(1012, 386);
             this.tblUsersMultiple.TabIndex = 5;
             this.tblUsersMultiple.Text = "Génération multiple de mot de passe";
             // 
-            // gpReply
+            // gpGeneratePassword
             // 
-            this.gpReply.Controls.Add(this.groupBox8);
-            this.gpReply.Controls.Add(this.groupBox7);
-            this.gpReply.Controls.Add(this.cmdView);
-            this.gpReply.Controls.Add(this.gpFile);
-            this.gpReply.Controls.Add(this.groupBox5);
-            this.gpReply.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gpReply.Location = new System.Drawing.Point(0, 0);
-            this.gpReply.Name = "gpReply";
-            this.gpReply.Size = new System.Drawing.Size(1010, 384);
-            this.gpReply.TabIndex = 4;
-            this.gpReply.TabStop = false;
+            this.gpGeneratePassword.Controls.Add(this.groupBox8);
+            this.gpGeneratePassword.Controls.Add(this.groupBox7);
+            this.gpGeneratePassword.Controls.Add(this.cmdView);
+            this.gpGeneratePassword.Controls.Add(this.gpFile);
+            this.gpGeneratePassword.Controls.Add(this.groupBox5);
+            this.gpGeneratePassword.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gpGeneratePassword.Location = new System.Drawing.Point(0, 0);
+            this.gpGeneratePassword.Name = "gpGeneratePassword";
+            this.gpGeneratePassword.Size = new System.Drawing.Size(1010, 384);
+            this.gpGeneratePassword.TabIndex = 4;
+            this.gpGeneratePassword.TabStop = false;
             // 
             // groupBox8
             // 
@@ -2363,15 +2364,16 @@
             this.colop5,
             this.colvalue5,
             this.colPriority5,
-            this.colNbrRecord});
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUserMulti.DefaultCellStyle = dataGridViewCellStyle20;
+            this.colNbrRecord,
+            this.colid_groupegp});
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUserMulti.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvUserMulti.Location = new System.Drawing.Point(3, 19);
             this.dgvUserMulti.MultiSelect = false;
             this.dgvUserMulti.Name = "dgvUserMulti";
@@ -2644,6 +2646,13 @@
             this.colNbrRecord.Name = "colNbrRecord";
             this.colNbrRecord.Visible = false;
             // 
+            // colid_groupegp
+            // 
+            this.colid_groupegp.DataPropertyName = "id_gp";
+            this.colid_groupegp.HeaderText = "id_gp";
+            this.colid_groupegp.Name = "colid_groupegp";
+            this.colid_groupegp.Visible = false;
+            // 
             // frmDataViewEtudiant
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2654,7 +2663,7 @@
             this.Name = "frmDataViewEtudiant";
             this.Text = "Vue des données pour serveur Radius Etudiants";
             this.Activated += new System.EventHandler(this.frmDataViewEtudiant_Activated);
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDataViewAdministration_FormClosed);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmDataViewEtudiant_FormClosed);
             this.Load += new System.EventHandler(this.frmDataViewEtudiant_Load);
             this.tblMain.ResumeLayout(false);
             this.tblLogin.ResumeLayout(false);
@@ -2685,7 +2694,7 @@
             this.groupBox4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvPostAuth)).EndInit();
             this.tblUsersMultiple.ResumeLayout(false);
-            this.gpReply.ResumeLayout(false);
+            this.gpGeneratePassword.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserMulti)).EndInit();
             this.groupBox7.ResumeLayout(false);
@@ -2715,7 +2724,7 @@
         private System.Windows.Forms.GroupBox gpUser;
         private System.Windows.Forms.GroupBox gpAccounting;
         private System.Windows.Forms.GroupBox gpPostAuthentication;
-        private System.Windows.Forms.GroupBox gpReply;
+        private System.Windows.Forms.GroupBox gpGeneratePassword;
         private System.Windows.Forms.TextBox txtChipherKey;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtNomNas;
@@ -2929,5 +2938,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colvalue5;
         private System.Windows.Forms.DataGridViewTextBoxColumn colPriority5;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNbrRecord;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colid_groupegp;
     }
 }

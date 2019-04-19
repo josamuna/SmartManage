@@ -1064,7 +1064,7 @@ namespace smartManage.RadiusStudentsModel
                             {
                                 content = sr.ReadLine().ToString().Trim();
 
-                                //On n'ajoute pas les ligne vides
+                                //On n'ajoute pas les lignes vides
                                 if (!string.IsNullOrEmpty(content))
                                 {
                                     DataRow row = lstclsradcheck.NewRow();

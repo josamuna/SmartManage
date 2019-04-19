@@ -201,7 +201,7 @@ namespace smartManage.Desktop
         }
         #endregion
 
-        #region 
+        #region BINDING FOR GENERATE PASSWORD
         private void BindingList_User_multi()
         {
             //SetBindingControls(txtCodeUser, "Text", bdsrc_user, "id");
@@ -319,6 +319,13 @@ namespace smartManage.Desktop
                         cboGroupe.DataSource = clsMetier2.GetInstance().getAllClsradgroupcheck_dt();
                         this.setMembersallcbo(cboGroupe, "groupname", "groupname");
                         break;
+                }
+
+                //Here we sotp waitCursor if there are not records in BindinSource
+                if (bdsrc_nas.Count == 0 || bdsrc_nas.Count == 0 || bdsrc_user.Count == 0
+                    || bdsrc_accounting.Count == 0 || bdsrc_postauth.Count == 0)
+                {
+                    ExecuteThreadStopWaitCursor();
                 }
             }
             catch (ArgumentException ex)
@@ -946,7 +953,7 @@ namespace smartManage.Desktop
             gpUser.Enabled = status;
             gpAccounting.Enabled = status;
             gpPostAuthentication.Enabled = status;
-            gpReply.Enabled = status;
+            gpGeneratePassword.Enabled = status;
         }
 
         private void cmdValidate_Click(object sender, EventArgs e)
@@ -1007,38 +1014,6 @@ namespace smartManage.Desktop
             {
                 cmdValidate_Click(sender, e);
             }
-        }
-
-        private void frmDataViewAdministration_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            try
-            {
-                clsMetier2.GetInstance().CloseConnection();
-            }
-            catch { }
-
-            try
-            {
-                clsMetier2.GetInstance().CloseModemConnection();
-            }
-            catch { }
-
-            //Reinitialise all Thread
-            try
-            {
-                this.UnloadThreadRessource(tLoadDataGrid);
-                this.UnloadThreadRessource(tLoadDataGridMulti); 
-                this.UnloadThreadRessource(tLoadDataGridMultiFile);
-                this.UnloadThreadRessource(tGenerateKey); 
-                this.UnloadThreadRessource(tSaveKey);
-                this.UnloadThreadRessource(tExportKey);
-            }
-            catch { }
-
-            Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Attente d'une action de l'utilisateur");
-            Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
-            //Affecte Activate BindingNavigator
-            Principal.ActivateMainBindingSource(Principal);
         }
 
         public void New()
@@ -1870,6 +1845,38 @@ namespace smartManage.Desktop
             {
                 MessageBox.Show("Echec de l'enregistrement des données générées, " + ex.Message, "Génération des données générées", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1, MessageBoxOptions.DefaultDesktopOnly);
             }
+        }
+
+        private void frmDataViewEtudiant_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            try
+            {
+                clsMetier2.GetInstance().CloseConnection();
+            }
+            catch { }
+
+            try
+            {
+                clsMetier2.GetInstance().CloseModemConnection();
+            }
+            catch { }
+
+            //Reinitialise all Threads
+            try
+            {
+                this.UnloadThreadRessource(tLoadDataGrid);
+                this.UnloadThreadRessource(tLoadDataGridMulti);
+                this.UnloadThreadRessource(tLoadDataGridMultiFile);
+                this.UnloadThreadRessource(tGenerateKey);
+                this.UnloadThreadRessource(tSaveKey);
+                this.UnloadThreadRessource(tExportKey);
+            }
+            catch { }
+
+            Principal.SetValuesLabel(Properties.Settings.Default.UserConnected, "Attente d'une action de l'utilisateur");
+            Principal.ApplyDefaultStatusBar(Principal, Properties.Settings.Default.UserConnected);
+            //Affecte Activate BindingNavigator
+            Principal.ActivateMainBindingSource(Principal);
         }
     }
 }

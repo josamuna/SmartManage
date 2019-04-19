@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.IO.Ports;
 
 namespace smartManage.RadiusAdminModel
@@ -621,6 +622,72 @@ namespace smartManage.RadiusAdminModel
             return lstclsradacct;
         }
 
+        public DataTable getAllClsradcheck_dt_file(string filenamePath)
+        {
+            DataTable lstclsradcheck = new DataTable();
+
+            try
+            {
+                //Creating Columns
+                lstclsradcheck.Columns.Add("id", typeof(int));
+                lstclsradcheck.Columns.Add("username", typeof(string));
+                lstclsradcheck.Columns.Add("attribute", typeof(string));
+                lstclsradcheck.Columns.Add("op", typeof(string));
+                lstclsradcheck.Columns.Add("value", typeof(string));
+                lstclsradcheck.Columns.Add("priority", typeof(int));
+                lstclsradcheck.Columns.Add("nbr_enreg", typeof(string));
+                lstclsradcheck.Columns.Add("groupname", typeof(string));
+
+                if (File.Exists(filenamePath))
+                {
+                    //On recupere toutes les lignes du fichier existant
+                    string[] AllLines = File.ReadAllLines(filenamePath);
+
+                    //On teste si le fichier est vide en regardant sa taille
+                    if (AllLines.Length != 0)
+                    {
+                        string content = null;
+                        //Chargement des elements du fichier dans le Datatable
+                        using (StreamReader sr = new StreamReader(filenamePath))
+                        {
+                            int countId = 1;
+                            int recordCount = AllLines.Length;
+
+                            while (!sr.EndOfStream)
+                            {
+                                content = sr.ReadLine().ToString().Trim();
+
+                                //On n'ajoute pas les lignes vides
+                                if (!string.IsNullOrEmpty(content))
+                                {
+                                    DataRow row = lstclsradcheck.NewRow();
+                                    row["id"] = countId;
+                                    row["username"] = content;
+                                    row["attribute"] = "Cleartext-Password";
+                                    row["op"] = ":=";
+                                    row["value"] = null;
+                                    row["priority"] = 10;
+                                    row["nbr_enreg"] = recordCount;
+                                    row["groupname"] = "utilisateur";
+
+                                    lstclsradcheck.Rows.Add(row);
+                                    countId++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                        throw new Exception("Le fichier est vide !!!");
+                }
+            }
+            catch (Exception exc)
+            {
+                ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Sélection de tous les enregistrements de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                throw;
+            }
+            return lstclsradcheck;
+        }
+
         public int insertClsradacct(clsradacct varclsradacct)
         {
             int i = 0;
@@ -1176,6 +1243,76 @@ namespace smartManage.RadiusAdminModel
 
                     transaction.Commit();
                 }
+            }
+            catch (Exception exc)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    ImplementLog.Instance.PutLogMessage(Properties.Settings.Default.MasterDirectory, DateTime.Now.ToLongDateString() + " " + DateTime.Now.ToLongTimeString() + " : Insertion enregistrement de la table : 'radcheck' avec la classe 'clsradcheck' : " + exc.GetType().ToString() + " : " + exc.Message, Properties.Settings.Default.DirectoryUtilLog, Properties.Settings.Default.MasterDirectory + Properties.Settings.Default.LogFileName);
+                    throw;
+                }
+            }
+            finally
+            {
+                if (conn != null)
+                    conn.Close();
+
+                if (transaction != null)
+                    transaction.Dispose();
+            }
+            return i;
+        }
+
+        public int insertClsradcheck_multiple_dtrowv(DataRowView varclsradcheck)
+        {
+            int i = 0;
+            IDbTransaction transaction = null;
+
+            try
+            {
+                if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction(IsolationLevel.Serializable);
+
+                //Etant donne que la table radusergroup n'a pas d'index et depend de radcheck, on va drop son contenu 
+                //avant de faire des insertions
+                using (IDbCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "DELETE FROM radusergroup";
+                    cmd.Transaction = transaction;
+                    i = cmd.ExecuteNonQuery();
+                }
+
+                foreach (DataRow dtr in varclsradcheck.Row.Table.Rows)
+                {
+                    //Insert in radcheck
+                    using (IDbCommand cmd1 = conn.CreateCommand())
+                    {
+                        cmd1.CommandText = string.Format(@"INSERT INTO radcheck ( id,username,attribute,op,value ) VALUES ( @id,@username,@attribute,@op,@value) 
+                        ON DUPLICATE KEY UPDATE
+                        attribute=@attribute, op=@op, value=@value");
+                        cmd1.Parameters.Add(getParameter(cmd1, "@id", DbType.Int32, 4, dtr["id"]));
+                        cmd1.Parameters.Add(getParameter(cmd1, "@username", DbType.String, 64, dtr["username"]));
+                        cmd1.Parameters.Add(getParameter(cmd1, "@attribute", DbType.String, 64, dtr["attribute"]));
+                        cmd1.Parameters.Add(getParameter(cmd1, "@op", DbType.String, 2, dtr["op"]));
+                        cmd1.Parameters.Add(getParameter(cmd1, "@value", DbType.String, 253, dtr["value"]));
+                        cmd1.Transaction = transaction;
+                        i = cmd1.ExecuteNonQuery();
+                    }
+
+                    //Insert in radusergroup
+                    using (IDbCommand cmd2 = conn.CreateCommand())
+                    {
+                        cmd2.CommandText = "INSERT INTO radusergroup ( username,groupname,priority ) VALUES ( @username,@groupname,@priority)";
+                        cmd2.Parameters.Add(getParameter(cmd2, "@username", DbType.String, 64, dtr["username"]));
+                        cmd2.Parameters.Add(getParameter(cmd2, "@groupname", DbType.String, 64, dtr["groupname"]));
+                        cmd2.Parameters.Add(getParameter(cmd2, "@priority", DbType.Int32, 4, dtr["priority"]));
+                        cmd2.Transaction = transaction;
+                        i = cmd2.ExecuteNonQuery();
+                    }
+                }
+
+                transaction.Commit();
             }
             catch (Exception exc)
             {
@@ -2430,6 +2567,28 @@ namespace smartManage.RadiusAdminModel
 
         #endregion CLSRADUSERGROUP 
 
+        #region GESTION POUR FICHIER
+        public static void GenerateFiles(System.Windows.Forms.BindingSource bdsrc, string chemin_access)
+        {
+            StreamWriter srw = new StreamWriter(chemin_access + @"\radcheck_insert.sql", false);
+            StreamWriter srw1 = new StreamWriter(chemin_access + @"\radcheck_update.sql", false);
+            StreamWriter srw2 = new StreamWriter(chemin_access + @"\radusergroup_insert.sql", false);
+            StreamWriter srw3 = new StreamWriter(chemin_access + @"\radusergroup_update.sql", false);
+
+            foreach (DataRow dtr in ((DataRowView)bdsrc.Current).Row.Table.Rows)
+            {
+                srw.WriteLine(string.Format("insert into radcheck(username,attribute,op,value) values('{0}','{1}','{2}','{3}');", dtr["username"], "Cleartext-Password", ":=", dtr["value"]));
+                srw1.WriteLine(string.Format("update radcheck set attribute='{0}',op='{1}',value='{2}' where username='{3}';", "Cleartext-Password", ":=", dtr["value"], dtr["username"]));
+                srw2.WriteLine(string.Format("insert into radusergroup(username,groupname,priority) values ('{0}','{1}',{2});", dtr["username"], dtr["groupname"], dtr["priority"]));
+                srw3.WriteLine(string.Format("update radusergroup set groupname='{0}',priority={1} where username='{2}';", dtr["groupname"], dtr["priority"], dtr["username"]));
+            }
+
+            srw.Close();
+            srw1.Close();
+            srw2.Close();
+            srw3.Close();
+        }
+        #endregion
         #region GESTION SMS
         /// <summary>
         /// Permet l'ouverture de la connection au port passé en premier paramètre, avec comme vitesse 
