@@ -74,6 +74,14 @@ namespace smartManage.Desktop
 
         ResourceManager stringManager = null;
 
+        //Adding List and Datatable that hold data for search
+        List<clsnas> search_nas = null;
+        List<clsradacct> search_radacct = null;
+        List<clsradpostauth> search_radpostauth = null;
+
+        DataTable search_radcheck = null;
+        DataTable search_usermulti = null;
+
         public frmDataViewEtudiant()
         {
             InitializeComponent();
@@ -267,7 +275,10 @@ namespace smartManage.Desktop
                 switch (tblMain.SelectedIndex)
                 {
                     case 1://Manage NAS
-                        bdsrc_nas.DataSource = clsMetier2.GetInstance().getAllClsnas();
+                        search_nas = new List<clsnas>();
+                        search_nas = clsMetier2.GetInstance().getAllClsnas();
+
+                        bdsrc_nas.DataSource = search_nas;
                         Principal.SetDataSource(bdsrc_nas);
 
                         dgvNAS.DataSource = bdsrc_nas;
@@ -292,18 +303,27 @@ namespace smartManage.Desktop
                         cboGroupeUser.DataSource = clsMetier2.GetInstance().getAllClsradgroupcheck_dt();
                         this.setMembersallcbo(cboGroupeUser, "groupname", "groupname");
 
-                        bdsrc_user.DataSource = clsMetier2.GetInstance().getAllClsradcheck_dt();
+                        search_radcheck = new DataTable();
+                        search_radcheck = clsMetier2.GetInstance().getAllClsradcheck_dt();
+
+                        bdsrc_user.DataSource = search_radcheck;
                         Principal.SetDataSource(bdsrc_user);
                         dgvUser.DataSource = bdsrc_user;
                         break;
                     case 3://Gestion Accounting
-                        bdsrc_accounting.DataSource = clsMetier2.GetInstance().getAllClsradacct();
+                        search_radacct = new List<clsradacct>();
+                        search_radacct = clsMetier2.GetInstance().getAllClsradacct();
+
+                        bdsrc_accounting.DataSource = search_radacct;
                         Principal.SetDataSource(bdsrc_accounting);
 
                         dgvAccounting.DataSource = bdsrc_accounting;
                         break;
                     case 4://Gestion post authentication
-                        bdsrc_postauth.DataSource = clsMetier2.GetInstance().getAllClsradpostauth();
+                        search_radpostauth = new List<clsradpostauth>();
+                        search_radpostauth = clsMetier2.GetInstance().getAllClsradpostauth();
+
+                        bdsrc_postauth.DataSource = search_radpostauth;
                         Principal.SetDataSource(bdsrc_postauth);
 
                         dgvPostAuth.DataSource = bdsrc_postauth;
@@ -1094,7 +1114,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvNAS.DataSource = search_nas;
                                 return;
                             }
                             else
@@ -1102,7 +1123,10 @@ namespace smartManage.Desktop
                                 List<clsnas> lstItemSearch = new List<clsnas>();
                                 lstItemSearch = clsMetier2.GetInstance().getAllClsnas(criteria);
 
-                                dgvNAS.DataSource = lstItemSearch;
+                                if(lstItemSearch.Count > 0)
+                                    dgvNAS.DataSource = lstItemSearch;
+                                else
+                                    dgvNAS.DataSource = search_nas;
                             }
                         }
                         break;
@@ -1113,7 +1137,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvUser.DataSource = search_radcheck;
                                 return;
                             }
                             else
@@ -1122,7 +1147,11 @@ namespace smartManage.Desktop
                                 //lstItemSearch = clsMetier2.GetInstance().getAllClsradcheck(criteria);
                                 DataTable lstItemSearch = new DataTable();
                                 lstItemSearch = clsMetier2.GetInstance().getAllClsradcheck_dt(criteria);
-                                dgvUser.DataSource = lstItemSearch;
+
+                                if (lstItemSearch.Rows.Count > 0)
+                                    dgvUser.DataSource = lstItemSearch;
+                                else
+                                    dgvUser.DataSource = search_radcheck;
                             }
                         }
                         break;
@@ -1133,7 +1162,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvAccounting.DataSource = search_radacct;
                                 return;
                             }
                             else
@@ -1141,7 +1171,10 @@ namespace smartManage.Desktop
                                 List<clsradacct> lstItemSearch = new List<clsradacct>();
                                 lstItemSearch = clsMetier2.GetInstance().getAllClsradacct(criteria);
 
-                                dgvAccounting.DataSource = lstItemSearch;
+                                if (lstItemSearch.Count > 0)
+                                    dgvAccounting.DataSource = lstItemSearch;
+                                else
+                                    dgvAccounting.DataSource = search_radacct;
                             }
                         }
                         break;
@@ -1152,7 +1185,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvPostAuth.DataSource = search_radpostauth;
                                 return;
                             }
                             else
@@ -1160,7 +1194,10 @@ namespace smartManage.Desktop
                                 List<clsradpostauth> lstItemSearch = new List<clsradpostauth>();
                                 lstItemSearch = clsMetier2.GetInstance().getAllClsradpostauth(criteria);
 
-                                dgvPostAuth.DataSource = lstItemSearch;
+                                if (lstItemSearch.Count > 0)
+                                    dgvPostAuth.DataSource = lstItemSearch;
+                                else
+                                    dgvPostAuth.DataSource = search_radpostauth;
                             }
                         }
                         break;
@@ -1171,14 +1208,19 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvUserMulti.DataSource = search_usermulti;
                                 return;
                             }
                             else
                             {
                                 DataTable lstItemSearch = new DataTable();
                                 lstItemSearch = clsMetier2.GetInstance().getAllClsradcheck_dt(criteria);
-                                dgvUserMulti.DataSource = lstItemSearch;
+
+                                if (lstItemSearch.Rows.Count > 0)
+                                    dgvUserMulti.DataSource = lstItemSearch;
+                                else
+                                    dgvUserMulti.DataSource = search_usermulti;
                             }
                         }
                         break;

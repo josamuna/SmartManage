@@ -76,6 +76,14 @@ namespace smartManage.Desktop
         Thread tLoadDataGridMulti = null;
         Thread tLoadDataGridMultiFile = null;
 
+        //Adding List and Datatable that hold data for search
+        List<clsnas> search_nas = null;
+        List<clsradacct> search_radacct = null;
+        List<clsradpostauth> search_radpostauth = null;
+
+        DataTable search_radcheck = null;
+        DataTable search_usermulti = null;
+
         ResourceManager stringManager = null;
 
         public frmDataViewAdministration()
@@ -1173,7 +1181,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvNAS.DataSource = search_nas;
                                 return;
                             }
                             else
@@ -1181,7 +1190,10 @@ namespace smartManage.Desktop
                                 List<clsnas> lstItemSearch = new List<clsnas>();
                                 lstItemSearch = clsMetier1.GetInstance().getAllClsnas(criteria);
 
-                                dgvNAS.DataSource = lstItemSearch;
+                                if (lstItemSearch.Count > 0)
+                                    dgvNAS.DataSource = lstItemSearch;
+                                else
+                                    dgvNAS.DataSource = search_nas;
                             }
                         }
                         break;
@@ -1192,7 +1204,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvUser.DataSource = search_radcheck;
                                 return;
                             }
                             else
@@ -1202,7 +1215,10 @@ namespace smartManage.Desktop
                                 DataTable lstItemSearch = new DataTable();
                                 lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
 
-                                dgvUser.DataSource = lstItemSearch;
+                                if (lstItemSearch.Rows.Count > 0)
+                                    dgvUser.DataSource = lstItemSearch;
+                                else
+                                    dgvUser.DataSource = search_radcheck;
                             }
                         }
                         break;
@@ -1213,7 +1229,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvAccounting.DataSource = search_radacct;
                                 return;
                             }
                             else
@@ -1221,7 +1238,10 @@ namespace smartManage.Desktop
                                 List<clsradacct> lstItemSearch = new List<clsradacct>();
                                 lstItemSearch = clsMetier1.GetInstance().getAllClsradacct(criteria);
 
-                                dgvAccounting.DataSource = lstItemSearch;
+                                if (lstItemSearch.Count > 0)
+                                    dgvAccounting.DataSource = lstItemSearch;
+                                else
+                                    dgvAccounting.DataSource = search_radacct;
                             }
                         }
                         break;
@@ -1232,7 +1252,8 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvPostAuth.DataSource = search_radpostauth;
                                 return;
                             }
                             else
@@ -1240,7 +1261,10 @@ namespace smartManage.Desktop
                                 List<clsradpostauth> lstItemSearch = new List<clsradpostauth>();
                                 lstItemSearch = clsMetier1.GetInstance().getAllClsradpostauth(criteria);
 
-                                dgvPostAuth.DataSource = lstItemSearch;
+                                if (lstItemSearch.Count > 0)
+                                    dgvPostAuth.DataSource = lstItemSearch;
+                                else
+                                    dgvPostAuth.DataSource = search_radpostauth;
                             }
                         }
                         break;
@@ -1251,14 +1275,19 @@ namespace smartManage.Desktop
                         {
                             if (string.IsNullOrEmpty(criteria))
                             {
-                                this.RefreshRec();
+                                //this.RefreshRec();
+                                dgvUserMulti.DataSource = search_usermulti;
                                 return;
                             }
                             else
                             {
                                 DataTable lstItemSearch = new DataTable();
                                 lstItemSearch = clsMetier1.GetInstance().getAllClsradcheck_dt(criteria);
-                                dgvUserMulti.DataSource = lstItemSearch;
+
+                                if (lstItemSearch.Rows.Count > 0)
+                                    dgvUserMulti.DataSource = lstItemSearch;
+                                else
+                                    dgvUserMulti.DataSource = search_usermulti;
                             }
                         }
                         break;
