@@ -2285,7 +2285,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO portee ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsportee.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsportee.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsportee.Valeur));
                     if (varclsportee.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsportee.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsportee.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsportee.Date_created));
@@ -2319,7 +2319,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE portee  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsportee.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsportee.Valeur));
                     if (varclsportee.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsportee.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsportee.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsportee.Date_created));
@@ -2502,7 +2502,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO poids ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspoids.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspoids.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspoids.Valeur));
                     if (varclspoids.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspoids.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspoids.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspoids.Date_created));
@@ -2536,7 +2536,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE poids  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspoids.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspoids.Valeur));
                     if (varclspoids.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspoids.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspoids.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspoids.Date_created));
@@ -7647,7 +7647,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO ram ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsram.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsram.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsram.Valeur));
                     if (varclsram.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsram.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsram.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsram.Date_created));
@@ -7681,7 +7681,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE ram  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsram.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsram.Valeur));
                     if (varclsram.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsram.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsram.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsram.Date_created));
@@ -7864,7 +7864,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO processeur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsprocesseur.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsprocesseur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsprocesseur.Valeur));
                     if (varclsprocesseur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsprocesseur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsprocesseur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsprocesseur.Date_created));
@@ -7898,7 +7898,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE processeur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsprocesseur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsprocesseur.Valeur));
                     if (varclsprocesseur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsprocesseur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsprocesseur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsprocesseur.Date_created));
@@ -10631,7 +10631,7 @@ namespace smartManage.Model
             else
             {
                 //Match match = Regex.Match(mac_address);
-                if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[1-9a-fA-F][0-9a-fA-F]{11}$"))
+                if (System.Text.RegularExpressions.Regex.IsMatch(mac_address, "^[0-9a-fA-F][0-9a-fA-F]{11}$"))
                     return mac_address.ToUpper();
                 else
                     throw new InvalidOperationException(string.Format("L'Adresse MAC {0} n'est pas valide\nUne adresse MAC valide doit avoir au plus 12 caractères et utilise les chiffres de 0 à 9 et les lettres A à F ou a à f !!!", mac_address));
@@ -13287,7 +13287,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO tension_batterie ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_batterie.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_batterie.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclstension_batterie.Valeur));
                     if (varclstension_batterie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_batterie.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclstension_batterie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_batterie.Date_created));
@@ -13321,7 +13321,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE tension_batterie  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_batterie.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclstension_batterie.Valeur));
                     if (varclstension_batterie.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_batterie.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclstension_batterie.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_batterie.Date_created));
@@ -13723,7 +13723,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO tension_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclstension_adaptateur.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclstension_adaptateur.Valeur));
                     if (varclstension_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclstension_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_adaptateur.Date_created));
@@ -13757,7 +13757,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE tension_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclstension_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclstension_adaptateur.Valeur));
                     if (varclstension_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclstension_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclstension_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclstension_adaptateur.Date_created));
@@ -14166,7 +14166,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO puissance_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance_adaptateur.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspuissance_adaptateur.Valeur));
                     if (varclspuissance_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspuissance_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance_adaptateur.Date_created));
@@ -14200,7 +14200,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE puissance_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspuissance_adaptateur.Valeur));
                     if (varclspuissance_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspuissance_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance_adaptateur.Date_created));
@@ -14644,7 +14644,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO intensite_adaptateur ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite_adaptateur.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsintensite_adaptateur.Valeur));
                     if (varclsintensite_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsintensite_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite_adaptateur.Date_created));
@@ -14678,7 +14678,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = "UPDATE intensite_adaptateur  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id";
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite_adaptateur.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsintensite_adaptateur.Valeur));
                     if (varclsintensite_adaptateur.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite_adaptateur.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsintensite_adaptateur.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite_adaptateur.Date_created));
@@ -14861,7 +14861,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO puissance ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspuissance.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspuissance.Valeur));
                     if (varclspuissance.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspuissance.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance.Date_created));
@@ -14895,7 +14895,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE puissance  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspuissance.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspuissance.Valeur));
                     if (varclspuissance.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspuissance.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspuissance.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspuissance.Date_created));
@@ -15300,7 +15300,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO intensite ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclsintensite.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsintensite.Valeur));
                     if (varclsintensite.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsintensite.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite.Date_created));
@@ -15334,7 +15334,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE intensite  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclsintensite.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclsintensite.Valeur));
                     if (varclsintensite.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclsintensite.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclsintensite.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclsintensite.Date_created));
@@ -15517,7 +15517,7 @@ namespace smartManage.Model
                 {
                     cmd.CommandText = string.Format("INSERT INTO page_par_minute ( id,valeur,user_created,date_created,user_modified,date_modified ) VALUES (@id,@valeur,@user_created,@date_created,@user_modified,@date_modified  )");
                     cmd.Parameters.Add(getParameter(cmd, "@id", DbType.Int32, 4, varclspage_par_minute.Id));
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspage_par_minute.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspage_par_minute.Valeur));
                     if (varclspage_par_minute.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspage_par_minute.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspage_par_minute.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspage_par_minute.Date_created));
@@ -15551,7 +15551,7 @@ namespace smartManage.Model
                 using (IDbCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = string.Format("UPDATE page_par_minute  SET valeur=@valeur,user_created=@user_created,date_created=@date_created,user_modified=@user_modified,date_modified=@date_modified  WHERE 1=1  AND id=@id ");
-                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Single, 4, varclspage_par_minute.Valeur));
+                    cmd.Parameters.Add(getParameter(cmd, "@valeur", DbType.Double, 4, varclspage_par_minute.Valeur));
                     if (varclspage_par_minute.User_created != null) cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, varclspage_par_minute.User_created));
                     else cmd.Parameters.Add(getParameter(cmd, "@user_created", DbType.String, 50, DBNull.Value));
                     if (varclspage_par_minute.Date_created.HasValue) cmd.Parameters.Add(getParameter(cmd, "@date_created", DbType.DateTime, 8, varclspage_par_minute.Date_created));
