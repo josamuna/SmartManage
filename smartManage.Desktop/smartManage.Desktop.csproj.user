@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <PublishUrlHistory>\\ISIGGOMA\SmartManage_Application\|\\Josam\shared_doc\TestProject\|\\Josam\shared_doc\TestProject\SmartManage\|publish\</PublishUrlHistory>
+    <PublishUrlHistory>\\Josam\shared_doc\TestProject\|\\ISIGGOMA\SmartManage_Application\|\\Josam\shared_doc\TestProject\SmartManage\|publish\</PublishUrlHistory>
     <InstallUrlHistory />
     <SupportUrlHistory>\\Josam\shared_doc\TestProject\SmartManage\Support\aide.html</SupportUrlHistory>
     <UpdateUrlHistory />

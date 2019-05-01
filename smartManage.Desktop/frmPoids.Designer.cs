@@ -470,6 +470,7 @@
             this.Name = "frmPoids";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Poids de l\'équipement";
+            this.Load += new System.EventHandler(this.frmPoids_Load);
             ((System.ComponentModel.ISupportInitialize)(this.bdNav)).EndInit();
             this.bdNav.ResumeLayout(false);
             this.bdNav.PerformLayout();
