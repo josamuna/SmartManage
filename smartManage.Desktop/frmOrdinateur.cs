@@ -50,7 +50,7 @@ namespace smartManage.Desktop
         Thread tGenerateQrCode = null;
         Thread tStopWaitCursor = null;
 
-        //ariable that contain Byte image for QrCode
+        //Variable that contain Byte image for QrCode
         byte[] tmpQrCode = null;
 
         //Boolean variables for photo
