@@ -29,80 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgv = new System.Windows.Forms.DataGridView();
-            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colArchiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colId_categorie_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_compte = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQrcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDate_acquisition = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colid_garantie = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_marque = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_modele = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_couleur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_poids = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_etat_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPhoto1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPhoto2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colPhoto3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMac_adresse1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colMac_adresse2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCommentaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colUser_created = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDate_created = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colUser_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDate_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_ordinateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_clavier = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_os = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colid_ram = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colid_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colid_nombre_coeur_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_nombre_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_capacite_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_taille_ecran = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_usb2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_usb3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_hdmi = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_vga = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_tension_batterie = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_tension_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_puissance_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_intensite_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNumero_cle = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_imprimante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_puissance = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_intensite = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_page_par_minute = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_amplificateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_tension_alimentation = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_usb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_memoire = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_sorties_audio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_microphone = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_gain = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_routeur_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_version_ios = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_gbe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_fe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_fo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCapable_usb = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.colId_default_pwd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_default_ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_console = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_auxiliaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_type_switch = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_frequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_antenne = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_netette = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colId_portee = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCompatible_wifi = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txtLabel = new System.Windows.Forms.TextBox();
@@ -227,6 +155,78 @@
             this.smnCtxPhoto2 = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuPhoto3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.smnCtxPhoto3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.colId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCode_str = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colArchiver = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colId_categorie_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_compte = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQrcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDate_acquisition = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_garantie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_marque = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_modele = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_couleur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_poids = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_etat_materiel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPhoto1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPhoto2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colPhoto3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colLabel = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMac_adresse1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colMac_adresse2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCommentaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUser_created = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDate_created = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUser_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDate_modified = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_ordinateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_clavier = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_os = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_ram = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colid_nombre_coeur_processeur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_nombre_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_capacite_hdd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_taille_ecran = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_hdmi = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_vga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_batterie = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_puissance_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_intensite_adaptateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNumero_cle = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_imprimante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_puissance = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_intensite = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_page_par_minute = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_amplificateur = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_tension_alimentation = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_usb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_memoire = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_sorties_audio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_microphone = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_gain = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_routeur_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_version_ios = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_gbe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_fe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_fo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_serial = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCapable_usb = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.colId_default_pwd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_default_ip = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_console = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_auxiliaire = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_ap = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_type_switch = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_frequence = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_antenne = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_netette = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colId_portee = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCompatible_wifi = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgv)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -247,6 +247,7 @@
             // 
             this.dgv.AllowUserToAddRows = false;
             this.dgv.AllowUserToDeleteRows = false;
+            this.dgv.AllowUserToOrderColumns = true;
             this.dgv.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
@@ -326,14 +327,14 @@
             this.colId_netette,
             this.colId_portee,
             this.colCompatible_wifi});
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.Thistle;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Blue;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgv.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Thistle;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Blue;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgv.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgv.Location = new System.Drawing.Point(3, 19);
             this.dgv.MultiSelect = false;
             this.dgv.Name = "dgv";
@@ -343,514 +344,6 @@
             this.dgv.TabIndex = 200;
             this.dgv.TabStop = false;
             this.dgv.SelectionChanged += new System.EventHandler(this.dgv_SelectionChanged);
-            // 
-            // colId
-            // 
-            this.colId.DataPropertyName = "Id";
-            this.colId.HeaderText = "Id";
-            this.colId.Name = "colId";
-            this.colId.Visible = false;
-            // 
-            // colCode_str
-            // 
-            this.colCode_str.DataPropertyName = "Code_str";
-            this.colCode_str.HeaderText = "Code texte";
-            this.colCode_str.Name = "colCode_str";
-            // 
-            // colArchiver
-            // 
-            this.colArchiver.DataPropertyName = "Archiver";
-            this.colArchiver.HeaderText = "Archiver";
-            this.colArchiver.Name = "colArchiver";
-            this.colArchiver.Width = 50;
-            // 
-            // colId_categorie_materiel
-            // 
-            this.colId_categorie_materiel.DataPropertyName = "Id_categorie_materiel";
-            this.colId_categorie_materiel.HeaderText = "Id_categorie_materiel";
-            this.colId_categorie_materiel.Name = "colId_categorie_materiel";
-            this.colId_categorie_materiel.Visible = false;
-            // 
-            // colId_compte
-            // 
-            this.colId_compte.DataPropertyName = "Id_compte";
-            this.colId_compte.HeaderText = "Id_compte";
-            this.colId_compte.Name = "colId_compte";
-            this.colId_compte.Visible = false;
-            // 
-            // colQrcode
-            // 
-            this.colQrcode.DataPropertyName = "Qrcode";
-            this.colQrcode.HeaderText = "Qrcode";
-            this.colQrcode.Name = "colQrcode";
-            this.colQrcode.Visible = false;
-            // 
-            // colDate_acquisition
-            // 
-            this.colDate_acquisition.DataPropertyName = "Date_acquisition";
-            this.colDate_acquisition.HeaderText = "Date acquisition";
-            this.colDate_acquisition.Name = "colDate_acquisition";
-            this.colDate_acquisition.Width = 110;
-            // 
-            // colid_garantie
-            // 
-            this.colid_garantie.DataPropertyName = "id_garantie";
-            this.colid_garantie.HeaderText = "id_garantie";
-            this.colid_garantie.Name = "colid_garantie";
-            this.colid_garantie.Visible = false;
-            // 
-            // colId_marque
-            // 
-            this.colId_marque.DataPropertyName = "Id_marque";
-            this.colId_marque.HeaderText = "Id_marque";
-            this.colId_marque.Name = "colId_marque";
-            this.colId_marque.Visible = false;
-            // 
-            // colId_modele
-            // 
-            this.colId_modele.DataPropertyName = "Id_modele";
-            this.colId_modele.HeaderText = "Id_modele";
-            this.colId_modele.Name = "colId_modele";
-            this.colId_modele.Visible = false;
-            // 
-            // colId_couleur
-            // 
-            this.colId_couleur.DataPropertyName = "Id_couleur";
-            this.colId_couleur.HeaderText = "Id_couleur";
-            this.colId_couleur.Name = "colId_couleur";
-            this.colId_couleur.Visible = false;
-            // 
-            // colId_poids
-            // 
-            this.colId_poids.DataPropertyName = "Id_poids";
-            this.colId_poids.HeaderText = "Id_poids";
-            this.colId_poids.Name = "colId_poids";
-            this.colId_poids.Visible = false;
-            // 
-            // colId_etat_materiel
-            // 
-            this.colId_etat_materiel.DataPropertyName = "Id_etat_materiel";
-            this.colId_etat_materiel.HeaderText = "Id_etat_materiel";
-            this.colId_etat_materiel.Name = "colId_etat_materiel";
-            this.colId_etat_materiel.Visible = false;
-            // 
-            // colPhoto1
-            // 
-            this.colPhoto1.DataPropertyName = "Photo1";
-            this.colPhoto1.HeaderText = "Photo1";
-            this.colPhoto1.Name = "colPhoto1";
-            this.colPhoto1.Visible = false;
-            // 
-            // colPhoto2
-            // 
-            this.colPhoto2.DataPropertyName = "Photo2";
-            this.colPhoto2.HeaderText = "Photo2";
-            this.colPhoto2.Name = "colPhoto2";
-            this.colPhoto2.Visible = false;
-            // 
-            // colPhoto3
-            // 
-            this.colPhoto3.DataPropertyName = "Photo3";
-            this.colPhoto3.HeaderText = "Photo3";
-            this.colPhoto3.Name = "colPhoto3";
-            this.colPhoto3.Visible = false;
-            // 
-            // colLabel
-            // 
-            this.colLabel.DataPropertyName = "Label";
-            this.colLabel.HeaderText = "Etiquette";
-            this.colLabel.Name = "colLabel";
-            // 
-            // colMac_adresse1
-            // 
-            this.colMac_adresse1.DataPropertyName = "Mac_adresse1";
-            this.colMac_adresse1.HeaderText = "Mac Wifi";
-            this.colMac_adresse1.Name = "colMac_adresse1";
-            // 
-            // colMac_adresse2
-            // 
-            this.colMac_adresse2.DataPropertyName = "Mac_adresse2";
-            this.colMac_adresse2.HeaderText = "Mac LAN";
-            this.colMac_adresse2.Name = "colMac_adresse2";
-            // 
-            // colCommentaire
-            // 
-            this.colCommentaire.DataPropertyName = "Commentaire";
-            this.colCommentaire.HeaderText = "Commentaire";
-            this.colCommentaire.Name = "colCommentaire";
-            this.colCommentaire.Width = 300;
-            // 
-            // colUser_created
-            // 
-            this.colUser_created.DataPropertyName = "User_created";
-            this.colUser_created.HeaderText = "User created";
-            this.colUser_created.Name = "colUser_created";
-            // 
-            // colDate_created
-            // 
-            this.colDate_created.DataPropertyName = "Date_created";
-            this.colDate_created.HeaderText = "Date created";
-            this.colDate_created.Name = "colDate_created";
-            // 
-            // colUser_modified
-            // 
-            this.colUser_modified.DataPropertyName = "User_modified";
-            this.colUser_modified.HeaderText = "User modified";
-            this.colUser_modified.Name = "colUser_modified";
-            // 
-            // colDate_modified
-            // 
-            this.colDate_modified.DataPropertyName = "Date_modified";
-            this.colDate_modified.HeaderText = "Date modified";
-            this.colDate_modified.Name = "colDate_modified";
-            // 
-            // colId_type_ordinateur
-            // 
-            this.colId_type_ordinateur.DataPropertyName = "Id_type_ordinateur";
-            this.colId_type_ordinateur.HeaderText = "Id_type_ordinateur";
-            this.colId_type_ordinateur.Name = "colId_type_ordinateur";
-            this.colId_type_ordinateur.Visible = false;
-            // 
-            // colId_type_clavier
-            // 
-            this.colId_type_clavier.DataPropertyName = "Id_type_clavier";
-            this.colId_type_clavier.HeaderText = "Id_type_clavier";
-            this.colId_type_clavier.Name = "colId_type_clavier";
-            this.colId_type_clavier.Visible = false;
-            // 
-            // colId_os
-            // 
-            this.colId_os.DataPropertyName = "Id_os";
-            this.colId_os.HeaderText = "Id_os";
-            this.colId_os.Name = "colId_os";
-            this.colId_os.Visible = false;
-            // 
-            // colid_ram
-            // 
-            this.colid_ram.DataPropertyName = "id_ram";
-            this.colid_ram.HeaderText = "id_ram";
-            this.colid_ram.Name = "colid_ram";
-            this.colid_ram.Visible = false;
-            // 
-            // colid_processeur
-            // 
-            this.colid_processeur.DataPropertyName = "id_processeur";
-            this.colid_processeur.HeaderText = "id_processeur";
-            this.colid_processeur.Name = "colid_processeur";
-            this.colid_processeur.Visible = false;
-            this.colid_processeur.Width = 130;
-            // 
-            // colid_nombre_coeur_processeur
-            // 
-            this.colid_nombre_coeur_processeur.DataPropertyName = "id_nombre_coeur_processeur";
-            this.colid_nombre_coeur_processeur.HeaderText = "id_nombre_coeur_processeur";
-            this.colid_nombre_coeur_processeur.Name = "colid_nombre_coeur_processeur";
-            this.colid_nombre_coeur_processeur.Visible = false;
-            this.colid_nombre_coeur_processeur.Width = 150;
-            // 
-            // colId_type_hdd
-            // 
-            this.colId_type_hdd.DataPropertyName = "Id_type_hdd";
-            this.colId_type_hdd.HeaderText = "Id_type_hdd";
-            this.colId_type_hdd.Name = "colId_type_hdd";
-            this.colId_type_hdd.Visible = false;
-            // 
-            // colId_nombre_hdd
-            // 
-            this.colId_nombre_hdd.DataPropertyName = "Id_nombre_hdd";
-            this.colId_nombre_hdd.HeaderText = "Id_nombre_hdd";
-            this.colId_nombre_hdd.Name = "colId_nombre_hdd";
-            this.colId_nombre_hdd.Visible = false;
-            // 
-            // colId_capacite_hdd
-            // 
-            this.colId_capacite_hdd.DataPropertyName = "Id_capacite_hdd";
-            this.colId_capacite_hdd.HeaderText = "Id_capacite_hdd";
-            this.colId_capacite_hdd.Name = "colId_capacite_hdd";
-            this.colId_capacite_hdd.Visible = false;
-            this.colId_capacite_hdd.Width = 120;
-            // 
-            // colId_taille_ecran
-            // 
-            this.colId_taille_ecran.DataPropertyName = "Id_taille_ecran";
-            this.colId_taille_ecran.HeaderText = "Id_taille_ecran";
-            this.colId_taille_ecran.Name = "colId_taille_ecran";
-            this.colId_taille_ecran.Visible = false;
-            this.colId_taille_ecran.Width = 150;
-            // 
-            // colId_usb2
-            // 
-            this.colId_usb2.DataPropertyName = "Id_usb2";
-            this.colId_usb2.HeaderText = "Id_usb2";
-            this.colId_usb2.Name = "colId_usb2";
-            this.colId_usb2.Visible = false;
-            // 
-            // colId_usb3
-            // 
-            this.colId_usb3.DataPropertyName = "Id_usb3";
-            this.colId_usb3.HeaderText = "Id_usb3";
-            this.colId_usb3.Name = "colId_usb3";
-            this.colId_usb3.Visible = false;
-            // 
-            // colId_hdmi
-            // 
-            this.colId_hdmi.DataPropertyName = "Id_hdmi";
-            this.colId_hdmi.HeaderText = "Id_hdmi";
-            this.colId_hdmi.Name = "colId_hdmi";
-            this.colId_hdmi.Visible = false;
-            // 
-            // colId_vga
-            // 
-            this.colId_vga.DataPropertyName = "Id_vga";
-            this.colId_vga.HeaderText = "Id_vga";
-            this.colId_vga.Name = "colId_vga";
-            this.colId_vga.Visible = false;
-            // 
-            // colId_tension_batterie
-            // 
-            this.colId_tension_batterie.DataPropertyName = "Id_tension_batterie";
-            this.colId_tension_batterie.HeaderText = "Id_tension_batterie";
-            this.colId_tension_batterie.Name = "colId_tension_batterie";
-            this.colId_tension_batterie.Visible = false;
-            this.colId_tension_batterie.Width = 130;
-            // 
-            // colId_tension_adaptateur
-            // 
-            this.colId_tension_adaptateur.DataPropertyName = "Id_tension_adaptateur";
-            this.colId_tension_adaptateur.HeaderText = "Id_tension_adaptateur";
-            this.colId_tension_adaptateur.Name = "colId_tension_adaptateur";
-            this.colId_tension_adaptateur.Visible = false;
-            this.colId_tension_adaptateur.Width = 130;
-            // 
-            // colId_puissance_adaptateur
-            // 
-            this.colId_puissance_adaptateur.DataPropertyName = "Id_puissance_adaptateur";
-            this.colId_puissance_adaptateur.HeaderText = "Id_puissance_adaptateur";
-            this.colId_puissance_adaptateur.Name = "colId_puissance_adaptateur";
-            this.colId_puissance_adaptateur.Visible = false;
-            this.colId_puissance_adaptateur.Width = 150;
-            // 
-            // colId_intensite_adaptateur
-            // 
-            this.colId_intensite_adaptateur.DataPropertyName = "Id_intensite_adaptateur";
-            this.colId_intensite_adaptateur.HeaderText = "Id_intensite_adaptateur";
-            this.colId_intensite_adaptateur.Name = "colId_intensite_adaptateur";
-            this.colId_intensite_adaptateur.Visible = false;
-            this.colId_intensite_adaptateur.Width = 130;
-            // 
-            // colNumero_cle
-            // 
-            this.colNumero_cle.DataPropertyName = "Numero_cle";
-            this.colNumero_cle.HeaderText = "Num clé";
-            this.colNumero_cle.Name = "colNumero_cle";
-            // 
-            // colId_type_imprimante
-            // 
-            this.colId_type_imprimante.DataPropertyName = "Id_type_imprimante";
-            this.colId_type_imprimante.HeaderText = "Id_type_imprimante";
-            this.colId_type_imprimante.Name = "colId_type_imprimante";
-            this.colId_type_imprimante.Visible = false;
-            // 
-            // colId_puissance
-            // 
-            this.colId_puissance.DataPropertyName = "Id_puissance";
-            this.colId_puissance.HeaderText = "Id_puissance";
-            this.colId_puissance.Name = "colId_puissance";
-            this.colId_puissance.Visible = false;
-            // 
-            // colId_intensite
-            // 
-            this.colId_intensite.DataPropertyName = "Id_intensite";
-            this.colId_intensite.HeaderText = "Id_intensite";
-            this.colId_intensite.Name = "colId_intensite";
-            this.colId_intensite.Visible = false;
-            // 
-            // colId_page_par_minute
-            // 
-            this.colId_page_par_minute.DataPropertyName = "Id_page_par_minute";
-            this.colId_page_par_minute.HeaderText = "Id_page_par_minute";
-            this.colId_page_par_minute.Name = "colId_page_par_minute";
-            this.colId_page_par_minute.Visible = false;
-            // 
-            // colId_type_amplificateur
-            // 
-            this.colId_type_amplificateur.DataPropertyName = "Id_type_amplificateur";
-            this.colId_type_amplificateur.HeaderText = "Id_type_amplificateur";
-            this.colId_type_amplificateur.Name = "colId_type_amplificateur";
-            this.colId_type_amplificateur.Visible = false;
-            // 
-            // colId_tension_alimentation
-            // 
-            this.colId_tension_alimentation.DataPropertyName = "Id_tension_alimentation";
-            this.colId_tension_alimentation.HeaderText = "Id_tension_alimentation";
-            this.colId_tension_alimentation.Name = "colId_tension_alimentation";
-            this.colId_tension_alimentation.Visible = false;
-            this.colId_tension_alimentation.Width = 110;
-            // 
-            // colId_usb
-            // 
-            this.colId_usb.DataPropertyName = "Id_usb";
-            this.colId_usb.HeaderText = "Id_usb";
-            this.colId_usb.Name = "colId_usb";
-            this.colId_usb.Visible = false;
-            // 
-            // colId_memoire
-            // 
-            this.colId_memoire.DataPropertyName = "Id_memoire";
-            this.colId_memoire.HeaderText = "Id_memoire";
-            this.colId_memoire.Name = "colId_memoire";
-            this.colId_memoire.Visible = false;
-            // 
-            // colId_sorties_audio
-            // 
-            this.colId_sorties_audio.DataPropertyName = "Id_sorties_audio";
-            this.colId_sorties_audio.HeaderText = "Id_sorties_audio";
-            this.colId_sorties_audio.Name = "colId_sorties_audio";
-            this.colId_sorties_audio.Visible = false;
-            // 
-            // colId_microphone
-            // 
-            this.colId_microphone.DataPropertyName = "Id_microphone";
-            this.colId_microphone.HeaderText = "Id_microphone";
-            this.colId_microphone.Name = "colId_microphone";
-            this.colId_microphone.Visible = false;
-            // 
-            // colId_gain
-            // 
-            this.colId_gain.DataPropertyName = "Id_gain";
-            this.colId_gain.HeaderText = "Id_gain";
-            this.colId_gain.Name = "colId_gain";
-            this.colId_gain.Visible = false;
-            // 
-            // colId_type_routeur_ap
-            // 
-            this.colId_type_routeur_ap.DataPropertyName = "Id_type_routeur_ap";
-            this.colId_type_routeur_ap.HeaderText = "Id_type_routeur_ap";
-            this.colId_type_routeur_ap.Name = "colId_type_routeur_ap";
-            this.colId_type_routeur_ap.Visible = false;
-            // 
-            // colId_version_ios
-            // 
-            this.colId_version_ios.DataPropertyName = "Id_version_ios";
-            this.colId_version_ios.HeaderText = "Id_version_ios";
-            this.colId_version_ios.Name = "colId_version_ios";
-            this.colId_version_ios.Visible = false;
-            // 
-            // colId_gbe
-            // 
-            this.colId_gbe.DataPropertyName = "Id_gbe";
-            this.colId_gbe.HeaderText = "Id_gbe";
-            this.colId_gbe.Name = "colId_gbe";
-            this.colId_gbe.Visible = false;
-            // 
-            // colId_fe
-            // 
-            this.colId_fe.DataPropertyName = "Id_fe";
-            this.colId_fe.HeaderText = "Id_fe";
-            this.colId_fe.Name = "colId_fe";
-            this.colId_fe.Visible = false;
-            // 
-            // colId_fo
-            // 
-            this.colId_fo.DataPropertyName = "Id_fo";
-            this.colId_fo.HeaderText = "Id_fo";
-            this.colId_fo.Name = "colId_fo";
-            this.colId_fo.Visible = false;
-            // 
-            // colId_serial
-            // 
-            this.colId_serial.DataPropertyName = "Id_serial";
-            this.colId_serial.HeaderText = "Id_serial";
-            this.colId_serial.Name = "colId_serial";
-            this.colId_serial.Visible = false;
-            // 
-            // colCapable_usb
-            // 
-            this.colCapable_usb.DataPropertyName = "Capable_usb";
-            this.colCapable_usb.HeaderText = "Support USB";
-            this.colCapable_usb.Name = "colCapable_usb";
-            this.colCapable_usb.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colCapable_usb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.colCapable_usb.Visible = false;
-            // 
-            // colId_default_pwd
-            // 
-            this.colId_default_pwd.DataPropertyName = "Id_default_pwd";
-            this.colId_default_pwd.HeaderText = "Id_default_pwd";
-            this.colId_default_pwd.Name = "colId_default_pwd";
-            this.colId_default_pwd.Visible = false;
-            // 
-            // colId_default_ip
-            // 
-            this.colId_default_ip.DataPropertyName = "Id_default_ip";
-            this.colId_default_ip.HeaderText = "Id_default_ip";
-            this.colId_default_ip.Name = "colId_default_ip";
-            this.colId_default_ip.Visible = false;
-            // 
-            // colId_console
-            // 
-            this.colId_console.DataPropertyName = "Id_console";
-            this.colId_console.HeaderText = "Id_console";
-            this.colId_console.Name = "colId_console";
-            this.colId_console.Visible = false;
-            // 
-            // colId_auxiliaire
-            // 
-            this.colId_auxiliaire.DataPropertyName = "Id_auxiliaire";
-            this.colId_auxiliaire.HeaderText = "Id_auxiliaire";
-            this.colId_auxiliaire.Name = "colId_auxiliaire";
-            this.colId_auxiliaire.Visible = false;
-            // 
-            // colId_type_ap
-            // 
-            this.colId_type_ap.DataPropertyName = "Id_type_ap";
-            this.colId_type_ap.HeaderText = "Id_type_ap";
-            this.colId_type_ap.Name = "colId_type_ap";
-            this.colId_type_ap.Visible = false;
-            // 
-            // colId_type_switch
-            // 
-            this.colId_type_switch.DataPropertyName = "Id_type_switch";
-            this.colId_type_switch.HeaderText = "Id_type_switch";
-            this.colId_type_switch.Name = "colId_type_switch";
-            this.colId_type_switch.Visible = false;
-            // 
-            // colId_frequence
-            // 
-            this.colId_frequence.DataPropertyName = "Id_frequence";
-            this.colId_frequence.HeaderText = "Id_frequence";
-            this.colId_frequence.Name = "colId_frequence";
-            this.colId_frequence.Visible = false;
-            // 
-            // colId_antenne
-            // 
-            this.colId_antenne.DataPropertyName = "Id_antenne";
-            this.colId_antenne.HeaderText = "Id_antenne";
-            this.colId_antenne.Name = "colId_antenne";
-            this.colId_antenne.Visible = false;
-            // 
-            // colId_netette
-            // 
-            this.colId_netette.DataPropertyName = "Id_netette";
-            this.colId_netette.HeaderText = "Id_netette";
-            this.colId_netette.Name = "colId_netette";
-            this.colId_netette.Visible = false;
-            // 
-            // colId_portee
-            // 
-            this.colId_portee.DataPropertyName = "Id_portee";
-            this.colId_portee.HeaderText = "Id_portee";
-            this.colId_portee.Name = "colId_portee";
-            this.colId_portee.Visible = false;
-            // 
-            // colCompatible_wifi
-            // 
-            this.colCompatible_wifi.DataPropertyName = "Compatible_wifi";
-            this.colCompatible_wifi.HeaderText = "Compatible Wifi";
-            this.colCompatible_wifi.Name = "colCompatible_wifi";
-            this.colCompatible_wifi.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.colCompatible_wifi.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.colCompatible_wifi.Visible = false;
             // 
             // groupBox1
             // 
@@ -2246,6 +1739,514 @@
             this.smnCtxPhoto3.Text = "Charger photo3";
             this.smnCtxPhoto3.ToolTipText = "Charger photo3";
             this.smnCtxPhoto3.Click += new System.EventHandler(this.smnCtxPhoto3_Click);
+            // 
+            // colId
+            // 
+            this.colId.DataPropertyName = "Id";
+            this.colId.HeaderText = "Id";
+            this.colId.Name = "colId";
+            this.colId.Visible = false;
+            // 
+            // colCode_str
+            // 
+            this.colCode_str.DataPropertyName = "Code_str";
+            this.colCode_str.HeaderText = "Code texte";
+            this.colCode_str.Name = "colCode_str";
+            // 
+            // colArchiver
+            // 
+            this.colArchiver.DataPropertyName = "Archiver";
+            this.colArchiver.HeaderText = "Archiver";
+            this.colArchiver.Name = "colArchiver";
+            this.colArchiver.Width = 50;
+            // 
+            // colId_categorie_materiel
+            // 
+            this.colId_categorie_materiel.DataPropertyName = "Id_categorie_materiel";
+            this.colId_categorie_materiel.HeaderText = "Id_categorie_materiel";
+            this.colId_categorie_materiel.Name = "colId_categorie_materiel";
+            this.colId_categorie_materiel.Visible = false;
+            // 
+            // colId_compte
+            // 
+            this.colId_compte.DataPropertyName = "Id_compte";
+            this.colId_compte.HeaderText = "Id_compte";
+            this.colId_compte.Name = "colId_compte";
+            this.colId_compte.Visible = false;
+            // 
+            // colQrcode
+            // 
+            this.colQrcode.DataPropertyName = "Qrcode";
+            this.colQrcode.HeaderText = "Qrcode";
+            this.colQrcode.Name = "colQrcode";
+            this.colQrcode.Visible = false;
+            // 
+            // colDate_acquisition
+            // 
+            this.colDate_acquisition.DataPropertyName = "Date_acquisition";
+            this.colDate_acquisition.HeaderText = "Date acquisition";
+            this.colDate_acquisition.Name = "colDate_acquisition";
+            this.colDate_acquisition.Width = 110;
+            // 
+            // colid_garantie
+            // 
+            this.colid_garantie.DataPropertyName = "id_garantie";
+            this.colid_garantie.HeaderText = "id_garantie";
+            this.colid_garantie.Name = "colid_garantie";
+            this.colid_garantie.Visible = false;
+            // 
+            // colId_marque
+            // 
+            this.colId_marque.DataPropertyName = "Id_marque";
+            this.colId_marque.HeaderText = "Id_marque";
+            this.colId_marque.Name = "colId_marque";
+            this.colId_marque.Visible = false;
+            // 
+            // colId_modele
+            // 
+            this.colId_modele.DataPropertyName = "Id_modele";
+            this.colId_modele.HeaderText = "Id_modele";
+            this.colId_modele.Name = "colId_modele";
+            this.colId_modele.Visible = false;
+            // 
+            // colId_couleur
+            // 
+            this.colId_couleur.DataPropertyName = "Id_couleur";
+            this.colId_couleur.HeaderText = "Id_couleur";
+            this.colId_couleur.Name = "colId_couleur";
+            this.colId_couleur.Visible = false;
+            // 
+            // colId_poids
+            // 
+            this.colId_poids.DataPropertyName = "Id_poids";
+            this.colId_poids.HeaderText = "Id_poids";
+            this.colId_poids.Name = "colId_poids";
+            this.colId_poids.Visible = false;
+            // 
+            // colId_etat_materiel
+            // 
+            this.colId_etat_materiel.DataPropertyName = "Id_etat_materiel";
+            this.colId_etat_materiel.HeaderText = "Id_etat_materiel";
+            this.colId_etat_materiel.Name = "colId_etat_materiel";
+            this.colId_etat_materiel.Visible = false;
+            // 
+            // colPhoto1
+            // 
+            this.colPhoto1.DataPropertyName = "Photo1";
+            this.colPhoto1.HeaderText = "Photo1";
+            this.colPhoto1.Name = "colPhoto1";
+            this.colPhoto1.Visible = false;
+            // 
+            // colPhoto2
+            // 
+            this.colPhoto2.DataPropertyName = "Photo2";
+            this.colPhoto2.HeaderText = "Photo2";
+            this.colPhoto2.Name = "colPhoto2";
+            this.colPhoto2.Visible = false;
+            // 
+            // colPhoto3
+            // 
+            this.colPhoto3.DataPropertyName = "Photo3";
+            this.colPhoto3.HeaderText = "Photo3";
+            this.colPhoto3.Name = "colPhoto3";
+            this.colPhoto3.Visible = false;
+            // 
+            // colLabel
+            // 
+            this.colLabel.DataPropertyName = "Label";
+            this.colLabel.HeaderText = "Etiquette";
+            this.colLabel.Name = "colLabel";
+            // 
+            // colMac_adresse1
+            // 
+            this.colMac_adresse1.DataPropertyName = "Mac_adresse1";
+            this.colMac_adresse1.HeaderText = "Mac Wifi";
+            this.colMac_adresse1.Name = "colMac_adresse1";
+            // 
+            // colMac_adresse2
+            // 
+            this.colMac_adresse2.DataPropertyName = "Mac_adresse2";
+            this.colMac_adresse2.HeaderText = "Mac LAN";
+            this.colMac_adresse2.Name = "colMac_adresse2";
+            // 
+            // colCommentaire
+            // 
+            this.colCommentaire.DataPropertyName = "Commentaire";
+            this.colCommentaire.HeaderText = "Commentaire";
+            this.colCommentaire.Name = "colCommentaire";
+            this.colCommentaire.Width = 300;
+            // 
+            // colUser_created
+            // 
+            this.colUser_created.DataPropertyName = "User_created";
+            this.colUser_created.HeaderText = "User created";
+            this.colUser_created.Name = "colUser_created";
+            // 
+            // colDate_created
+            // 
+            this.colDate_created.DataPropertyName = "Date_created";
+            this.colDate_created.HeaderText = "Date created";
+            this.colDate_created.Name = "colDate_created";
+            // 
+            // colUser_modified
+            // 
+            this.colUser_modified.DataPropertyName = "User_modified";
+            this.colUser_modified.HeaderText = "User modified";
+            this.colUser_modified.Name = "colUser_modified";
+            // 
+            // colDate_modified
+            // 
+            this.colDate_modified.DataPropertyName = "Date_modified";
+            this.colDate_modified.HeaderText = "Date modified";
+            this.colDate_modified.Name = "colDate_modified";
+            // 
+            // colId_type_ordinateur
+            // 
+            this.colId_type_ordinateur.DataPropertyName = "Id_type_ordinateur";
+            this.colId_type_ordinateur.HeaderText = "Id_type_ordinateur";
+            this.colId_type_ordinateur.Name = "colId_type_ordinateur";
+            this.colId_type_ordinateur.Visible = false;
+            // 
+            // colId_type_clavier
+            // 
+            this.colId_type_clavier.DataPropertyName = "Id_type_clavier";
+            this.colId_type_clavier.HeaderText = "Id_type_clavier";
+            this.colId_type_clavier.Name = "colId_type_clavier";
+            this.colId_type_clavier.Visible = false;
+            // 
+            // colId_os
+            // 
+            this.colId_os.DataPropertyName = "Id_os";
+            this.colId_os.HeaderText = "Id_os";
+            this.colId_os.Name = "colId_os";
+            this.colId_os.Visible = false;
+            // 
+            // colid_ram
+            // 
+            this.colid_ram.DataPropertyName = "id_ram";
+            this.colid_ram.HeaderText = "id_ram";
+            this.colid_ram.Name = "colid_ram";
+            this.colid_ram.Visible = false;
+            // 
+            // colid_processeur
+            // 
+            this.colid_processeur.DataPropertyName = "id_processeur";
+            this.colid_processeur.HeaderText = "id_processeur";
+            this.colid_processeur.Name = "colid_processeur";
+            this.colid_processeur.Visible = false;
+            this.colid_processeur.Width = 130;
+            // 
+            // colid_nombre_coeur_processeur
+            // 
+            this.colid_nombre_coeur_processeur.DataPropertyName = "id_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.HeaderText = "id_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.Name = "colid_nombre_coeur_processeur";
+            this.colid_nombre_coeur_processeur.Visible = false;
+            this.colid_nombre_coeur_processeur.Width = 150;
+            // 
+            // colId_type_hdd
+            // 
+            this.colId_type_hdd.DataPropertyName = "Id_type_hdd";
+            this.colId_type_hdd.HeaderText = "Id_type_hdd";
+            this.colId_type_hdd.Name = "colId_type_hdd";
+            this.colId_type_hdd.Visible = false;
+            // 
+            // colId_nombre_hdd
+            // 
+            this.colId_nombre_hdd.DataPropertyName = "Id_nombre_hdd";
+            this.colId_nombre_hdd.HeaderText = "Id_nombre_hdd";
+            this.colId_nombre_hdd.Name = "colId_nombre_hdd";
+            this.colId_nombre_hdd.Visible = false;
+            // 
+            // colId_capacite_hdd
+            // 
+            this.colId_capacite_hdd.DataPropertyName = "Id_capacite_hdd";
+            this.colId_capacite_hdd.HeaderText = "Id_capacite_hdd";
+            this.colId_capacite_hdd.Name = "colId_capacite_hdd";
+            this.colId_capacite_hdd.Visible = false;
+            this.colId_capacite_hdd.Width = 120;
+            // 
+            // colId_taille_ecran
+            // 
+            this.colId_taille_ecran.DataPropertyName = "Id_taille_ecran";
+            this.colId_taille_ecran.HeaderText = "Id_taille_ecran";
+            this.colId_taille_ecran.Name = "colId_taille_ecran";
+            this.colId_taille_ecran.Visible = false;
+            this.colId_taille_ecran.Width = 150;
+            // 
+            // colId_usb2
+            // 
+            this.colId_usb2.DataPropertyName = "Id_usb2";
+            this.colId_usb2.HeaderText = "Id_usb2";
+            this.colId_usb2.Name = "colId_usb2";
+            this.colId_usb2.Visible = false;
+            // 
+            // colId_usb3
+            // 
+            this.colId_usb3.DataPropertyName = "Id_usb3";
+            this.colId_usb3.HeaderText = "Id_usb3";
+            this.colId_usb3.Name = "colId_usb3";
+            this.colId_usb3.Visible = false;
+            // 
+            // colId_hdmi
+            // 
+            this.colId_hdmi.DataPropertyName = "Id_hdmi";
+            this.colId_hdmi.HeaderText = "Id_hdmi";
+            this.colId_hdmi.Name = "colId_hdmi";
+            this.colId_hdmi.Visible = false;
+            // 
+            // colId_vga
+            // 
+            this.colId_vga.DataPropertyName = "Id_vga";
+            this.colId_vga.HeaderText = "Id_vga";
+            this.colId_vga.Name = "colId_vga";
+            this.colId_vga.Visible = false;
+            // 
+            // colId_tension_batterie
+            // 
+            this.colId_tension_batterie.DataPropertyName = "Id_tension_batterie";
+            this.colId_tension_batterie.HeaderText = "Id_tension_batterie";
+            this.colId_tension_batterie.Name = "colId_tension_batterie";
+            this.colId_tension_batterie.Visible = false;
+            this.colId_tension_batterie.Width = 130;
+            // 
+            // colId_tension_adaptateur
+            // 
+            this.colId_tension_adaptateur.DataPropertyName = "Id_tension_adaptateur";
+            this.colId_tension_adaptateur.HeaderText = "Id_tension_adaptateur";
+            this.colId_tension_adaptateur.Name = "colId_tension_adaptateur";
+            this.colId_tension_adaptateur.Visible = false;
+            this.colId_tension_adaptateur.Width = 130;
+            // 
+            // colId_puissance_adaptateur
+            // 
+            this.colId_puissance_adaptateur.DataPropertyName = "Id_puissance_adaptateur";
+            this.colId_puissance_adaptateur.HeaderText = "Id_puissance_adaptateur";
+            this.colId_puissance_adaptateur.Name = "colId_puissance_adaptateur";
+            this.colId_puissance_adaptateur.Visible = false;
+            this.colId_puissance_adaptateur.Width = 150;
+            // 
+            // colId_intensite_adaptateur
+            // 
+            this.colId_intensite_adaptateur.DataPropertyName = "Id_intensite_adaptateur";
+            this.colId_intensite_adaptateur.HeaderText = "Id_intensite_adaptateur";
+            this.colId_intensite_adaptateur.Name = "colId_intensite_adaptateur";
+            this.colId_intensite_adaptateur.Visible = false;
+            this.colId_intensite_adaptateur.Width = 130;
+            // 
+            // colNumero_cle
+            // 
+            this.colNumero_cle.DataPropertyName = "Numero_cle";
+            this.colNumero_cle.HeaderText = "Num clé";
+            this.colNumero_cle.Name = "colNumero_cle";
+            // 
+            // colId_type_imprimante
+            // 
+            this.colId_type_imprimante.DataPropertyName = "Id_type_imprimante";
+            this.colId_type_imprimante.HeaderText = "Id_type_imprimante";
+            this.colId_type_imprimante.Name = "colId_type_imprimante";
+            this.colId_type_imprimante.Visible = false;
+            // 
+            // colId_puissance
+            // 
+            this.colId_puissance.DataPropertyName = "Id_puissance";
+            this.colId_puissance.HeaderText = "Id_puissance";
+            this.colId_puissance.Name = "colId_puissance";
+            this.colId_puissance.Visible = false;
+            // 
+            // colId_intensite
+            // 
+            this.colId_intensite.DataPropertyName = "Id_intensite";
+            this.colId_intensite.HeaderText = "Id_intensite";
+            this.colId_intensite.Name = "colId_intensite";
+            this.colId_intensite.Visible = false;
+            // 
+            // colId_page_par_minute
+            // 
+            this.colId_page_par_minute.DataPropertyName = "Id_page_par_minute";
+            this.colId_page_par_minute.HeaderText = "Id_page_par_minute";
+            this.colId_page_par_minute.Name = "colId_page_par_minute";
+            this.colId_page_par_minute.Visible = false;
+            // 
+            // colId_type_amplificateur
+            // 
+            this.colId_type_amplificateur.DataPropertyName = "Id_type_amplificateur";
+            this.colId_type_amplificateur.HeaderText = "Id_type_amplificateur";
+            this.colId_type_amplificateur.Name = "colId_type_amplificateur";
+            this.colId_type_amplificateur.Visible = false;
+            // 
+            // colId_tension_alimentation
+            // 
+            this.colId_tension_alimentation.DataPropertyName = "Id_tension_alimentation";
+            this.colId_tension_alimentation.HeaderText = "Id_tension_alimentation";
+            this.colId_tension_alimentation.Name = "colId_tension_alimentation";
+            this.colId_tension_alimentation.Visible = false;
+            this.colId_tension_alimentation.Width = 110;
+            // 
+            // colId_usb
+            // 
+            this.colId_usb.DataPropertyName = "Id_usb";
+            this.colId_usb.HeaderText = "Id_usb";
+            this.colId_usb.Name = "colId_usb";
+            this.colId_usb.Visible = false;
+            // 
+            // colId_memoire
+            // 
+            this.colId_memoire.DataPropertyName = "Id_memoire";
+            this.colId_memoire.HeaderText = "Id_memoire";
+            this.colId_memoire.Name = "colId_memoire";
+            this.colId_memoire.Visible = false;
+            // 
+            // colId_sorties_audio
+            // 
+            this.colId_sorties_audio.DataPropertyName = "Id_sorties_audio";
+            this.colId_sorties_audio.HeaderText = "Id_sorties_audio";
+            this.colId_sorties_audio.Name = "colId_sorties_audio";
+            this.colId_sorties_audio.Visible = false;
+            // 
+            // colId_microphone
+            // 
+            this.colId_microphone.DataPropertyName = "Id_microphone";
+            this.colId_microphone.HeaderText = "Id_microphone";
+            this.colId_microphone.Name = "colId_microphone";
+            this.colId_microphone.Visible = false;
+            // 
+            // colId_gain
+            // 
+            this.colId_gain.DataPropertyName = "Id_gain";
+            this.colId_gain.HeaderText = "Id_gain";
+            this.colId_gain.Name = "colId_gain";
+            this.colId_gain.Visible = false;
+            // 
+            // colId_type_routeur_ap
+            // 
+            this.colId_type_routeur_ap.DataPropertyName = "Id_type_routeur_ap";
+            this.colId_type_routeur_ap.HeaderText = "Id_type_routeur_ap";
+            this.colId_type_routeur_ap.Name = "colId_type_routeur_ap";
+            this.colId_type_routeur_ap.Visible = false;
+            // 
+            // colId_version_ios
+            // 
+            this.colId_version_ios.DataPropertyName = "Id_version_ios";
+            this.colId_version_ios.HeaderText = "Id_version_ios";
+            this.colId_version_ios.Name = "colId_version_ios";
+            this.colId_version_ios.Visible = false;
+            // 
+            // colId_gbe
+            // 
+            this.colId_gbe.DataPropertyName = "Id_gbe";
+            this.colId_gbe.HeaderText = "Id_gbe";
+            this.colId_gbe.Name = "colId_gbe";
+            this.colId_gbe.Visible = false;
+            // 
+            // colId_fe
+            // 
+            this.colId_fe.DataPropertyName = "Id_fe";
+            this.colId_fe.HeaderText = "Id_fe";
+            this.colId_fe.Name = "colId_fe";
+            this.colId_fe.Visible = false;
+            // 
+            // colId_fo
+            // 
+            this.colId_fo.DataPropertyName = "Id_fo";
+            this.colId_fo.HeaderText = "Id_fo";
+            this.colId_fo.Name = "colId_fo";
+            this.colId_fo.Visible = false;
+            // 
+            // colId_serial
+            // 
+            this.colId_serial.DataPropertyName = "Id_serial";
+            this.colId_serial.HeaderText = "Id_serial";
+            this.colId_serial.Name = "colId_serial";
+            this.colId_serial.Visible = false;
+            // 
+            // colCapable_usb
+            // 
+            this.colCapable_usb.DataPropertyName = "Capable_usb";
+            this.colCapable_usb.HeaderText = "Support USB";
+            this.colCapable_usb.Name = "colCapable_usb";
+            this.colCapable_usb.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colCapable_usb.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colCapable_usb.Visible = false;
+            // 
+            // colId_default_pwd
+            // 
+            this.colId_default_pwd.DataPropertyName = "Id_default_pwd";
+            this.colId_default_pwd.HeaderText = "Id_default_pwd";
+            this.colId_default_pwd.Name = "colId_default_pwd";
+            this.colId_default_pwd.Visible = false;
+            // 
+            // colId_default_ip
+            // 
+            this.colId_default_ip.DataPropertyName = "Id_default_ip";
+            this.colId_default_ip.HeaderText = "Id_default_ip";
+            this.colId_default_ip.Name = "colId_default_ip";
+            this.colId_default_ip.Visible = false;
+            // 
+            // colId_console
+            // 
+            this.colId_console.DataPropertyName = "Id_console";
+            this.colId_console.HeaderText = "Id_console";
+            this.colId_console.Name = "colId_console";
+            this.colId_console.Visible = false;
+            // 
+            // colId_auxiliaire
+            // 
+            this.colId_auxiliaire.DataPropertyName = "Id_auxiliaire";
+            this.colId_auxiliaire.HeaderText = "Id_auxiliaire";
+            this.colId_auxiliaire.Name = "colId_auxiliaire";
+            this.colId_auxiliaire.Visible = false;
+            // 
+            // colId_type_ap
+            // 
+            this.colId_type_ap.DataPropertyName = "Id_type_ap";
+            this.colId_type_ap.HeaderText = "Id_type_ap";
+            this.colId_type_ap.Name = "colId_type_ap";
+            this.colId_type_ap.Visible = false;
+            // 
+            // colId_type_switch
+            // 
+            this.colId_type_switch.DataPropertyName = "Id_type_switch";
+            this.colId_type_switch.HeaderText = "Id_type_switch";
+            this.colId_type_switch.Name = "colId_type_switch";
+            this.colId_type_switch.Visible = false;
+            // 
+            // colId_frequence
+            // 
+            this.colId_frequence.DataPropertyName = "Id_frequence";
+            this.colId_frequence.HeaderText = "Id_frequence";
+            this.colId_frequence.Name = "colId_frequence";
+            this.colId_frequence.Visible = false;
+            // 
+            // colId_antenne
+            // 
+            this.colId_antenne.DataPropertyName = "Id_antenne";
+            this.colId_antenne.HeaderText = "Id_antenne";
+            this.colId_antenne.Name = "colId_antenne";
+            this.colId_antenne.Visible = false;
+            // 
+            // colId_netette
+            // 
+            this.colId_netette.DataPropertyName = "Id_netette";
+            this.colId_netette.HeaderText = "Id_netette";
+            this.colId_netette.Name = "colId_netette";
+            this.colId_netette.Visible = false;
+            // 
+            // colId_portee
+            // 
+            this.colId_portee.DataPropertyName = "Id_portee";
+            this.colId_portee.HeaderText = "Id_portee";
+            this.colId_portee.Name = "colId_portee";
+            this.colId_portee.Visible = false;
+            // 
+            // colCompatible_wifi
+            // 
+            this.colCompatible_wifi.DataPropertyName = "Compatible_wifi";
+            this.colCompatible_wifi.HeaderText = "Compatible Wifi";
+            this.colCompatible_wifi.Name = "colCompatible_wifi";
+            this.colCompatible_wifi.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.colCompatible_wifi.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.colCompatible_wifi.Visible = false;
             // 
             // frmOrdinateur
             // 

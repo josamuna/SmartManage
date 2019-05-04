@@ -290,6 +290,8 @@ namespace smartManage.Desktop
                 Principal.SetDataSource(bdsrc);
 
                 dgv.DataSource = bdsrc;
+                dg.DataSource = clsMetier.GetInstance().getAllClsmateriel_Ordinateur();
+                
 
                 //Here we sotp waitCursor if there are not records in BindinSource
                 if (bdsrc.Count == 0)
