@@ -19046,19 +19046,19 @@ namespace smartManage.Model
 
             //Echec de la connexion en superAdministrateur alors on peut se connecte en Administrateur 
             //ou en invite (User)
-            ////if (username.ToLower().Equals("sa"))
-            ////{
-            ////    throw new Exception("L'utilisateur 'SA' a été désactivé dans cette application pour raisons de sécurité, veuillez contacter votre Administrateur");
-            ////}
-            ////else 
-            if (username.ToLower().Equals("sa"))//Super Administrateur par defaut
+            if (username.ToLower().Equals("sa"))
             {
-                //Super utilisateur de la BD
-                lstValue.Add("0");
-                lstValue.Add("Superutilisateur de la BD");
-                lstValue.Add("Administrateur");
-                lstValue.Add(true);
+                throw new Exception("L'utilisateur 'SA' a été désactivé dans cette application pour raisons de sécurité, veuillez contacter votre Administrateur");
             }
+            //else 
+            //if (username.ToLower().Equals("sa"))//Super Administrateur par defaut
+            //{
+            //    //Super utilisateur de la BD
+            //    lstValue.Add("0");
+            //    lstValue.Add("Superutilisateur de la BD");
+            //    lstValue.Add("Administrateur");
+            //    lstValue.Add(true);
+            //}
             else
             {
                 try
